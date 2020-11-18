@@ -5,5 +5,5 @@
     <item
         android:title="@null"
         android:icon="@drawable/ic_logo"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 </menu>

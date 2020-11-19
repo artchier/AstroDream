@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:text="Explorar tecnologias"
+            android:text="@string/explorar_tecnologias"
             android:textSize="20sp"
             android:textColor="@color/white"/>
 
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Listar patentes"
+            android:text="@string/listar_patentes"
             android:textSize="20sp"
             android:background="@drawable/round_button" />
 
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Listar softwares"
+            android:text="@string/listar_softwares"
             android:textSize="20sp"
             android:background="@drawable/round_button" />
 
@@ -42,7 +42,7 @@
             android:id="@+id/btnListarSpinoffs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Listar spinoffs"
+            android:text="@string/listar_spinoffs"
             android:textSize="20sp"
             android:background="@drawable/round_button" />
     </LinearLayout>

@@ -9,5 +9,30 @@
         android:id="@+id/techFragment"
         android:name="com.example.astrodream.TechFragment"
         android:label="fragment_tech"
-        tools:layout="@layout/fragment_tech" />
+        tools:layout="@layout/fragment_tech" >
+        <action
+            android:id="@+id/action_techFragment_to_patentsFragment"
+            app:destination="@id/patentsFragment" />
+        <action
+            android:id="@+id/action_techFragment_to_softwaresFragment"
+            app:destination="@id/softwaresFragment" />
+        <action
+            android:id="@+id/action_techFragment_to_spinoffsFragment"
+            app:destination="@id/spinoffsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/patentsFragment"
+        android:name="com.example.astrodream.PatentsFragment"
+        android:label="fragment_patents"
+        tools:layout="@layout/fragment_patents" />
+    <fragment
+        android:id="@+id/softwaresFragment"
+        android:name="com.example.astrodream.SoftwaresFragment"
+        android:label="fragment_softwares"
+        tools:layout="@layout/fragment_softwares" />
+    <fragment
+        android:id="@+id/spinoffsFragment"
+        android:name="com.example.astrodream.SpinoffsFragment"
+        android:label="fragment_spinoffs"
+        tools:layout="@layout/fragment_spinoffs" />
 </navigation>

@@ -8,4 +8,12 @@
     <string name="alterar">Alterar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="explorar_tecnologias">Explorar tecnologias</string>
+    <string name="listar_patentes">Listar patentes</string>
+    <string name="listar_softwares">Listar softwares</string>
+    <string name="listar_spinoffs">Listar spinoffs</string>
+    <string name="explorar_patentes">Explorar patentes</string>
+    <string name="explorar_softwares">Explorar softwares</string>
+    <string name="explorar_spinoffs">Explorar spinoffs</string>
 </resources>

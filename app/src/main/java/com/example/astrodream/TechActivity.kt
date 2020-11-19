@@ -11,7 +11,7 @@ class TechActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tech)
 
-        tbUserConfig.title = ""
+        tbTech.title = ""
         setSupportActionBar(tbTech)
     }
 

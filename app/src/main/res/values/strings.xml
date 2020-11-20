@@ -5,4 +5,11 @@
     <!-- Login Activity -->
     <string name="login">Login</string>
     <string name="sign_in">Cadastrar</string>
+    <!-- Login Fragment -->
+    <string name="email">Email</string>
+    <string name="password">Senha</string>
+    <string name="forgot_password">Esqueci minha senha</string>
+    <string name="google_sign_in">Logar com Google</string>
+    <string name="facebook_sign_in">Logar com Facebook</string>
+    <string name="or">ou</string>
 </resources>

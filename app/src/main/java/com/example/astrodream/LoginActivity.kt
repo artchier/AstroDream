@@ -12,12 +12,22 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        btnLogin.setOnClickListener {
-            markButtonSelected(btnLogin, btnSignIn)
+        callFragLogin()
+
+        btnLoginFrag.setOnClickListener {
+            markButtonSelected(btnLoginFrag, btnSignInFrag)
         }
 
-        btnSignIn.setOnClickListener {
-            markButtonSelected(btnSignIn, btnLogin)
+        btnSignInFrag.setOnClickListener {
+            markButtonSelected(btnSignInFrag, btnLoginFrag)
+        }
+    }
+
+    private fun callFragLogin() {
+        val fragLogin = LoginFragment.newInstance()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment, fragLogin)
+            commit()
         }
     }
 

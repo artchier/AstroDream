@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">AstroDream</string>
     <string name="imagem_de_hoje">Imagem de hoje</string>
-    <string name="user_config">Configurações</string>
-    <string name="nome">Nome</string>
-    <string name="email">E-mail</string>
-    <string name="senha">Senha</string>
-    <string name="alterar">Alterar</string>
     <string name="data_estelar">Data estelar: XXXXX</string>
     <string name="o_que_vamos_fazer_hoje">O que vamos fazer hoje?</string>
     <string name="asteroides">ASTEROIDES</string>

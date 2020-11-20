@@ -6,4 +6,16 @@
     <string name="email">E-mail</string>
     <string name="senha">Senha</string>
     <string name="alterar">Alterar</string>
+    <string name="data_estelar">Data estelar: XXXXX</string>
+    <string name="o_que_vamos_fazer_hoje">O que vamos fazer hoje?</string>
+    <string name="asteroides">ASTEROIDES</string>
+    <string name="globo">GLOBO</string>
+    <string name="marte">MARTE</string>
+    <string name="tecnologias">TECNOLOGIAS</string>
+    <string name="ver_avatar">Ver avatar</string>
+    <string name="background">Background</string>
+    <string name="asteroides_minusculo">Asteroides</string>
+    <string name="globo_minusculo">Globo</string>
+    <string name="tecnologias_minusculo">Tecnologias</string>
+    <string name="marte_minusculo">Marte</string>
 </resources>

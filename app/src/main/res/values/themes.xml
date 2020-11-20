@@ -14,4 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="NavigationDrawer">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AstroDream</string>
     <string name="imagem_de_hoje">Imagem de hoje</string>
+
+    <!-- Login Activity -->
+    <string name="login">Login</string>
+    <string name="sign_in">Cadastrar</string>
 </resources>

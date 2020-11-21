@@ -5,9 +5,15 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GravityCompat
 import com.example.astrodream.R.id.menu_lateral
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_initial.*
+import kotlinx.android.synthetic.main.astrodialog.*
+import kotlinx.android.synthetic.main.lateral_menu.*
 
 class InitialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +22,17 @@ class InitialActivity : AppCompatActivity() {
 
         tbInitial.title = ""
         setSupportActionBar(tbInitial)
+
+        btnSobre.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setBackgroundInsetStart(70)
+                .setBackgroundInsetEnd(70)
+                .setBackgroundInsetTop(10)
+                .setBackgroundInsetBottom(100)
+                .setBackground(ContextCompat.getColor(this, android.R.color.transparent).toDrawable())
+                .setView(R.layout.astrodialog)
+                .show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -9,7 +9,28 @@
     <string name="tecnologias">Tecnologias</string>
     <string name="ver_avatar">Ver avatar</string>
     <string name="background">Background</string>
+
+    <string name="asteroides_minusculo">Asteroides</string>
+    <string name="globo_minusculo">Globo</string>
+    <string name="tecnologias_minusculo">Tecnologias</string>
+    <string name="marte_minusculo">Marte</string>
+
+    <!-- Login Activity -->
+    <string name="login">Login</string>
+    <string name="sign_in">Cadastrar</string>
+    <!-- Login Fragment -->
+    <string name="email">Email</string>
+    <string name="password">Senha</string>
+    <string name="forgot_password">Esqueci minha senha</string>
+    <string name="google_sign_in">Logar com Google</string>
+    <string name="facebook_sign_in">Logar com Facebook</string>
+    <string name="or">ou</string>
+    <!-- SignIn Fragment -->
+    <string name="name">Nome</string>
+    <string name="confirm_password">Confirme a senha</string>
+
     <string name="favoritos">Favoritos</string>
     <string name="config">Configurações</string>
     <string name="sobre">Sobre</string>
+
 </resources>

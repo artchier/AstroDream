@@ -12,9 +12,6 @@ class InitialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_initial)
 
         tbInitial.title = ""
-        tbInitial.setOnMenuItemClickListener {
-            dlInitial.open
-        }
         setSupportActionBar(tbInitial)
     }
 

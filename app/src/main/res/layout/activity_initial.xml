@@ -2,6 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dlInitial"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="end"
@@ -134,19 +135,26 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/btGlobo"
             app:layout_constraintStart_toStartOf="@id/btGlobo"
-            app:layout_constraintTop_toTopOf="@id/btTecnologias"/>
+            app:layout_constraintTop_toTopOf="@id/btTecnologias" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/lucky_point"
-        app:itemTextColor="@android:color/white"
         android:layout_gravity="end"
-        app:headerLayout="@layout/header_layout">
+        android:background="@color/lucky_point"
+        app:headerLayout="@layout/header_layout"
+        app:itemTextColor="@android:color/white"
+        app:itemBackground="@drawable/rounded_rectangle"
+        app:menu="@menu/lateral_menu"
+        app:itemIconTint="@android:color/white"
+        app:itemIconSize="35dp"
+        app:itemTextAppearance="@style/NavigationDrawer"
+        app:itemHorizontalPadding="50dp"/>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -154,70 +162,64 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_marginStart="60dp"
                 android:background="@drawable/rounded_rectangle"
-                android:textColor="@android:color/white"
                 android:drawableLeft="@drawable/ic_logo"
+                android:fontFamily="@font/roboto_light"
+                android:letterSpacing="0"
                 android:text="@string/background"
                 android:textAllCaps="false"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"/>
+                android:textColor="@android:color/white" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:background="@drawable/rounded_rectangle"
-                android:textColor="@android:color/white"
                 android:drawableLeft="@drawable/ic_asteroide"
+                android:fontFamily="@font/roboto_light"
+                android:letterSpacing="0"
                 android:text="@string/asteroides_minusculo"
                 android:textAllCaps="false"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"/>
+                android:textColor="@android:color/white" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:background="@drawable/rounded_rectangle"
-                android:textColor="@android:color/white"
                 android:drawableLeft="@drawable/ic_globo"
+                android:fontFamily="@font/roboto_light"
+                android:letterSpacing="0"
                 android:text="@string/globo_minusculo"
                 android:textAllCaps="false"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"/>
+                android:textColor="@android:color/white" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:background="@drawable/rounded_rectangle"
-                android:textColor="@android:color/white"
                 android:drawableLeft="@drawable/ic_tecnologia"
+                android:fontFamily="@font/roboto_light"
+                android:letterSpacing="0"
                 android:text="@string/tecnologias_minusculo"
                 android:textAllCaps="false"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"/>
+                android:textColor="@android:color/white" />
 
             <androidx.appcompat.widget.AppCompatButton
+                style="@style/NavigationDrawer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:background="@drawable/rounded_rectangle"
                 android:drawableLeft="@drawable/ic_marte"
+                android:fontFamily="@font/roboto_light"
+                android:letterSpacing="0"
                 android:text="@string/marte_minusculo"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:fontFamily="@font/roboto_light"
-                style="@style/NavigationDrawer"
-                android:letterSpacing="0"/>
-        </LinearLayout>
-    </com.google.android.material.navigation.NavigationView>
-        <!--app:itemBackground="@drawable/rounded_rectangle"
-        app:menu="@menu/lateral_menu"
-        app:itemIconTint="@android:color/white"
-        app:itemIconSize="35dp"
-        app:itemTextAppearance="@style/NavigationDrawer"
-        app:itemHorizontalPadding="50dp"/>-->
+                android:textColor="@android:color/white" />
+        </LinearLayout>-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

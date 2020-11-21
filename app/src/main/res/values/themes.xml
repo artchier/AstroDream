@@ -14,7 +14,15 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="NavigationDrawer">
-        <item name="android:background">@android:color/transparent</item>
+    <style name="NavigationView1">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="NavigationView2">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">15sp</item>
     </style>
 </resources>

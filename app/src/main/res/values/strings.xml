@@ -3,12 +3,13 @@
     <string name="imagem_de_hoje">Imagem de hoje</string>
     <string name="data_estelar">Data estelar: XXXXX</string>
     <string name="o_que_vamos_fazer_hoje">O que vamos fazer hoje?</string>
-    <string name="asteroides">ASTEROIDES</string>
-    <string name="globo">GLOBO</string>
-    <string name="marte">MARTE</string>
-    <string name="tecnologias">TECNOLOGIAS</string>
+    <string name="asteroides">Asteroides</string>
+    <string name="globo">Globo</string>
+    <string name="marte">Marte</string>
+    <string name="tecnologias">Tecnologias</string>
     <string name="ver_avatar">Ver avatar</string>
     <string name="background">Background</string>
+
     <string name="asteroides_minusculo">Asteroides</string>
     <string name="globo_minusculo">Globo</string>
     <string name="tecnologias_minusculo">Tecnologias</string>
@@ -27,4 +28,9 @@
     <!-- SignIn Fragment -->
     <string name="name">Nome</string>
     <string name="confirm_password">Confirme a senha</string>
+
+    <string name="favoritos">Favoritos</string>
+    <string name="config">Configurações</string>
+    <string name="sobre">Sobre</string>
+
 </resources>

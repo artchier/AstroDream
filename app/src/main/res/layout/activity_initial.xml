@@ -5,8 +5,8 @@
     android:id="@+id/dlInitial"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="end"
-    tools:context=".InitialActivity">
+    tools:context=".InitialActivity"
+    tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -86,6 +86,7 @@
             android:drawableTop="@drawable/ic_asteroide"
             android:fontFamily="@font/homespun_regular"
             android:text="@string/asteroides"
+            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@id/btTecnologias"
@@ -101,6 +102,7 @@
             android:drawableTop="@drawable/ic_globo"
             android:fontFamily="@font/homespun_regular"
             android:text="@string/globo"
+            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@id/btAsteriodes"
@@ -116,6 +118,7 @@
             android:drawableTop="@drawable/ic_tecnologia"
             android:fontFamily="@font/homespun_regular"
             android:text="@string/tecnologias"
+            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -131,6 +134,7 @@
             android:drawableTop="@drawable/ic_marte"
             android:fontFamily="@font/homespun_regular"
             android:text="@string/marte"
+            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/btGlobo"
@@ -143,83 +147,25 @@
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@color/lucky_point"
+        android:layout_gravity="end">
+        <!--android:background="@color/gigas"
         app:headerLayout="@layout/header_layout"
         app:itemTextColor="@android:color/white"
         app:itemBackground="@drawable/rounded_rectangle"
         app:menu="@menu/lateral_menu"
         app:itemIconTint="@android:color/white"
-        app:itemIconSize="35dp"
+        app:itemIconSize="40dp"
         app:itemTextAppearance="@style/NavigationDrawer"
-        app:itemHorizontalPadding="50dp"/>
+        app:itemHorizontalPadding="50dp">-->
 
-        <!--<LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="60dp"
-                android:background="@drawable/rounded_rectangle"
-                android:drawableLeft="@drawable/ic_logo"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"
-                android:text="@string/background"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white" />
+            <include layout="@layout/header_layout" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:background="@drawable/rounded_rectangle"
-                android:drawableLeft="@drawable/ic_asteroide"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"
-                android:text="@string/asteroides_minusculo"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:background="@drawable/rounded_rectangle"
-                android:drawableLeft="@drawable/ic_globo"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"
-                android:text="@string/globo_minusculo"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:background="@drawable/rounded_rectangle"
-                android:drawableLeft="@drawable/ic_tecnologia"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"
-                android:text="@string/tecnologias_minusculo"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                style="@style/NavigationDrawer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:background="@drawable/rounded_rectangle"
-                android:drawableLeft="@drawable/ic_marte"
-                android:fontFamily="@font/roboto_light"
-                android:letterSpacing="0"
-                android:text="@string/marte_minusculo"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white" />
-        </LinearLayout>-->
-
+            <include layout="@layout/lateral_menu" />
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

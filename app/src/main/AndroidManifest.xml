@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".InitialActivity" />
+        <activity android:name=".UserConfigActivity"/>
     </application>
 
 </manifest>

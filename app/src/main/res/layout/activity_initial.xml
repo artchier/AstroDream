@@ -82,7 +82,7 @@
             android:id="@+id/btAsteriodes"
             android:layout_width="135dp"
             android:layout_height="110dp"
-            android:background="@drawable/ripple_rounded"
+            android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_asteroide"
             android:fontFamily="@font/homespun_regular"
             android:text="@string/asteroides"
@@ -98,7 +98,7 @@
             android:id="@+id/btGlobo"
             android:layout_width="135dp"
             android:layout_height="110dp"
-            android:background="@drawable/ripple_rounded"
+            android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_globo"
             android:fontFamily="@font/homespun_regular"
             android:text="@string/globo"
@@ -114,7 +114,7 @@
             android:id="@+id/btTecnologias"
             android:layout_width="135dp"
             android:layout_height="110dp"
-            android:background="@drawable/ripple_rounded"
+            android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_tecnologia"
             android:fontFamily="@font/homespun_regular"
             android:text="@string/tecnologias"
@@ -130,7 +130,7 @@
             android:id="@+id/btMarte"
             android:layout_width="135dp"
             android:layout_height="110dp"
-            android:background="@drawable/ripple_rounded"
+            android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_marte"
             android:fontFamily="@font/homespun_regular"
             android:text="@string/marte"
@@ -148,16 +148,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end">
-        <!--android:background="@color/gigas"
-        app:headerLayout="@layout/header_layout"
-        app:itemTextColor="@android:color/white"
-        app:itemBackground="@drawable/rounded_rectangle"
-        app:menu="@menu/lateral_menu"
-        app:itemIconTint="@android:color/white"
-        app:itemIconSize="40dp"
-        app:itemTextAppearance="@style/NavigationDrawer"
-        app:itemHorizontalPadding="50dp">-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -166,6 +156,7 @@
             <include layout="@layout/header_layout" />
 
             <include layout="@layout/lateral_menu" />
+
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

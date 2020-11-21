@@ -12,4 +12,7 @@
     <string name="google_sign_in">Logar com Google</string>
     <string name="facebook_sign_in">Logar com Facebook</string>
     <string name="or">ou</string>
+    <!-- SignIn Fragment -->
+    <string name="name">Nome</string>
+    <string name="confirm_password">Confirme a senha</string>
 </resources>

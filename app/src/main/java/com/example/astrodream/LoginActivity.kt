@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -16,10 +17,12 @@ class LoginActivity : AppCompatActivity() {
 
         btnLoginFrag.setOnClickListener {
             markButtonSelected(btnLoginFrag, btnSignInFrag)
+            callFragLogin()
         }
 
         btnSignInFrag.setOnClickListener {
             markButtonSelected(btnSignInFrag, btnLoginFrag)
+            callFragSignIn()
         }
     }
 
@@ -27,6 +30,17 @@ class LoginActivity : AppCompatActivity() {
         val fragLogin = LoginFragment.newInstance()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragLogin)
+            commit()
+        }
+    }
+
+    private fun callFragSignIn() {
+        val userEmail = findViewById<TextInputEditText>(R.id.tiEmail).text.toString()
+        val userPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+
+        val fragSignIn = SignInFragment.newInstance(userEmail, userPassword)
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment, fragSignIn)
             commit()
         }
     }

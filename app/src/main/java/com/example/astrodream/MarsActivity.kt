@@ -1,9 +1,12 @@
 package com.example.astrodream
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -59,6 +62,22 @@ class MarsActivity : AppCompatActivity() {
                 // Handle tab unselect
             }
         })
+
+        val colors: ColorStateList
+        colors = if (Build.VERSION.SDK_INT >= 23) {
+            resources.getColorStateList(R.color.tabs_selector, theme)
+        } else {
+            resources.getColorStateList(R.color.tabs_selector)
+        }
+
+        for (i in 0 until bottomTabs.getTabCount()) {
+            val tab: TabLayout.Tab = bottomTabs.getTabAt(i)!!
+            var icon = tab.icon
+            if (icon != null) {
+                icon = DrawableCompat.wrap(icon)
+                DrawableCompat.setTintList(icon, colors)
+            }
+        }
 
     }
 

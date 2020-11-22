@@ -92,13 +92,26 @@ class MarsActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    // Abre o drawer
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_lateral -> {
+                dlMars.openDrawer(GravityCompat.END)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     // Vai para a InitialActivity ao pressionar o botão de voltar
+    // ou fechar o drawer caso ele esteja aberto
     override fun onBackPressed() {
-        super.onBackPressed()
-        startActivity(Intent(this, InitialActivity::class.java))
+        if (dlMars.isDrawerOpen(GravityCompat.END))
+            dlMars.closeDrawer(GravityCompat.END)
+        else
+            startActivity(Intent(this, InitialActivity::class.java))
     }
 }

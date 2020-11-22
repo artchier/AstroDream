@@ -8,4 +8,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent_white">#669C9C9C</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="light_purple">#F0EBFF</color>
+    <color name="grape">#553B8E</color>
+    <color name="facebook_blue">#0080ff</color>
 </resources>

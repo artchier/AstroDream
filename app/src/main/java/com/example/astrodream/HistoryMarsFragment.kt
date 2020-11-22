@@ -41,6 +41,8 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
         val bundleRest: Bundle = Bundle().apply {
             putStringArrayList("marsPicsList", marsPost.img_list)
             putString("postDate", marsPost.earth_date)
+            putString("maxTemp", marsPost.maxTemp)
+            putString("minTemp", marsPost.minTemp)
         }
         findNavController().navigate(
             R.id.action_historyMarsFragment_to_recentMarsFragment,
@@ -57,7 +59,9 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/rcam/RLB_659123404EDR_F0832382RHAZ00311M_.JPG",
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/ncam/NLB_659124657EDR_F0832382NCAM00294M_.JPG",
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/ncam/NLB_659124625EDR_F0832382NCAM00294M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/ncam/NLB_659124442EDR_F0832382NCAM00294M_.JPG")
+                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/ncam/NLB_659124442EDR_F0832382NCAM00294M_.JPG"),
+            "Máxima: -11°C",
+            "Mínima: -93°C"
         )
         val mars2 = MarsPost(
             2,
@@ -66,7 +70,9 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/fcam/FLB_659019582EDR_F0831974FHAZ00337M_.JPG",
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/rcam/RLB_659019616EDR_F0831974RHAZ00337M_.JPG",
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/ncam/NRB_659022395EDR_S0831974NCAM00594M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/ncam/NRB_659022181EDR_S0831974NCAM00594M_.JPG")
+                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/ncam/NRB_659022181EDR_S0831974NCAM00594M_.JPG"),
+            "Máxima: -8°C",
+            "Mínima: -97°C"
         )
         val mars3 = MarsPost(
             3,
@@ -76,7 +82,9 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02945/opgs/edr/rcam/RRB_658949266EDR_F0831974RHAZ00337M_.JPG",
                 "https://mars.nasa.gov/msl-raw-images/msss/02945/mcam/2945MR0153690001301823E01_DXXX.jpg",
                 "https://mars.nasa.gov/msl-raw-images/msss/02945/mhli/2945MH0001630001004214R00_DXXX.jpg",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02945/opgs/edr/ncam/NRB_658916751EDR_M0831974NCAM00580M_.JPG")
+                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02945/opgs/edr/ncam/NRB_658916751EDR_M0831974NCAM00580M_.JPG"),
+            "Máxima: -9°C",
+            "Mínima: -96°C"
         )
         val mars4 = MarsPost(
             4,
@@ -87,7 +95,9 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ccam/CR0_658839819EDR_F0831974CCAM15120M_.JPG",
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ncam/NRB_658840499EDR_F0831974CCAM04942M_.JPG",
                 "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ncam/NRB_658842731EDR_S0831974NCAM00594M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ncam/NRB_658842679EDR_S0831974NCAM00594M_.JPG")
+                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ncam/NRB_658842679EDR_S0831974NCAM00594M_.JPG"),
+            "Temperaturas",
+            "indisponiveis"
         )
         return arrayListOf(mars1, mars2, mars3, mars4, mars1, mars2, mars3, mars4, mars1, mars2, mars3, mars4, mars1, mars2, mars3, mars4, mars1, mars2, mars3, mars4, mars1, mars2, mars3, mars4)
     }

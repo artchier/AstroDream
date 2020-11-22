@@ -13,10 +13,4 @@ class SpinoffsFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_spinoffs, container, false)
     }
-
-    companion object {
-        fun newInstance() {
-
-        }
-    }
 }

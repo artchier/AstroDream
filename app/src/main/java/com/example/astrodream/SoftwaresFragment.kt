@@ -13,10 +13,4 @@ class SoftwaresFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_softwares, container, false)
     }
-
-    companion object {
-        fun newInstance() {
-
-        }
-    }
 }

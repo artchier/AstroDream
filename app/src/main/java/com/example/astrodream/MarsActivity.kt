@@ -2,7 +2,6 @@ package com.example.astrodream
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,7 +13,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_initial.*
 import kotlinx.android.synthetic.main.activity_mars.*
 
 class MarsActivity : AppCompatActivity() {

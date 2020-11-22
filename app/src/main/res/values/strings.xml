@@ -40,5 +40,7 @@
     <string name="descricao_1">O AstroDream é o aplicativo que te conecta com as estrelas, o espaço, o universo, os astros e com a ciência. Se você é um amante dos mistérios do espaço, esse aplicativo é para você.</string>
     <string name="descricao_2">O aplicativo AstroDream fornece funcionalidades que disponibilizam informações e interações interessantes. Além de agregar conhecimento ao usuário, agrega uma experiência imersiva e divertida.</string>
     <string name="descricao_3">Nesse app você poderá explorar Marte, saberá sobre os asteróides que passam perto do nosso planeta, saberá sobre algumas tencologias incríveis desenvolvidas pela Nasa, verá imagens atualizadas da Terra e poderá alterar seu plano de fundo com imagens disponibilizadas pelo nosso app.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

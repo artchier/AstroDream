@@ -71,6 +71,7 @@ class RecentMarsFragment : Fragment() {
 
 
     // Imagens do dia 20/11/2020
+    // Depois será substituido pela requisição na API
     fun getMarsPics() = arrayListOf(
         "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/fcam/FLB_659123269EDR_F0832382FHAZ00302M_.JPG",
         "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/rcam/RLB_659123404EDR_F0832382RHAZ00311M_.JPG",

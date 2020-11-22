@@ -27,7 +27,10 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
         // Inflate the layout for this fragment
         val view:View = inflater.inflate(R.layout.fragment_history_mars, container, false)
 
+        // Atribui o adapter criado ao adapter do RecyclerView
         view.rvMarsHistory.adapter = adapterMarsHistory
+
+        // Cria o layout do RecyclerView com 3 itens por linha
         if (container != null) {
             view.rvMarsHistory.layoutManager = GridLayoutManager(container.context, 3)
         }
@@ -36,20 +39,27 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
         return view
     }
 
+    // Ao clicar em um post de determinado dia:
     override fun onClickMarsPost(position: Int) {
+        // Pega a posição do post clicado
         var marsPost = listMarsPosts.get(position)
+        // Cria um bundle com as informações do post para enviar para o fragment
+        // onde as imagens desse dia serão carregadas (RecentMarsFragment)
         val bundleRest: Bundle = Bundle().apply {
             putStringArrayList("marsPicsList", marsPost.img_list)
             putString("postDate", marsPost.earth_date)
             putString("maxTemp", marsPost.maxTemp)
             putString("minTemp", marsPost.minTemp)
         }
+        // Navega para o RecentMarsFragment com o bundle
         findNavController().navigate(
             R.id.action_historyMarsFragment_to_recentMarsFragment,
             bundleRest
         )
     }
 
+    // Posts criados na mão
+    // Depois será substituido pela requisição na API
     fun getMarsPosts() : ArrayList<MarsPost> {
         val mars1 = MarsPost(
             1,

@@ -25,5 +25,8 @@
         <action
             android:id="@+id/action_historyMarsFragment_to_recentMarsFragment"
             app:destination="@id/recentMarsFragment" />
+        <action
+            android:id="@+id/reload_historyMarsFragment"
+            app:destination="@id/historyMarsFragment" />
     </fragment>
 </navigation>

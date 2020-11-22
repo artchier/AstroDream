@@ -4,12 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.viewpager.widget.PagerAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.card_mars_post.view.*
 
-class MarsAdapter (private val context: Context, private val MarsPicsList: ArrayList<String>) : PagerAdapter() {
+class MarsAdapter (private val context: Context, private val MarsPicsList: ArrayList<String>, val postDate: String, val maxTemp: String, val minTemp: String) : PagerAdapter() {
 
     override fun getCount() = MarsPicsList.size
 
@@ -23,6 +22,9 @@ class MarsAdapter (private val context: Context, private val MarsPicsList: Array
         var marsPost = MarsPicsList.get(position)
 
         Picasso.get().load(marsPost).into(view.ivRecentMars)
+        view.tvMarsRecentDateEarth.text = postDate
+        view.tvMarsRecentMaxTemp.text = maxTemp
+        view.tvMarsRecentMinTemp.text = minTemp
 
         container.addView(view)
 

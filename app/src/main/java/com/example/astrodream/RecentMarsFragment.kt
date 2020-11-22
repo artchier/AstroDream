@@ -2,10 +2,10 @@ package com.example.astrodream
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import me.relex.circleindicator.CircleIndicator
 
@@ -23,27 +23,44 @@ class RecentMarsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        // Layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_recent_mars, container, false)
 
+        // Lista de imagens "mais recentes"
         marsPicsList = getMarsPics()
+
+        // Cria adapter com a lista de imagens
         if (container != null) {
-            adapterMars = MarsAdapter(container.getContext(), marsPicsList)
+            adapterMars = MarsAdapter(container.getContext(), marsPicsList, "20 de Novembro", "Máxima: -11°C", "Mínima: -93°C")
         }
 
+        // Atribui o adapter criado acima ao adapter do ViewPager
         view.vpMarsRecent.adapter = adapterMars
 
+        // Inclui o indicador de bolinhas
         val indicator = view.ciMarsRecent as CircleIndicator
         indicator.setViewPager(view.vpMarsRecent)
 
         try {
+            // Caso tenha dados no bundle, ou seja, o fragment foi carregado a partir do Historico,
+            // atualiza as imagens e textos de acordo com a informação do post clicado lá no Historico
             if (requireArguments() != null) {
                 if (container != null) {
-                    var listFromBundle: ArrayList<String> = requireArguments().getStringArrayList("marsPicsList") as ArrayList<String>
-                    adapterMars = MarsAdapter(container.getContext(), listFromBundle)
+                    // Salva dados do bundle em variaveis
+                    val listFromBundle: ArrayList<String> = requireArguments().getStringArrayList("marsPicsList") as ArrayList<String>
+                    val postDate = requireArguments().getString("postDate") as String
+                    // Acerta o texto acima da imagem para mostrar o dia do post
+                    view.postDescr.text = "Post do dia $postDate"
+                    // Cria o adapter com a informação do post clicado lá no Historico
+                    adapterMars = MarsAdapter(container.getContext(), listFromBundle, postDate, "", "")
+                    // Atribui o adapter criado acima ao adapter do ViewPager
+                    view.vpMarsRecent.adapter = adapterMars
+                    // Inclui o indicador de bolinhas
+                    val indicator = view.ciMarsRecent as CircleIndicator
+                    indicator.setViewPager(view.vpMarsRecent)
                 }
             }
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Log.e("RecentMarsFragment", e.toString())
         }
 

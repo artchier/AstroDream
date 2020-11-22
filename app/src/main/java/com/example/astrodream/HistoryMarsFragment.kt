@@ -40,6 +40,7 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
         var marsPost = listMarsPosts.get(position)
         val bundleRest: Bundle = Bundle().apply {
             putStringArrayList("marsPicsList", marsPost.img_list)
+            putString("postDate", marsPost.earth_date)
         }
         findNavController().navigate(
             R.id.action_historyMarsFragment_to_recentMarsFragment,

@@ -1,5 +1,6 @@
 package com.example.astrodream
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
@@ -31,18 +32,27 @@ class MarsActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> {
-                        // Checar se a tab atual é a Recente ou a Historico
-                        // Caso seja a Recente, ela abre a RecentMarsFragment novamente
-                        // Caso seja a Historico, ela faz o navigation para a Recente
-                        if (tab.position == 0) findNavController(R.id.navHostfragMars).navigate(R.id.reload_recentMarsFragment)
-                        else findNavController(R.id.navHostfragMars).navigate(R.id.action_historyMarsFragment_to_recentMarsFragment)
+                        try {
+                            findNavController(R.id.navHostfragMars).navigate(R.id.action_historyMarsFragment_to_recentMarsFragment)
+                        } catch (e:Exception) {
+                            findNavController(R.id.navHostfragMars).navigate(R.id.reload_recentMarsFragment)
+                        }
                     }
                     1 -> findNavController(R.id.navHostfragMars).navigate(R.id.action_recentMarsFragment_to_historyMarsFragment)
                 }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                // Handle tab reselect
+                when (tab?.position) {
+                    0 -> findNavController(R.id.navHostfragMars).navigate(R.id.reload_recentMarsFragment)
+                    1 -> {
+                        try {
+                            findNavController(R.id.navHostfragMars).navigate(R.id.action_recentMarsFragment_to_historyMarsFragment)
+                        } catch (e:Exception) {
+                            findNavController(R.id.navHostfragMars).navigate(R.id.reload_historyMarsFragment)
+                        }
+                    }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -59,5 +69,10 @@ class MarsActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, InitialActivity::class.java))
     }
 }

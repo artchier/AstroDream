@@ -86,10 +86,25 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         //  apenas abrindo o mesmo "favorito" independente de qual é escolhido da lista
         when (fav.type) {
             "today" -> {
+                val bundleRest: Bundle = Bundle().apply {
+                    putString("title", fav.descrip1)
+                    putString("date", fav.descrip2)
+                    putString("img", fav.img)
+                }
+                findNavController().navigate(
+                    R.id.action_favRecyclerFragment_to_favTodayFragment,
+                    bundleRest)
             }
             "asteroid" -> {
             }
             "globe" -> {
+                val bundleRest: Bundle = Bundle().apply {
+                    putString("date", fav.descrip1)
+                    putString("img", fav.img)
+                }
+                findNavController().navigate(
+                    R.id.action_favRecyclerFragment_to_favGlobeFragment,
+                    bundleRest)
             }
             "tech" -> {
             }
@@ -104,7 +119,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                             "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/ncam/NLB_659124442EDR_F0832382NCAM00294M_.JPG"
                         )
                     )
-                    putString("postDate", "20 de novembro")
+                    putString("postDate", fav.descrip2)
                     putString("maxTemp", "Máxima: -11°C")
                     putString("minTemp", "Mínima: -93°C")
                 }

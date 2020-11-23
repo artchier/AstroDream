@@ -49,7 +49,7 @@ class FavoritesActivity : AppCompatActivity() {
         navController = findNavController(R.id.navHostfragFavs) // Container dos fragments
         appBarConfiguration = AppBarConfiguration(navController.graph) // Pega o graph do controller
         val navOptions = NavOptions.Builder()
-            .setLaunchSingleTop(true)
+            //.setLaunchSingleTop(true)
             .setPopUpTo(navController.getGraph().getStartDestination(), false)
             .build()
 
@@ -232,14 +232,25 @@ class FavoritesActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    // Vai para a InitialActivity ao pressionar o botão de voltar
-    // ou fechar o drawer caso ele esteja aberto
+    // Ao pressionar o botão de voltar:
+    //      Fecha o drawer caso ele esteja aberto
+    //      Ou vai para a InitialActivity caso estejamos na tab inicial
+    //      Ou fecha o fragment "foco" e volta pro recycler
+    //      Ou vai para a tab inicial, se ela já não for a ativa
     override fun onBackPressed() {
         if (dlFavs.isDrawerOpen(GravityCompat.END))
             dlFavs.closeDrawer(GravityCompat.END)
-        else {
-            if (bottomTabs.selectedTabPosition == 0) startActivity(Intent(this, InitialActivity::class.java))
-            else bottomTabs.getTabAt(0)?.select()
-        }
+
+        val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
+        val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
+
+        if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment)
+            startActivity(Intent(this, InitialActivity::class.java))
+
+        if (currFrag != R.id.favRecyclerFragment)
+            navController.navigateUp(appBarConfiguration)
+
+        if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment)
+            bottomTabs.getTabAt(0)?.select()
     }
 }

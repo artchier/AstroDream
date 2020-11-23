@@ -16,10 +16,26 @@
         <action
             android:id="@+id/action_favRecyclerFragment_to_recentMarsFragment2"
             app:destination="@id/recentMarsFragment2" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_favTodayFragment"
+            app:destination="@id/favTodayFragment" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_favGlobeFragment"
+            app:destination="@id/favGlobeFragment" />
     </fragment>
     <fragment
         android:id="@+id/recentMarsFragment2"
         android:name="com.example.astrodream.RecentMarsFragment"
         android:label="fragment_recent_mars"
         tools:layout="@layout/fragment_recent_mars" />
+    <fragment
+        android:id="@+id/favTodayFragment"
+        android:name="com.example.astrodream.favorites.FavTodayFragment"
+        android:label="fragment_fav_today"
+        tools:layout="@layout/fragment_fav_today" />
+    <fragment
+        android:id="@+id/favGlobeFragment"
+        android:name="com.example.astrodream.favorites.FavGlobeFragment"
+        android:label="fragment_fav_globe"
+        tools:layout="@layout/fragment_fav_globe" />
 </navigation>

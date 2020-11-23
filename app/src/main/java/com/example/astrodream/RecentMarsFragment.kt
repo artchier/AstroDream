@@ -52,7 +52,7 @@ class RecentMarsFragment : Fragment() {
                     val maxTemp = requireArguments().getString("maxTemp") as String
                     val minTemp = requireArguments().getString("minTemp") as String
                     // Acerta o texto acima da imagem para mostrar o dia do post
-                    view.postDescr.text = "Post do dia $postDate"
+                    view.postDescr.text = "$postDate"
                     // Cria o adapter com a informação do post clicado lá no Historico
                     adapterMars = MarsAdapter(container.getContext(), listFromBundle, postDate, maxTemp, minTemp)
                     // Atribui o adapter criado acima ao adapter do ViewPager

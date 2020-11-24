@@ -51,19 +51,19 @@
 
         <include
             android:id="@+id/btn_asteroids_proximos"
-            layout="@layout/fragment_button_asteroid"/>
+            layout="@layout/btn_asteroids"/>
 
         <include
             android:id="@+id/btn_asteroids_name"
-            layout="@layout/fragment_button_asteroid"/>
+            layout="@layout/btn_asteroids"/>
 
         <include
             android:id="@+id/btn_asteroids_date"
-            layout="@layout/fragment_button_asteroid"/>
+            layout="@layout/btn_asteroids"/>
 
         <include
             android:id="@+id/btn_asteroids_dangerous"
-            layout="@layout/fragment_button_asteroid"/>
+            layout="@layout/btn_asteroids"/>
 
     </LinearLayout>
 

@@ -3,13 +3,9 @@ package com.example.astrodream
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.domain.Asteroids
 import com.example.astrodream.domain.AsteroidsAdapter
 import kotlinx.android.synthetic.main.activity_asteroid.*
-import kotlinx.android.synthetic.main.fragment_button_asteroid.view.*
-import kotlinx.android.synthetic.main.fragment_listar_asteroides_proximos.*
-import kotlinx.android.synthetic.main.fragment_listar_asteroides_proximos.view.*
 
 class AsteroidActivity : AppCompatActivity(), AsteroidsAdapter.OnClickAsteroidsListener {
     val adapter = AsteroidsAdapter(this, getAsteroids())

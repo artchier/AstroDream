@@ -1,5 +1,6 @@
 package com.example.astrodream
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -31,6 +32,10 @@ class InitialActivity : AppCompatActivity() {
                 )
                 .setView(R.layout.astrodialog)
                 .show()
+        }
+
+        btAsteriodes.setOnClickListener {
+            startActivity(Intent(this, AsteroidActivity::class.java))
         }
     }
 

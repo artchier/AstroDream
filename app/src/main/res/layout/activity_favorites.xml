@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/homespun_regular"
-                android:text="Favoritos"
+                android:text="@string/favoritos"
                 android:textColor="@android:color/white"
                 android:textSize="35sp" />
         </com.google.android.material.appbar.MaterialToolbar>
@@ -60,7 +60,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constrainedHeight="true"
                 app:layout_constraintHeight_default="spread"
-                app:layout_constraintBottom_toTopOf="@+id/bottomTabs"/> 
+                app:layout_constraintBottom_toTopOf="@+id/bottomTabs"
+                tools:ignore="FragmentTagUsage" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/bottomTabs"
@@ -79,27 +80,6 @@
                 app:tabIndicatorGravity="top"
                 app:tabMode="fixed"
                 app:tabTextAppearance="@style/textCapsOff">
-
-<!--                <com.google.android.material.tabs.TabItem-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:icon="@drawable/ic_background" />-->
-<!--                <com.google.android.material.tabs.TabItem-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:icon="@drawable/ic_asteroide" />-->
-<!--                <com.google.android.material.tabs.TabItem-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:icon="@drawable/ic_globo" />-->
-<!--                <com.google.android.material.tabs.TabItem-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:icon="@drawable/ic_tecnologia" />-->
-<!--                <com.google.android.material.tabs.TabItem-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:icon="@drawable/ic_marte" />-->
 
             </com.google.android.material.tabs.TabLayout>
 
@@ -124,6 +104,5 @@
 
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

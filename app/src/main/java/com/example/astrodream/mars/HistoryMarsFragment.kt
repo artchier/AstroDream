@@ -13,11 +13,7 @@ import kotlinx.android.synthetic.main.fragment_history_mars.view.*
 class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListener {
 
     var listMarsPosts = getMarsPosts()
-    val adapterMarsHistory = MarsHistoryAdapter(listMarsPosts, this)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val adapterMarsHistory = MarsHistoryAdapter(listMarsPosts, this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +36,8 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
 
     // Ao clicar em um post de determinado dia:
     override fun onClickMarsPost(position: Int) {
-        // Pega a posição do post clicado
-        var marsPost = listMarsPosts.get(position)
+        // Pega o post clicado
+        val marsPost = listMarsPosts[position]
         // Cria um bundle com as informações do post para enviar para o fragment
         // onde as imagens desse dia serão carregadas (RecentMarsFragment)
         val bundleRest: Bundle = Bundle().apply {
@@ -59,7 +55,7 @@ class HistoryMarsFragment : Fragment(), MarsHistoryAdapter.OnClickMarsPostListen
 
     // Posts criados na mão
     // Depois será substituido pela requisição na API
-    fun getMarsPosts() : ArrayList<MarsPost> {
+    private fun getMarsPosts() : ArrayList<MarsPost> {
         val mars1 = MarsPost(
             1,
             "20 de Novembro",

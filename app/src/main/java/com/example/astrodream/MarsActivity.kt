@@ -50,7 +50,7 @@ class MarsActivity : AppCompatActivity() {
         }
 
         // Clique do botão "Favoritos"
-        btnFavoritos.setOnClickListener{
+        btnFavoritos.setOnClickListener {
             startActivity(Intent(this, FavoritesActivity::class.java))
         }
 
@@ -88,17 +88,14 @@ class MarsActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // Handle tab unselect
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
 
 
         // Alteração da cor dos icones dos tabs inferiores (selecionado ou não)
-        val colors: ColorStateList
-        colors = resources.getColorStateList(R.color.tabs_selector, theme)
+        val colors: ColorStateList = resources.getColorStateList(R.color.tabs_selector, theme)
 
-        for (i in 0 until bottomTabs.getTabCount()) {
+        for (i in 0 until bottomTabs.tabCount) {
             val tab: TabLayout.Tab = bottomTabs.getTabAt(i)!!
             var icon = tab.icon
             if (icon != null) {
@@ -117,10 +114,8 @@ class MarsActivity : AppCompatActivity() {
 
     // Abre o drawer
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_lateral -> {
-                dlMars.openDrawer(GravityCompat.END)
-            }
+        if (item.itemId == R.id.menu_lateral) {
+            dlMars.openDrawer(GravityCompat.END)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -135,19 +130,23 @@ class MarsActivity : AppCompatActivity() {
     //      Ou fecha o fragment "foco" e volta pro recycler
     //      Ou vai para a tab inicial, se ela já não for a ativa
     override fun onBackPressed() {
-        if (dlMars.isDrawerOpen(GravityCompat.END))
+        if (dlMars.isDrawerOpen(GravityCompat.END)) {
             dlMars.closeDrawer(GravityCompat.END)
+        }
 
         val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragMars)
         val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
 
-        if (bottomTabs.selectedTabPosition == 0)
+        if (bottomTabs.selectedTabPosition == 0) {
             startActivity(Intent(this, InitialActivity::class.java))
+        }
 
-        if (bottomTabs.selectedTabPosition != 0 && currFrag != R.id.historyMarsFragment)
+        if (bottomTabs.selectedTabPosition != 0 && currFrag != R.id.historyMarsFragment) {
             navController.navigateUp(appBarConfiguration)
+        }
 
-        if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.historyMarsFragment)
+        if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.historyMarsFragment) {
             bottomTabs.getTabAt(0)?.select()
+        }
     }
 }

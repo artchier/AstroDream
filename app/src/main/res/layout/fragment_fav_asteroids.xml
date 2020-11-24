@@ -23,22 +23,26 @@
             android:gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp">
+
             <ImageView
                 android:id="@+id/asteroidIcon"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_asteroide"/>
+                android:src="@drawable/ic_asteroide"
+                android:contentDescription="@string/icone_asteroide" />
+
             <TextView
                 android:id="@+id/tvAsteroidName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Nome"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:fontFamily="@font/roboto"
                 android:textStyle="bold"
-                android:layout_marginLeft="15dp"
-                android:gravity="center_vertical"/>
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
@@ -49,11 +53,14 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="10dp"
             app:cardCornerRadius="20dp">
+
             <ImageView
                 android:id="@+id/ivAsteroid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/foto_do_asteroide" />
+
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -62,7 +69,7 @@
             android:layout_height="160dp"
             android:text="Data"
             android:textColor="@color/white"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:fontFamily="@font/roboto_light"
             android:padding="20dp"
             android:layout_margin="10dp"
@@ -70,7 +77,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/pill_shape"
             android:backgroundTint="@color/lucky_point"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            tools:ignore="HardcodedText" />
 
 
         <LinearLayout
@@ -91,7 +99,9 @@
                 android:scaleType="fitCenter"
                 android:background="@null"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/favoritar" />
+
             </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

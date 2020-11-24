@@ -19,14 +19,15 @@
             android:layout_height="wrap_content"
             android:text="Dia"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:fontFamily="@font/roboto"
             android:textStyle="bold"
             android:layout_marginTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/ivGlobe"
@@ -34,7 +35,8 @@
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/tvGlobeDate"
             app:layout_constraintBottom_toTopOf="@+id/llGlobeFooter"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="@string/imagem_globo" />
 
         <LinearLayout
             android:id="@+id/llGlobeFooter"
@@ -54,7 +56,8 @@
                 android:scaleType="fitCenter"
                 android:background="@null"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/favoritar" />
 
         </LinearLayout>
 

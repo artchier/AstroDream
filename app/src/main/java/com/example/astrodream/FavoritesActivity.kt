@@ -49,8 +49,7 @@ class FavoritesActivity : AppCompatActivity() {
         navController = findNavController(R.id.navHostfragFavs) // Container dos fragments
         appBarConfiguration = AppBarConfiguration(navController.graph) // Pega o graph do controller
         val navOptions = NavOptions.Builder()
-            //.setLaunchSingleTop(true)
-            .setPopUpTo(navController.getGraph().getStartDestination(), false)
+            .setPopUpTo(navController.graph.startDestination, false)
             .build()
 
         // Navegação entre os tabs inferiores
@@ -175,9 +174,7 @@ class FavoritesActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // Handle tab unselect
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
 
         // Configurações da tab inferior
@@ -191,23 +188,18 @@ class FavoritesActivity : AppCompatActivity() {
             R.drawable.ic_tecnologia,
             R.drawable.ic_marte
         )
-        val colors: ColorStateList
-        colors = resources.getColorStateList(R.color.tabs_selector, theme)
+        val colors: ColorStateList = resources.getColorStateList(R.color.tabs_selector, theme)
 
         for (i in 0 until tabIcons.size) {
-            val view: View = layoutInflater.inflate(R.layout.tabs,null)
             Log.i("XXX", tabIcons.toString())
-            //view.findViewById(R.id.icon).setBackgroundResource(tabIcons[i])
             bottomTabs.addTab(bottomTabs.newTab())
             val tab: TabLayout.Tab = bottomTabs.getTabAt(i)!!
-            //tab.setCustomView(R.layout.tabs)
             tab.setIcon(tabIcons[i])
             var icon = tab.icon
-            if (tab != null && icon != null) {
+            if (icon != null) {
                 icon = DrawableCompat.wrap(icon)
                 DrawableCompat.setTintList(icon, colors)
             }
-
         }
 
     }
@@ -220,10 +212,8 @@ class FavoritesActivity : AppCompatActivity() {
 
     // Abre o drawer
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_lateral -> {
-                dlFavs.openDrawer(GravityCompat.END)
-            }
+        if (item.itemId == R.id.menu_lateral) {
+            dlFavs.openDrawer(GravityCompat.END)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -238,19 +228,23 @@ class FavoritesActivity : AppCompatActivity() {
     //      Ou fecha o fragment "foco" e volta pro recycler
     //      Ou vai para a tab inicial, se ela já não for a ativa
     override fun onBackPressed() {
-        if (dlFavs.isDrawerOpen(GravityCompat.END))
+        if (dlFavs.isDrawerOpen(GravityCompat.END)) {
             dlFavs.closeDrawer(GravityCompat.END)
+        }
 
         val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
         val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
 
-        if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment)
+        if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment) {
             startActivity(Intent(this, InitialActivity::class.java))
+        }
 
-        if (currFrag != R.id.favRecyclerFragment)
+        if (currFrag != R.id.favRecyclerFragment) {
             navController.navigateUp(appBarConfiguration)
+        }
 
-        if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment)
+        if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment) {
             bottomTabs.getTabAt(0)?.select()
+        }
     }
 }

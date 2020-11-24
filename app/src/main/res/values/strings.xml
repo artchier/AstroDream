@@ -59,4 +59,11 @@
     <string name="ok">Ok</string>
     <string name="selecionar_data">Selecionar data</string>
 
+    <string name="explorar_tecnologias">Explorar tecnologias</string>
+    <string name="listar_patentes">Listar patentes</string>
+    <string name="listar_softwares">Listar softwares</string>
+    <string name="listar_spinoffs">Listar spinoffs</string>
+    <string name="explorar_patentes">Explorar patentes</string>
+    <string name="explorar_softwares">Explorar softwares</string>
+    <string name="explorar_spinoffs">Explorar spinoffs</string>
 </resources>

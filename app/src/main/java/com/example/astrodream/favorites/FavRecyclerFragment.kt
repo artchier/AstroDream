@@ -13,16 +13,12 @@ import kotlinx.android.synthetic.main.fragment_fav_recycler.view.*
 
 class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
 
-    var listFavs = dummyFavData("today")
-    var adapterFav = FavAdapter(listFavs, this)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private var listFavs = dummyFavData("today")
+    private var adapterFav = FavAdapter(listFavs, this)
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -40,25 +36,21 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         try {
             // Caso tenha dados no bundle, ou seja, o fragment foi carregado a partir da seleção de uma tab,
             // popula o RecyclerView com os items corretos
-            if (requireArguments() != null) {
-                if (container != null) {
-                    Log.i("XXXXX", "oie!")
-                    // Salva dados do bundle em variaveis
-                    val type = requireArguments().getString("type") as String
-                    // Atualiza a lista de itens favoritos
-                    listFavs = dummyFavData(type)
-                    // Atualiza o adapter de acordo com a tab selecionada
-                    adapterFav = FavAdapter(listFavs, this)
-                    // Atribui o adapter criado acima ao adapter do RecyclerView
-                    view.rvFav.adapter = adapterFav
-                    // Cria o layout do RecyclerView
-                    if (container != null) {
-                        view.rvFav.layoutManager = LinearLayoutManager(container.context)
-                    }
-                    view.rvFav.setHasFixedSize(true)
-                }
+            if (container != null) {
+                Log.i("XXXXX", "oie!")
+                // Salva dados do bundle em variaveis
+                val type = requireArguments().getString("type") as String
+                // Atualiza a lista de itens favoritos
+                listFavs = dummyFavData(type)
+                // Atualiza o adapter de acordo com a tab selecionada
+                adapterFav = FavAdapter(listFavs, this)
+                // Atribui o adapter criado acima ao adapter do RecyclerView
+                view.rvFav.adapter = adapterFav
+                // Cria o layout do RecyclerView
+                view.rvFav.layoutManager = LinearLayoutManager(container.context)
+                view.rvFav.setHasFixedSize(true)
             }
-        } catch (e: Exception) {
+        } catch (e: IllegalStateException) {
             Log.e("FavRecyclerFragment", e.toString())
         }
 
@@ -68,7 +60,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
     override fun onClickFav(position: Int) {
 
         // Pega a posição do favorito clicado
-        var fav = listFavs.get(position)
+        val fav = listFavs[position]
 
         // Cria um bundle com as informações do favorito
         // e navega para o respectivo fragment
@@ -84,17 +76,25 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                 }
                 findNavController().navigate(
                     R.id.action_favRecyclerFragment_to_favTodayFragment,
-                    bundleRest)
+                    bundleRest
+                )
             }
             "asteroid" -> {
                 val bundleRest: Bundle = Bundle().apply {
                     putString("name", "1979 XB")
-                    putString("data", "Classificação: Apollo [ NEO, PHA ]\nAproximação do sol: 29/01/1980\nAproximação da terra:  17/12/1979\nDistância mínima da terra: 9.29 LD\nMagnitude Absoluta: 18,6\nVelocidade: 23 km/s")
-                    putString("img", "https://s.yimg.com/ny/api/res/1.2/3P2Yc9yGrc99m.i3sSXWwA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https://media.zenfs.com/pt-br/canal_tech_990/800089564cde284dc55f155406c8e54e")
+                    putString(
+                        "data",
+                        "Classificação: Apollo [ NEO, PHA ]\nAproximação do sol: 29/01/1980\nAproximação da terra:  17/12/1979\nDistância mínima da terra: 9.29 LD\nMagnitude Absoluta: 18,6\nVelocidade: 23 km/s"
+                    )
+                    putString(
+                        "img",
+                        "https://s.yimg.com/ny/api/res/1.2/3P2Yc9yGrc99m.i3sSXWwA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https://media.zenfs.com/pt-br/canal_tech_990/800089564cde284dc55f155406c8e54e"
+                    )
                 }
                 findNavController().navigate(
                     R.id.action_favRecyclerFragment_to_favAsteroidsFragment,
-                    bundleRest)
+                    bundleRest
+                )
             }
             "globe" -> {
                 val bundleRest: Bundle = Bundle().apply {
@@ -103,18 +103,23 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                 }
                 findNavController().navigate(
                     R.id.action_favRecyclerFragment_to_favGlobeFragment,
-                    bundleRest)
+                    bundleRest
+                )
             }
             "tech" -> {
                 val bundleRest: Bundle = Bundle().apply {
                     putString("typeTech", fav.descrip1)
                     putString("title", fav.descrip2)
                     putString("img", fav.img)
-                    putString("details", "Os inovadores do Glenn Research Center da NASA desenvolveram um novo meio de evitar e mitigar eventos de congelamento em aeronaves voando acima de 14.000 pés, melhorando drasticamente a segurança da aviação e reduzindo os custos operacionais. Freqüentemente indetectáveis \u200B\u200Bcom o radar atual, os cristais de gelo em células de tempestade convectivas podem produzir um fenômeno conhecido como Ice Crystal Icing, no qual o gelo se acumula, ou se acumula, em motores turbofan. O acúmulo de cristais de gelo pode causar sérios problemas operacionais e, às vezes, até mesmo falhas catastróficas do motor. Usando uma combinação de sensores, modelagem do sistema do motor e código de análise de fluxo do compressor, a inovação de Glenn realiza análises em tempo real para determinar o potencial de acúmulo de gelo. Esta análise permite que os pilotos evitem a formação de gelo potencial enquanto usam uma rota mais direta do que seria possível. Assim, o sistema de Glenn reduz o consumo de combustível e o desgaste do motor, cumprindo o objetivo crucial de aumentar a segurança da aeronave.")
+                    putString(
+                        "details",
+                        "Os inovadores do Glenn Research Center da NASA desenvolveram um novo meio de evitar e mitigar eventos de congelamento em aeronaves voando acima de 14.000 pés, melhorando drasticamente a segurança da aviação e reduzindo os custos operacionais. Freqüentemente indetectáveis \u200B\u200Bcom o radar atual, os cristais de gelo em células de tempestade convectivas podem produzir um fenômeno conhecido como Ice Crystal Icing, no qual o gelo se acumula, ou se acumula, em motores turbofan. O acúmulo de cristais de gelo pode causar sérios problemas operacionais e, às vezes, até mesmo falhas catastróficas do motor. Usando uma combinação de sensores, modelagem do sistema do motor e código de análise de fluxo do compressor, a inovação de Glenn realiza análises em tempo real para determinar o potencial de acúmulo de gelo. Esta análise permite que os pilotos evitem a formação de gelo potencial enquanto usam uma rota mais direta do que seria possível. Assim, o sistema de Glenn reduz o consumo de combustível e o desgaste do motor, cumprindo o objetivo crucial de aumentar a segurança da aeronave."
+                    )
                 }
                 findNavController().navigate(
                     R.id.action_favRecyclerFragment_to_favTechFragment,
-                    bundleRest)
+                    bundleRest
+                )
             }
             "mars" -> {
                 val bundleRest: Bundle = Bundle().apply {
@@ -133,13 +138,14 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                 }
                 findNavController().navigate(
                     R.id.action_favRecyclerFragment_to_recentMarsFragment2,
-                    bundleRest)
+                    bundleRest
+                )
             }
         }
 
     }
 
-    fun dummyFavData(type: String): ArrayList<Fav> {
+    private fun dummyFavData(type: String): ArrayList<Fav> {
         when (type) {
             "today" -> {
                 return arrayListOf(
@@ -314,6 +320,5 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         }
         return arrayListOf()
     }
-
 
 }

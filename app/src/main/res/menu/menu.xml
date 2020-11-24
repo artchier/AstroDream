@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_lateral"
         android:title="@null"
         android:icon="@drawable/ic_logo"
         app:showAsAction="always"/>

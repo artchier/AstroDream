@@ -3,8 +3,6 @@ package com.example.astrodream
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
-import kotlinx.android.synthetic.main.activity_initial.*
 import kotlinx.android.synthetic.main.activity_user_config.*
 
 class UserConfigActivity : AppCompatActivity() {

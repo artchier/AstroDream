@@ -39,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:textSize="20sp"
-                android:background="@drawable/round_input"/>
+                android:background="@drawable/pill_shape"
+                android:backgroundTint="@color/light_purple"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- ===================================== -->
@@ -65,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:textSize="20sp"
-                android:background="@drawable/round_input"/>
+                android:background="@drawable/pill_shape"
+                android:backgroundTint="@color/light_purple"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- ===================================== -->
@@ -91,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:textSize="20sp"
-                android:background="@drawable/round_input"/>
+                android:background="@drawable/pill_shape"
+                android:backgroundTint="@color/light_purple"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- ===================================== -->
@@ -109,7 +112,7 @@
         android:layout_marginEnd="15dp"
         android:text="@string/alterar"
         android:textSize="25sp"
-        android:background="@drawable/round_button"
+        android:background="@drawable/pill_shape"
         app:layout_constraintTop_toBottomOf="@id/llInputsText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

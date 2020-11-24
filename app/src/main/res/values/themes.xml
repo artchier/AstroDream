@@ -32,4 +32,13 @@
         <item name="android:textSize">18dp</item>
         <item name="android:fontFamily">@font/roboto</item>
     </style>
+
+    <style name="textAsteroid">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
 </resources>

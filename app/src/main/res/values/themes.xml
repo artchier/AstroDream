@@ -25,4 +25,9 @@
         <item name="android:fontFamily">@font/roboto_light</item>
         <item name="android:textSize">15sp</item>
     </style>
+
+    <style name="DatePicker">
+        <item name="colorAccent">@color/gigas</item>
+        <item name="android:datePickerMode">calendar</item>
+    </style>
 </resources>

@@ -158,5 +158,7 @@
             <include layout="@layout/lateral_menu" />
 
         </LinearLayout>
+
     </com.google.android.material.navigation.NavigationView>
+
 </androidx.drawerlayout.widget.DrawerLayout>

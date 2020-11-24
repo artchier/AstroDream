@@ -14,9 +14,9 @@ class PatentsAdapter(private val listPatents: ArrayList<Patent>) : RecyclerView.
     }
 
     override fun onBindViewHolder(holder: PatentViewHolder, position: Int) {
-        var patent = listPatents[position]
-        holder.ivPatent.setImageResource(patent.img)
-        holder.tvCodReference.text = patent.codReference
+        val patent = listPatents[position]
+        holder.ivPatent.setImageResource(patent.imgPatent)
+        holder.tvCodReferencePatent.text = patent.codReferencePatent
         holder.tvTitlePatent.text = patent.titlePatent
     }
 
@@ -24,7 +24,7 @@ class PatentsAdapter(private val listPatents: ArrayList<Patent>) : RecyclerView.
 
     class PatentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var ivPatent: ImageView = itemView.findViewById(R.id.ivPatent)
-        var tvCodReference: TextView = itemView.findViewById(R.id.tvCodReference)
+        var tvCodReferencePatent: TextView = itemView.findViewById(R.id.tvCodReferencePatent)
         var tvTitlePatent: TextView = itemView.findViewById(R.id.tvTitlePatent)
     }
 }

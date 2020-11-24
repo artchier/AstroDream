@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SoftwaresFragment">
 
     <LinearLayout
-        android:id="@+id/llPatents"
+        android:id="@+id/llSoftwares"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -19,5 +20,12 @@
             android:text="@string/explorar_softwares"
             android:textSize="20sp"
             android:textColor="@color/white"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSoftwares"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_software"/>
     </LinearLayout>
 </FrameLayout>

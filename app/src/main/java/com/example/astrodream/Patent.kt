@@ -1,3 +1,3 @@
 package com.example.astrodream
 
-class Patent(val id: Int, var img: Int, var codReference: String, var titlePatent: String)
+data class Patent(val idPatent: Int, var imgPatent: Int, var codReferencePatent: String, var titlePatent: String)

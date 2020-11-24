@@ -30,10 +30,16 @@ class AsteroidOrbitFragment : Fragment() {
             // Pega dados do bundle e atualiza a imagem e textos de acordo com o asteroide clicado
             if (requireArguments() != null) {
                 if (container != null) {
+                    // TODO: incluir todos os dados que serão passados pelo bundle
                     // Salva dados do bundle em variaveis
                     val name = requireArguments().getString("name") as String
                     val data = requireArguments().getString("data") as String
                     val img = "https://s.yimg.com/ny/api/res/1.2/3P2Yc9yGrc99m.i3sSXWwA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https://media.zenfs.com/pt-br/canal_tech_990/800089564cde284dc55f155406c8e54e"
+                    val classification = "Apollo [ NEO, PHA ]" //requireArguments().getString("classification") as String
+                    val dateSun = "29/01/1980" //requireArguments().getString("dateSun") as String
+                    val dist = "9,29" //requireArguments().getString("dist") as String
+                    val mag = "18,6" //requireArguments().getString("mag") as String
+                    val speed = "23" //requireArguments().getString("speed") as String
                     // Acerta o nome
                     view.tvAsteroidName.text = "Asteroide ($name)"
                     // Acerta a imagem
@@ -41,12 +47,12 @@ class AsteroidOrbitFragment : Fragment() {
                         .load(img)
                         .into(view.ivAsteroid)
                     // Acerta os dados
-                    view.tvAsteroidClass.text = "Classificação: Apollo [ NEO, PHA ]"
-                    view.tvAsteroidProxSun.text = "Aproximação do sol: 29/01/1980"
+                    view.tvAsteroidClass.text = "Classificação: $classification"
+                    view.tvAsteroidProxSun.text = "Aproximação do sol: $dateSun"
                     view.tvAsteroidProxEarth.text = "Aproximação da terra: $data"
-                    view.tvAsteroidDistEarth.text = "Distância mínima da terra: 9.29 LD"
-                    view.tvAsteroidMag.text = "Magnitude Absoluta: 18,6"
-                    view.tvAsteroidSpeed.text = "Velocidade: 23 km/s"
+                    view.tvAsteroidDistEarth.text = "Distância mínima da terra: $dist LD"
+                    view.tvAsteroidMag.text = "Magnitude Absoluta: $mag"
+                    view.tvAsteroidSpeed.text = "Velocidade: $speed km/s"
                 }
             }
         } catch (e: Exception) {

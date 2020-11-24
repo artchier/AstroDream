@@ -22,6 +22,12 @@
         <action
             android:id="@+id/action_favRecyclerFragment_to_favGlobeFragment"
             app:destination="@id/favGlobeFragment" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_favTechFragment"
+            app:destination="@id/favTechFragment" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_favAsteroidsFragment"
+            app:destination="@id/favAsteroidsFragment" />
     </fragment>
     <fragment
         android:id="@+id/recentMarsFragment2"
@@ -38,4 +44,14 @@
         android:name="com.example.astrodream.favorites.FavGlobeFragment"
         android:label="fragment_fav_globe"
         tools:layout="@layout/fragment_fav_globe" />
+    <fragment
+        android:id="@+id/favTechFragment"
+        android:name="com.example.astrodream.favorites.FavTechFragment"
+        android:label="fragment_fav_tech"
+        tools:layout="@layout/fragment_fav_tech" />
+    <fragment
+        android:id="@+id/favAsteroidsFragment"
+        android:name="com.example.astrodream.favorites.FavAsteroidsFragment"
+        android:label="fragment_fav_asteroids"
+        tools:layout="@layout/fragment_fav_asteroids" />
 </navigation>

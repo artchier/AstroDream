@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/round_top"
     android:backgroundTint="@color/gigas"
-    tools:context=".favorites.FavRecyclerTodayFragment"
+    tools:context=".favorites.FavRecyclerFragment"
     android:paddingTop="30dp"
     android:paddingBottom="20dp">
 

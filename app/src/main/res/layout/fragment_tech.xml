@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".TechFragment">
 
     <LinearLayout
@@ -27,6 +28,7 @@
             android:layout_marginBottom="20dp"
             android:text="@string/listar_patentes"
             android:textSize="20sp"
+            android:textAllCaps="false"
             android:background="@drawable/round_button" />
 
         <com.google.android.material.button.MaterialButton
@@ -36,6 +38,7 @@
             android:layout_marginBottom="20dp"
             android:text="@string/listar_softwares"
             android:textSize="20sp"
+            android:textAllCaps="false"
             android:background="@drawable/round_button" />
 
         <com.google.android.material.button.MaterialButton
@@ -44,6 +47,7 @@
             android:layout_height="wrap_content"
             android:text="@string/listar_spinoffs"
             android:textSize="20sp"
+            android:textAllCaps="false"
             android:background="@drawable/round_button" />
     </LinearLayout>
 </FrameLayout>

@@ -11,7 +11,13 @@ import kotlinx.android.synthetic.main.card_mars_post.view.*
 
 // Esse adapter é responsável por inflar os layouts das paginas do
 // ViewPager (dentro da RecentMarsFragment) com as imagens do dia selecionado
-class MarsAdapter (private val context: Context, private val MarsPicsList: ArrayList<String>, val postDate: String, val maxTemp: String, val minTemp: String) : PagerAdapter() {
+class MarsAdapter(
+    private val context: Context,
+    private val MarsPicsList: ArrayList<String>,
+    private val postDate: String,
+    private val maxTemp: String,
+    private val minTemp: String
+) : PagerAdapter() {
 
     override fun getCount() = MarsPicsList.size
 
@@ -21,8 +27,8 @@ class MarsAdapter (private val context: Context, private val MarsPicsList: Array
 
     // Essa função infla o layout e já repete os itens
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        var view = LayoutInflater.from(context).inflate(R.layout.card_mars_post, container, false)
-        var marsPost = MarsPicsList.get(position)
+        val view = LayoutInflater.from(context).inflate(R.layout.card_mars_post, container, false)
+        val marsPost = MarsPicsList[position]
         // Insere a imagem da URL na ImageView através do Glide
         Glide.with(view).asBitmap()
             .load(marsPost)

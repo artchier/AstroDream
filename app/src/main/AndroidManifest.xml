@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_astrodream_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AstroDream">
-        <activity android:name=".FavoritesActivity"></activity>
+        <activity android:name=".GlobeActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".FavoritesActivity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,9 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
         <activity android:name=".InitialActivity" />
         <activity android:name=".UserConfigActivity" />
+        <activity android:name=".TechActivity" />
         <activity android:name=".MarsActivity" />
     </application>
 

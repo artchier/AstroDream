@@ -33,7 +33,8 @@
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_marte" />
+                    android:src="@drawable/ic_marte"
+                    android:contentDescription="@string/cone_curiosity_rover" />
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -45,9 +46,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Curiosity Rover:"
+                    android:text="@string/curiosity_rover"
                     android:textColor="@color/white"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:fontFamily="@font/roboto"
                     android:textStyle="bold" />
 
@@ -55,16 +56,16 @@
                     android:id="@+id/postDescr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Bom dia, terráqueo!"
+                    android:text="@string/bom_dia_terraqueo"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:fontFamily="@font/roboto_light"/>
             </LinearLayout>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_weight="1"></Space>
+                android:layout_weight="1" />
 
             <ImageButton
                 android:id="@+id/btnFavMars"
@@ -72,8 +73,8 @@
                 android:layout_height="40dp"
                 android:background="@null"
                 android:scaleType="fitEnd"
-                android:src="@drawable/ic_star_border" />
-
+                android:src="@drawable/ic_star_border"
+                android:contentDescription="@string/favoritar" />
 
         </LinearLayout>
 
@@ -96,8 +97,5 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 </FrameLayout>

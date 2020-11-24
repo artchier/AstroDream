@@ -11,9 +11,6 @@ import com.example.astrodream.R
 import kotlinx.android.synthetic.main.fragment_fav_globe.view.*
 
 class FavGlobeFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,20 +21,18 @@ class FavGlobeFragment : Fragment() {
         try {
             // Caso tenha dados no bundle, ou seja, o fragment foi carregado a partir do Favoritos,
             // atualiza a imagem e textos de acordo com a informação do favorito clicado lá no Favoritos
-            if (requireArguments() != null) {
-                if (container != null) {
-                    // Salva dados do bundle em variaveis
-                    val date = requireArguments().getString("date") as String
-                    val img = requireArguments().getString("img") as String
-                    // Acerta a data
-                    view.tvGlobeDate.text = date
-                    // Acerta a imagem
-                    Glide.with(view).asBitmap()
-                        .load(img)
-                        .into(view.ivGlobe)
-                }
+            if (container != null) {
+                // Salva dados do bundle em variaveis
+                val date = requireArguments().getString("date") as String
+                val img = requireArguments().getString("img") as String
+                // Acerta a data
+                view.tvGlobeDate.text = date
+                // Acerta a imagem
+                Glide.with(view).asBitmap()
+                    .load(img)
+                    .into(view.ivGlobe)
             }
-        } catch (e: Exception) {
+        } catch (e: IllegalStateException) {
             Log.e("FavGlobeFrag", e.toString())
         }
         return view

@@ -9,8 +9,10 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_tech.view.*
 
 class TechFragment : Fragment() {
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_tech, container, false)
@@ -30,13 +32,7 @@ class TechFragment : Fragment() {
         return view
     }
 
-    fun navigationFragments(id: Int) {
+    private fun navigationFragments(id: Int) {
         findNavController().navigate(id)
-    }
-
-    companion object {
-        fun newInstance() {
-
-        }
     }
 }

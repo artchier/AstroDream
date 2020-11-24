@@ -16,7 +16,7 @@ class SplashScreenActivity : AppCompatActivity() {
         }, 3000)
     }
 
-    fun callInitialActivity() {
+    private fun callInitialActivity() {
         val intent = Intent(this, InitialActivity::class.java)
         startActivity(intent)
     }

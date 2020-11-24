@@ -1,53 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llButtons"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="15dp"
     tools:context=".TechFragment">
 
-    <LinearLayout
-        android:id="@+id/llButtons"
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="@string/explorar_tecnologias"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnListarPatentes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="15dp">
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/pill_shape"
+        android:text="@string/listar_patentes"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:text="@string/explorar_tecnologias"
-            android:textSize="20sp"
-            android:textColor="@color/white"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnListarSoftwares"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/pill_shape"
+        android:text="@string/listar_softwares"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnListarPatentes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/listar_patentes"
-            android:textSize="20sp"
-            android:textAllCaps="false"
-            android:background="@drawable/round_button" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnListarSoftwares"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/listar_softwares"
-            android:textSize="20sp"
-            android:textAllCaps="false"
-            android:background="@drawable/round_button" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnListarSpinoffs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/listar_spinoffs"
-            android:textSize="20sp"
-            android:textAllCaps="false"
-            android:background="@drawable/round_button" />
-    </LinearLayout>
-</FrameLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnListarSpinoffs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pill_shape"
+        android:text="@string/listar_spinoffs"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
+</LinearLayout>

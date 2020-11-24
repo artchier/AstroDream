@@ -55,4 +55,8 @@
     <string name="avatar">Avatar</string>
     <string name="imagem_tecnologia">Imagem tecnologia</string>
 
+    <string name="cancelar">Cancelar</string>
+    <string name="ok">Ok</string>
+    <string name="selecionar_data">Selecionar data</string>
+
 </resources>

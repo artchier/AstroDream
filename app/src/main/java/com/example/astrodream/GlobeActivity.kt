@@ -1,11 +1,6 @@
 package com.example.astrodream
 
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
@@ -14,17 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_globe.*
-import kotlinx.android.synthetic.main.activity_globe.view.*
-import kotlinx.android.synthetic.main.datepicker.*
 import kotlinx.android.synthetic.main.lateral_menu.*
-import java.time.DayOfWeek
 import java.util.*
-import kotlin.time.days
 
 class GlobeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +22,7 @@ class GlobeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_globe)
 
         //Pega a imagem da API e mostra na ImageView
+        // TODO pegar essa imagem deve ser responsabilidade de algum service
         Glide.with(this).asBitmap()
             .load("https://api.nasa.gov/EPIC/archive/natural/2019/05/30/png/epic_1b_20190530011359.png?api_key=DEMO_KEY")
             .transform(RoundedCorners(50))
@@ -59,7 +50,7 @@ class GlobeActivity : AppCompatActivity() {
         var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         var month = Calendar.getInstance().get(Calendar.MONTH)
         var year = Calendar.getInstance().get(Calendar.YEAR)
-        var data = "$day/${month+1}/$year"
+        var data = "$day/${month + 1}/$year"
         tvData.text = data
 
         //clique do botão "Escolher Data"
@@ -68,14 +59,14 @@ class GlobeActivity : AppCompatActivity() {
             datePicker.updateDate(year, month, day)
             MaterialAlertDialogBuilder(this)
                 .setView(datePicker)
-                .setPositiveButton("Ok", DialogInterface.OnClickListener { _, _ ->
+                .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
                     day = datePicker.dayOfMonth
                     month = datePicker.month
                     year = datePicker.year
-                    data = "$day/${month+1}/$year"
+                    data = "$day/${month + 1}/$year"
                     tvData.text = data
-                })
-                .setNegativeButton("Cancelar", null)
+                }
+                .setNegativeButton(resources.getString(R.string.cancelar), null)
                 .show()
         }
     }
@@ -86,18 +77,17 @@ class GlobeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_lateral -> {
-                dlGlobe.openDrawer(GravityCompat.END)
-            }
+        if (item.itemId == R.id.menu_lateral) {
+            dlGlobe.openDrawer(GravityCompat.END)
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        if (dlGlobe.isDrawerOpen(GravityCompat.END))
+        if (dlGlobe.isDrawerOpen(GravityCompat.END)) {
             dlGlobe.closeDrawer(GravityCompat.END)
-        else
+        } else {
             finish()
+        }
     }
 }

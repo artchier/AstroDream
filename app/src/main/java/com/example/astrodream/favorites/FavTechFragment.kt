@@ -6,11 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_fav_tech.view.*
-import kotlinx.android.synthetic.main.fragment_fav_today.view.*
-import kotlinx.android.synthetic.main.fragment_fav_today.view.ivToday
 
 class FavTechFragment : Fragment() {
 
@@ -40,7 +38,9 @@ class FavTechFragment : Fragment() {
                     // Acerta o titulo
                     view.tvTechTitle.text = title
                     // Acerta a imagem
-                    Picasso.get().load(img).into(view.ivTech)
+                    Glide.with(view).asBitmap()
+                        .load(img)
+                        .into(view.ivTech)
                     // Acerta os detalhes
                     view.tvTechDetails.text = details
                 }

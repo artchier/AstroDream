@@ -6,11 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_fav_asteroids.view.*
-import kotlinx.android.synthetic.main.fragment_fav_today.view.*
-import kotlinx.android.synthetic.main.fragment_fav_today.view.tvTodayTitle
 
 class FavAsteroidsFragment : Fragment() {
 
@@ -38,7 +36,9 @@ class FavAsteroidsFragment : Fragment() {
                     // Acerta os dados
                     view.tvAsteroidData.text = data
                     // Acerta a imagem
-                    Picasso.get().load(img).into(view.ivAsteroid)
+                    Glide.with(view).asBitmap()
+                        .load(img)
+                        .into(view.ivAsteroid)
                 }
             }
         } catch (e: Exception) {

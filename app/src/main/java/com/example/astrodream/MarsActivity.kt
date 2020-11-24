@@ -6,14 +6,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_mars.*
+import kotlinx.android.synthetic.main.activity_mars.bottomTabs
+import kotlinx.android.synthetic.main.lateral_menu.*
 
 class MarsActivity : AppCompatActivity() {
 
@@ -28,6 +34,25 @@ class MarsActivity : AppCompatActivity() {
         // O nome está definido no TextView para permitir a fonte Homespun
         tbMars.title = ""
         setSupportActionBar(tbMars)
+
+        //clique do botão "Sobre"
+        btnSobre.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setBackgroundInsetStart(70)
+                .setBackgroundInsetEnd(70)
+                .setBackgroundInsetTop(10)
+                .setBackgroundInsetBottom(100)
+                .setBackground(
+                    ContextCompat.getColor(this, android.R.color.transparent).toDrawable()
+                )
+                .setView(R.layout.astrodialog)
+                .show()
+        }
+
+        // Clique do botão "Favoritos"
+        btnFavoritos.setOnClickListener{
+            startActivity(Intent(this, FavoritesActivity::class.java))
+        }
 
         // Configuração do Navigation Component
         // Nesta activity estão sendo usados 2 fragments apenas:
@@ -45,7 +70,7 @@ class MarsActivity : AppCompatActivity() {
                         // Se o fragment atual for o HistoryMarsFragment:
                         try { findNavController(R.id.navHostfragMars).navigate(R.id.action_historyMarsFragment_to_recentMarsFragment) }
                         // Se o fragment atual for o RecentMarsFragment mas a tab selecionada for a Historico (tab 1):
-                        catch (e:Exception) { findNavController(R.id.navHostfragMars).navigate(R.id.reload_recentMarsFragment) }
+                        catch (e:Exception) { findNavController(R.id.navHostfragMars).navigate(R.id.recentMarsFragment) }
                     }
                     1 -> findNavController(R.id.navHostfragMars).navigate(R.id.action_recentMarsFragment_to_historyMarsFragment)
                 }
@@ -53,12 +78,12 @@ class MarsActivity : AppCompatActivity() {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
-                    0 -> findNavController(R.id.navHostfragMars).navigate(R.id.reload_recentMarsFragment)
+                    0 -> findNavController(R.id.navHostfragMars).navigate(R.id.recentMarsFragment)
                     1 -> {
                         // Se o fragment atual for o RecentMarsFragment mas a tab selecionada for a Historico (tab 1):
                         try { findNavController(R.id.navHostfragMars).navigate(R.id.action_recentMarsFragment_to_historyMarsFragment) }
                         // Se o fragment atual for o HistoryMarsFragment:
-                        catch (e:Exception) { findNavController(R.id.navHostfragMars).navigate(R.id.reload_historyMarsFragment) }
+                        catch (e:Exception) { findNavController(R.id.navHostfragMars).navigate(R.id.historyMarsFragment) }
                     }
                 }
             }
@@ -104,12 +129,25 @@ class MarsActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    // Vai para a InitialActivity ao pressionar o botão de voltar
-    // ou fechar o drawer caso ele esteja aberto
+    // Ao pressionar o botão de voltar:
+    //      Fecha o drawer caso ele esteja aberto
+    //      Ou vai para a InitialActivity caso estejamos na tab inicial
+    //      Ou fecha o fragment "foco" e volta pro recycler
+    //      Ou vai para a tab inicial, se ela já não for a ativa
     override fun onBackPressed() {
         if (dlMars.isDrawerOpen(GravityCompat.END))
             dlMars.closeDrawer(GravityCompat.END)
-        else
+
+        val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragMars)
+        val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
+
+        if (bottomTabs.selectedTabPosition == 0)
             startActivity(Intent(this, InitialActivity::class.java))
+
+        if (bottomTabs.selectedTabPosition != 0 && currFrag != R.id.historyMarsFragment)
+            navController.navigateUp(appBarConfiguration)
+
+        if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.historyMarsFragment)
+            bottomTabs.getTabAt(0)?.select()
     }
 }

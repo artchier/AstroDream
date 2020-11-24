@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_fav_today.view.*
 
 class FavTodayFragment : Fragment() {
@@ -36,7 +36,9 @@ class FavTodayFragment : Fragment() {
                     // Acerta a data
                     view.tvTodayDate.text = date
                     // Acerta a imagem
-                    Picasso.get().load(img).into(view.ivToday)
+                    Glide.with(view).asBitmap()
+                        .load(img)
+                        .into(view.ivToday)
                 }
             }
         } catch (e: Exception) {

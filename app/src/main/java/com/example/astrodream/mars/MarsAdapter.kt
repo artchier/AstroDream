@@ -1,11 +1,12 @@
-package com.example.astrodream
+package com.example.astrodream.mars
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.example.astrodream.R
 import kotlinx.android.synthetic.main.card_mars_post.view.*
 
 // Esse adapter é responsável por inflar os layouts das paginas do
@@ -22,8 +23,10 @@ class MarsAdapter (private val context: Context, private val MarsPicsList: Array
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         var view = LayoutInflater.from(context).inflate(R.layout.card_mars_post, container, false)
         var marsPost = MarsPicsList.get(position)
-        // Insere a imagem da URL na ImageView através do Picasso
-        Picasso.get().load(marsPost).into(view.ivRecentMars)
+        // Insere a imagem da URL na ImageView através do Glide
+        Glide.with(view).asBitmap()
+            .load(marsPost)
+            .into(view.ivRecentMars)
         // Atualiza as TextViews com os dados do post
         view.tvMarsRecentDateEarth.text = postDate
         view.tvMarsRecentMaxTemp.text = maxTemp

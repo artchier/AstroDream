@@ -1,4 +1,4 @@
-package com.example.astrodream
+package com.example.astrodream.mars
 
 import android.os.Bundle
 import android.util.Log
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.astrodream.R
 import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import me.relex.circleindicator.CircleIndicator
 

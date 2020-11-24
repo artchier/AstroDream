@@ -6,19 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.astrodream.MarsAdapter
-import com.example.astrodream.MarsHistoryAdapter
-import com.example.astrodream.MarsPost
 import com.example.astrodream.R
 import kotlinx.android.synthetic.main.fragment_fav_recycler.view.*
-import kotlinx.android.synthetic.main.fragment_history_mars.view.*
-import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
-import me.relex.circleindicator.CircleIndicator
 
 class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
 

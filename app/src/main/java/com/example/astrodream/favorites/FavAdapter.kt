@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_fav.view.*
 
 // Essa classe adapter recebe uma lista de favoritos e popula o RecyclerView do FavRecyclerFragment
@@ -43,7 +43,9 @@ class FavAdapter (private val favsList: ArrayList<Fav>, val listener: OnClickFav
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
         var fav: Fav = favsList.get(position)
         // Pega a imagem do favorito e coloca na ImageView
-        Picasso.get().load(fav.img).into(holder.ivFav)
+        Glide.with(holder.itemView).asBitmap()
+            .load(fav.img)
+            .into(holder.ivFav)
         // Preenche o primeiro TextView
         holder.tv1Fav.text = fav.descrip1
         // Preenche o segundo TextView

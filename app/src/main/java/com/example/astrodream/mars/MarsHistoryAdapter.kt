@@ -1,4 +1,4 @@
-package com.example.astrodream
+package com.example.astrodream.mars
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.example.astrodream.R
 import kotlinx.android.synthetic.main.item_mars_history.view.*
 
 // Essa classe adapter recebe uma lista de posts e popula o RecyclerView do HistoryMarsFragment
@@ -40,7 +41,10 @@ class MarsHistoryAdapter (private val MarsPostsList: ArrayList<MarsPost>, val li
     override fun onBindViewHolder(holder: MarsHistoryViewHolder, position: Int) {
         var marsPost: MarsPost = MarsPostsList.get(position)
         // Pega a primeira imagem do post e coloca na ImageView
-        Picasso.get().load(marsPost.img_list[0]).into(holder.ivMarsPost)
+        Glide.with(holder.itemView).asBitmap()
+            .load(marsPost.img_list[0])
+            .into(holder.ivMarsPost)
+        //Picasso.get().load(marsPost.img_list[0]).into(holder.ivMarsPost)
         // Preenche o TextView com a data do post
         holder.tvMarsPost.text = marsPost.earth_date
     }

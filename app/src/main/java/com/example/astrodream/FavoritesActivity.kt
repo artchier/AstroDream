@@ -1,6 +1,5 @@
 package com.example.astrodream
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -207,21 +206,18 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
         if (dlFavs.isDrawerOpen(GravityCompat.END)) {
             dlFavs.closeDrawer(GravityCompat.END)
         }
-
         else {
             val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
             val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
 
-            if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment) {
-                startActivity(Intent(this, InitialActivity::class.java))
-            }
-
             if (currFrag != R.id.favRecyclerFragment) {
                 navController.navigateUp(appBarConfiguration)
             }
-
-            if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment) {
+            else if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment) {
                 bottomTabs.getTabAt(0)?.select()
+            }
+            else if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment) {
+                finish()
             }
         }
     }

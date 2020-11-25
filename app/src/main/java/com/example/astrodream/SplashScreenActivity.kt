@@ -13,7 +13,7 @@ class SplashScreenActivity : AppCompatActivity() {
         Handler().postDelayed({
             callInitialActivity()
             finish()
-        }, 3000)
+        }, 1000)
     }
 
     private fun callInitialActivity() {

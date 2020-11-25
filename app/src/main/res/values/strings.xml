@@ -75,4 +75,5 @@
     <string name="listar_asteroides_perigosos">Listar asteroides perigosos</string>
     <string name="listar_asteroides_por_nome">Listar asteroides por nome</string>
     <string name="listar_asteroides_pr_ximos">Listar asteroides próximos</string>
+    <string name="date_template">Data: %s</string>
 </resources>

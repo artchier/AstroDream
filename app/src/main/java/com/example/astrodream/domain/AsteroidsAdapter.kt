@@ -23,7 +23,7 @@ class AsteroidsAdapter(val listener: OnClickAsteroidsListener, var listAsteroids
     override fun onBindViewHolder(holder: AsteroidsAdapter.AsteroidsViewHolder, position: Int) {
         val asteroid = listAsteroids[position]
         holder.tv_name.text = asteroid.name
-        holder.tv_date.text = "Data: ${asteroid.date}"
+        holder.tv_date.text = holder.itemView.resources.getString(R.string.date_template).format(asteroid.date)
     }
 
     interface OnClickAsteroidsListener{

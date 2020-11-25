@@ -11,8 +11,8 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         setContentView(R.layout.activity_initial)
 
         // TODO navegar parar as Activities apropriadas quando prontas
-        vpImagemHoje.setOnClickListener {
-//            startActivity(Intent(this, ))
+        ivDaily.setOnClickListener {
+            startActivity(Intent(this, DailyImageActivity::class.java))
         }
 
         btAsteriodes.setOnClickListener {

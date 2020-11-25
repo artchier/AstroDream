@@ -41,7 +41,7 @@
                     android:id="@+id/tvAsteroidName"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="15dp"
                     android:text="Nome"
                     android:textColor="@color/white"
                     android:textSize="20dp"

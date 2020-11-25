@@ -1,5 +1,6 @@
 package com.example.astrodream
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -47,11 +48,21 @@ class AsteroidOrbitFragment : Fragment() {
                     view.tvAsteroidDistEarth.text = "Distância mínima da terra: $dist LD"
                     view.tvAsteroidMag.text = "Magnitude Absoluta: $mag"
                     view.tvAsteroidSpeed.text = "Velocidade: $speed km/s"
+
+                    view.ivAsteroid.setOnClickListener {
+                        val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
+                        intent.putExtra("img", img)
+                        startActivity(intent)
+
+                    }
+
                 }
             }
         } catch (e: IllegalStateException) {
             Log.e("AsteroidOrbitFrag", "Bundle vazio!")
         }
+
+
         return view
     }
 }

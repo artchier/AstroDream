@@ -13,28 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/include"
-            layout="@layout/background" />
+        <include layout="@layout/background" />
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <include
             android:id="@+id/tbFavs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
+            layout="@layout/app_tool_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/menu">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/homespun_regular"
-                android:text="@string/favoritos"
-                android:textColor="@android:color/white"
-                android:textSize="35sp" />
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/favsBody"
@@ -85,11 +71,10 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationView"
+        android:id="@+id/nvLateralMenu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end">

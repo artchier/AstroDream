@@ -68,8 +68,8 @@
 
         <Button
             android:id="@+id/btAsteriodes"
-            android:layout_width="135dp"
-            android:layout_height="110dp"
+            android:layout_width="145dp"
+            android:layout_height="130dp"
             android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_asteroide"
             android:fontFamily="@font/homespun_regular"
@@ -84,8 +84,8 @@
 
         <Button
             android:id="@+id/btGlobo"
-            android:layout_width="135dp"
-            android:layout_height="110dp"
+            android:layout_width="145dp"
+            android:layout_height="130dp"
             android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_globo"
             android:fontFamily="@font/homespun_regular"
@@ -100,8 +100,8 @@
 
         <Button
             android:id="@+id/btTecnologias"
-            android:layout_width="135dp"
-            android:layout_height="110dp"
+            android:layout_width="145dp"
+            android:layout_height="130dp"
             android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_tecnologia"
             android:fontFamily="@font/homespun_regular"
@@ -116,8 +116,8 @@
 
         <Button
             android:id="@+id/btMarte"
-            android:layout_width="135dp"
-            android:layout_height="110dp"
+            android:layout_width="145dp"
+            android:layout_height="130dp"
             android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_marte"
             android:fontFamily="@font/homespun_regular"

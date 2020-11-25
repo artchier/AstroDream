@@ -25,6 +25,8 @@ class FullScreenImgActivity : AppCompatActivity() {
             .into(ivFull)
 
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
+
+        ic_close_fullscreen.setOnClickListener { finish() }
     }
 
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
@@ -34,7 +36,7 @@ class FullScreenImgActivity : AppCompatActivity() {
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
             scaleFactor *= scaleGestureDetector.scaleFactor
-            scaleFactor = max(0.1f, min(scaleFactor, 10.0f))
+            scaleFactor = max(1.0f, min(scaleFactor, 10.0f))
             ivFull.scaleX = scaleFactor
             ivFull.scaleY = scaleFactor
             return true

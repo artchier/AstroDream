@@ -29,7 +29,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/ic_background" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -64,7 +64,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/ic_asteroide" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -99,7 +99,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/ic_globo" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -133,7 +133,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/ic_tecnologia" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -167,7 +167,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/ic_marte" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

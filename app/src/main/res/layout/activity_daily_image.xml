@@ -6,7 +6,7 @@
     android:id="@+id/dlDaily"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MarsActivity"
+    tools:context=".DailyImageActivity"
     tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,13 +37,14 @@
             app:layout_constraintHeight_default="spread"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <FrameLayout
+            <fragment
                 android:id="@+id/navHostfragDaily"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/round_top"
                 android:backgroundTint="@color/gigas"
+                app:navGraph="@navigation/nav_daily"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constrainedHeight="true"

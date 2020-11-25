@@ -1,22 +1,14 @@
 package com.example.astrodream
 
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.findFragment
 import com.example.astrodream.domain.Asteroids
 import com.example.astrodream.domain.AsteroidsAdapter
 import kotlinx.android.synthetic.main.activity_asteroid.*
-import kotlinx.android.synthetic.main.activity_login.view.*
-import kotlinx.android.synthetic.main.btn_asteroids.view.*
-import kotlinx.android.synthetic.main.fragment_listar_asteroides_proximos.view.*
 
 class AsteroidActivity : AppCompatActivity(), AsteroidsAdapter.OnClickAsteroidsListener {
 
@@ -28,37 +20,33 @@ class AsteroidActivity : AppCompatActivity(), AsteroidsAdapter.OnClickAsteroidsL
         setContentView(R.layout.activity_asteroid)
 
         btn_asteroids_proximos.apply {
-            findViewById<TextView>(R.id.tv_btn_name).text = "Listar asteroides proximos"
-                openCloseButton(this, R.id.fl_btn_rv, ListarAsteroidesProximosFragment.newInstance(adapter), findViewById<LinearLayout>(R.id.btn_superior_asteroids))
+                openCloseButton(this, R.id.fl_btn_proximos, ListarAsteroidesProximosFragment.newInstance(adapter), findViewById(R.id.btn_superior_asteroids_1), R.id.ic_btn_1)
         }
 
         btn_asteroids_name.apply {
-            findViewById<TextView>(R.id.tv_btn_name).text = "Listar asteroides por nome"
-                openCloseButton(this, R.id.fl_btn_rv, ListarAsteroidsPorNomeFragment.newInstance(adapter),findViewById<LinearLayout>(R.id.btn_superior_asteroids))
+                openCloseButton(this, R.id.fl_btn_nome, ListarAsteroidsPorNomeFragment.newInstance(adapter),findViewById(R.id.btn_superior_asteroids_2), R.id.ic_btn_2)
         }
 
         btn_asteroids_date.apply {
-            findViewById<TextView>(R.id.tv_btn_name).text = "Listar asteroides por data"
-            openCloseButton(this, R.id.fl_btn_rv, ListarAsteroidsPorNomeFragment.newInstance(adapter), findViewById<LinearLayout>(R.id.btn_superior_asteroids))
+            openCloseButton(this, R.id.fl_btn_data, ListarAsteroidsPorNomeFragment.newInstance(adapter), findViewById(R.id.btn_superior_asteroids_3), R.id.ic_btn_3)
         }
 
         btn_asteroids_dangerous.apply {
-            findViewById<TextView>(R.id.tv_btn_name).text = "Listar asteroides perigosos"
-            openCloseButton(this, R.id.fl_btn_rv, ListarAsteroidsPorNomeFragment.newInstance(adapter), findViewById<LinearLayout>(R.id.btn_superior_asteroids))
+            openCloseButton(this, R.id.fl_btn_perigosos, ListarAsteroidsPorNomeFragment.newInstance(adapter), findViewById(R.id.btn_superior_asteroids_4), R.id.ic_btn)
         }
 
     }
 
-    fun openCloseButton(view: View, id_oldFragment: Int, newFragment: Fragment, btn: LinearLayout) {
+    fun openCloseButton(view: View, id_oldFragment: Int, newFragment: Fragment, btn: LinearLayout, ic_btn: Int) {
         btn.setOnClickListener {
-            if (!click) openButton(view, id_oldFragment, newFragment)
-            else closeButton(view)
+            if (!click) openButton(view, id_oldFragment, newFragment, ic_btn)
+            else closeButton(view, ic_btn)
         }
     }
 
-    fun openButton(view: View, id_oldfragment: Int, newFragment: Fragment){
+    fun openButton(view: View, id_oldfragment: Int, newFragment: Fragment, ic_btn: Int){
         alterColorBtnAsteroids(view, R.drawable.button_style_click)
-        alterArrowButton(R.drawable.ic_arrow_up)
+        alterArrowButton(ic_btn, R.drawable.ic_arrow_up)
         supportFragmentManager.beginTransaction().apply {
             replace(id_oldfragment, newFragment)
             addToBackStack(null)
@@ -67,16 +55,14 @@ class AsteroidActivity : AppCompatActivity(), AsteroidsAdapter.OnClickAsteroidsL
         click = true
     }
 
-    fun closeButton(view: View) {
+    fun closeButton(view: View, ic_btn: Int) {
         onBackPressed()
         alterColorBtnAsteroids(view, R.drawable.button_style)
-        alterArrowButton(R.drawable.ic_arrow_down)
+        alterArrowButton(ic_btn, R.drawable.ic_arrow_down)
         click = false
     }
 
-    fun alterArrowButton(drawableId: Int){
-        findViewById<ImageView>(R.id.ic_btn).setImageDrawable(getDrawable(drawableId))
-    }
+    fun alterArrowButton(drawableAtual: Int, drawablePosterior: Int){ findViewById<ImageView>(drawableAtual).setImageDrawable(getDrawable(drawablePosterior)) }
 
     fun alterColorBtnAsteroids(view: View, id: Int){ view.background = getDrawable(id) }
 
@@ -91,6 +77,5 @@ class AsteroidActivity : AppCompatActivity(), AsteroidsAdapter.OnClickAsteroidsL
     }
 
     override fun onClickAsteroids(position: Int) {
-        TODO("Not yet implemented")
     }
 }

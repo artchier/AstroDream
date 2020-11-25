@@ -25,4 +25,10 @@
         <item name="android:fontFamily">@font/roboto_light</item>
         <item name="android:textSize">15sp</item>
     </style>
+
+    <style name="TextInputEditText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.AstroDream" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/bunting</item>
-        <item name="colorPrimaryVariant">@color/midnight_blue</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/lucky_point</item>
+        <item name="colorPrimaryVariant">@color/bunting</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
@@ -14,10 +14,36 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="NavigationView1">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="NavigationView2">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="DatePicker">
+        <item name="colorAccent">@color/gigas</item>
+        <item name="android:datePickerMode">calendar</item>
+    </style>
+
     <style name="textCapsOff" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">18dp</item>
         <item name="android:fontFamily">@font/roboto</item>
     </style>
+
+    <style name="textAsteroid">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
 </resources>

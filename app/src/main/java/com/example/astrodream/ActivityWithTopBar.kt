@@ -1,7 +1,9 @@
 package com.example.astrodream
 
+import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -11,6 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.app_tool_bar.*
 
 abstract class ActivityWithTopBar(
@@ -21,11 +24,18 @@ abstract class ActivityWithTopBar(
     private var toolBar: MaterialToolbar? = null
     private lateinit var drawerLayout: DrawerLayout
 
-    fun setUpMenuBehavior() {
-        // cada botão do menu lateral (lateral_menu.xml) deve ser obtido dessa forma
-        val lateralMenu = findViewById<ConstraintLayout>(R.id.clLateralMenu)
-        val btnSobre = lateralMenu.findViewById<AppCompatButton>(R.id.btnSobre)
+    private fun <T> goToActivityIfNotAlreadyThere(destination: Class<T>) {
+        if (this::class.java == destination) {
+            drawerLayout.closeDrawer(GravityCompat.END)
+            return
+        }
+        startActivity(Intent(this, destination))
+        if (this !is InitialActivity) {
+            finish()
+        }
+    }
 
+    fun setUpMenuBehavior() {
         toolBar = if (toolBar == null) appToolBar else toolBar
         drawerLayout = findViewById(drawerLayoutId)
 
@@ -34,6 +44,54 @@ abstract class ActivityWithTopBar(
             tvToolBarTitle.text = resources.getString(toolbarTiteTitleId)
         }
         setSupportActionBar(toolBar)
+
+        val lateralMenuHost = findViewById<NavigationView>(R.id.nvLateralMenu)
+        val lateralMenu = findViewById<ConstraintLayout>(R.id.clLateralMenu)
+
+        val btnAvatar = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnAvatar)
+
+        val llBackground = lateralMenu.findViewById<LinearLayout>(R.id.llBackground)
+        val llAsteroides = lateralMenu.findViewById<LinearLayout>(R.id.llAsteroides)
+        val llGlobo = lateralMenu.findViewById<LinearLayout>(R.id.llGlobo)
+        val llTecnologias = lateralMenu.findViewById<LinearLayout>(R.id.llTecnologias)
+        val llMarte = lateralMenu.findViewById<LinearLayout>(R.id.llMarte)
+
+        val btnFavoritos = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnFavoritos)
+        val btnConfig = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnConfig)
+        val btnSobre = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnSobre)
+
+        // TODO navegar parar as Activities apropriadas quando prontas
+        btnAvatar.setOnClickListener {
+            goToActivityIfNotAlreadyThere(AvatarActivity::class.java)
+        }
+
+        llBackground.setOnClickListener {
+//            goToActivityIfNotAlreadyThere(::class.java)
+        }
+
+        llAsteroides.setOnClickListener {
+            goToActivityIfNotAlreadyThere(AsteroidActivity::class.java)
+        }
+
+        llGlobo.setOnClickListener {
+            goToActivityIfNotAlreadyThere(GlobeActivity::class.java)
+        }
+
+        llTecnologias.setOnClickListener {
+            goToActivityIfNotAlreadyThere(TechActivity::class.java)
+        }
+
+        llMarte.setOnClickListener {
+            goToActivityIfNotAlreadyThere(MarsActivity::class.java)
+        }
+
+        btnFavoritos.setOnClickListener {
+            goToActivityIfNotAlreadyThere(FavoritesActivity::class.java)
+        }
+
+        btnConfig.setOnClickListener {
+            goToActivityIfNotAlreadyThere(UserConfigActivity::class.java)
+        }
 
         btnSobre.setOnClickListener {
             MaterialAlertDialogBuilder(this)
@@ -64,9 +122,8 @@ abstract class ActivityWithTopBar(
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
             drawerLayout.closeDrawer(GravityCompat.END)
+            return
         }
-        else {
-            super.onBackPressed()
-        }
+        super.onBackPressed()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.astrodream.favorites
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.example.astrodream.FullScreenImgActivity
 import com.example.astrodream.R
 import kotlinx.android.synthetic.main.fragment_fav_today.view.*
 
@@ -34,6 +36,13 @@ class FavTodayFragment : Fragment() {
                 Glide.with(view).asBitmap()
                     .load(img)
                     .into(view.ivToday)
+
+                view.ivToday.setOnClickListener {
+                    val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
+                    intent.putExtra("img", img)
+                    startActivity(intent)
+
+                }
             }
         } catch (e: IllegalStateException) {
             Log.e("FavTodayFrag", e.toString())

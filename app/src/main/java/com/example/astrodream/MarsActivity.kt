@@ -95,20 +95,19 @@ class MarsActivity : ActivityWithTopBar(R.string.marte, R.id.dlMars) {
         if (dlMars.isDrawerOpen(GravityCompat.END)) {
             dlMars.closeDrawer(GravityCompat.END)
         }
+        else {
+            val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragMars)
+            val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
 
-        val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragMars)
-        val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
-
-        if (bottomTabs.selectedTabPosition == 0) {
-            startActivity(Intent(this, InitialActivity::class.java))
-        }
-
-        if (bottomTabs.selectedTabPosition != 0 && currFrag != R.id.historyMarsFragment) {
-            navController.navigateUp(appBarConfiguration)
-        }
-
-        if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.historyMarsFragment) {
-            bottomTabs.getTabAt(0)?.select()
+            if (bottomTabs.selectedTabPosition != 0 && currFrag != R.id.historyMarsFragment) {
+                navController.navigateUp(appBarConfiguration)
+            }
+            else if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.historyMarsFragment) {
+                bottomTabs.getTabAt(0)?.select()
+            }
+            else if (bottomTabs.selectedTabPosition == 0) {
+                finish()
+            }
         }
     }
 }

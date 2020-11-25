@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dlGlobe"
+    android:id="@+id/dlAvatar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GlobeActivity">
@@ -14,7 +14,7 @@
         <include layout="@layout/background" />
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/tbGlobe"
+            android:id="@+id/tbAvatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -27,55 +27,78 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/homespun_regular"
-                android:text="@string/globo"
+                android:text="@string/avatar"
                 android:textColor="@android:color/white"
                 android:textSize="35sp" />
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <TextView
-            android:id="@+id/tvData"
+        <ImageView
+            android:id="@+id/ivAvatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/NavigationView1"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tbAvatar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tbGlobe" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clGlobe"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/rounded_rectangle"
-            android:backgroundTint="@color/midnight_blue"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/ic_avatar_alien"/>
+        
+        <LinearLayout
+            android:id="@+id/llNasaCoins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/ivAvatar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@drawable/rounded_rectangle2">
 
             <ImageView
-                android:id="@+id/ivGlobe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_logo"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabData"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="1000"
+                android:layout_marginStart="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/ivAvatar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:backgroundTint="@color/gigas"
-            android:layout_margin="20dp"
-            android:src="@drawable/ic_calendar"
-            app:tint="@android:color/white"/>
+            android:background="@drawable/rounded_rectangle2">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_share"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/llNasaCoins"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/rounded_rectangle"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

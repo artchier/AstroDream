@@ -1,11 +1,7 @@
 package com.example.astrodream
 
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
@@ -14,17 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_globe.*
-import kotlinx.android.synthetic.main.activity_globe.view.*
-import kotlinx.android.synthetic.main.datepicker.*
 import kotlinx.android.synthetic.main.lateral_menu.*
-import java.time.DayOfWeek
 import java.util.*
-import kotlin.time.days
 
 class GlobeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

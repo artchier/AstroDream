@@ -1,5 +1,6 @@
 package com.example.astrodream
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +11,7 @@ import androidx.core.view.GravityCompat
 import com.example.astrodream.R.id.menu_lateral
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_initial.*
+import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.lateral_menu.*
 
 class InitialActivity : AppCompatActivity() {
@@ -31,6 +33,11 @@ class InitialActivity : AppCompatActivity() {
                 )
                 .setView(R.layout.astrodialog)
                 .show()
+        }
+
+        btnAvatar.setOnClickListener {
+            startActivity(Intent(this, AvatarActivity::class.java))
+            finish()
         }
     }
 

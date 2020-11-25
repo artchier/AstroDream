@@ -1,5 +1,6 @@
 package com.example.astrodream
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +11,7 @@ import androidx.core.view.GravityCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_avatar.*
 import kotlinx.android.synthetic.main.activity_globe.*
+import kotlinx.android.synthetic.main.buy_avatar_dialog.*
 import kotlinx.android.synthetic.main.lateral_menu.*
 
 class AvatarActivity : AppCompatActivity() {
@@ -53,8 +55,6 @@ class AvatarActivity : AppCompatActivity() {
         adapter = AvatarAdapter(this, listAvatar)
 
         rvAvatar.adapter = adapter
-
-        //vpAvatar.setPadding(0, 100, 0, 100)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -65,16 +65,17 @@ class AvatarActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_lateral -> {
-                dlGlobe.openDrawer(GravityCompat.END)
+                dlAvatar.openDrawer(GravityCompat.END)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        if (dlGlobe.isDrawerOpen(GravityCompat.END))
-            dlGlobe.closeDrawer(GravityCompat.END)
+        if (dlAvatar.isDrawerOpen(GravityCompat.END))
+            dlAvatar.closeDrawer(GravityCompat.END)
         else
+            startActivity(Intent(this, InitialActivity::class.java))
             finish()
     }
 }

@@ -1,9 +1,5 @@
 package com.example.astrodream
 
-<<<<<<< HEAD
-import android.content.DialogInterface
-=======
->>>>>>> cbbdb35a7bbf120b604880449b43049c01130924
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.Menu

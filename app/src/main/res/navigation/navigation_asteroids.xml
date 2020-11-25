@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_asteroids"
+    app:startDestination="@id/buttonAsteroidFragment">
+    <fragment
+        android:id="@+id/buttonAsteroidFragment"
+        android:name="com.example.astrodream.ButtonAsteroidFragment"
+        android:label="ButtonAsteroidFragment" >
+        <action
+            android:id="@+id/action_buttonAsteroidFragment_to_listarAsteroidesProximosFragment"
+            app:destination="@id/listarAsteroidesProximosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listarAsteroidesProximosFragment"
+        android:name="com.example.astrodream.ListarAsteroidesProximosFragment"
+        android:label="fragment_listar_asteroides_proximos"
+        tools:layout="@layout/fragment_listar_asteroides_proximos" />
+</navigation>

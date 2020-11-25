@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llButtons"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".TechFragment">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="@string/explorar_tecnologias"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnListarPatentes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/pill_shape"
+        app:backgroundTint="@color/lucky_point"
+        android:textColor="@color/white"
+        android:text="@string/listar_patentes"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnListarSoftwares"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/pill_shape"
+        app:backgroundTint="@color/lucky_point"
+        android:textColor="@color/white"
+        android:text="@string/listar_softwares"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnListarSpinoffs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pill_shape"
+        app:backgroundTint="@color/lucky_point"
+        android:textColor="@color/white"
+        android:text="@string/listar_spinoffs"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
+</LinearLayout>

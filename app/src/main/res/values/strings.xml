@@ -39,8 +39,36 @@
 
     <string name="descricao_1">O AstroDream é o aplicativo que te conecta com as estrelas, o espaço, o universo, os astros e com a ciência. Se você é um amante dos mistérios do espaço, esse aplicativo é para você.</string>
     <string name="descricao_2">O aplicativo AstroDream fornece funcionalidades que disponibilizam informações e interações interessantes. Além de agregar conhecimento ao usuário, agrega uma experiência imersiva e divertida.</string>
+
     <string name="descricao_3">Nesse app você poderá explorar Marte, saberá sobre os asteróides que passam perto do nosso planeta, saberá sobre algumas tencologias incríveis desenvolvidas pela Nasa, verá imagens atualizadas da Terra e poderá alterar seu plano de fundo com imagens disponibilizadas pelo nosso app.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="comprar">Comprar</string>
+
+    <string name="recente">Recente</string>
+    <string name="historico">Histórico</string>
+    <string name="icone_asteroide">Ícone asteroide</string>
+    <string name="foto_do_asteroide">Foto do asteroide</string>
+    <string name="favoritar">Favoritar</string>
+    <string name="imagem_globo">Imagem globo</string>
+    <string name="usar_como_papel_de_parede">Usar como papel de parede</string>
+    <string name="copartilhar">Copartilhar</string>
+    <string name="curiosity_rover">Curiosity Rover:</string>
+    <string name="bom_dia_terraqueo">Bom dia, terráqueo!</string>
+    <string name="cone_curiosity_rover">Ícone Curiosity Rover</string>
+    <string name="avatar">Avatar</string>
+    <string name="imagem_tecnologia">Imagem tecnologia</string>
+
+    <string name="cancelar">Cancelar</string>
+    <string name="ok">Ok</string>
+    <string name="selecionar_data">Selecionar data</string>
+
+    <string name="explorar_tecnologias">Explorar tecnologias</string>
+    <string name="listar_patentes">Listar patentes</string>
+    <string name="listar_softwares">Listar softwares</string>
+    <string name="listar_spinoffs">Listar spinoffs</string>
+    <string name="explorar_patentes">Explorar patentes</string>
+    <string name="explorar_softwares">Explorar softwares</string>
+    <string name="explorar_spinoffs">Explorar spinoffs</string>
 </resources>

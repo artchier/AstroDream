@@ -13,11 +13,11 @@ class SplashScreenActivity : AppCompatActivity() {
         Handler().postDelayed({
             callInitialActivity()
             finish()
-        }, 3000)
+        }, 1000)
     }
 
-    fun callInitialActivity() {
-        val intent = Intent(this, InitialActivity::class.java)
+    private fun callInitialActivity() {
+        val intent = Intent(this, FavoritesActivity::class.java)
         startActivity(intent)
     }
 }

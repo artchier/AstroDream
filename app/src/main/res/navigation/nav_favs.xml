@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_favs"
+    app:startDestination="@id/favRecyclerFragment">
+
+    <fragment
+        android:id="@+id/favRecyclerFragment"
+        android:name="com.example.astrodream.favorites.FavRecyclerFragment"
+        android:label="fragment_fav_recycler"
+        tools:layout="@layout/fragment_fav_recycler" >
+        <action
+            android:id="@+id/reload_favRecyclerFragment"
+            app:destination="@id/favRecyclerFragment" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_recentMarsFragment2"
+            app:destination="@id/recentMarsFragment2" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_favTodayFragment"
+            app:destination="@id/favTodayFragment" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_favGlobeFragment"
+            app:destination="@id/favGlobeFragment" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_favTechFragment"
+            app:destination="@id/favTechFragment" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_asteroidOrbitFragment"
+            app:destination="@id/asteroidOrbitFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recentMarsFragment2"
+        android:name="com.example.astrodream.mars.RecentMarsFragment"
+        android:label="fragment_recent_mars"
+        tools:layout="@layout/fragment_recent_mars" />
+    <fragment
+        android:id="@+id/favTodayFragment"
+        android:name="com.example.astrodream.favorites.FavTodayFragment"
+        android:label="fragment_fav_today"
+        tools:layout="@layout/fragment_fav_today" />
+    <fragment
+        android:id="@+id/favGlobeFragment"
+        android:name="com.example.astrodream.favorites.FavGlobeFragment"
+        android:label="fragment_fav_globe"
+        tools:layout="@layout/fragment_fav_globe" />
+    <fragment
+        android:id="@+id/favTechFragment"
+        android:name="com.example.astrodream.favorites.FavTechFragment"
+        android:label="fragment_fav_tech"
+        tools:layout="@layout/fragment_fav_tech" />
+    <fragment
+        android:id="@+id/asteroidOrbitFragment"
+        android:name="com.example.astrodream.AsteroidOrbitFragment"
+        android:label="fragment_asteroid_orbit"
+        tools:layout="@layout/fragment_asteroid_orbit" />
+</navigation>

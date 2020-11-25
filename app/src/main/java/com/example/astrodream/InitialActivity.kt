@@ -16,7 +16,7 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         }
 
         btAsteriodes.setOnClickListener {
-//            startActivity(Intent(this, ))
+            startActivity(Intent(this, AsteroidActivity::class.java))
         }
 
         btGlobo.setOnClickListener {

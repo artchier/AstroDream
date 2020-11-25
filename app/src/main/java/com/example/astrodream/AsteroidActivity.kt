@@ -1,6 +1,5 @@
 package com.example.astrodream
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -10,7 +9,7 @@ import com.example.astrodream.domain.Asteroids
 import com.example.astrodream.domain.AsteroidsAdapter
 import kotlinx.android.synthetic.main.activity_asteroid.*
 
-class AsteroidActivity : AppCompatActivity(), AsteroidsAdapter.OnClickAsteroidsListener {
+class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids), AsteroidsAdapter.OnClickAsteroidsListener {
 
     val adapter = AsteroidsAdapter(this, getAsteroids())
     var click = false
@@ -35,6 +34,7 @@ class AsteroidActivity : AppCompatActivity(), AsteroidsAdapter.OnClickAsteroidsL
             openCloseButton(this, R.id.fl_btn_perigosos, ListarAsteroidsPorNomeFragment.newInstance(adapter), findViewById(R.id.btn_superior_asteroids_4), R.id.ic_btn)
         }
 
+        setUpMenuBehavior()
     }
 
     fun openCloseButton(view: View, id_oldFragment: Int, newFragment: Fragment, btn: LinearLayout, ic_btn: Int) {

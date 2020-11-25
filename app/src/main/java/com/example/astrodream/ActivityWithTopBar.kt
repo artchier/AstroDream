@@ -70,7 +70,7 @@ abstract class ActivityWithTopBar(
         }
 
         llAsteroides.setOnClickListener {
-//            goToActivityIfNotAlreadyThere(::class.java)
+            goToActivityIfNotAlreadyThere(AsteroidActivity::class.java)
         }
 
         llGlobo.setOnClickListener {

@@ -71,4 +71,8 @@
     <string name="explorar_patentes">Explorar patentes</string>
     <string name="explorar_softwares">Explorar softwares</string>
     <string name="explorar_spinoffs">Explorar spinoffs</string>
+    <string name="listar_asteroides_por_data">Listar asteroides por data</string>
+    <string name="listar_asteroides_perigosos">Listar asteroides perigosos</string>
+    <string name="listar_asteroides_por_nome">Listar asteroides por nome</string>
+    <string name="listar_asteroides_pr_ximos">Listar asteroides próximos</string>
 </resources>

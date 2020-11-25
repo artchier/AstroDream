@@ -1,241 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dlAsteroids"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AsteroidActivity">
+    tools:context=".InitialActivity">
 
-    <include
-        android:id="@+id/include_background"
-        layout="@layout/background" />
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".AsteroidActivity">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <include
+            android:id="@+id/include_background"
+            layout="@layout/background" />
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/tbInitial"
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:menu="@menu/menu">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/homespun_regular"
-                    android:text="Asteroides"
-                    android:textColor="@android:color/white"
-                    android:textSize="35sp" />
-            </com.google.android.material.appbar.MaterialToolbar>
+                <include
+                    android:id="@+id/tbInitial"
+                    layout="@layout/app_tool_bar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/button_style" />
-
-            <LinearLayout
-                android:id="@+id/btn_asteroids_proximos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="5dp"
-                android:background="@drawable/button_style"
-                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/button_style" />
 
                 <LinearLayout
-                    android:id="@+id/btn_superior_asteroids_1"
+                    android:id="@+id/btn_asteroids_proximos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/button_style"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
-                        android:layout_weight="3"
-                        android:fontFamily="@font/roboto_light"
-                        android:text="Listar asteroides próximos"
-                        android:textColor="@color/white"
-                        android:textSize="25dp" />
-
-                    <ImageView
-                        android:id="@+id/ic_btn_1"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/btn_superior_asteroids_1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_arrow_down" />
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:layout_weight="3"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="@string/listar_asteroides_pr_ximos"
+                            android:textColor="@color/white"
+                            android:textSize="25sp" />
+
+                        <ImageView
+                            android:id="@+id/ic_btn_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_arrow_down" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fl_btn_proximos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
 
                 </LinearLayout>
 
-                <FrameLayout
-                    android:id="@+id/fl_btn_proximos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btn_asteroids_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="5dp"
-                android:background="@drawable/button_style"
-                android:orientation="vertical">
-
                 <LinearLayout
-                    android:id="@+id/btn_superior_asteroids_2"
+                    android:id="@+id/btn_asteroids_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/button_style"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
-                        android:layout_weight="3"
-                        android:fontFamily="@font/roboto_light"
-                        android:text="Listar asteroides por nome"
-                        android:textColor="@color/white"
-                        android:textSize="25dp" />
-
-                    <ImageView
-                        android:id="@+id/ic_btn_2"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/btn_superior_asteroids_2"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_arrow_down" />
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:layout_weight="3"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="@string/listar_asteroides_por_nome"
+                            android:textColor="@color/white"
+                            android:textSize="25sp" />
+
+                        <ImageView
+                            android:id="@+id/ic_btn_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_arrow_down" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fl_btn_nome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
 
                 </LinearLayout>
 
-                <FrameLayout
-                    android:id="@+id/fl_btn_nome"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btn_asteroids_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="5dp"
-                android:background="@drawable/button_style"
-                android:orientation="vertical">
-
                 <LinearLayout
-                    android:id="@+id/btn_superior_asteroids_3"
+                    android:id="@+id/btn_asteroids_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/button_style"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
-                        android:layout_weight="3"
-                        android:fontFamily="@font/roboto_light"
-                        android:text="Listar asteroides por data"
-                        android:textColor="@color/white"
-                        android:textSize="25dp" />
-
-                    <ImageView
-                        android:id="@+id/ic_btn_3"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/btn_superior_asteroids_3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_arrow_down" />
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:layout_weight="3"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="@string/listar_asteroides_por_data"
+                            android:textColor="@color/white"
+                            android:textSize="25sp" />
+
+                        <ImageView
+                            android:id="@+id/ic_btn_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_arrow_down" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fl_btn_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
 
                 </LinearLayout>
 
-                <FrameLayout
-                    android:id="@+id/fl_btn_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btn_asteroids_dangerous"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="5dp"
-                android:background="@drawable/button_style"
-                android:orientation="vertical">
-
                 <LinearLayout
-                    android:id="@+id/btn_superior_asteroids_4"
+                    android:id="@+id/btn_asteroids_dangerous"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/button_style"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_btn_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
-                        android:layout_weight="3"
-                        android:fontFamily="@font/roboto_light"
-                        android:text="Listar asteroides perigosos"
-                        android:textColor="@color/white"
-                        android:textSize="25dp" />
-
-                    <ImageView
-                        android:id="@+id/ic_btn"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/btn_superior_asteroids_4"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_arrow_down" />
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_btn_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:layout_weight="3"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="@string/listar_asteroides_perigosos"
+                            android:textColor="@color/white"
+                            android:textSize="25sp" />
+
+                        <ImageView
+                            android:id="@+id/ic_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_arrow_down" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fl_btn_perigosos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
 
                 </LinearLayout>
 
-                <FrameLayout
-                    android:id="@+id/fl_btn_perigosos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
             </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nvLateralMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/header_layout" />
+
+            <include layout="@layout/lateral_menu" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </com.google.android.material.navigation.NavigationView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

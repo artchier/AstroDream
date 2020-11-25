@@ -21,7 +21,7 @@ class AsteroidsAdapter(val listener: OnClickAsteroidsListener, var listAsteroids
     override fun getItemCount(): Int = listAsteroids.size
 
     override fun onBindViewHolder(holder: AsteroidsAdapter.AsteroidsViewHolder, position: Int) {
-        var asteroid = listAsteroids[position]
+        val asteroid = listAsteroids[position]
         holder.tv_name.text = asteroid.name
         holder.tv_date.text = "Data: ${asteroid.date}"
     }

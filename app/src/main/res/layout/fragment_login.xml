@@ -18,7 +18,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/grape"
+        android:backgroundTint="@color/gigas"
         android:layout_marginTop="20sp"
         android:textSize="18sp"
         android:text="@string/login"/>

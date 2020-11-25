@@ -56,7 +56,7 @@
     <string name="imagem_tecnologia">Imagem tecnologia</string>
 
     <string name="cancelar">Cancelar</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="selecionar_data">Selecionar data</string>
 
     <string name="explorar_tecnologias">Explorar tecnologias</string>
@@ -66,4 +66,8 @@
     <string name="explorar_patentes">Explorar patentes</string>
     <string name="explorar_softwares">Explorar softwares</string>
     <string name="explorar_spinoffs">Explorar spinoffs</string>
+
+    <string name="daily_image">Imagem do dia</string>
+    <string name="todays">Do dia</string>
+    <string name="previous">Anteriores</string>
 </resources>

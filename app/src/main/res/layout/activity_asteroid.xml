@@ -47,19 +47,21 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_margin="10dp"
-            android:background="@drawable/button_style"/>
+            android:background="@drawable/button_style" />
 
         <include
             android:id="@+id/btn_asteroids_proximos"
             layout="@layout/btn_asteroids"/>
 
-        <include
+        <ViewStub
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:id="@+id/btn_asteroids_name"
-            layout="@layout/btn_asteroids"/>
+            android:inflatedId="@layout/btn_asteroids" />
 
         <include
             android:id="@+id/btn_asteroids_date"
-            layout="@layout/btn_asteroids"/>
+            layout="@layout/btn_asteroids" />
 
         <include
             android:id="@+id/btn_asteroids_dangerous"

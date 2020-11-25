@@ -28,7 +28,7 @@ class AsteroidActivity : AppCompatActivity(), AsteroidsAdapter.OnClickAsteroidsL
         }
 
         btn_asteroids_date.apply {
-            openCloseButton(this, R.id.fl_btn_data, ListarAsteroidsPorNomeFragment.newInstance(adapter), findViewById(R.id.btn_superior_asteroids_3), R.id.ic_btn_3)
+            openCloseButton(this, R.id.fl_btn_data, ListarAsteroidsPorDataFragment.newInstance(adapter), findViewById(R.id.btn_superior_asteroids_3), R.id.ic_btn_3)
         }
 
         btn_asteroids_dangerous.apply {

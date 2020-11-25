@@ -3,19 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dlGlobe"
+    android:id="@+id/dlFavs"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GlobeActivity">
+    tools:context=".FavoritesActivity"
+    tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/background" />
+        <include
+            android:id="@+id/include"
+            layout="@layout/background" />
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/tbGlobe"
+            android:id="@+id/tbFavs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -28,57 +31,61 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/homespun_regular"
-                android:text="@string/globo"
+                android:text="@string/favoritos"
                 android:textColor="@android:color/white"
                 android:textSize="35sp" />
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <TextView
-            android:id="@+id/tvData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:theme="@style/NavigationView1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tbGlobe" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clGlobe"
+            android:id="@+id/favsBody"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="0dp"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/rounded_rectangle"
-            android:backgroundTint="@color/midnight_blue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/tbFavs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <ImageView
-                android:id="@+id/ivGlobe"
+            <fragment
+                android:id="@+id/navHostfragFavs"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_favs"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintHeight_default="spread"
+                app:layout_constraintBottom_toTopOf="@+id/bottomTabs"
+                tools:ignore="FragmentTagUsage" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/bottomTabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/imagem_globo" />
+                android:background="@null"
+                app:tabIconTint="@color/white"
+                app:tabTextColor="@color/comet"
+                app:tabSelectedTextColor="@color/white"
+                app:tabInlineLabel="true"
+                app:tabBackground="@drawable/mars_selector"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorGravity="top"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/textCapsOff">
+
+            </com.google.android.material.tabs.TabLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:backgroundTint="@color/gigas"
-            android:layout_margin="20dp"
-            android:src="@drawable/ic_calendar"
-            app:tint="@android:color/white"
-            android:contentDescription="@string/selecionar_data" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -86,7 +93,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

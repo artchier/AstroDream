@@ -31,4 +31,10 @@
         <item name="android:datePickerMode">calendar</item>
     </style>
 
+    <style name="textCapsOff" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
 </resources>

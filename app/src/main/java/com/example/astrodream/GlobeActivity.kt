@@ -1,6 +1,9 @@
 package com.example.astrodream
 
+<<<<<<< HEAD
 import android.content.DialogInterface
+=======
+>>>>>>> cbbdb35a7bbf120b604880449b43049c01130924
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.Menu
@@ -23,6 +26,7 @@ class GlobeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_globe)
 
         //Pega a imagem da API e mostra na ImageView
+        // TODO pegar essa imagem deve ser responsabilidade de algum service
         Glide.with(this).asBitmap()
             .load("https://api.nasa.gov/EPIC/archive/natural/2019/05/30/png/epic_1b_20190530011359.png?api_key=DEMO_KEY")
             .transform(RoundedCorners(50))
@@ -50,7 +54,7 @@ class GlobeActivity : AppCompatActivity() {
         var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         var month = Calendar.getInstance().get(Calendar.MONTH)
         var year = Calendar.getInstance().get(Calendar.YEAR)
-        var data = "$day/${month+1}/$year"
+        var data = "$day/${month + 1}/$year"
         tvData.text = data
 
         //clique do botão "Escolher Data"
@@ -59,14 +63,14 @@ class GlobeActivity : AppCompatActivity() {
             datePicker.updateDate(year, month, day)
             MaterialAlertDialogBuilder(this)
                 .setView(datePicker)
-                .setPositiveButton("Ok", DialogInterface.OnClickListener { _, _ ->
+                .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
                     day = datePicker.dayOfMonth
                     month = datePicker.month
                     year = datePicker.year
-                    data = "$day/${month+1}/$year"
+                    data = "$day/${month + 1}/$year"
                     tvData.text = data
-                })
-                .setNegativeButton("Cancelar", null)
+                }
+                .setNegativeButton(resources.getString(R.string.cancelar), null)
                 .show()
         }
     }
@@ -77,18 +81,17 @@ class GlobeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_lateral -> {
-                dlGlobe.openDrawer(GravityCompat.END)
-            }
+        if (item.itemId == R.id.menu_lateral) {
+            dlGlobe.openDrawer(GravityCompat.END)
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        if (dlGlobe.isDrawerOpen(GravityCompat.END))
+        if (dlGlobe.isDrawerOpen(GravityCompat.END)) {
             dlGlobe.closeDrawer(GravityCompat.END)
-        else
+        } else {
             finish()
+        }
     }
 }

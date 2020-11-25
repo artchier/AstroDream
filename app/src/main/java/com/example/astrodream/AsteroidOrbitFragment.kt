@@ -8,10 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_asteroid_orbit.view.*
-import kotlinx.android.synthetic.main.fragment_fav_asteroids.view.*
-import kotlinx.android.synthetic.main.fragment_fav_asteroids.view.ivAsteroid
-import kotlinx.android.synthetic.main.fragment_fav_asteroids.view.tvAsteroidData
-import kotlinx.android.synthetic.main.fragment_fav_asteroids.view.tvAsteroidName
 
 class AsteroidOrbitFragment : Fragment() {
 
@@ -24,39 +20,37 @@ class AsteroidOrbitFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_asteroid_orbit, container, false)
         try {
-            // Pega dados do bundle e atualiza a imagem e textos de acordo com o asteroide clicado
             if (requireArguments() != null) {
                 if (container != null) {
-                    // TODO: incluir todos os dados que serão passados pelo bundle
-                    // Salva dados do bundle em variaveis
+
+                    // TODO: buscar todos os dados que serão passados pelo bundle
                     val name = requireArguments().getString("name") as String
-                    val data = requireArguments().getString("data") as String
-                    val img = "https://s.yimg.com/ny/api/res/1.2/3P2Yc9yGrc99m.i3sSXWwA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https://media.zenfs.com/pt-br/canal_tech_990/800089564cde284dc55f155406c8e54e"
+                    val date = requireArguments().getString("date") as String
+                    val img = "https://s.yimg.com/ny/api/res/1.2/3P2Yc9yGrc99m.i3sSXWwA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https://media.zenfs.com/pt-br/canal_tech_990/800089564cde284dc55f155406c8e54e" //requireArguments().getString("img") as String
                     val classification = "Apollo [ NEO, PHA ]" //requireArguments().getString("classification") as String
                     val dateSun = "29/01/1980" //requireArguments().getString("dateSun") as String
                     val dist = "9,29" //requireArguments().getString("dist") as String
                     val mag = "18,6" //requireArguments().getString("mag") as String
                     val speed = "23" //requireArguments().getString("speed") as String
-                    // Acerta o nome
+
                     view.tvAsteroidName.text = "Asteroide ($name)"
-                    // Acerta a imagem
+
                     Glide.with(view).asBitmap()
                         .load(img)
                         .into(view.ivAsteroid)
-                    // Acerta os dados
+
                     view.tvAsteroidClass.text = "Classificação: $classification"
                     view.tvAsteroidProxSun.text = "Aproximação do sol: $dateSun"
-                    view.tvAsteroidProxEarth.text = "Aproximação da terra: $data"
+                    view.tvAsteroidProxEarth.text = "Aproximação da terra: $date"
                     view.tvAsteroidDistEarth.text = "Distância mínima da terra: $dist LD"
                     view.tvAsteroidMag.text = "Magnitude Absoluta: $mag"
                     view.tvAsteroidSpeed.text = "Velocidade: $speed km/s"
                 }
             }
-        } catch (e: Exception) {
-            Log.e("AsteroidOrbitFrag", e.toString())
+        } catch (e: IllegalStateException) {
+            Log.e("AsteroidOrbitFrag", "Bundle vazio!")
         }
         return view
     }

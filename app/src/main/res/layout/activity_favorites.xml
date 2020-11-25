@@ -49,19 +49,25 @@
             app:layout_constraintHeight_default="spread"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <fragment
-                android:id="@+id/navHostfragFavs"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/nav_favs"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/bottomTabs"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constrainedHeight="true"
                 app:layout_constraintHeight_default="spread"
-                app:layout_constraintBottom_toTopOf="@+id/bottomTabs"
-                tools:ignore="FragmentTagUsage" />
+                android:background="@drawable/round_top"
+                android:backgroundTint="@color/gigas">
+                <fragment
+                    android:id="@+id/navHostfragFavs"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/nav_favs"
+                    tools:ignore="FragmentTagUsage" />
+            </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/bottomTabs"

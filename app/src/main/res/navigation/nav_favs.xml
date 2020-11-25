@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_favRecyclerFragment_to_favAsteroidsFragment"
             app:destination="@id/favAsteroidsFragment" />
+        <action
+            android:id="@+id/action_favRecyclerFragment_to_asteroidOrbitFragment"
+            app:destination="@id/asteroidOrbitFragment" />
     </fragment>
     <fragment
         android:id="@+id/recentMarsFragment2"
@@ -54,4 +57,9 @@
         android:name="com.example.astrodream.favorites.FavAsteroidsFragment"
         android:label="fragment_fav_asteroids"
         tools:layout="@layout/fragment_fav_asteroids" />
+    <fragment
+        android:id="@+id/asteroidOrbitFragment"
+        android:name="com.example.astrodream.AsteroidOrbitFragment"
+        android:label="fragment_asteroid_orbit"
+        tools:layout="@layout/fragment_asteroid_orbit" />
 </navigation>

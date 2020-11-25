@@ -208,19 +208,21 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
             dlFavs.closeDrawer(GravityCompat.END)
         }
 
-        val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
-        val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
+        else {
+            val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
+            val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
 
-        if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment) {
-            startActivity(Intent(this, InitialActivity::class.java))
-        }
+            if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment) {
+                startActivity(Intent(this, InitialActivity::class.java))
+            }
 
-        if (currFrag != R.id.favRecyclerFragment) {
-            navController.navigateUp(appBarConfiguration)
-        }
+            if (currFrag != R.id.favRecyclerFragment) {
+                navController.navigateUp(appBarConfiguration)
+            }
 
-        if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment) {
-            bottomTabs.getTabAt(0)?.select()
+            if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment) {
+                bottomTabs.getTabAt(0)?.select()
+            }
         }
     }
 }

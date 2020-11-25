@@ -61,8 +61,11 @@ class AsteroidOrbitFragment : Fragment() {
         } catch (e: IllegalStateException) {
             Log.e("AsteroidOrbitFrag", "Bundle vazio!")
         }
-
-
         return view
     }
+
+    companion object {
+        fun newInstance() = AsteroidOrbitFragment()
+    }
+
 }

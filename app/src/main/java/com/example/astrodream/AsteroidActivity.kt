@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import com.example.astrodream.domain.Asteroids
 import com.example.astrodream.domain.AsteroidsAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
+import kotlinx.android.synthetic.main.asteroid_dialog.*
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids), AsteroidsAdapter.OnClickAsteroidsListener {
 
@@ -33,6 +37,13 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         btn_asteroids_dangerous.apply {
             openCloseButton(this, R.id.fl_btn_perigosos, ListarAsteroidsPorNomeFragment.newInstance(adapter), findViewById(R.id.btn_superior_asteroids_4), R.id.ic_btn)
         }
+
+//        btn_ver_orbita.setOnClickListener {
+//            supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.fl_asteroids, AsteroidOrbitFragment.newInstance())
+//                commit()
+//            }
+//        }
 
         setUpMenuBehavior()
     }
@@ -77,5 +88,17 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     }
 
     override fun onClickAsteroids(position: Int) {
+        run {
+            MaterialAlertDialogBuilder(this)
+                .setBackgroundInsetStart(70)
+                .setBackgroundInsetEnd(70)
+                .setBackgroundInsetTop(10)
+                .setBackgroundInsetBottom(100)
+                .setBackground(
+                    ContextCompat.getColor(this, android.R.color.transparent).toDrawable()
+                )
+                .setView(R.layout.asteroid_dialog)
+                .show()
+        }
     }
 }

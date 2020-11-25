@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AstroDream">
         <activity android:name=".AvatarActivity" />
+        <activity android:name=".FullScreenImgActivity" />
         <activity android:name=".GlobeActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".FavoritesActivity" />

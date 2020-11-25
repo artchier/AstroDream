@@ -82,17 +82,14 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
             "asteroid" -> {
                 val bundleRest: Bundle = Bundle().apply {
                     putString("name", "1979 XB")
-                    putString(
-                        "data",
-                        "Classificação: Apollo [ NEO, PHA ]\nAproximação do sol: 29/01/1980\nAproximação da terra:  17/12/1979\nDistância mínima da terra: 9.29 LD\nMagnitude Absoluta: 18,6\nVelocidade: 23 km/s"
-                    )
+                    putString("date", "17/12/1979")
                     putString(
                         "img",
                         "https://s.yimg.com/ny/api/res/1.2/3P2Yc9yGrc99m.i3sSXWwA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https://media.zenfs.com/pt-br/canal_tech_990/800089564cde284dc55f155406c8e54e"
                     )
                 }
                 findNavController().navigate(
-                    R.id.action_favRecyclerFragment_to_favAsteroidsFragment,
+                    R.id.action_favRecyclerFragment_to_asteroidOrbitFragment,
                     bundleRest
                 )
             }

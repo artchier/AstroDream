@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_astrodream_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AstroDream">
+        <activity android:name=".AvatarActivity" />
         <activity android:name=".GlobeActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".FavoritesActivity" />

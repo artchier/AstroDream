@@ -6,8 +6,7 @@
     android:id="@+id/dlInitial"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InitialActivity"
-    tools:openDrawer="end">
+    tools:context=".InitialActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

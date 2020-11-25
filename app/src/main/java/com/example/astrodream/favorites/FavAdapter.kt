@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.item_fav.view.*
 // Recebe também um listener que quando houver click irá chamar a interface que fará a conexão com a FavRecyclerFragment
 
 class FavAdapter (private val favsList: ArrayList<Fav>, val listener: OnClickFavListener): RecyclerView.Adapter<FavAdapter.FavViewHolder>() {
+
     interface OnClickFavListener {
         fun onClickFav(position: Int)
     }
@@ -41,7 +42,7 @@ class FavAdapter (private val favsList: ArrayList<Fav>, val listener: OnClickFav
     }
 
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
-        var fav: Fav = favsList.get(position)
+        val fav: Fav = favsList.get(position)
         // Pega a imagem do favorito e coloca na ImageView
         Glide.with(holder.itemView).asBitmap()
             .load(fav.img)

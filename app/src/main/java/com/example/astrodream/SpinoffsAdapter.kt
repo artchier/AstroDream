@@ -10,20 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 class SpinoffsAdapter(private val listSpinoffs: ArrayList<Spinoff>, var spinoffListener: OnClickSpinoffListener) :
     RecyclerView.Adapter<SpinoffsAdapter.SpinoffViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpinoffViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_spinoff, parent, false)
-        return SpinoffViewHolder(itemView)
+    interface OnClickSpinoffListener {
+        fun onClickSpinoff(position: Int)
     }
-
-    override fun onBindViewHolder(holder: SpinoffViewHolder, position: Int) {
-        val spinoff = listSpinoffs[position]
-        holder.ivSpinoff.setImageResource(spinoff.imgSpinoff)
-        holder.tvCodReferenceSpinoff.text = spinoff.codReferenceSpinoff
-        holder.tvTitleSpinoff.text = spinoff.titleSpinoff
-        holder.tvDescSpinoff.text = spinoff.descSpinoff
-    }
-
-    override fun getItemCount() = listSpinoffs.size
 
     inner class SpinoffViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var ivSpinoff: ImageView = itemView.findViewById(R.id.ivSpinoff)
@@ -43,7 +32,18 @@ class SpinoffsAdapter(private val listSpinoffs: ArrayList<Spinoff>, var spinoffL
         }
     }
 
-    interface OnClickSpinoffListener {
-        fun onClickSpinoff(position: Int)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpinoffViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_spinoff, parent, false)
+        return SpinoffViewHolder(itemView)
     }
+
+    override fun onBindViewHolder(holder: SpinoffViewHolder, position: Int) {
+        val spinoff = listSpinoffs[position]
+        holder.ivSpinoff.setImageResource(spinoff.imgSpinoff)
+        holder.tvCodReferenceSpinoff.text = spinoff.codReferenceSpinoff
+        holder.tvTitleSpinoff.text = spinoff.titleSpinoff
+        holder.tvDescSpinoff.text = spinoff.descSpinoff
+    }
+
+    override fun getItemCount() = listSpinoffs.size
 }

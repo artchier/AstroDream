@@ -2,7 +2,7 @@ package com.example.astrodream
 
 import android.os.Bundle
 
-class UserConfigActivity : ActivityWithTopBar(R.id.tbUserConfig, R.id.dlUserConfig) {
+class UserConfigActivity : ActivityWithTopBar(R.string.user_config, R.id.dlUserConfig) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

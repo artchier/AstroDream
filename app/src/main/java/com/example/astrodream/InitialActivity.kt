@@ -2,7 +2,7 @@ package com.example.astrodream
 
 import android.os.Bundle
 
-class InitialActivity : ActivityWithTopBar(R.id.tbInitial, R.id.dlInitial) {
+class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

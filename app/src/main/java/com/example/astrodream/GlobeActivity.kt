@@ -2,21 +2,14 @@ package com.example.astrodream
 
 import android.os.Bundle
 import android.view.ContextThemeWrapper
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.DatePicker
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_globe.*
-import kotlinx.android.synthetic.main.lateral_menu.*
 import java.util.*
 
-class GlobeActivity : ActivityWithTopBar(R.id.tbGlobe, R.id.dlGlobe) {
+class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -3,25 +3,19 @@ package com.example.astrodream
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_mars.*
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 import kotlinx.android.synthetic.main.lateral_menu.*
 
-class MarsActivity : ActivityWithTopBar(R.id.tbMars, R.id.dlMars) {
+class MarsActivity : ActivityWithTopBar(R.string.marte, R.id.dlMars) {
 
     private lateinit var navController : NavController
     private lateinit var appBarConfiguration : AppBarConfiguration

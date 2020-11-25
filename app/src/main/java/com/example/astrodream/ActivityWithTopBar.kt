@@ -11,24 +11,28 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.app_tool_bar.*
 
 abstract class ActivityWithTopBar(
-    private val toolBarId: Int,
+    private val toolbarTiteTitleId: Int,
     private val drawerLayoutId: Int
 ) : AppCompatActivity() {
 
-    lateinit var toolBar: MaterialToolbar
-    lateinit var drawerLayout: DrawerLayout
+    private var toolBar: MaterialToolbar? = null
+    private lateinit var drawerLayout: DrawerLayout
 
     fun setUpMenuBehavior() {
         // cada botão do menu lateral (lateral_menu.xml) deve ser obtido dessa forma
         val lateralMenu = findViewById<ConstraintLayout>(R.id.clLateralMenu)
         val btnSobre = lateralMenu.findViewById<AppCompatButton>(R.id.btnSobre)
 
-        toolBar = findViewById(toolBarId)
+        toolBar = if (toolBar == null) appToolBar else toolBar
         drawerLayout = findViewById(drawerLayoutId)
 
-        toolBar.title = ""
+        toolBar?.apply {
+            title = ""
+            tvToolBarTitle.text = resources.getString(toolbarTiteTitleId)
+        }
         setSupportActionBar(toolBar)
 
         btnSobre.setOnClickListener {

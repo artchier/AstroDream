@@ -28,24 +28,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="FragmentTagUsage" />
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <include
             android:id="@+id/tbTech"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
+            layout="@layout/app_tool_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/menu">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/homespun_regular"
-                android:text="@string/tecnologias"
-                android:textColor="@android:color/white"
-                android:textSize="35sp" />
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

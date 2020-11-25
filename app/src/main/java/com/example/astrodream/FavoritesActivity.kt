@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_favorites.*
 import kotlinx.android.synthetic.main.activity_mars.*
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 
-class FavoritesActivity : AppCompatActivity() {
+class FavoritesActivity : ActivityWithTopBar(R.id.tbFavs, R.id.dlFavs) {
 
     private lateinit var navController : NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
@@ -30,11 +30,6 @@ class FavoritesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
-
-        // Remove o titulo da toolbar e carrega a toolbar personalizada
-        // O nome está definido no TextView para permitir a fonte Homespun
-        tbFavs.title = ""
-        setSupportActionBar(tbFavs)
 
         // Configuração do Navigation Component
         // Nesta activity estão sendo usados 6 fragments:
@@ -202,20 +197,7 @@ class FavoritesActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    // Infla o menu lateral
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    // Abre o drawer
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_lateral) {
-            dlFavs.openDrawer(GravityCompat.END)
-        }
-        return super.onOptionsItemSelected(item)
+        setUpMenuBehavior()
     }
 
     override fun onSupportNavigateUp(): Boolean {

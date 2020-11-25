@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_mars.*
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 import kotlinx.android.synthetic.main.lateral_menu.*
 
-class MarsActivity : AppCompatActivity() {
+class MarsActivity : ActivityWithTopBar(R.id.tbMars, R.id.dlMars) {
 
     private lateinit var navController : NavController
     private lateinit var appBarConfiguration : AppBarConfiguration
@@ -29,25 +29,6 @@ class MarsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mars)
-
-        // Remove o titulo da toolbar e carrega a toolbar personalizada
-        // O nome está definido no TextView para permitir a fonte Homespun
-        tbMars.title = ""
-        setSupportActionBar(tbMars)
-
-        //clique do botão "Sobre"
-        btnSobre.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
-                .setBackgroundInsetStart(70)
-                .setBackgroundInsetEnd(70)
-                .setBackgroundInsetTop(10)
-                .setBackgroundInsetBottom(100)
-                .setBackground(
-                    ContextCompat.getColor(this, android.R.color.transparent).toDrawable()
-                )
-                .setView(R.layout.astrodialog)
-                .show()
-        }
 
         // Clique do botão "Favoritos"
         btnFavoritos.setOnClickListener {
@@ -104,20 +85,7 @@ class MarsActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    // Infla o menu lateral
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    // Abre o drawer
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_lateral) {
-            dlMars.openDrawer(GravityCompat.END)
-        }
-        return super.onOptionsItemSelected(item)
+        setUpMenuBehavior()
     }
 
     override fun onSupportNavigateUp(): Boolean {

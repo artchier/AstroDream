@@ -36,7 +36,7 @@
             android:layout_marginStart="25dp"
             android:background="@android:color/transparent"
             android:gravity="start|center"
-            android:text="@string/background"
+            android:text="@string/daily_image"
             android:textAllCaps="false"
             android:theme="@style/NavigationView1" />
     </LinearLayout>

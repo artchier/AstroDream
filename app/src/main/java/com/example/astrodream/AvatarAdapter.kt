@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.buy_avatar_dialog.view.*
 
 class AvatarAdapter(
     private val context: Context,
-    private val listAvatars: List<Int>
+    private val listAvatars: List<Int>,
+    private val ivAvatar: ImageView,
+    private val tvTotal: TextView,
+    private val dialog: View,
+    private val buyAvatarDialog: AlertDialog
 ) :
     RecyclerView.Adapter<AvatarAdapter.AvatarViewHolder>() {
 
@@ -33,16 +37,20 @@ class AvatarAdapter(
         holder.avatarImageView.setImageResource(avatar)
 
         holder.avatarImageView.setOnClickListener {
-            MaterialAlertDialogBuilder(context)
-                .setView(R.layout.buy_avatar_dialog)
-                .setBackgroundInsetTop(100)
-                .setBackgroundInsetBottom(100)
-                .setBackgroundInsetStart(100)
-                .setBackgroundInsetEnd(100)
-                .setBackground(
-                    ContextCompat.getColor(context, android.R.color.transparent).toDrawable()
-                )
-                .show()
+
+            dialog.btnComprar.setOnClickListener {
+                val total =
+                    tvTotal.text.toString().toInt() - dialog.tvPriceAvatar.text.toString().toInt()
+                tvTotal.text = total.toString()
+                ivAvatar.setImageResource(avatar)
+                buyAvatarDialog.dismiss()
+            }
+
+            dialog.btnCancelar.setOnClickListener {
+                buyAvatarDialog.dismiss()
+            }
+
+            buyAvatarDialog.show()
         }
     }
 

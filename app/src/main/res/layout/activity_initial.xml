@@ -32,26 +32,48 @@
             android:text="@string/imagem_de_hoje"
             android:textColor="@android:color/white"
             android:textSize="25sp"
-            app:layout_constraintBottom_toTopOf="@id/vpImagemHoje"
+            app:layout_constraintBottom_toTopOf="@id/ivDaily"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tbInitial" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vpImagemHoje"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/button_style"
-            android:clipToPadding="false"
-            android:foregroundGravity="center"
-            android:overScrollMode="never"
-            app:layout_constraintBottom_toTopOf="@id/tvFazerHoje"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvImagemHoje" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ivDaily"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintBottom_toTopOf="@id/tvFazerHoje"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvImagemHoje"
+                app:cardCornerRadius="30dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/apod"
+                        android:clipToPadding="false"
+                        android:foregroundGravity="center"
+                        android:overScrollMode="never" />
+                </androidx.cardview.widget.CardView>
+
+
+                <!--        <androidx.viewpager.widget.ViewPager-->
+<!--            android:id="@+id/vpImagemHoje"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="140dp"-->
+<!--            android:layout_marginStart="30dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="30dp"-->
+<!--            android:background="@drawable/button_style"-->
+<!--            android:clipToPadding="false"-->
+<!--            android:foregroundGravity="center"-->
+<!--            android:overScrollMode="never"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/tvFazerHoje"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tvImagemHoje" />-->
 
         <TextView
             android:id="@+id/tvFazerHoje"
@@ -64,7 +86,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vpImagemHoje" />
+            app:layout_constraintTop_toBottomOf="@id/ivDaily" />
 
         <Button
             android:id="@+id/btAsteriodes"

@@ -60,13 +60,12 @@ abstract class ActivityWithTopBar(
         val btnConfig = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnConfig)
         val btnSobre = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnSobre)
 
-        // TODO navegar parar as Activities apropriadas quando prontas
         btnAvatar.setOnClickListener {
             goToActivityIfNotAlreadyThere(AvatarActivity::class.java)
         }
 
         llBackground.setOnClickListener {
-//            goToActivityIfNotAlreadyThere(::class.java)
+            goToActivityIfNotAlreadyThere(DailyImageActivity::class.java)
         }
 
         llAsteroides.setOnClickListener {

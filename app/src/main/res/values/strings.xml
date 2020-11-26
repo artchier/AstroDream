@@ -12,7 +12,6 @@
     <string name="marte">Marte</string>
     <string name="tecnologias">Tecnologias</string>
     <string name="ver_avatar">Ver avatar</string>
-    <string name="background">Background</string>
 
     <string name="asteroides_minusculo">Asteroides</string>
     <string name="globo_minusculo">Globo</string>
@@ -41,8 +40,6 @@
     <string name="descricao_2">O aplicativo AstroDream fornece funcionalidades que disponibilizam informações e interações interessantes. Além de agregar conhecimento ao usuário, agrega uma experiência imersiva e divertida.</string>
 
     <string name="descricao_3">Nesse app você poderá explorar Marte, saberá sobre os asteróides que passam perto do nosso planeta, saberá sobre algumas tencologias incríveis desenvolvidas pela Nasa, verá imagens atualizadas da Terra e poderá alterar seu plano de fundo com imagens disponibilizadas pelo nosso app.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="comprar">Comprar</string>
 
@@ -61,7 +58,7 @@
     <string name="imagem_tecnologia">Imagem tecnologia</string>
 
     <string name="cancelar">Cancelar</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="selecionar_data">Selecionar data</string>
 
     <string name="explorar_tecnologias">Explorar tecnologias</string>
@@ -76,4 +73,8 @@
     <string name="listar_asteroides_por_nome">Listar asteroides por nome</string>
     <string name="listar_asteroides_pr_ximos">Listar asteroides próximos</string>
     <string name="date_template">Data: %s</string>
+
+    <string name="daily_image">Imagem do dia</string>
+    <string name="todays">Do dia</string>
+    <string name="previous">Anteriores</string>
 </resources>

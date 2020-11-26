@@ -26,6 +26,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxStrokeColor="@null"
+            android:textColorHint="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -36,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
+                android:textColor="@color/black"
                 android:maxLines="1"
                 android:inputType="text"
                 android:background="@color/transparent"/>
@@ -66,6 +68,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxStrokeColor="@null"
+            android:textColorHint="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -76,6 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/confirm_password"
+                android:textColor="@color/black"
                 android:inputType="textPassword"
                 android:background="@color/transparent"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -85,9 +89,10 @@
         android:id="@+id/btnSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/grape"
+        android:backgroundTint="@color/gigas"
         android:layout_marginTop="20sp"
         android:textSize="18sp"
-        android:text="@string/sign_in"/>
+        android:text="@string/sign_in"
+        android:textColor="@color/white"/>
 
 </LinearLayout>

@@ -77,4 +77,12 @@
     <string name="daily_image">Imagem do dia</string>
     <string name="todays">Do dia</string>
     <string name="previous">Anteriores</string>
+
+    <string name="nome_template">"Asteroide (%s)"</string>
+    <string name="classificacao_template">"Classificação: %s"</string>
+    <string name="aproximacao_sol_template">"Aproximação do sol: %s"</string>
+    <string name="aproximacao_terra_template">"Aproximação da terra: %s"</string>
+    <string name="distancia_template">"Distância mínima da terra: %s LD"</string>
+    <string name="magnitute_template">"Magnitude Absoluta: %s"</string>
+    <string name="velocidade_template">"Velocidade: %s km/s"</string>
 </resources>

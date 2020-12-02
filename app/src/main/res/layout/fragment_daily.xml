@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/round_top"
     android:backgroundTint="@color/gigas"
-    tools:context=".daily.DailyFragment">
+    tools:context=".ui.dailyimage.DailyImageFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

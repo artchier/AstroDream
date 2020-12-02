@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/recentMarsFragment"
-        android:name="com.example.astrodream.mars.RecentMarsFragment"
+        android:name="com.example.astrodream.ui.mars.RecentMarsFragment"
         android:label="fragment_recent_mars"
         tools:layout="@layout/fragment_recent_mars" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/historyMarsFragment"
-        android:name="com.example.astrodream.mars.HistoryMarsFragment"
+        android:name="com.example.astrodream.ui.mars.HistoryMarsFragment"
         android:label="fragment_history_mars"
         tools:layout="@layout/fragment_history_mars" >
         <action

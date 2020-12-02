@@ -7,7 +7,7 @@
     android:id="@+id/dlMars"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MarsActivity"
+    tools:context=".ui.mars.MarsActivity"
     tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout

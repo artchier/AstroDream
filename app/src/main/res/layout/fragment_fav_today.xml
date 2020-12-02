@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/round_top"
     android:backgroundTint="@color/gigas"
-    tools:context=".favorites.FavTodayFragment">
+    tools:context=".ui.favorites.FavTodayFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

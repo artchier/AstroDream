@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/listarAsteroidesProximosFragment"
-        android:name="com.example.astrodream.ListarAsteroidesProximosFragment"
+        android:name="com.example.astrodream.ui.asteroids.ListarAsteroidesProximosFragment"
         android:label="fragment_listar_asteroides_proximos"
         tools:layout="@layout/fragment_listar_asteroides_proximos" />
 </navigation>

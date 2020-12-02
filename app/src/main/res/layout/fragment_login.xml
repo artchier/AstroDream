@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".LoginFragment">
+    tools:context=".ui.login.LoginFragment">
 
     <include
         layout="@layout/user_email_password"

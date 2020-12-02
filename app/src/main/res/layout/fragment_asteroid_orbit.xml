@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AsteroidOrbitFragment">
+    tools:context=".ui.asteroids.AsteroidOrbitFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -41,12 +41,13 @@
                     android:id="@+id/tvAsteroidName"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:text="Nome"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:fontFamily="@font/roboto_light"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    tools:ignore="HardcodedText" />
             </LinearLayout>
             <ImageButton
                 android:id="@+id/starIcon"
@@ -92,37 +93,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/textAsteroid"
-                android:text="Data" />
+                android:text="Data"
+                tools:ignore="HardcodedText" />
             <TextView
                 android:id="@+id/tvAsteroidProxSun"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/textAsteroid"
-                android:text="Data"/>
+                android:text="Data"
+                tools:ignore="HardcodedText" />
             <TextView
                 android:id="@+id/tvAsteroidProxEarth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/textAsteroid"
-                android:text="Data"/>
+                android:text="Data"
+                tools:ignore="HardcodedText" />
             <TextView
                 android:id="@+id/tvAsteroidDistEarth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/textAsteroid"
-                android:text="Data"/>
+                android:text="Data"
+                tools:ignore="HardcodedText" />
             <TextView
                 android:id="@+id/tvAsteroidMag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/textAsteroid"
-                android:text="Data"/>
+                android:text="Data"
+                tools:ignore="HardcodedText" />
             <TextView
                 android:id="@+id/tvAsteroidSpeed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/textAsteroid"
-                android:text="Data"/>
+                android:text="Data"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
 

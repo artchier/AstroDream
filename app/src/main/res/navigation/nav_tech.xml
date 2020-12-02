@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/techFragment"
-        android:name="com.example.astrodream.TechFragment"
+        android:name="com.example.astrodream.ui.tech.TechFragment"
         android:label="fragment_tech"
         tools:layout="@layout/fragment_tech" >
         <action
@@ -22,17 +22,17 @@
     </fragment>
     <fragment
         android:id="@+id/patentsFragment"
-        android:name="com.example.astrodream.PatentsFragment"
+        android:name="com.example.astrodream.ui.tech.PatentsFragment"
         android:label="fragment_patents"
         tools:layout="@layout/fragment_patents" />
     <fragment
         android:id="@+id/softwaresFragment"
-        android:name="com.example.astrodream.SoftwaresFragment"
+        android:name="com.example.astrodream.ui.tech.SoftwaresFragment"
         android:label="fragment_softwares"
         tools:layout="@layout/fragment_softwares" />
     <fragment
         android:id="@+id/spinoffsFragment"
-        android:name="com.example.astrodream.SpinoffsFragment"
+        android:name="com.example.astrodream.ui.tech.SpinoffsFragment"
         android:label="fragment_spinoffs"
         tools:layout="@layout/fragment_spinoffs" />
 </navigation>

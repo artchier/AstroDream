@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".TechFragment">
+    tools:context=".ui.tech.TechFragment">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"

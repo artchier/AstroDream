@@ -6,13 +6,13 @@
     android:id="@+id/dlTech"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InitialActivity"
+    tools:context=".ui.initial.InitialActivity"
     tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".TechActivity">
+        tools:context=".ui.tech.TechActivity">
 
         <include layout="@layout/background" />
 

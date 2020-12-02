@@ -8,7 +8,7 @@
     android:backgroundTint="@color/gigas"
     android:paddingTop="30dp"
     android:paddingBottom="20dp"
-    tools:context=".daily.DailyHistoryFragment">
+    tools:context=".ui.dailyimage.DailyImageHistoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDailyHistory"

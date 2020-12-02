@@ -5,7 +5,7 @@
     android:id="@+id/dlAsteroids"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InitialActivity">
+    tools:context=".ui.initial.InitialActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".AsteroidActivity">
+        tools:context=".ui.asteroids.AsteroidActivity">
 
         <include
             android:id="@+id/include_background"

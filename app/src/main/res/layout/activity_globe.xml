@@ -6,7 +6,7 @@
     android:id="@+id/dlGlobe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GlobeActivity">
+    tools:context=".ui.globe.GlobeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

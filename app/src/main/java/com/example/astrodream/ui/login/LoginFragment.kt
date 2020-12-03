@@ -10,15 +10,14 @@ import android.widget.Button
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
 
-
-class LoginFragment : Fragment() {
+class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
 
         // TODO fazer login de verdade
         view.findViewById<Button>(R.id.btnLogin).setOnClickListener {
@@ -31,6 +30,9 @@ class LoginFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = LoginFragment()
+        fun newInstance(email: String, password: String) =
+            LoginFragment().apply {
+                arguments = creteBundle(email, password)
+            }
     }
 }

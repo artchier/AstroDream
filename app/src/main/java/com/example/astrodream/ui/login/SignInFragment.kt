@@ -11,36 +11,14 @@ import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
 import kotlinx.android.synthetic.main.user_email_password.view.*
 
-private const val ARG_EMAIL = "email"
-private const val ARG_PASSWORD = "password"
-
-class SignInFragment : Fragment() {
-
-    private var email: String? = null
-    private var password: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            email = it.getString(ARG_EMAIL)
-            password = it.getString(ARG_PASSWORD)
-        }
-    }
+class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_sign_in, container, false)
-
-        email?.apply {
-            view.tiEmail.setText(this)
-        }
-
-        password?.apply {
-            view.tiPassword.setText(this)
-        }
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
 
         // TODO fazer sign in de verdade
         view.findViewById<Button>(R.id.btnSignIn).setOnClickListener {
@@ -55,10 +33,7 @@ class SignInFragment : Fragment() {
         @JvmStatic
         fun newInstance(email: String, password: String) =
             SignInFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_EMAIL, email)
-                    putString(ARG_PASSWORD, password)
-                }
+                arguments = creteBundle(email, password)
             }
     }
 }

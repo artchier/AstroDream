@@ -37,14 +37,12 @@
             app:layout_constraintHeight_default="spread"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <fragment
-                android:id="@+id/navHostfragDaily"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+            <FrameLayout
+                android:id="@+id/dailyContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/round_top"
                 android:backgroundTint="@color/gigas"
-                app:navGraph="@navigation/nav_daily"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constrainedHeight="true"

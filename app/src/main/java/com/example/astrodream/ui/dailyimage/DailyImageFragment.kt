@@ -17,6 +17,10 @@ class DailyImageFragment : Fragment() {
 
     private lateinit var dailyPic: DailyImage
 
+    companion object {
+        fun newInstance() = DailyImageFragment()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

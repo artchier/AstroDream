@@ -1,19 +1,27 @@
 package com.example.astrodream.ui.dailyimage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.astrodream.R
 import com.example.astrodream.domain.DailyImage
 import kotlinx.android.synthetic.main.fragment_daily_history.view.*
 
+
 class DailyImageHistoryFragment : Fragment(), DailyImageAdapter.OnClickDailyListener {
 
     var listDailyPics = getDailyPics()
+
+    companion object {
+        fun newInstance() = DailyImageHistoryFragment()
+    }
+
     private val adapterDailyHistory = DailyImageAdapter(listDailyPics, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,10 +60,14 @@ class DailyImageHistoryFragment : Fragment(), DailyImageAdapter.OnClickDailyList
             putString("title", daily.title)
         }
         // Navega para o RecentMarsFragment com o bundle
-        findNavController().navigate(
-            R.id.action_dailyHistoryFragment_to_dailyFragment,
-            bundleRest
-        )
+        val fragment: Fragment = DailyImageFragment.newInstance()
+        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragment.arguments = bundleRest
+        fragmentTransaction.add(R.id.dailyContainer, fragment)
+        //fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+
     }
 
         private fun getDailyPics() : ArrayList<DailyImage> {
@@ -85,7 +97,23 @@ class DailyImageHistoryFragment : Fragment(), DailyImageAdapter.OnClickDailyList
                 "18 de Novembro de 2020",
                 "https://apod.nasa.gov/apod/image/2011/DoubleCluster_Polanski_960.jpg"
             )
-            return arrayListOf(day1, day2, day3, day4, day5, day1, day2, day3, day4, day5,day1, day2, day3, day4, day5)
+            return arrayListOf(
+                day1,
+                day2,
+                day3,
+                day4,
+                day5,
+                day1,
+                day2,
+                day3,
+                day4,
+                day5,
+                day1,
+                day2,
+                day3,
+                day4,
+                day5
+            )
         }
 
 }

@@ -7,19 +7,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.R
 import com.example.astrodream.domain.DailyImage
+import com.example.astrodream.services.service
+import kotlinx.android.synthetic.main.fragment_daily.*
 import kotlinx.android.synthetic.main.fragment_daily.view.*
 
 class DailyImageFragment : Fragment() {
 
-    private lateinit var dailyPic: DailyImage
-
     companion object {
         fun newInstance() = DailyImageFragment()
     }
+
+    private val viewModel : DailyViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,58 +33,41 @@ class DailyImageFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_daily, container, false)
-
-        dailyPic = DailyImage(
-            "Dark Molecular Cloud Barnard 68",
-            "22 de Novembro de 2020",
-            "https://apod.nasa.gov/apod/image/2011/barnard68v2_vlt_960.jpg"
-        )
-
-        view.tvTitle.text = dailyPic.title
-        Glide.with(view).asBitmap()
-            .load(dailyPic.img)
-            .into(view.ivDaily)
-        view.tvDate.text = dailyPic.date
-
-        view.ivDaily.setOnClickListener {
-            val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
-            intent.putExtra("img", dailyPic.img)
-            startActivity(intent)
-
-        }
-
-        try {
-            // Caso tenha dados no bundle, ou seja, o fragment foi carregado a partir do Historico,
-            // atualiza as imagens e textos de acordo com a informação do post clicado lá no Historico
-            if (container != null) {
-                // Salva dados do bundle em variaveis
-                val img: String = requireArguments().getString("img") as String
-                val date = requireArguments().getString("date") as String
-                val title = requireArguments().getString("title") as String
-                // Acerta o titulo
-                view.tvTitle.text = title
-                // Atualiza a imagem
-                Glide.with(view).asBitmap()
-                    .load(img)
-                    .into(view.ivDaily)
-                // Mostra a data
-                view.tvDate.text = date
-
-                view.ivDaily.setOnClickListener {
-                    val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
-                    intent.putExtra("img", img)
-                    startActivity(intent)
-
-                }
-            }
-            // TODO aqui está sempre dando erro por conta de requireArguments (não tem argumentos)
-        } catch (e: IllegalStateException) {
-            Log.e("RecentMarsFragment", e.toString())
-        }
-
-
-
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        Log.i("DailyImageFrag", "onViewCReated =====================================")
+        val dailyPic = viewModel.listResults.value!![0]
+
+        tvTitle.text = dailyPic.title
+        Glide.with(view).asBitmap()
+            .load(dailyPic.url)
+            .into(ivDaily)
+        tvDate.text = dailyPic.date
+
+        ivDaily.setOnClickListener {
+            val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
+            intent.putExtra("img", dailyPic.url)
+            startActivity(intent)
+        }
+
+        viewModel.focusResult.observe(viewLifecycleOwner, Observer<DailyImage> { daily ->
+            Log.i("DailyImageFrag", "onViewCReated OBSERVE =====================================")
+            tvTitle.text = daily.title
+            Glide.with(this).asBitmap()
+                .load(daily.url)
+                .into(ivDaily)
+            tvDate.text = daily.date
+
+            ivDaily.setOnClickListener {
+                val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
+                intent.putExtra("img", daily.url)
+                startActivity(intent)
+            }
+        })
     }
 
 

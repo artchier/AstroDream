@@ -3,14 +3,15 @@ package com.example.astrodream.ui.dailyimage
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.commit
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.astrodream.R
+import com.example.astrodream.domain.DailyImage
+import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.tabs.TabLayout
@@ -18,30 +19,39 @@ import kotlinx.android.synthetic.main.activity_daily_image.*
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 
 
-class DailyImageActivity : ActivityWithTopBar(R.string.daily_image, R.id.dlDaily) {
+class DailyImageActivity : ActivityWithTopBar(R.string.daily_image, R.id.dlDaily), DailyImageHistoryFragment.ActionListener {
+
+    private val viewModel by viewModels<DailyViewModel> {
+        object : ViewModelProvider.Factory{
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return DailyViewModel(service) as T
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_image)
         setUpMenuBehavior()
+
         addFragment(DailyImageFragment.newInstance(), "ROOT_TAG")
+
+        viewModel.popList("today", 20)
 
         // Nevegação entre os tabs inferiores
         bottomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> {
-                        val currFrag = currentFragment()
-                        if (currFrag is DailyImageFragment) {
-                            removeFragment(currFrag)
+                        val detailFrag = findFragByTAG("DETAIL_TAG")
+                        if (detailFrag is DailyImageFragment) {
+                            removeFragment(detailFrag)
                         }
+                        viewModel.selectRoot()
                         fromHistToRoot()
                     }
                     1 -> {
                         if (supportFragmentManager.findFragmentByTag("HIST_TAG") == null) {
-                            supportFragmentManager.commit {
-                                hide(supportFragmentManager.findFragmentByTag("ROOT_TAG")!!)
-                            }
                             addFragment(DailyImageHistoryFragment.newInstance(), "HIST_TAG")
                         } else {
                             fromRootToHist()
@@ -55,12 +65,9 @@ class DailyImageActivity : ActivityWithTopBar(R.string.daily_image, R.id.dlDaily
                     0 -> {
                     }
                     1 -> {
-                        val currFrag = currentFragment()
-                        if (currFrag is DailyImageFragment) {
-                            supportFragmentManager.commit {
-                                remove(currFrag)
-                                show(supportFragmentManager.findFragmentByTag("HIST_TAG")!!)
-                            }
+                        val detailFrag = findFragByTAG("DETAIL_TAG")
+                        if (detailFrag is DailyImageFragment) {
+                            supportFragmentManager.popBackStackImmediate("HIST_TAG", 0)
                         }
                     }
                 }
@@ -87,25 +94,24 @@ class DailyImageActivity : ActivityWithTopBar(R.string.daily_image, R.id.dlDaily
         }
 
         else {
-            val currFrag = currentFragment()
+            val detailFrag = findFragByTAG("DETAIL_TAG")
 
             if (bottomTabs.selectedTabPosition == 0) {
                 finish()
                 startActivity(Intent(this, InitialActivity::class.java))
             }
 
-            if (bottomTabs.selectedTabPosition != 0 && currFrag is DailyImageHistoryFragment) {
+            if (bottomTabs.selectedTabPosition != 0 && detailFrag !is DailyImageFragment) {
                 bottomTabs.getTabAt(0)?.select()
             }
 
-            if (bottomTabs.selectedTabPosition != 0 && currFrag is DailyImageFragment) {
+            if (bottomTabs.selectedTabPosition != 0 && detailFrag is DailyImageFragment) {
                 bottomTabs.getTabAt(1)?.select()
             }
         }
     }
 
     private fun addFragment(fragment: Fragment, tag: String) {
-//        val tag = if (fragment is DailyImageHistoryFragment) "FRAG_ADDED_HIST_TAG" else "FRAG_ADDED_DAILY_TAG"
         supportFragmentManager.commit {
             addToBackStack(tag)
             add(R.id.dailyContainer, fragment, tag)
@@ -132,6 +138,10 @@ class DailyImageActivity : ActivityWithTopBar(R.string.daily_image, R.id.dlDaily
         }
     }
 
-    private fun currentFragment(): Fragment = supportFragmentManager.findFragmentById(R.id.dailyContainer) as Fragment
+    private fun findFragByTAG(tag: String) = supportFragmentManager.findFragmentByTag(tag)
+
+    override fun showDetailView(daily: DailyImage) {
+        addFragment(DailyImageFragment.newInstance(), "DETAIL_TAG")
+    }
 
 }

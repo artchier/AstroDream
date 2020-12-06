@@ -4,21 +4,24 @@ import android.os.Bundle
 import android.widget.ExpandableListView
 import android.widget.ExpandableListView.OnChildClickListener
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import com.example.astrodream.ActivityWithTopBar
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroids
 import com.example.astrodream.domain.AsteroidsAdapter
 import com.example.astrodream.domain.AsteroidsAdapter.OnClickAsteroidsListener
 import com.example.astrodream.domain.ExpandableListAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sysdata.widget.accordion.ItemAdapter.OnItemClickedListener
 import kotlinx.android.synthetic.main.activity_asteroid2.*
 
 
-class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids2), OnClickAsteroidsListener {
-    lateinit var listView: ExpandableListView
-    val expandableListAdapter = ExpandableListAdapter(this)
-    val listButtonsName = ArrayList<String>()
-    val listAsteroids = HashMap<String, ArrayList<Asteroids>>()
+class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids2) {
+    private lateinit var listView: ExpandableListView
+    private val expandableListAdapter = ExpandableListAdapter(this)
+    private val listButtonsName = ArrayList<String>()
+    private val listAsteroids = HashMap<String, ArrayList<Asteroids>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,14 +59,19 @@ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroi
         listAsteroids[listButtonsName[3]] = list
     }
 
-    override fun onClickAsteroids(viewHolder: AsteroidsAdapter.AsteroidsViewHolder, position: Int) {
-        val itemHolder = viewHolder.itemView
-        when (position) {
-            OnItemClickedListener.ACTION_ID_COLLAPSED_VIEW -> Toast.makeText(this, "clicado", Toast.LENGTH_SHORT).show()
-            OnItemClickedListener.ACTION_ID_EXPANDED_VIEW -> Toast.makeText(this, "desclicado", Toast.LENGTH_SHORT).show()
-            else -> {
-            }
-    }
+    fun onClickAsteroids(viewHolder: AsteroidsAdapter.AsteroidsViewHolder, position: Int) {
+        run {
+            MaterialAlertDialogBuilder(this)
+                .setBackgroundInsetStart(70)
+                .setBackgroundInsetEnd(70)
+                .setBackgroundInsetTop(10)
+                .setBackgroundInsetBottom(100)
+                .setBackground(
+                    ContextCompat.getColor(this, android.R.color.transparent).toDrawable()
+                )
+                .setView(R.layout.astrodialog)
+                .show()
+        }
     }
 
 }

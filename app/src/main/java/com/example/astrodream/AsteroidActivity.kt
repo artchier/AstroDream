@@ -76,6 +76,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         )
     }
 
-    override fun onClickAsteroids(position: Int) {
+    override fun onClickAsteroids(viewHolder: AsteroidsAdapter.AsteroidsViewHolder, position: Int) {
+        TODO("Not yet implemented")
     }
+
 }

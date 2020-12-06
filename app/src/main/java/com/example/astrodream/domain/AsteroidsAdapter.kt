@@ -7,13 +7,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
 
+
 class AsteroidsAdapter(
     val listener: OnClickAsteroidsListener,
     var listAsteroids: ArrayList<Asteroids>
 ) : RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>() {
 
     interface OnClickAsteroidsListener {
-        fun onClickAsteroids(position: Int)
+        fun onClickAsteroids(viewHolder: AsteroidsAdapter.AsteroidsViewHolder, position: Int)
     }
 
     inner class AsteroidsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -26,7 +27,7 @@ class AsteroidsAdapter(
         }
 
         override fun onClick(v: View?) {
-            if (adapterPosition != RecyclerView.NO_POSITION) listener.onClickAsteroids(
+            if (adapterPosition != RecyclerView.NO_POSITION) listener.onClickAsteroids(this,
                 adapterPosition
             )
         }

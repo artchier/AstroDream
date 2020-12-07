@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
 import com.example.astrodream.domain.DailyImage
 import com.example.astrodream.services.service
@@ -24,8 +26,10 @@ class DailyImageHistoryFragment : Fragment(), DailyImageAdapter.OnClickDailyList
     private lateinit var adapterDailyHistory: DailyImageAdapter
     private lateinit var actionListener: ActionListener
 
+    private var hasOngoingRequest = false
+
     interface ActionListener {
-        fun showDetailView(daily: DailyImage)
+        fun showDetailView()
     }
 
     private val viewModel : DailyViewModel by activityViewModels()
@@ -42,17 +46,19 @@ class DailyImageHistoryFragment : Fragment(), DailyImageAdapter.OnClickDailyList
         view.rvDailyHistory.adapter = adapterDailyHistory
         view.rvDailyHistory.setHasFixedSize(true)
 
+        setUpScroller(view.rvDailyHistory, view.rvDailyHistory.layoutManager as GridLayoutManager)
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        viewModel.popList("today", 20)
-
         viewModel.listResults.observe(viewLifecycleOwner) {
             adapterDailyHistory.addList(it)
+            hasOngoingRequest = false
         }
+        hasOngoingRequest = true
     }
 
     override fun onAttach(context: Context) {
@@ -65,7 +71,28 @@ class DailyImageHistoryFragment : Fragment(), DailyImageAdapter.OnClickDailyList
     }
 
     override fun onClickDaily(position: Int) {
-        viewModel.selectDaily(position)
-        actionListener.showDetailView(viewModel.listResults.value!![position])
+        viewModel.selectDaily(adapterDailyHistory.listDailyPics[position])
+        actionListener.showDetailView()
+    }
+
+    private fun setUpScroller(recyclerView: RecyclerView, gridLayoutManager: GridLayoutManager) {
+        recyclerView.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy <= 0) return
+
+                    val lastVisbleItem = gridLayoutManager.findLastVisibleItemPosition()
+                    val itens = adapterDailyHistory.itemCount
+
+                    if (lastVisbleItem + 6 < itens || itens > 100) return
+                    if (hasOngoingRequest) return
+
+                    hasOngoingRequest = true
+                    viewModel.popList()
+                }
+            }
+        )
     }
 }

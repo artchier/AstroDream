@@ -26,6 +26,7 @@ class DailyImageFragment : Fragment() {
     }
 
     private val viewModel : DailyViewModel by activityViewModels()
+    lateinit var dailyPic: DailyImage
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,23 +40,23 @@ class DailyImageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.i("DailyImageFrag", "onViewCReated =====================================")
-        val dailyPic = viewModel.listResults.value!![0]
+        viewModel.listResults.observe(viewLifecycleOwner) {
+            dailyPic = viewModel.listResults.value!![0]
 
-        tvTitle.text = dailyPic.title
-        Glide.with(view).asBitmap()
-            .load(dailyPic.url)
-            .into(ivDaily)
-        tvDate.text = dailyPic.date
+            tvTitle.text = dailyPic.title
+            Glide.with(view).asBitmap()
+                .load(dailyPic.url)
+                .into(ivDaily)
+            tvDate.text = dailyPic.date
 
-        ivDaily.setOnClickListener {
-            val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
-            intent.putExtra("img", dailyPic.url)
-            startActivity(intent)
+            ivDaily.setOnClickListener {
+                val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
+                intent.putExtra("img", dailyPic.url)
+                startActivity(intent)
+            }
         }
 
         viewModel.focusResult.observe(viewLifecycleOwner, Observer<DailyImage> { daily ->
-            Log.i("DailyImageFrag", "onViewCReated OBSERVE =====================================")
             tvTitle.text = daily.title
             Glide.with(this).asBitmap()
                 .load(daily.url)

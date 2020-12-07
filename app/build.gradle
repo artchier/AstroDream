@@ -91,6 +91,6 @@ dependencies {
     // Annotation processor
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-    // Koda-time
-    implementation "com.github.debop:koda-time:1.2.1"
+    // ThreeTen Android Backport
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.0'
 }

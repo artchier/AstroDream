@@ -15,6 +15,7 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.tabs.TabLayout
+import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_daily_image.*
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 
@@ -34,9 +35,11 @@ class DailyImageActivity : ActivityWithTopBar(R.string.daily_image, R.id.dlDaily
         setContentView(R.layout.activity_daily_image)
         setUpMenuBehavior()
 
+        AndroidThreeTen.init(this)
+
         addFragment(DailyImageFragment.newInstance(), "ROOT_TAG")
 
-        viewModel.popList("today", 20)
+        viewModel.popList()
 
         // Nevegação entre os tabs inferiores
         bottomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -140,7 +143,7 @@ class DailyImageActivity : ActivityWithTopBar(R.string.daily_image, R.id.dlDaily
 
     private fun findFragByTAG(tag: String) = supportFragmentManager.findFragmentByTag(tag)
 
-    override fun showDetailView(daily: DailyImage) {
+    override fun showDetailView() {
         addFragment(DailyImageFragment.newInstance(), "DETAIL_TAG")
     }
 

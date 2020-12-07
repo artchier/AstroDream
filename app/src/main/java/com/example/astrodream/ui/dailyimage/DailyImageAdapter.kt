@@ -16,7 +16,7 @@ class DailyImageAdapter(
     val listener: OnClickDailyListener
 ) : RecyclerView.Adapter<DailyImageAdapter.DailyViewHolder>() {
 
-    private var listDailyPics = ArrayList<DailyImage>()
+    var listDailyPics = ArrayList<DailyImage>()
 
     interface OnClickDailyListener {
         fun onClickDaily(position: Int)

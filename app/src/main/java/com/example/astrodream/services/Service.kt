@@ -1,6 +1,6 @@
 package com.example.astrodream.services
 
-import com.example.astrodream.domain.DailyImage
+import com.example.astrodream.domain.PlainClass
 import com.google.gson.JsonObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,7 +13,13 @@ interface Service {
     suspend fun getDaily(
         @Query("date") date: String,
         @Query("api_key") apikey: String,
-    ): DailyImage
+    ): PlainClass
+
+    @GET("mars-photos/api/v1/rovers/curiosity/photos")
+    suspend fun getMars(
+        @Query("earth_date") date: String,
+        @Query("api_key") apikey: String,
+    ): JsonObject
 }
 
 // url

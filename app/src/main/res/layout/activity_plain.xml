@@ -1,9 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dlPlain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dailymars.PlainActivity">
+    tools:context=".ui.plaindailymars.PlainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/background" />
+
+        <include
+            android:id="@+id/tbPlain"
+            layout="@layout/app_tool_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/plainBody"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/tbPlain"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <FrameLayout
+                android:id="@+id/plainContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_top"
+                android:backgroundTint="@color/gigas"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintHeight_default="spread"
+                app:layout_constraintBottom_toTopOf="@+id/bottomTabs" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/bottomTabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@null"
+                app:tabIconTint="@color/white"
+                app:tabTextColor="@color/comet"
+                app:tabSelectedTextColor="@color/white"
+                app:tabInlineLabel="true"
+                app:tabBackground="@drawable/mars_selector"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorGravity="top"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/textCapsOff">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:icon="@drawable/ic_recent"
+                    android:text="@string/recente" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:icon="@drawable/ic_history"
+                    android:text="@string/previous" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nvLateralMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/header_layout" />
+
+            <include layout="@layout/lateral_menu" />
+
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

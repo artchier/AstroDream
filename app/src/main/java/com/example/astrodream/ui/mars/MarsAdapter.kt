@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.card_mars_post.view.*
 // ViewPager (dentro da RecentMarsFragment) com as imagens do dia selecionado
 class MarsAdapter(
     private val context: Context,
-    private val MarsPicsList: ArrayList<String>,
+    private val MarsPicsList: List<String>,
     private val postDate: String,
     private val maxTemp: String,
     private val minTemp: String

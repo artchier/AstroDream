@@ -2,18 +2,16 @@ package com.example.astrodream.mars
 
 import android.os.Bundle
 import android.widget.ExpandableListView
-import android.widget.ExpandableListView.OnChildClickListener
+import android.widget.ExpandableListView.OnGroupCollapseListener
+import android.widget.ExpandableListView.OnGroupExpandListener
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import com.example.astrodream.ActivityWithTopBar
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroids
-import com.example.astrodream.domain.AsteroidsAdapter
-import com.example.astrodream.domain.AsteroidsAdapter.OnClickAsteroidsListener
 import com.example.astrodream.domain.ExpandableListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.sysdata.widget.accordion.ItemAdapter.OnItemClickedListener
 import kotlinx.android.synthetic.main.activity_asteroid2.*
 
 
@@ -27,20 +25,36 @@ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_asteroid2)
 
+        getListas()
+
         listView = exp_list_view_asteroids
         expandableListAdapter.addListButtons(listButtonsName)
         expandableListAdapter.addListAsteroids(listAsteroids)
 
         listView.setOnChildClickListener{ parent, view, groupPosition, childPosition, id ->
-
+                onClickAsteroids(childPosition)
             false
         }
 
-        getListas()
+        listView.setOnGroupExpandListener(OnGroupExpandListener { groupPosition ->
+            Toast.makeText(
+                applicationContext,
+                listButtonsName[groupPosition] + " Expanded",
+                Toast.LENGTH_SHORT
+            ).show()
+        })
+
+        listView.setOnGroupCollapseListener(OnGroupCollapseListener { groupPosition ->
+            Toast.makeText(
+                applicationContext,
+                listButtonsName[groupPosition] + " Collapsed",
+                Toast.LENGTH_SHORT
+            ).show()
+        })
 
         listView.setAdapter(expandableListAdapter)
 
-        setUpMenuBehavior()
+        //setUpMenuBehavior()
     }
 
     private fun getListas() {
@@ -59,7 +73,7 @@ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroi
         listAsteroids[listButtonsName[3]] = list
     }
 
-    fun onClickAsteroids(viewHolder: AsteroidsAdapter.AsteroidsViewHolder, position: Int) {
+    private fun onClickAsteroids(position: Int) {
         run {
             MaterialAlertDialogBuilder(this)
                 .setBackgroundInsetStart(70)
@@ -69,9 +83,8 @@ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroi
                 .setBackground(
                     ContextCompat.getColor(this, android.R.color.transparent).toDrawable()
                 )
-                .setView(R.layout.astrodialog)
+                .setView(R.layout.asteroid_dialog)
                 .show()
         }
     }
-
 }

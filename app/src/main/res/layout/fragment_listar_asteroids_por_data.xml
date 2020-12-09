@@ -37,15 +37,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_asteroiddata_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_btn_asteroids"
-                android:layout_marginBottom="10dp"
-                android:nestedScrollingEnabled="false"/>
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

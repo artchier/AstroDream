@@ -3,18 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_asteroids"
-    app:startDestination="@id/buttonAsteroidFragment">
+    app:startDestination="@id/asteroidsFragment">
+
     <fragment
-        android:id="@+id/buttonAsteroidFragment"
-        android:name="com.example.astrodream.ButtonAsteroidFragment"
-        android:label="ButtonAsteroidFragment" >
+        android:id="@+id/asteroidsFragment"
+        android:name="com.example.astrodream.asteroids.AsteroidsFragment"
+        android:label="fragment_asteroids"
+        tools:layout="@layout/fragment_asteroids" >
         <action
-            android:id="@+id/action_buttonAsteroidFragment_to_listarAsteroidesProximosFragment"
-            app:destination="@id/listarAsteroidesProximosFragment" />
+            android:id="@+id/action_asteroidsFragment_to_asteroidsDetailsFragment"
+            app:destination="@id/asteroidsDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/listarAsteroidesProximosFragment"
-        android:name="com.example.astrodream.ListarAsteroidesProximosFragment"
-        android:label="fragment_listar_asteroides_proximos"
-        tools:layout="@layout/fragment_listar_asteroides_proximos" />
+        android:id="@+id/asteroidsDetailsFragment"
+        android:name="com.example.astrodream.asteroids.AsteroidsDetailsFragment"
+        android:label="fragment_asteroids_details"
+        tools:layout="@layout/fragment_asteroids_details" >
+        <action
+            android:id="@+id/action_asteroidsDetailsFragment_to_asteroidsFragment"
+            app:destination="@id/asteroidsFragment" />
+    </fragment>
+
 </navigation>

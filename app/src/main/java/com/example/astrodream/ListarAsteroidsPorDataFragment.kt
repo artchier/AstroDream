@@ -17,7 +17,6 @@ class ListarAsteroidsPorDataFragment(var adapter: RecyclerView.Adapter<Asteroids
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_listar_asteroids_por_data, container, false)
-        view.rv_asteroiddata_btn.adapter = adapter
         return view
     }
 

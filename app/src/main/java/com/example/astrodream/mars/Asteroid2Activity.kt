@@ -7,6 +7,10 @@ import android.widget.ExpandableListView.OnGroupExpandListener
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.astrodream.ActivityWithTopBar
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroids
@@ -20,12 +24,14 @@ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroi
     private val expandableListAdapter = ExpandableListAdapter(this)
     private val listButtonsName = ArrayList<String>()
     private val listAsteroids = HashMap<String, ArrayList<Asteroids>>()
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_asteroid2)
 
         getListas()
+        navController = findNavController(R.id.fl_imagem_asteroids)
 
         listView = exp_list_view_asteroids
         expandableListAdapter.addListButtons(listButtonsName)
@@ -53,6 +59,8 @@ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroi
         })
 
         listView.setAdapter(expandableListAdapter)
+
+
 
         //setUpMenuBehavior()
     }

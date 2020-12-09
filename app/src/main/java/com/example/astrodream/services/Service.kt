@@ -2,6 +2,7 @@ package com.example.astrodream.services
 
 import com.example.astrodream.domain.Patent
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.domain.Software
 import com.google.gson.JsonObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,6 +28,11 @@ interface Service {
     suspend fun getPatents(
         @Query("api_key") apikey: String
     ) : Patent
+
+    @GET("techtransfer/software/")
+    suspend fun getSoftwares(
+        @Query("api_key") apikey: String
+    ) : Software
 }
 
 // url

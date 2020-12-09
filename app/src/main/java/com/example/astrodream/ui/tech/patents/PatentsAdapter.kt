@@ -12,7 +12,7 @@ import com.example.astrodream.R
 class PatentsAdapter(var patentListener: OnClickPatentListener, val context: Context) :
     RecyclerView.Adapter<PatentsAdapter.PatentViewHolder>() {
 
-    private val patents = arrayListOf<List<String?>>()
+    private val patents = arrayListOf<List<String>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PatentViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_patent, parent, false)

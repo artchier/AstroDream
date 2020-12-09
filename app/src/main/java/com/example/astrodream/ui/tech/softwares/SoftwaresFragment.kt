@@ -1,4 +1,4 @@
-package com.example.astrodream.ui.tech
+package com.example.astrodream.ui.tech.softwares
 
 import android.content.Context
 import android.os.Bundle
@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.astrodream.R
 import com.example.astrodream.domain.Software
+import com.example.astrodream.ui.tech.TechActivity
 import kotlinx.android.synthetic.main.fragment_softwares.view.*
 import kotlinx.android.synthetic.main.item_software.*
 

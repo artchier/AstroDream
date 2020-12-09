@@ -1,4 +1,4 @@
-package com.example.astrodream.ui.tech
+package com.example.astrodream.ui.tech.patents
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,10 +8,32 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
-import com.example.astrodream.domain.Patent
 
-class PatentsAdapter(private val listPatents: ArrayList<Patent>, var patentListener: OnClickPatentListener, val context: Context) :
+class PatentsAdapter(var patentListener: OnClickPatentListener, val context: Context) :
     RecyclerView.Adapter<PatentsAdapter.PatentViewHolder>() {
+
+    private val patents = arrayListOf<List<String?>>()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PatentViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_patent, parent, false)
+        return  PatentViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: PatentViewHolder, position: Int) {
+        val patent = patents[position]
+
+        holder.ivPatent.setImageResource(R.drawable.ic_tecnologia)
+        holder.tvCodReferencePatent.text = patent[1]
+        holder.tvTitlePatent.text = patent[2]
+        holder.tvDescPatent.text = patent[3]
+    }
+
+    override fun getItemCount() = patents.size
+
+    fun addPatent(p: List<List<String>>) {
+        patents.addAll(p)
+        notifyDataSetChanged()
+    }
 
     interface OnClickPatentListener {
         fun onClickPatent(position: Int)
@@ -34,20 +56,4 @@ class PatentsAdapter(private val listPatents: ArrayList<Patent>, var patentListe
             }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PatentViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_patent, parent, false)
-        return  PatentViewHolder(itemView)
-    }
-
-    override fun onBindViewHolder(holder: PatentViewHolder, position: Int) {
-        val patent = listPatents[position]
-
-        holder.ivPatent.setImageResource(patent.imgPatent)
-        holder.tvCodReferencePatent.text = patent.codReferencePatent
-        holder.tvTitlePatent.text = patent.titlePatent
-        holder.tvDescPatent.text = patent.descPatent
-    }
-
-    override fun getItemCount() = listPatents.size
 }

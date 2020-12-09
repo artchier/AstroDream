@@ -1,5 +1,6 @@
 package com.example.astrodream.services
 
+import com.example.astrodream.domain.Patent
 import com.example.astrodream.domain.PlainClass
 import com.google.gson.JsonObject
 import retrofit2.Retrofit
@@ -20,6 +21,12 @@ interface Service {
         @Query("earth_date") date: String,
         @Query("api_key") apikey: String,
     ): JsonObject
+
+    //Tech
+    @GET("techtransfer/patent/")
+    suspend fun getPatents(
+        @Query("api_key") apikey: String
+    ) : Patent
 }
 
 // url

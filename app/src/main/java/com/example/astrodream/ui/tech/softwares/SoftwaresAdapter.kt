@@ -1,4 +1,4 @@
-package com.example.astrodream.ui.tech
+package com.example.astrodream.ui.tech.softwares
 
 import android.view.LayoutInflater
 import android.view.View

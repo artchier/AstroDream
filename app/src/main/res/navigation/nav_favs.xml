@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/favRecyclerFragment"
-        android:name="com.example.astrodream.favorites.FavRecyclerFragment"
+        android:name="com.example.astrodream.ui.favorites.FavRecyclerFragment"
         android:label="fragment_fav_recycler"
         tools:layout="@layout/fragment_fav_recycler" >
         <action
@@ -36,17 +36,17 @@
         tools:layout="@layout/fragment_recent_mars" />
     <fragment
         android:id="@+id/favTodayFragment"
-        android:name="com.example.astrodream.favorites.FavTodayFragment"
+        android:name="com.example.astrodream.ui.favorites.FavTodayFragment"
         android:label="fragment_fav_today"
         tools:layout="@layout/fragment_fav_today" />
     <fragment
         android:id="@+id/favGlobeFragment"
-        android:name="com.example.astrodream.favorites.FavGlobeFragment"
+        android:name="com.example.astrodream.ui.favorites.FavGlobeFragment"
         android:label="fragment_fav_globe"
         tools:layout="@layout/fragment_fav_globe" />
     <fragment
         android:id="@+id/favTechFragment"
-        android:name="com.example.astrodream.favorites.FavTechFragment"
+        android:name="com.example.astrodream.ui.favorites.FavTechFragment"
         android:label="fragment_fav_tech"
         tools:layout="@layout/fragment_fav_tech" />
     <fragment

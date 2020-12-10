@@ -11,13 +11,13 @@
         android:roundIcon="@mipmap/ic_astrodream_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AstroDream">
-        <activity android:name=".ui.plaindailymars.PlainActivity"></activity>
+        <activity android:name=".ui.plaindailymars.PlainActivity" />
         <activity android:name=".ui.dailyimage.DailyImageActivity" />
         <activity android:name=".ui.avatar.AvatarActivity" />
         <activity android:name=".ui.FullScreenImgActivity" />
         <activity android:name=".ui.globe.GlobeActivity" />
         <activity android:name=".ui.login.LoginActivity" />
-        <activity android:name=".ui.favorites.FavoritesActivity" />
+        <activity android:name="com.example.astrodream.ui.favorites.FavoritesActivity" />
         <activity android:name=".ui.asteroids.AsteroidActivity" />
         <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>

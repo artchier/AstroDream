@@ -3,11 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dlDaily"
+    android:id="@+id/dlPlain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dailyimage.DailyImageActivity"
-    tools:openDrawer="end">
+    tools:context=".ui.plaindailymars.PlainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,27 +17,27 @@
             layout="@layout/background" />
 
         <include
-            android:id="@+id/tbDaily"
+            android:id="@+id/tbPlain"
             layout="@layout/app_tool_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/marsBody"
+            android:id="@+id/plainBody"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
             android:layout_margin="10dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/tbDaily"
+            app:layout_constraintTop_toBottomOf="@+id/tbPlain"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constrainedHeight="true"
             app:layout_constraintHeight_default="spread"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <FrameLayout
-                android:id="@+id/dailyContainer"
+                android:id="@+id/plainContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/round_top"
@@ -68,13 +67,11 @@
                 app:tabTextAppearance="@style/textCapsOff">
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabTodays"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:icon="@drawable/ic_recent"
-                    android:text="@string/todays" />
+                    android:text="@string/recente" />
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabPrevious"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:icon="@drawable/ic_history"

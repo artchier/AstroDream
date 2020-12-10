@@ -85,4 +85,6 @@
     <string name="distancia_template">"Distância mínima da terra: %s LD"</string>
     <string name="magnitute_template">"Magnitude Absoluta: %s"</string>
     <string name="velocidade_template">"Velocidade: %s km/s"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

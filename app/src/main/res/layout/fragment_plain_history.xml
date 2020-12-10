@@ -8,14 +8,14 @@
     android:backgroundTint="@color/gigas"
     android:paddingTop="30dp"
     android:paddingBottom="20dp"
-    tools:context=".ui.dailyimage.DailyImageHistoryFragment">
+    tools:context=".ui.plaindailymars.PlainHistoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDailyHistory"
+        android:id="@+id/rvHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
-        tools:listitem="@layout/item_daily" />
+        tools:listitem="@layout/item_detail" />
 
 </FrameLayout>

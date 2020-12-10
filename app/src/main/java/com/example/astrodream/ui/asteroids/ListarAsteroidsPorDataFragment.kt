@@ -13,7 +13,7 @@ class ListarAsteroidsPorDataFragment(var adapter: RecyclerView.Adapter<Asteroids
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_listar_asteroids_por_data, container, false)
         return view
     }

@@ -15,7 +15,7 @@ class ListarAsteroidsPorNomeFragment(var adapter: RecyclerView.Adapter<Asteroids
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_listar_asteroids_por_nome, container, false)
         view.rv_asteroidnome_btn.adapter = adapter
         return view

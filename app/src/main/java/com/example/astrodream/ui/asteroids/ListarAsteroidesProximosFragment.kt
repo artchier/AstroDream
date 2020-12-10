@@ -14,7 +14,7 @@ class ListarAsteroidesProximosFragment(var adapter: RecyclerView.Adapter<Asteroi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_listar_asteroides_proximos, container, false)
         view.rv_asteroid_btn.adapter = adapter
         return view

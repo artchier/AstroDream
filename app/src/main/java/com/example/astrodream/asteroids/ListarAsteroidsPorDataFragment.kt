@@ -1,4 +1,4 @@
-package com.example.astrodream
+package com.example.astrodream.asteroids
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,9 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.astrodream.domain.AsteroidsAdapter
-import kotlinx.android.synthetic.main.fragment_listar_asteroids_por_data.view.*
-import kotlinx.android.synthetic.main.fragment_listar_asteroids_por_nome.view.*
+import com.example.astrodream.R
+import com.example.astrodream.asteroids.domain.AsteroidsAdapter
 
 class ListarAsteroidsPorDataFragment(var adapter: RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>) : Fragment() {
 
@@ -21,6 +20,9 @@ class ListarAsteroidsPorDataFragment(var adapter: RecyclerView.Adapter<Asteroids
     }
 
     companion object {
-        fun newInstance(adapter: RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>) = ListarAsteroidsPorDataFragment(adapter)
+        fun newInstance(adapter: RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>) =
+            ListarAsteroidsPorDataFragment(
+                adapter
+            )
     }
 }

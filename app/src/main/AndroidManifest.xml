@@ -11,18 +11,15 @@
         android:roundIcon="@mipmap/ic_astrodream_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AstroDream">
-        <activity android:name=".mars.Asteroid2Activity"></activity>
+        <activity android:name=".asteroids.AsteroidActivity"></activity>
         <activity android:name=".AvatarActivity" />
         <activity android:name=".FullScreenImgActivity" />
         <activity android:name=".GlobeActivity" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".FavoritesActivity" />
-        <activity android:name=".AsteroidActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

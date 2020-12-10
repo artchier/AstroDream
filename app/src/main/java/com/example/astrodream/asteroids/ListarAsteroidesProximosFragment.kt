@@ -1,14 +1,13 @@
-package com.example.astrodream
+package com.example.astrodream.asteroids
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.astrodream.domain.AsteroidsAdapter
-import kotlinx.android.synthetic.main.fragment_listar_asteroides_proximos.*
+import com.example.astrodream.R
+import com.example.astrodream.asteroids.domain.AsteroidsAdapter
 import kotlinx.android.synthetic.main.fragment_listar_asteroides_proximos.view.*
 
 class ListarAsteroidesProximosFragment(var adapter: RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>) : Fragment() {
@@ -23,6 +22,9 @@ class ListarAsteroidesProximosFragment(var adapter: RecyclerView.Adapter<Asteroi
     }
 
     companion object {
-        fun newInstance(adapter: RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>) = ListarAsteroidesProximosFragment(adapter)
+        fun newInstance(adapter: RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>) =
+            ListarAsteroidesProximosFragment(
+                adapter
+            )
     }
 }

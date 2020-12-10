@@ -51,7 +51,7 @@
         tools:layout="@layout/fragment_fav_tech" />
     <fragment
         android:id="@+id/asteroidOrbitFragment"
-        android:name="com.example.astrodream.AsteroidOrbitFragment"
+        android:name="com.example.astrodream.asteroids.AsteroidOrbitFragment"
         android:label="fragment_asteroid_orbit"
         tools:layout="@layout/fragment_asteroid_orbit" />
 </navigation>

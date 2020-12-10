@@ -1,25 +1,20 @@
-package com.example.astrodream.mars
+package com.example.astrodream.asteroids
 
 import android.os.Bundle
 import android.widget.ExpandableListView
-import android.widget.ExpandableListView.OnGroupCollapseListener
-import android.widget.ExpandableListView.OnGroupExpandListener
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.astrodream.ActivityWithTopBar
 import com.example.astrodream.R
-import com.example.astrodream.domain.Asteroids
-import com.example.astrodream.domain.ExpandableListAdapter
+import com.example.astrodream.asteroids.domain.Asteroids
+import com.example.astrodream.asteroids.domain.ExpandableListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_asteroid2.*
+import kotlinx.android.synthetic.main.activity_asteroid.*
 
 
-class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids2) {
+class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
     private lateinit var listView: ExpandableListView
     private val expandableListAdapter = ExpandableListAdapter(this)
     private val listButtonsName = ArrayList<String>()
@@ -28,7 +23,7 @@ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_asteroid2)
+        setContentView(R.layout.activity_asteroid)
 
         getListas()
         navController = findNavController(R.id.fl_imagem_asteroids)
@@ -42,27 +37,9 @@ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroi
             false
         }
 
-        listView.setOnGroupExpandListener(OnGroupExpandListener { groupPosition ->
-            Toast.makeText(
-                applicationContext,
-                listButtonsName[groupPosition] + " Expanded",
-                Toast.LENGTH_SHORT
-            ).show()
-        })
-
-        listView.setOnGroupCollapseListener(OnGroupCollapseListener { groupPosition ->
-            Toast.makeText(
-                applicationContext,
-                listButtonsName[groupPosition] + " Collapsed",
-                Toast.LENGTH_SHORT
-            ).show()
-        })
-
         listView.setAdapter(expandableListAdapter)
 
-
-
-        //setUpMenuBehavior()
+        setUpMenuBehavior()
     }
 
     private fun getListas() {

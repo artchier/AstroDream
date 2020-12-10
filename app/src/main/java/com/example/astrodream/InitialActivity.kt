@@ -2,7 +2,7 @@ package com.example.astrodream
 
 import android.content.Intent
 import android.os.Bundle
-import com.example.astrodream.mars.Asteroid2Activity
+import com.example.astrodream.asteroids.AsteroidActivity
 import kotlinx.android.synthetic.main.activity_initial.*
 
 class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
@@ -17,7 +17,7 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         }
 
         btAsteriodes.setOnClickListener {
-            startActivity(Intent(this, Asteroid2Activity::class.java))
+            startActivity(Intent(this, AsteroidActivity::class.java))
         }
 
         btGlobo.setOnClickListener {

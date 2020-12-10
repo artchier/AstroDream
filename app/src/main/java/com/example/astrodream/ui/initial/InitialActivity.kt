@@ -8,7 +8,7 @@ import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
 import com.example.astrodream.ui.globe.GlobeActivity
-import com.example.astrodream.asteroids.AsteroidActivity
+import com.example.astrodream.ui.asteroids.AsteroidActivity
 import kotlinx.android.synthetic.main.activity_initial.*
 
 class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {

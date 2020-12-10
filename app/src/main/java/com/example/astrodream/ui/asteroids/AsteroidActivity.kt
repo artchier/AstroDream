@@ -1,4 +1,4 @@
-package com.example.astrodream.asteroids
+package com.example.astrodream.ui.asteroids
 
 import android.os.Bundle
 import android.widget.ExpandableListView
@@ -6,10 +6,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.example.astrodream.ActivityWithTopBar
 import com.example.astrodream.R
-import com.example.astrodream.asteroids.domain.Asteroids
-import com.example.astrodream.asteroids.domain.ExpandableListAdapter
+import com.example.astrodream.domain.Asteroids
+import com.example.astrodream.domain.ExpandableListAdapter
+import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="230dp"
-    tools:context=".asteroids.AsteroidsDetailsFragment">
+    tools:context=".ui.asteroids.AsteroidsDetailsFragment">
 
     <ImageView
         android:id="@+id/iv_background_terra"

@@ -1,4 +1,4 @@
-package com.example.astrodream.asteroids.domain
+package com.example.astrodream.domain
 
 import android.content.Context
 import android.graphics.Typeface

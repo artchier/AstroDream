@@ -1,6 +1,5 @@
-package com.example.astrodream.asteroids
+package com.example.astrodream.ui.asteroids
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater

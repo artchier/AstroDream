@@ -1,8 +1,4 @@
-<<<<<<< HEAD:app/src/main/java/com/example/astrodream/ui/asteroids/AsteroidsAdapter.kt
-package com.example.astrodream.ui.asteroids
-=======
-package com.example.astrodream.asteroids.domain
->>>>>>> AND-72:app/src/main/java/com/example/astrodream/asteroids/domain/AsteroidsAdapter.kt
+package com.example.astrodream.domain
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
-import com.example.astrodream.domain.Asteroids
 
 
 class AsteroidsAdapter(
@@ -19,7 +14,7 @@ class AsteroidsAdapter(
 ) : RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>() {
 
     interface OnClickAsteroidsListener {
-        fun onClickAsteroids(viewHolder: AsteroidsAdapter.AsteroidsViewHolder, position: Int)
+        fun onClickAsteroids(viewHolder: AsteroidsViewHolder, position: Int)
     }
 
     inner class AsteroidsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),

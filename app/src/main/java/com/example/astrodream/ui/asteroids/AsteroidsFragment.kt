@@ -1,4 +1,4 @@
-package com.example.astrodream.asteroids
+package com.example.astrodream.ui.asteroids
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,6 @@ import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import kotlinx.android.synthetic.main.fragment_asteroids.*
 import kotlinx.android.synthetic.main.fragment_asteroids.view.*
 
 class AsteroidsFragment() : Fragment() {

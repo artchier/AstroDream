@@ -1,4 +1,4 @@
-package com.example.astrodream.ui.asteroids
+import com.example.astrodream.domain.AsteroidsAdapter
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,13 +14,16 @@ class ListarAsteroidesProximosFragment(var adapter: RecyclerView.Adapter<Asteroi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_listar_asteroides_proximos, container, false)
         view.rv_asteroid_btn.adapter = adapter
         return view
     }
 
     companion object {
-        fun newInstance(adapter: RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>) = ListarAsteroidesProximosFragment(adapter)
+        fun newInstance(adapter: RecyclerView.Adapter<AsteroidsAdapter.AsteroidsViewHolder>) =
+            ListarAsteroidesProximosFragment(
+                adapter
+            )
     }
 }

@@ -1,0 +1,32 @@
+Index: app/src/main/java/com/example/astrodream/mars/Asteroid2Activity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.astrodream.mars\r\n\r\nimport android.os.Bundle\r\nimport android.widget.ExpandableListView\r\nimport android.widget.ExpandableListView.OnChildClickListener\r\nimport android.widget.Toast\r\nimport com.example.astrodream.ActivityWithTopBar\r\nimport com.example.astrodream.R\r\nimport com.example.astrodream.domain.Asteroids\r\nimport com.example.astrodream.domain.AsteroidsAdapter\r\nimport com.example.astrodream.domain.AsteroidsAdapter.OnClickAsteroidsListener\r\nimport com.example.astrodream.domain.ExpandableListAdapter\r\nimport com.sysdata.widget.accordion.ItemAdapter.OnItemClickedListener\r\nimport kotlinx.android.synthetic.main.activity_asteroid2.*\r\n\r\n\r\nclass Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids2), OnClickAsteroidsListener {\r\n    lateinit var listView: ExpandableListView\r\n    val expandableListAdapter = ExpandableListAdapter(this)\r\n    val listButtonsName = ArrayList<String>()\r\n    val listAsteroids = HashMap<String, ArrayList<Asteroids>>()\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_asteroid2)\r\n\r\n        listView = exp_list_view_asteroids\r\n        expandableListAdapter.addListButtons(listButtonsName)\r\n        expandableListAdapter.addListAsteroids(listAsteroids)\r\n\r\n        listView.setOnChildClickListener{ parent, view, groupPosition, childPosition, id ->\r\n\r\n            false\r\n        }\r\n\r\n        getListas()\r\n\r\n        listView.setAdapter(expandableListAdapter)\r\n\r\n        setUpMenuBehavior()\r\n    }\r\n\r\n    private fun getListas() {\r\n\r\n    listButtonsName.addAll(arrayListOf(\"Listar asteroides próximos\", \"Listar asteroides por nome\", \"Listar asteroides por data\", \"Listar asteroides perigosos\"))\r\n    val list = arrayListOf(\r\n            Asteroids(\"Ananda\", \"24/11/2020\"),\r\n            Asteroids(\"Arthur\", \"24/11/2020\"),\r\n            Asteroids(\"Marina\", \"24/11/2020\"),\r\n            Asteroids(\"Rafael\", \"24/11/2020\"),\r\n            Asteroids(\"Raul\", \"24/11/2020\")\r\n        )\r\n        listAsteroids[listButtonsName[0]] = list\r\n        listAsteroids[listButtonsName[1]] = list\r\n        listAsteroids[listButtonsName[2]] = list\r\n        listAsteroids[listButtonsName[3]] = list\r\n    }\r\n\r\n    override fun onClickAsteroids(viewHolder: AsteroidsAdapter.AsteroidsViewHolder, position: Int) {\r\n        val itemHolder = viewHolder.itemView\r\n        when (position) {\r\n            OnItemClickedListener.ACTION_ID_COLLAPSED_VIEW -> Toast.makeText(this, \"clicado\", Toast.LENGTH_SHORT).show()\r\n            OnItemClickedListener.ACTION_ID_EXPANDED_VIEW -> Toast.makeText(this, \"desclicado\", Toast.LENGTH_SHORT).show()\r\n            else -> {\r\n            }\r\n    }\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/astrodream/mars/Asteroid2Activity.kt	(revision 7bfaaf1309fcd4598b3d857db917c7ce1a070658)
++++ app/src/main/java/com/example/astrodream/mars/Asteroid2Activity.kt	(date 1607282123024)
+@@ -2,7 +2,6 @@
+ 
+ import android.os.Bundle
+ import android.widget.ExpandableListView
+-import android.widget.ExpandableListView.OnChildClickListener
+ import android.widget.Toast
+ import com.example.astrodream.ActivityWithTopBar
+ import com.example.astrodream.R
+@@ -15,10 +14,10 @@
+ 
+ 
+ class Asteroid2Activity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids2), OnClickAsteroidsListener {
+-    lateinit var listView: ExpandableListView
+-    val expandableListAdapter = ExpandableListAdapter(this)
+-    val listButtonsName = ArrayList<String>()
+-    val listAsteroids = HashMap<String, ArrayList<Asteroids>>()
++    private lateinit var listView: ExpandableListView
++    private val expandableListAdapter = ExpandableListAdapter(this)
++    private val listButtonsName = ArrayList<String>()
++    private val listAsteroids = HashMap<String, ArrayList<Asteroids>>()
+ 
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)

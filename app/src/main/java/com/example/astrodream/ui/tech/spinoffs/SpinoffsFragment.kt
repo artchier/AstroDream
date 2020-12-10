@@ -8,17 +8,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.astrodream.R
-import com.example.astrodream.domain.Spinoff
+import com.example.astrodream.services.service
 import com.example.astrodream.ui.tech.TechActivity
 import kotlinx.android.synthetic.main.fragment_spinoffs.view.*
 import kotlinx.android.synthetic.main.item_spinoff.*
 
 class SpinoffsFragment : Fragment(), SpinoffsAdapter.OnClickSpinoffListener {
     private lateinit var contextTechActivity : TechActivity
-    val listSpinoffs = getAllSpinoffs()
-    val adapterSpinoffs = SpinoffsAdapter(listSpinoffs, this)
+    private lateinit var adapterSpinoffs : SpinoffsAdapter
+
+    private val viewModel by viewModels<SpinoffsViewModel> {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return SpinoffsViewModel(service) as T
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,18 +36,18 @@ class SpinoffsFragment : Fragment(), SpinoffsAdapter.OnClickSpinoffListener {
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_spinoffs, container, false)
 
+        adapterSpinoffs = SpinoffsAdapter(this)
+
         view.rvSpinoffs.adapter = adapterSpinoffs
         view.rvSpinoffs.layoutManager = LinearLayoutManager(contextTechActivity)
         view.rvSpinoffs.setHasFixedSize(true)
 
+        viewModel.getSpinoffs()
+        viewModel.spinoffs.observe(contextTechActivity) {
+            adapterSpinoffs.addSpinoff(it.results)
+        }
+
         return view
-    }
-
-    fun getAllSpinoffs(): ArrayList<Spinoff> {
-        val Spinoff = Spinoff(1,
-            R.drawable.ic_tecnologia, "GRC-SO-147", "Revestimentos de motores", "O aumento da temperatura operacional dos motores a turbina reduz o consumo de combustível e aumenta a eficiência do motor. No entanto, os componentes do motor devem ser protegidos do calor excessivo. O Lewis Research Center desenvolveu com sucesso revestimentos de barreira térmica (TBCs), que são depositados nos componentes. Eles isolam, oferecem resistência à oxidação e corrosão e aumentam a aderência. As temperaturas da superfície podem ser reduzidas em 200 graus centígrados ou mais. G. E. Aircraft Engines, um empreiteiro Lewis, agora usa um TBC baseado no desenvolvido em Lewis, em motores de produção. O sistema, que consiste em um adesivo e uma camada de acabamento, estende a vida útil do componente de 1,3 para 2 vezes. A empresa também está testando TBCs em componentes que operam em temperaturas mais altas.")
-
-        return arrayListOf(Spinoff)
     }
 
     override fun onAttach(context: Context) {

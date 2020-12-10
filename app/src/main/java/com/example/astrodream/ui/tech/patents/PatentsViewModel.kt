@@ -1,6 +1,5 @@
 package com.example.astrodream.ui.tech.patents
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +13,6 @@ class PatentsViewModel(val service: Service) : ViewModel() {
     fun getPatents() {
         viewModelScope.launch {
             val p = service.getPatents("EwczgEoEZWqHcxe6chrFvZR6Dn9ayWi1apxUOUze")
-            Log.i("Patent", p.toString())
             patents.value = p
         }
     }

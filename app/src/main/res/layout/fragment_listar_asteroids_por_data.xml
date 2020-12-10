@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.asteroids.ListarAsteroidesProximosFragment">
+    tools:context=".asteroids.ListarAsteroidesProximosFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -36,15 +36,6 @@
                     android:drawableLeft="@drawable/ic_calendar" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_asteroiddata_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_btn_asteroids"
-                android:layout_marginBottom="10dp"
-                android:nestedScrollingEnabled="false"/>
 
         </LinearLayout>
 

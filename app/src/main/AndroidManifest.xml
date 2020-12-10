@@ -19,15 +19,14 @@
         <activity android:name=".ui.favorites.FavoritesActivity" />
         <activity android:name="com.example.astrodream.ui.asteroids.AsteroidActivity" />
         <activity android:name=".ui.SplashScreenActivity">
+        <activity android:name=".asteroids.AsteroidActivity"></activity>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.initial.InitialActivity" />
         <activity android:name=".ui.userconfig.UserConfigActivity" />
-
         <activity android:name=".ui.tech.TechActivity" />
         <activity android:name=".ui.mars.MarsActivity" />
     </application>

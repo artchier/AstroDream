@@ -20,15 +20,15 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 import kotlinx.android.synthetic.main.activity_plain.*
 
-abstract class PlainActivity(toolbarTitleString: Int, val type: String) : ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
+abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType)
+    : ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
 
     /*
     * Se esse construtor não estiver aqui,
     * a linha <activity android:name=".ui.plaindailymars.PlainActivity" />
     * no AndroidManifest.xml fica vermelha e pede um construtor vazio e sem parâmetros
-    *
-    * */
-    constructor() : this(0, "")
+    */
+    constructor() : this(0, PlainActivityType.DailyImage)
 
     val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory{
@@ -48,7 +48,7 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: String) : Activi
 
         addFragment(newDetailFrag(), "ROOT_TAG")
 
-        viewModel.popList()
+        viewModel.populateList()
 
         // Nevegação entre os tabs inferiores
         bottomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

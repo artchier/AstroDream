@@ -15,69 +15,34 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 
-class PlainViewModel(val service: Service, val type: String): ViewModel() {
+class PlainViewModel(val service: Service, val type: PlainActivityType): ViewModel() {
 
     val listResults = MutableLiveData<PlainClass>()
     val focusResult = MutableLiveData<PlainClass>()
     val hasOngoingRequest = MutableLiveData<Boolean>()
     private var numFetches = 0
     private val num = 24
-    private val apikey = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"
 
     var date = LocalDate.now()
     lateinit var detail: PlainClass
     lateinit var detailRoot: PlainClass
 
-    var listTemp: MutableList<TempSol> = mutableListOf<TempSol>()
+    var listTemp: MutableList<TempSol> = mutableListOf()
     var availableTempListLong = listOf<Long>()
 
-    fun popList() {
+    fun populateList() {
         hasOngoingRequest.value = true
 
         viewModelScope.launch {
             if (numFetches == 0) {
                 listResults.value = PlainClass()
 
-                if (type == "Daily") {
-                    var dummy = service.getDaily(
-                        date.toString(),
-                        apikey
-                    )
-                    while (dummy.url.contains("youtube")) {
-                        date = date.minusDays(1)
-                        dummy = service.getDaily(
-                            date.toString(),
-                            apikey
-                        )
-                    }
-                    detail = dummy
-                } else if (type === "Mars") {
-                    lateinit var temperatureJson: JsonObject
-                    val roverPics = async {
-                        var dummy = getMars(date.toString())
-                        while (dummy == null) {
-                            date = date.minusDays(1)
-                            dummy = getMars(date.toString())
-                        }
-                        detail = dummy!!
-                    }
-                    val temperatures = async {
-                        temperatureJson = service.getMarsTemp(apikey, "json", "1.0")
-                        val availableTempJson = temperatureJson.get("sol_keys")
-                        val availableTempListString = Gson().fromJson(
-                            availableTempJson,
-                            object : TypeToken<List<String>>() {}.type
-                        ) as List<String>
-                        availableTempListLong = availableTempListString.map { it.toLong() + 2241 }
+                if (type == PlainActivityType.DailyImage) {
+                    fetchDailyImages()
 
-                        for (s in availableTempListString) {
-                            val tempSolCurr = Gson().fromJson(temperatureJson.get(s), object : TypeToken<TempSol>() {}.type) as TempSol
-                            tempSolCurr.wakeUp(s.toLong() + 2241)
-                            listTemp.add(tempSolCurr)
-                        }
-                    }
-                    roverPics.await()
-                    temperatures.await()
+                } else if (type == PlainActivityType.Mars) {
+                    fetchTemperatures()
+                    fetchRoverPics()
 
                     if (detail.sol in availableTempListLong) {
                         val tempSolCurr = listTemp.filter {it.solMars == detail.sol}[0]
@@ -85,45 +50,40 @@ class PlainViewModel(val service: Service, val type: String): ViewModel() {
                         detail.minTemp = "Min: " + tempSolCurr.minTempMars + "°C"
                     }
                 }
+
                 listResults.value = detail
                 date = date.minusDays(1)
                 detailRoot = detail
                 focusResult.value = detailRoot
                 numFetches++
-            } else {
 
-                if (type == "Daily") {
+            } else {
+                if (type == PlainActivityType.DailyImage) {
                     for (i in 1..num) {
-                        var dummy = service.getDaily(
-                            date.toString(),
-                            apikey
-                        )
-                        while (dummy.url.contains("youtube")) {
-                            date = date.minusDays(1)
-                            dummy = service.getDaily(
-                                date.toString(),
-                                apikey
-                            )
-                        }
-                        detail = dummy
+                        fetchDailyImages()
                         listResults.value = detail
                         date = date.minusDays(1)
                     }
                     numFetches++
-                } else if (type === "Mars") {
+
+                } else if (type == PlainActivityType.Mars) {
                     for (i in 1..num) {
                         val dummy = getMars(date.toString())
+
                         if (dummy != null) {
                             detail = dummy
                             Log.i("===ViewModel====", detail.sol.toString())
                             Log.i("===ViewModel====", availableTempListLong.toString())
+
                             if (detail.sol in availableTempListLong) {
                                 val tempSolCurr = listTemp.filter {it.solMars == detail.sol}[0]
                                 detail.maxTemp = "Max: " + tempSolCurr.maxTempMars + "°C"
                                 detail.minTemp = "Min: " + tempSolCurr.minTempMars + "°C"
                             }
+
                             listResults.value = detail
                             date = date.minusDays(1)
+
                         } else {
                             date = date.minusDays(1)
                             continue
@@ -144,11 +104,47 @@ class PlainViewModel(val service: Service, val type: String): ViewModel() {
         focusResult.value = detailRoot
     }
 
+    private suspend fun fetchRoverPics() {
+        var dummy = getMars(date.toString())
+
+        while (dummy == null) {
+            date = date.minusDays(1)
+            dummy = getMars(date.toString())
+        }
+        detail = dummy
+    }
+
+    private suspend fun fetchDailyImages() {
+        var dummy = service.getDaily(date.toString())
+
+        while (dummy.url.contains("youtube")) {
+            date = date.minusDays(1)
+            dummy = service.getDaily(date.toString())
+        }
+
+        detail = dummy
+    }
+
+    private suspend fun fetchTemperatures() {
+        val temperatureJson = service.getMarsTemp("json", "1.0")
+        val availableTempJson = temperatureJson.get("sol_keys")
+
+        val availableTempListString = Gson().fromJson(
+            availableTempJson,
+            object : TypeToken<List<String>>() {}.type
+        ) as List<String>
+
+        availableTempListLong = availableTempListString.map { it.toLong() + 2241 }
+
+        for (s in availableTempListString) {
+            val tempSolCurr = Gson().fromJson(temperatureJson.get(s), object : TypeToken<TempSol>() {}.type) as TempSol
+            tempSolCurr.wakeUp(s.toLong() + 2241)
+            listTemp.add(tempSolCurr)
+        }
+    }
+
     private suspend fun getMars(earth_date: String): PlainClass? {
-        val responseRover = service.getMars(
-            earth_date,
-            apikey
-        )
+        val responseRover = service.getMars(earth_date)
         val photos = responseRover.get("photos")
         val marsImageList = Gson().fromJson(photos, object : TypeToken<List<MarsImage>>(){}.type) as List<MarsImage>
         val imgList = mutableListOf<String>()

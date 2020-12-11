@@ -15,6 +15,7 @@ import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
 import com.example.astrodream.ui.globe.GlobeActivity
 import com.example.astrodream.ui.asteroids.AsteroidActivity
+import com.example.astrodream.ui.plaindailymars.PlainActivityType
 import com.example.astrodream.ui.plaindailymars.PlainViewModel
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_initial.*
@@ -25,7 +26,7 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     private val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PlainViewModel(service, "Daily") as T
+                return PlainViewModel(service, PlainActivityType.DailyImage) as T
             }
         }
     }
@@ -61,7 +62,7 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     }
 
     private fun dailyImage() {
-        viewModel.popList()
+        viewModel.populateList()
         viewModel.focusResult.observe(this) {
             Glide.with(this).asBitmap()
                 .load(it.url)

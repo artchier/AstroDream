@@ -18,12 +18,10 @@ import androidx.navigation.findNavController
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.domain.ExpandableListAdapter
-import com.example.astrodream.domain.repository
+import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
     private lateinit var listView: ExpandableListView
@@ -36,7 +34,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     val viewModel by viewModels<AsteroidViewModel>{
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return AsteroidViewModel(repository) as T
+                return AsteroidViewModel(service) as T
             }
         }
     }
@@ -51,7 +49,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         listView.setAdapter(expandableListAdapter)
         expandableListAdapter.addListButtons(listButtonsName)
         expandableListAdapter.addListAsteroids(listAsteroids)
-        viewModel.popListResult(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toString())
+        viewModel.popListResult()
 
         listView.setOnChildClickListener { parent, view, groupPosition, childPosition, id ->
             onClickAsteroids(childPosition, groupPosition)

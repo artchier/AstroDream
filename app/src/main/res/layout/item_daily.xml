@@ -7,7 +7,7 @@
     android:layout_height="120dp">
 
     <ImageView
-        android:id="@+id/ivDaily"
+        android:id="@+id/cvDaily"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"

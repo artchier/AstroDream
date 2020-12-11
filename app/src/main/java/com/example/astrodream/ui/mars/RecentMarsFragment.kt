@@ -25,6 +25,7 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
             view.context,
             plainDetail.img_list,
             plainDetail.earth_date,
+            "Sol " + plainDetail.sol.toString(),
             plainDetail.maxTemp,
             plainDetail.minTemp
         )

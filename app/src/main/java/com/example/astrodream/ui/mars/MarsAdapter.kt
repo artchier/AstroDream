@@ -15,6 +15,7 @@ class MarsAdapter(
     private val context: Context,
     private val marsPicsList: List<String>,
     private val postDate: String,
+    private val postSol: String,
     private val maxTemp: String,
     private val minTemp: String
 ) : PagerAdapter() {
@@ -35,6 +36,7 @@ class MarsAdapter(
             .into(view.ivRecentMars)
         // Atualiza as TextViews com os dados do post
         view.tvMarsRecentDateEarth.text = postDate
+        view.tvMarsRecentDateSol.text = postSol
         view.tvMarsRecentMaxTemp.text = maxTemp
         view.tvMarsRecentMinTemp.text = minTemp
 

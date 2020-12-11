@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.setPadding
 import com.example.astrodream.R
+import com.example.astrodream.ui.asteroids.AsteroidActivity
 
 
-class ExpandableListAdapter (val context: Context): BaseExpandableListAdapter() {
-    private val listButtons = ArrayList<String>()
-    private val listAsteroids = HashMap<String, ArrayList<Asteroids>>()
+class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListAdapter() {
+    var listButtons = ArrayList<String>()
+    var listAsteroids = HashMap<String, ArrayList<Asteroid>>()
 
     override fun getGroup(groupPosition: Int): Any {
         return listButtons[groupPosition]
@@ -47,7 +47,8 @@ class ExpandableListAdapter (val context: Context): BaseExpandableListAdapter() 
 
         (view.findViewById(R.id.ic_btn) as ImageView).setImageResource(if (isExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down)
         view.setBackgroundResource(if (isExpanded) R.drawable.button_style_click else R.drawable.button_style)
-        view.setPadding(10)
+
+        context.viewModel.listResults
 
         return view
     }
@@ -71,14 +72,14 @@ class ExpandableListAdapter (val context: Context): BaseExpandableListAdapter() 
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        val childAsteroid = getChild(groupPosition, childPosition) as Asteroids?
+        val childAsteroid = getChild(groupPosition, childPosition) as Asteroid?
         var view = convertView
         if (convertView == null) {
           val li: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = li.inflate(R.layout.item_btn_asteroids, null)
         }
         val txtListChild: TextView = view?.findViewById(R.id.tv_name_asteroid) as TextView
-        val txtDataListChild: TextView = view?.findViewById(R.id.tv_date_asteroid) as TextView
+        val txtDataListChild: TextView = view.findViewById(R.id.tv_date_asteroid) as TextView
 
         view.setBackgroundResource(if (isLastChild) R.drawable.button_style_click_itens else R.color.gigas)
 
@@ -97,10 +98,11 @@ class ExpandableListAdapter (val context: Context): BaseExpandableListAdapter() 
 
     fun addListButtons(list: ArrayList<String>){
         listButtons.addAll(list)
+        notifyDataSetChanged()
     }
 
-    fun addListAsteroids(map: HashMap<String, ArrayList<Asteroids>>){
+    fun addListAsteroids(map: HashMap<String, ArrayList<Asteroid>>){
         listAsteroids.putAll(map)
+        notifyDataSetChanged()
     }
 }
-

@@ -1,5 +1,6 @@
 package com.example.astrodream.ui.plaindailymars
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,8 +54,9 @@ class PlainAdapter(val listener: OnClickDetailListener): RecyclerView.Adapter<Pl
 
     override fun getItemCount() = listHistory.size
 
-    fun addList(list: List<PlainClass>) {
-        listHistory.addAll(list)
+    fun addList(list: PlainClass) {
+        listHistory.add(list)
         notifyDataSetChanged()
+//        Log.i("==XXX+==", list.toString())
     }
 }

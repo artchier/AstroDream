@@ -1,5 +1,6 @@
 package com.example.astrodream.domain
 
+import com.google.gson.JsonObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -10,8 +11,9 @@ interface Repository{
     @GET("neo/rest/v1/feed")
     suspend fun getResults(
         @Query("start_date")p0: String,
-        @Query("api_key")p1: String
-    ): AsteroidRes
+        @Query("api_key")p1: String,
+        @Query("end_date")p2: String = "2020-12-09"
+    ): JsonObject //AsteroidsMap
 }
 
 const val urlApiNasa = "https://api.nasa.gov/"

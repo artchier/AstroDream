@@ -43,6 +43,14 @@ interface Service {
         @Query("api_key") apikey: String = apikeyMarsAndDaily,
     ): JsonObject
 
+
+    @GET("neo/rest/v1/feed")
+    suspend fun getResults(
+        @Query("start_date")p0: String,
+        @Query("end_date")p1: String,
+        @Query("api_key")p2: String = apikey
+    ): JsonObject
+
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")
     suspend fun getPatents(

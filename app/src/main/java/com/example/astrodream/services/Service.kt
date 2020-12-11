@@ -48,7 +48,7 @@ interface Service {
     suspend fun getResults(
         @Query("start_date")p0: String,
         @Query("end_date")p1: String,
-        @Query("api_key")p2: String = apikey
+        @Query("api_key")p2: String = apikeyMarsAndDaily,
     ): JsonObject
 
     /* ------------------------------------------- Tech ----------------------------------------- */

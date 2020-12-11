@@ -12,8 +12,8 @@ class PatentsViewModel(val service: Service) : ViewModel() {
 
     fun getPatents() {
         viewModelScope.launch {
-            val p = service.getPatents("EwczgEoEZWqHcxe6chrFvZR6Dn9ayWi1apxUOUze")
-            patents.value = p
+            val patentList = service.getPatents()
+            patents.value = patentList
         }
     }
 }

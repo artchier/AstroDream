@@ -12,8 +12,8 @@ class SpinoffsViewModel(val service: Service) : ViewModel() {
 
     fun getSpinoffs() {
         viewModelScope.launch {
-            val s = service.getSpinoffs("EwczgEoEZWqHcxe6chrFvZR6Dn9ayWi1apxUOUze")
-            spinoffs.value = s
+            val spinoffList = service.getSpinoffs()
+            spinoffs.value = spinoffList
         }
     }
 }

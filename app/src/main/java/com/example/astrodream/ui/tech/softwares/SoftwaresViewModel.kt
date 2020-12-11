@@ -12,8 +12,8 @@ class SoftwaresViewModel(val service: Service) : ViewModel() {
 
     fun getSoftwares() {
         viewModelScope.launch {
-            val s = service.getSoftwares("EwczgEoEZWqHcxe6chrFvZR6Dn9ayWi1apxUOUze")
-            softwares.value = s
+            val softwareList = service.getSoftwares()
+            softwares.value = softwareList
         }
     }
 }

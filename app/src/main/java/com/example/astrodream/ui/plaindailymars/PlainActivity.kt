@@ -47,6 +47,7 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         AndroidThreeTen.init(this)
 
         addFragment(newDetailFrag(), "ROOT_TAG")
+        Log.i("PlainActivity", viewModel.toString())
 
         viewModel.populateList()
 

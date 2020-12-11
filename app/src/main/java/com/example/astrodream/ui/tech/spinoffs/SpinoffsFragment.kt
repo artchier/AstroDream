@@ -2,21 +2,20 @@ package com.example.astrodream.ui.tech.spinoffs
 
 import android.content.Context
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.astrodream.R
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.tech.TechActivity
 import kotlinx.android.synthetic.main.fragment_spinoffs.view.*
-import kotlinx.android.synthetic.main.item_spinoff.*
 
 class SpinoffsFragment : Fragment(), SpinoffsAdapter.OnClickSpinoffListener {
     private lateinit var contextTechActivity : TechActivity
@@ -56,12 +55,14 @@ class SpinoffsFragment : Fragment(), SpinoffsAdapter.OnClickSpinoffListener {
     }
 
     override fun onClickSpinoff(position: Int) {
-        if (llDescSpinoff.visibility == View.GONE) {
-            TransitionManager.beginDelayedTransition(cvSpinoff, AutoTransition())
-            llDescSpinoff.visibility = View.VISIBLE
-        } else {
-            TransitionManager.beginDelayedTransition(cvSpinoff, AutoTransition())
-            llDescSpinoff.visibility = View.GONE
-        }
+        val spinoffs = adapterSpinoffs.getSpinoffs()
+        val spinoff = spinoffs[position]
+
+        navigationFragments(R.id.action_spinoffsFragment_to_detailsTechFragment, spinoff)
+    }
+
+    private fun navigationFragments(id: Int, spinoff: List<String>) {
+        val bundle = bundleOf("spinoff" to spinoff)
+        findNavController().navigate(id, bundle)
     }
 }

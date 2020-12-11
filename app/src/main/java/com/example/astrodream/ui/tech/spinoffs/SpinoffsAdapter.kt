@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
-import com.example.astrodream.domain.Spinoff
 
 class SpinoffsAdapter(var spinoffListener: OnClickSpinoffListener) :
     RecyclerView.Adapter<SpinoffsAdapter.SpinoffViewHolder>() {
@@ -25,7 +24,6 @@ class SpinoffsAdapter(var spinoffListener: OnClickSpinoffListener) :
         holder.ivSpinoff.setImageResource(R.drawable.ic_tecnologia)
         holder.tvCodReferenceSpinoff.text = spinoff[1]
         holder.tvTitleSpinoff.text = spinoff[2]
-        holder.tvDescSpinoff.text = spinoff[3]
     }
 
     override fun getItemCount() = spinoffs.size
@@ -33,6 +31,10 @@ class SpinoffsAdapter(var spinoffListener: OnClickSpinoffListener) :
     fun addSpinoff(s: List<List<String>>) {
         spinoffs.addAll(s)
         notifyDataSetChanged()
+    }
+
+    fun getSpinoffs(): ArrayList<List<String>> {
+        return spinoffs
     }
 
     interface OnClickSpinoffListener {
@@ -43,7 +45,6 @@ class SpinoffsAdapter(var spinoffListener: OnClickSpinoffListener) :
         var ivSpinoff: ImageView = itemView.findViewById(R.id.ivSpinoff)
         var tvCodReferenceSpinoff: TextView = itemView.findViewById(R.id.tvCodReferenceSpinoff)
         var tvTitleSpinoff: TextView = itemView.findViewById(R.id.tvTitleSpinoff)
-        var tvDescSpinoff: TextView = itemView.findViewById(R.id.tvDescSpinoff)
 
         init {
             itemView.setOnClickListener(this)

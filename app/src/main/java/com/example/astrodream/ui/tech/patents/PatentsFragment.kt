@@ -2,21 +2,20 @@ package com.example.astrodream.ui.tech.patents
 
 import android.content.Context
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.astrodream.R
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.tech.TechActivity
 import kotlinx.android.synthetic.main.fragment_patents.view.*
-import kotlinx.android.synthetic.main.item_patent.*
 
 class PatentsFragment : Fragment(), PatentsAdapter.OnClickPatentListener {
     private lateinit var contextTechActivity : TechActivity
@@ -56,12 +55,14 @@ class PatentsFragment : Fragment(), PatentsAdapter.OnClickPatentListener {
     }
 
     override fun onClickPatent(position: Int) {
-        if (llDescPatent.visibility == View.GONE) {
-            TransitionManager.beginDelayedTransition(cvPatent, AutoTransition())
-            llDescPatent.visibility = View.VISIBLE
-        } else {
-            TransitionManager.beginDelayedTransition(cvPatent, AutoTransition())
-            llDescPatent.visibility = View.GONE
-        }
+        val patents = adapterPatents.getPatents()
+        val patent = patents[position]
+
+        navigationFragments(R.id.action_patentsFragment_to_detailsTechFragment, patent)
+    }
+
+    private fun navigationFragments(id: Int, patent: List<String>) {
+        val bundle = bundleOf("patent" to patent)
+        findNavController().navigate(id, bundle)
     }
 }

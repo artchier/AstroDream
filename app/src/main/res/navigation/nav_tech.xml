@@ -24,15 +24,32 @@
         android:id="@+id/patentsFragment"
         android:name="com.example.astrodream.ui.tech.patents.PatentsFragment"
         android:label="fragment_patents"
-        tools:layout="@layout/fragment_patents" />
+        tools:layout="@layout/fragment_patents" >
+        <action
+            android:id="@+id/action_patentsFragment_to_detailsTechFragment"
+            app:destination="@id/detailsTechFragment" />
+    </fragment>
     <fragment
         android:id="@+id/softwaresFragment"
         android:name="com.example.astrodream.ui.tech.softwares.SoftwaresFragment"
         android:label="fragment_softwares"
-        tools:layout="@layout/fragment_softwares" />
+        tools:layout="@layout/fragment_softwares" >
+        <action
+            android:id="@+id/action_softwaresFragment_to_detailsTechFragment"
+            app:destination="@id/detailsTechFragment" />
+    </fragment>
     <fragment
         android:id="@+id/spinoffsFragment"
         android:name="com.example.astrodream.ui.tech.spinoffs.SpinoffsFragment"
         android:label="fragment_spinoffs"
-        tools:layout="@layout/fragment_spinoffs" />
+        tools:layout="@layout/fragment_spinoffs" >
+        <action
+            android:id="@+id/action_spinoffsFragment_to_detailsTechFragment"
+            app:destination="@id/detailsTechFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsTechFragment"
+        android:name="com.example.astrodream.ui.tech.DetailsTechFragment"
+        android:label="fragment_details_tech"
+        tools:layout="@layout/fragment_details_tech" />
 </navigation>

@@ -2,21 +2,20 @@ package com.example.astrodream.ui.tech.softwares
 
 import android.content.Context
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.astrodream.R
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.tech.TechActivity
 import kotlinx.android.synthetic.main.fragment_softwares.view.*
-import kotlinx.android.synthetic.main.item_software.*
 
 class SoftwaresFragment : Fragment(), SoftwaresAdapter.OnClickSoftwareListener {
     private lateinit var contextTechActivity : TechActivity
@@ -56,12 +55,14 @@ class SoftwaresFragment : Fragment(), SoftwaresAdapter.OnClickSoftwareListener {
     }
 
     override fun onClickSoftware(position: Int) {
-        if (llDescSoftware.visibility == View.GONE) {
-            TransitionManager.beginDelayedTransition(cvSoftware, AutoTransition())
-            llDescSoftware.visibility = View.VISIBLE
-        } else {
-            TransitionManager.beginDelayedTransition(cvSoftware, AutoTransition())
-            llDescSoftware.visibility = View.GONE
-        }
+        val softwares = adapterSoftwares.getSoftwares()
+        val software = softwares[position]
+
+        navigationFragments(R.id.action_softwaresFragment_to_detailsTechFragment, software)
+    }
+
+    private fun navigationFragments(id: Int, software: List<String>) {
+        val bundle = bundleOf("software" to software)
+        findNavController().navigate(id, bundle)
     }
 }

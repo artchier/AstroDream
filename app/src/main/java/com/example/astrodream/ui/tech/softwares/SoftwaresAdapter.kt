@@ -24,7 +24,6 @@ class SoftwaresAdapter(var softwareListener: OnClickSoftwareListener)
         holder.ivSoftware.setImageResource(R.drawable.ic_tecnologia)
         holder.tvCodReferenceSoftware.text = software[1]
         holder.tvTitleSoftware.text = software[2]
-        holder.tbDescSoftware.text = software[3]
     }
 
     override fun getItemCount() = softwares.size
@@ -32,6 +31,10 @@ class SoftwaresAdapter(var softwareListener: OnClickSoftwareListener)
     fun addSoftware(s: List<List<String>>) {
         softwares.addAll(s)
         notifyDataSetChanged()
+    }
+
+    fun getSoftwares(): ArrayList<List<String>> {
+        return softwares
     }
 
     interface OnClickSoftwareListener {
@@ -42,7 +45,6 @@ class SoftwaresAdapter(var softwareListener: OnClickSoftwareListener)
         var ivSoftware: ImageView = itemView.findViewById(R.id.ivSoftware)
         var tvCodReferenceSoftware: TextView = itemView.findViewById(R.id.tvCodReferenceSoftware)
         var tvTitleSoftware: TextView = itemView.findViewById(R.id.tvTitleSoftware)
-        var tbDescSoftware: TextView = itemView.findViewById(R.id.tvDescSoftware)
 
         init {
             itemView.setOnClickListener(this)

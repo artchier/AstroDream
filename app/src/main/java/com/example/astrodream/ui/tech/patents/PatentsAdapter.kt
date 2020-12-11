@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.astrodream.R
 
 class PatentsAdapter(var patentListener: OnClickPatentListener, val context: Context) :
@@ -22,10 +23,15 @@ class PatentsAdapter(var patentListener: OnClickPatentListener, val context: Con
     override fun onBindViewHolder(holder: PatentViewHolder, position: Int) {
         val patent = patents[position]
 
-        holder.ivPatent.setImageResource(R.drawable.ic_tecnologia)
+        if (patent[10] != "") {
+            Glide.with(context).asBitmap()
+                .load(patent[10])
+                .into(holder.ivPatent)
+        } else {
+            holder.ivPatent.setImageResource(R.drawable.ic_tecnologia)
+        }
         holder.tvCodReferencePatent.text = patent[1]
         holder.tvTitlePatent.text = patent[2]
-        holder.tvDescPatent.text = patent[3]
     }
 
     override fun getItemCount() = patents.size
@@ -35,15 +41,14 @@ class PatentsAdapter(var patentListener: OnClickPatentListener, val context: Con
         notifyDataSetChanged()
     }
 
-    interface OnClickPatentListener {
-        fun onClickPatent(position: Int)
+    fun getPatents(): ArrayList<List<String>> {
+        return patents
     }
 
     inner class PatentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var ivPatent: ImageView = itemView.findViewById(R.id.ivPatent)
         var tvCodReferencePatent: TextView = itemView.findViewById(R.id.tvCodReferencePatent)
         var tvTitlePatent: TextView = itemView.findViewById(R.id.tvTitlePatent)
-        var tvDescPatent: TextView = itemView.findViewById(R.id.tvDescPatent)
 
         init {
             itemView.setOnClickListener(this)
@@ -55,5 +60,9 @@ class PatentsAdapter(var patentListener: OnClickPatentListener, val context: Con
                 patentListener.onClickPatent(position)
             }
         }
+    }
+
+    interface OnClickPatentListener {
+        fun onClickPatent(position: Int)
     }
 }

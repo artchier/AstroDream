@@ -30,13 +30,6 @@ interface Service {
         @Query("ver") ver: String,
         @Query("api_key") api_key: String = apikey,
     ): JsonObject
-
-    @GET("insight_weather/")
-    suspend fun getMarsTemp(
-        @Query("api_key") apikey: String,
-        @Query("feedtype") feedtype: String,
-        @Query("ver") ver: String
-    ): JsonObject
 }
 
 // url

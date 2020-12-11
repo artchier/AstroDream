@@ -42,11 +42,11 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: String) : Activi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plain)
         setUpMenuBehavior()
+        Log.i("===PlainActivity====", viewModel.toString())
 
         AndroidThreeTen.init(this)
 
         addFragment(newDetailFrag(), "ROOT_TAG")
-        Log.i("PlainActivity", viewModel.toString())
 
         viewModel.popList()
 

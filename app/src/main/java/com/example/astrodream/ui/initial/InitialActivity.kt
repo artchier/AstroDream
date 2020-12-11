@@ -2,22 +2,42 @@ package com.example.astrodream.ui.initial
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.R
+import com.example.astrodream.services.service
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
 import com.example.astrodream.ui.globe.GlobeActivity
 import com.example.astrodream.ui.asteroids.AsteroidActivity
+import com.example.astrodream.ui.plaindailymars.PlainViewModel
+import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_initial.*
+import kotlinx.android.synthetic.main.activity_initial.cvDaily
 
 class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
+
+    private val viewModel by viewModels<PlainViewModel> {
+        object : ViewModelProvider.Factory{
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return PlainViewModel(service, "Daily") as T
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
+        AndroidThreeTen.init(this)
+        Log.i("===InitialActivity====", viewModel.toString())
 
-        ivDaily.setOnClickListener {
+        dailyImage()
+        cvDaily.setOnClickListener {
             startActivity(Intent(this, DailyImageActivity::class.java))
         }
 
@@ -38,5 +58,14 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         }
 
         setUpMenuBehavior()
+    }
+
+    private fun dailyImage() {
+        viewModel.popList()
+        viewModel.focusResult.observe(this) {
+            Glide.with(this).asBitmap()
+                .load(it.url)
+                .into(ivDaily)
+        }
     }
 }

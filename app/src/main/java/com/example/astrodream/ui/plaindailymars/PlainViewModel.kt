@@ -69,7 +69,6 @@ class PlainViewModel(val service: Service, val type: String): ViewModel() {
                             object : TypeToken<List<String>>() {}.type
                         ) as List<String>
                         availableTempListLong = availableTempListString.map { it.toLong() + 2241 }
-                        Log.i("===ViewModel====", availableTempListLong.toString())
 
                         for (s in availableTempListString) {
                             val tempSolCurr = Gson().fromJson(temperatureJson.get(s), object : TypeToken<TempSol>() {}.type) as TempSol
@@ -79,7 +78,6 @@ class PlainViewModel(val service: Service, val type: String): ViewModel() {
                     }
                     roverPics.await()
                     temperatures.await()
-                    Log.i("===ViewModel====", listTemp.toString())
 
                     if (detail.sol in availableTempListLong) {
                         val tempSolCurr = listTemp.filter {it.solMars == detail.sol}[0]
@@ -136,7 +134,6 @@ class PlainViewModel(val service: Service, val type: String): ViewModel() {
             }
             hasOngoingRequest.value = false
         }
-
     }
 
     fun selectDetail(detail: PlainClass) {

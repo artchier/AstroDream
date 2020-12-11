@@ -21,10 +21,10 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
         // Inflate the layout for this fragment
         val view:View =  inflater.inflate(layoutId, container, false)
 
-        viewModel.listResults.observe(viewLifecycleOwner) {
-            plainDetail = viewModel.listResults.value!![0]
-            popView(view)
-        }
+//        viewModel.listResults.observe(viewLifecycleOwner) {
+//            plainDetail = viewModel.listResults.value!![0]
+//            popView(view)
+//        }
 
         viewModel.focusResult.observe(viewLifecycleOwner) {
             plainDetail = viewModel.focusResult.value!!

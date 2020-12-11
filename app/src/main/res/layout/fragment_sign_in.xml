@@ -23,25 +23,19 @@
             android:contentDescription="@string/email"
             app:srcCompat="@drawable/name_icon" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiName"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxStrokeColor="@null"
+            android:backgroundTint="@color/transparent"
             android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:layout_marginEnd="5dp">
+            android:layout_marginEnd="5dp"
+            android:hint="@string/name"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/name"
-                android:textColor="@color/black"
-                android:maxLines="1"
-                android:inputType="text"
-                android:background="@color/transparent"/>
-        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <include
@@ -65,24 +59,20 @@
             android:contentDescription="@string/email"
             app:srcCompat="@drawable/password_icon" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiConfirmPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxStrokeColor="@null"
+            android:backgroundTint="@color/transparent"
             android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:layout_marginEnd="5dp">
+            android:layout_marginEnd="5dp"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiConfirmPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/confirm_password"
-                android:textColor="@color/black"
-                android:inputType="textPassword"
-                android:background="@color/transparent"/>
-        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <Button

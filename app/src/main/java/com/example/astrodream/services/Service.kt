@@ -8,20 +8,30 @@ import com.google.gson.JsonObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Query
 
-// Endpoint
+private const val apikey = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"
+
+// Endpoints
 interface Service {
     @GET("planetary/apod")
     suspend fun getDaily(
         @Query("date") date: String,
-        @Query("api_key") apikey: String,
+        @Query("api_key") api_key: String = apikey,
     ): PlainClass
 
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
     suspend fun getMars(
         @Query("earth_date") date: String,
-        @Query("api_key") apikey: String,
+        @Query("api_key") api_key: String = apikey,
+    ): JsonObject
+
+    @GET("insight_weather/")
+    suspend fun getMarsTemp(
+        @Query("feedtype") feedtype: String,
+        @Query("ver") ver: String,
+        @Query("api_key") api_key: String = apikey,
     ): JsonObject
 
     //Tech
@@ -42,10 +52,10 @@ interface Service {
 }
 
 // url
-val urlNasa = "https://api.nasa.gov/"
+const val urlNasa = "https://api.nasa.gov/"
 
 // Retrofit
-val retrofit = Retrofit.Builder()
+val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(urlNasa)
     .addConverterFactory(GsonConverterFactory.create())
     .build()

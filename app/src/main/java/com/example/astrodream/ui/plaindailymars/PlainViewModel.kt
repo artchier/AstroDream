@@ -9,9 +9,7 @@ import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.domain.TempSol
 import com.example.astrodream.services.Service
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 
@@ -21,7 +19,7 @@ class PlainViewModel(val service: Service, val type: PlainActivityType): ViewMod
     val focusResult = MutableLiveData<PlainClass>()
     val hasOngoingRequest = MutableLiveData<Boolean>()
     private var numFetches = 0
-    private val num = 24
+    private val timesToFetch = 24
 
     var date = LocalDate.now()
     lateinit var detail: PlainClass
@@ -59,7 +57,7 @@ class PlainViewModel(val service: Service, val type: PlainActivityType): ViewMod
 
             } else {
                 if (type == PlainActivityType.DailyImage) {
-                    for (i in 1..num) {
+                    for (i in 1..timesToFetch) {
                         fetchDailyImages()
                         listResults.value = detail
                         date = date.minusDays(1)
@@ -67,7 +65,7 @@ class PlainViewModel(val service: Service, val type: PlainActivityType): ViewMod
                     numFetches++
 
                 } else if (type == PlainActivityType.Mars) {
-                    for (i in 1..num) {
+                    for (i in 1..timesToFetch) {
                         val dummy = getMars(date.toString())
 
                         if (dummy != null) {

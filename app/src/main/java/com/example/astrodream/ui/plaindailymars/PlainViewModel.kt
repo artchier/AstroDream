@@ -4,15 +4,22 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.astrodream.domain.MarsImage
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.domain.TempSol
 import com.example.astrodream.services.Service
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 
 class PlainViewModel(val service: Service, val type: String): ViewModel() {
 
-    val listResults = MutableLiveData<List<PlainClass>>()
+    val listResults = MutableLiveData<PlainClass>()
     val focusResult = MutableLiveData<PlainClass>()
+    val hasOngoingRequest = MutableLiveData<Boolean>()
     private var numFetches = 0
     private val num = 24
     private val apikey = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"
@@ -21,57 +28,115 @@ class PlainViewModel(val service: Service, val type: String): ViewModel() {
     lateinit var detail: PlainClass
     lateinit var detailRoot: PlainClass
 
+    var listTemp: MutableList<TempSol> = mutableListOf<TempSol>()
+    var availableTempListLong = listOf<Long>()
+
     fun popList() {
-        if (numFetches == 0) {
-            var listFetched: MutableList<PlainClass> = mutableListOf()
-            viewModelScope.launch {
+        hasOngoingRequest.value = true
+
+        viewModelScope.launch {
+            if (numFetches == 0) {
+                listResults.value = PlainClass()
+
                 if (type == "Daily") {
-                    detail = service.getDaily(
+                    var dummy = service.getDaily(
                         date.toString(),
                         apikey
                     )
-                } else if (type === "Mars") {
-                    //TODO:: requisicao marte
-                    // nesse caso precisamos checar se data tem um retorno da API
-                    detail = PlainClass(
-                        earth_date = "20 de Novembro",
-                        img_list = arrayListOf(
-                        "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/fcam/FLB_659123269EDR_F0832382FHAZ00302M_.JPG",
-                        "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/rcam/RLB_659123404EDR_F0832382RHAZ00311M_.JPG",
-                        "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/ncam/NLB_659124657EDR_F0832382NCAM00294M_.JPG",
-                        "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/ncam/NLB_659124625EDR_F0832382NCAM00294M_.JPG",
-                        "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02947/opgs/edr/ncam/NLB_659124442EDR_F0832382NCAM00294M_.JPG"),
-                        maxTemp = "Máxima: -11°C",
-                        minTemp = "Mínima: -93°C")
-                }
-                listFetched.add(detail)
-                date = date.minusDays(1)
-                listResults.value = listFetched
-                detailRoot = listResults.value!![0]
-                numFetches++
-                popList()
-            }
-        } else {
-            var listFetched: MutableList<PlainClass> = mutableListOf()
-            viewModelScope.launch {
-                if (type == "Daily") {
-                    for (i in 1..num) {
-                        detail = service.getDaily(
+                    while (dummy.url.contains("youtube")) {
+                        date = date.minusDays(1)
+                        dummy = service.getDaily(
                             date.toString(),
                             apikey
                         )
-                        listFetched.add(detail)
+                    }
+                    detail = dummy
+                } else if (type === "Mars") {
+                    lateinit var temperatureJson: JsonObject
+                    val roverPics = async {
+                        var dummy = getMars(date.toString())
+                        while (dummy == null) {
+                            date = date.minusDays(1)
+                            dummy = getMars(date.toString())
+                        }
+                        detail = dummy!!
+                    }
+                    val temperatures = async {
+                        temperatureJson = service.getMarsTemp(apikey, "json", "1.0")
+                        val availableTempJson = temperatureJson.get("sol_keys")
+                        val availableTempListString = Gson().fromJson(
+                            availableTempJson,
+                            object : TypeToken<List<String>>() {}.type
+                        ) as List<String>
+                        availableTempListLong = availableTempListString.map { it.toLong() + 2241 }
+                        Log.i("===ViewModel====", availableTempListLong.toString())
+
+                        for (s in availableTempListString) {
+                            val tempSolCurr = Gson().fromJson(temperatureJson.get(s), object : TypeToken<TempSol>() {}.type) as TempSol
+                            tempSolCurr.wakeUp(s.toLong() + 2241)
+                            listTemp.add(tempSolCurr)
+                        }
+                    }
+                    roverPics.await()
+                    temperatures.await()
+                    Log.i("===ViewModel====", listTemp.toString())
+
+                    if (detail.sol in availableTempListLong) {
+                        val tempSolCurr = listTemp.filter {it.solMars == detail.sol}[0]
+                        detail.maxTemp = "Max: " + tempSolCurr.maxTempMars + "°C"
+                        detail.minTemp = "Min: " + tempSolCurr.minTempMars + "°C"
+                    }
+                }
+                listResults.value = detail
+                date = date.minusDays(1)
+                detailRoot = detail
+                focusResult.value = detailRoot
+                numFetches++
+            } else {
+
+                if (type == "Daily") {
+                    for (i in 1..num) {
+                        var dummy = service.getDaily(
+                            date.toString(),
+                            apikey
+                        )
+                        while (dummy.url.contains("youtube")) {
+                            date = date.minusDays(1)
+                            dummy = service.getDaily(
+                                date.toString(),
+                                apikey
+                            )
+                        }
+                        detail = dummy
+                        listResults.value = detail
                         date = date.minusDays(1)
                     }
+                    numFetches++
                 } else if (type === "Mars") {
-                //TODO:: requisicao marte
-                // nesse caso precisamos checar se data tem um retorno da API
-                    listFetched = getMarsPosts()
+                    for (i in 1..num) {
+                        val dummy = getMars(date.toString())
+                        if (dummy != null) {
+                            detail = dummy
+                            Log.i("===ViewModel====", detail.sol.toString())
+                            Log.i("===ViewModel====", availableTempListLong.toString())
+                            if (detail.sol in availableTempListLong) {
+                                val tempSolCurr = listTemp.filter {it.solMars == detail.sol}[0]
+                                detail.maxTemp = "Max: " + tempSolCurr.maxTempMars + "°C"
+                                detail.minTemp = "Min: " + tempSolCurr.minTempMars + "°C"
+                            }
+                            listResults.value = detail
+                            date = date.minusDays(1)
+                        } else {
+                            date = date.minusDays(1)
+                            continue
+                        }
+                    }
+                    numFetches++
                 }
-                listResults.value = listFetched
             }
-            numFetches++
+            hasOngoingRequest.value = false
         }
+
     }
 
     fun selectDetail(detail: PlainClass) {
@@ -82,50 +147,29 @@ class PlainViewModel(val service: Service, val type: String): ViewModel() {
         focusResult.value = detailRoot
     }
 
-    private fun getMarsPosts() : ArrayList<PlainClass> {
-        val mars2 = PlainClass(
-            earth_date = "18 de Novembro",
-            img_list = arrayListOf(
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/fcam/FLB_659019582EDR_F0831974FHAZ00337M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/rcam/RLB_659019616EDR_F0831974RHAZ00337M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/ncam/NRB_659022395EDR_S0831974NCAM00594M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02946/opgs/edr/ncam/NRB_659022181EDR_S0831974NCAM00594M_.JPG"
-            ),
-            maxTemp = "Máxima: -8°C",
-            minTemp = "Mínima: -97°C"
+    private suspend fun getMars(earth_date: String): PlainClass? {
+        val responseRover = service.getMars(
+            earth_date,
+            apikey
         )
-        val mars3 = PlainClass(
-            earth_date = "17 de Novembro",
-            img_list = arrayListOf(
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02945/opgs/edr/fcam/FLB_658949218EDR_F0831974FHAZ00337M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02945/opgs/edr/rcam/RRB_658949266EDR_F0831974RHAZ00337M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/msss/02945/mcam/2945MR0153690001301823E01_DXXX.jpg",
-                "https://mars.nasa.gov/msl-raw-images/msss/02945/mhli/2945MH0001630001004214R00_DXXX.jpg",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02945/opgs/edr/ncam/NRB_658916751EDR_M0831974NCAM00580M_.JPG"
-            ),
-            maxTemp = "Máxima: -9°C",
-            minTemp = "Mínima: -96°C"
-        )
-        val mars4 = PlainClass(
-            earth_date = "16 de Novembro",
-            img_list = arrayListOf(
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/fcam/FLB_658838602EDR_F0831974FHAZ00341M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/rcam/RLB_658838636EDR_F0831974RHAZ00341M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ccam/CR0_658839819EDR_F0831974CCAM15120M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ncam/NRB_658840499EDR_F0831974CCAM04942M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ncam/NRB_658842731EDR_S0831974NCAM00594M_.JPG",
-                "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/02944/opgs/edr/ncam/NRB_658842679EDR_S0831974NCAM00594M_.JPG"
-            ),
-            maxTemp = "Temperaturas",
-            minTemp = "indisponiveis"
-        )
-        return arrayListOf(
-            mars2, mars3, mars4,
-            mars2, mars3, mars4,
-            mars2, mars3, mars4,
-            mars2, mars3, mars4,
-            mars2, mars3, mars4,
-            mars2, mars3, mars4
-        )
+        val photos = responseRover.get("photos")
+        val marsImageList = Gson().fromJson(photos, object : TypeToken<List<MarsImage>>(){}.type) as List<MarsImage>
+        val imgList = mutableListOf<String>()
+        val checkerMars = mutableListOf<String>()
+        var sol: Long = 1
+        marsImageList.forEach {
+            if (it.camera.name !in checkerMars) {
+                imgList.add(it.img_src)
+                checkerMars.add(it.camera.name)
+            }
+        }
+        if (imgList.isNotEmpty()) sol = marsImageList[0].sol
+
+        return if (imgList.isEmpty()) {
+            null
+        } else {
+            PlainClass(earth_date = earth_date, sol = sol, img_list = imgList)
+        }
     }
+
 }

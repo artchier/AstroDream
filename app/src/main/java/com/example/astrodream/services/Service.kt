@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Query
 
 // Endpoint
@@ -19,6 +20,13 @@ interface Service {
     suspend fun getMars(
         @Query("earth_date") date: String,
         @Query("api_key") apikey: String,
+    ): JsonObject
+
+    @GET("insight_weather/")
+    suspend fun getMarsTemp(
+        @Query("api_key") apikey: String,
+        @Query("feedtype") feedtype: String,
+        @Query("ver") ver: String
     ): JsonObject
 }
 

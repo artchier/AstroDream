@@ -1,4 +1,4 @@
-package com.example.astrodream.ui.tech
+package com.example.astrodream.ui.tech.spinoffs
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,35 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
-import com.example.astrodream.domain.Spinoff
 
-class SpinoffsAdapter(private val listSpinoffs: ArrayList<Spinoff>, var spinoffListener: OnClickSpinoffListener) :
+class SpinoffsAdapter(var spinoffListener: OnClickSpinoffListener) :
     RecyclerView.Adapter<SpinoffsAdapter.SpinoffViewHolder>() {
+
+    private val spinoffs = arrayListOf<List<String>>()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpinoffViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_spinoff, parent, false)
+        return SpinoffViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: SpinoffViewHolder, position: Int) {
+        val spinoff = spinoffs[position]
+
+        holder.ivSpinoff.setImageResource(R.drawable.ic_tecnologia)
+        holder.tvCodReferenceSpinoff.text = spinoff[1]
+        holder.tvTitleSpinoff.text = spinoff[2]
+    }
+
+    override fun getItemCount() = spinoffs.size
+
+    fun addSpinoff(s: List<List<String>>) {
+        spinoffs.addAll(s)
+        notifyDataSetChanged()
+    }
+
+    fun getSpinoffs(): ArrayList<List<String>> {
+        return spinoffs
+    }
 
     interface OnClickSpinoffListener {
         fun onClickSpinoff(position: Int)
@@ -20,7 +45,6 @@ class SpinoffsAdapter(private val listSpinoffs: ArrayList<Spinoff>, var spinoffL
         var ivSpinoff: ImageView = itemView.findViewById(R.id.ivSpinoff)
         var tvCodReferenceSpinoff: TextView = itemView.findViewById(R.id.tvCodReferenceSpinoff)
         var tvTitleSpinoff: TextView = itemView.findViewById(R.id.tvTitleSpinoff)
-        var tvDescSpinoff: TextView = itemView.findViewById(R.id.tvDescSpinoff)
 
         init {
             itemView.setOnClickListener(this)
@@ -33,19 +57,4 @@ class SpinoffsAdapter(private val listSpinoffs: ArrayList<Spinoff>, var spinoffL
             }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpinoffViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_spinoff, parent, false)
-        return SpinoffViewHolder(itemView)
-    }
-
-    override fun onBindViewHolder(holder: SpinoffViewHolder, position: Int) {
-        val spinoff = listSpinoffs[position]
-        holder.ivSpinoff.setImageResource(spinoff.imgSpinoff)
-        holder.tvCodReferenceSpinoff.text = spinoff.codReferenceSpinoff
-        holder.tvTitleSpinoff.text = spinoff.titleSpinoff
-        holder.tvDescSpinoff.text = spinoff.descSpinoff
-    }
-
-    override fun getItemCount() = listSpinoffs.size
 }

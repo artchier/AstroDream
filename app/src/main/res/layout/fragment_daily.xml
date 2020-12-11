@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toTopOf="@+id/dailyFooter"
             app:cardCornerRadius="40dp">
             <ImageView
-                android:id="@+id/ivDaily"
+                android:id="@+id/cvDaily"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"/>

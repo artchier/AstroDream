@@ -43,7 +43,7 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
 
         setUpScroller(view.rvHistory, view.rvHistory.layoutManager as GridLayoutManager)
 
-        viewModel.popList()
+        viewModel.populateList()
         hasOngoingRequest = true
         viewModel.listResults.observe(viewLifecycleOwner) {
             adapterHistory.addList(it)
@@ -82,7 +82,7 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
                     if (hasOngoingRequest) return
 
                     hasOngoingRequest = true
-                    viewModel.popList()
+                    viewModel.populateList()
                 }
             }
         )

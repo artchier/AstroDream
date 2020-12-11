@@ -79,7 +79,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
             view = li.inflate(R.layout.item_btn_asteroids, null)
         }
         val txtListChild: TextView = view?.findViewById(R.id.tv_name_asteroid) as TextView
-        val txtDataListChild: TextView = view?.findViewById(R.id.tv_date_asteroid) as TextView
+        val txtDataListChild: TextView = view.findViewById(R.id.tv_date_asteroid) as TextView
 
         view.setBackgroundResource(if (isLastChild) R.drawable.button_style_click_itens else R.color.gigas)
 
@@ -98,10 +98,11 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
 
     fun addListButtons(list: ArrayList<String>){
         listButtons.addAll(list)
+        notifyDataSetChanged()
     }
 
     fun addListAsteroids(map: HashMap<String, ArrayList<Asteroid>>){
         listAsteroids.putAll(map)
+        notifyDataSetChanged()
     }
 }
-

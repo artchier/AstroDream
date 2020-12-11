@@ -3,8 +3,9 @@ package com.example.astrodream.ui.mars
 import androidx.fragment.app.Fragment
 import com.example.astrodream.R
 import com.example.astrodream.ui.plaindailymars.PlainActivity
+import com.example.astrodream.ui.plaindailymars.PlainActivityType
 
-class MarsActivity : PlainActivity(R.string.marte, "Mars") {
+class MarsActivity : PlainActivity(R.string.marte, PlainActivityType.Mars) {
 
     override fun newDetailFrag(): Fragment {
         return RecentMarsFragment.newInstance()

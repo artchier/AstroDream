@@ -22,6 +22,14 @@ import kotlinx.android.synthetic.main.activity_plain.*
 
 abstract class PlainActivity(toolbarTitleString: Int, val type: String) : ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
 
+    /*
+    * Se esse construtor não estiver aqui,
+    * a linha <activity android:name=".ui.plaindailymars.PlainActivity" />
+    * no AndroidManifest.xml fica vermelha e pede um construtor vazio e sem parâmetros
+    *
+    * */
+    constructor() : this(0, "")
+
     val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {

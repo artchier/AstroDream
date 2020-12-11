@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/recentMarsFragment2"
-        android:name="com.example.astrodream.ui.mars.RecentMarsFragment"
+        android:name="com.example.astrodream.mars.RecentMarsFragment"
         android:label="fragment_recent_mars"
         tools:layout="@layout/fragment_recent_mars" />
     <fragment

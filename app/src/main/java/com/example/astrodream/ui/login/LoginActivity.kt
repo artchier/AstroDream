@@ -10,6 +10,9 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
+    private var insertedEmail = ""
+    private var insertedPassword= ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -28,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun callFragLogin() {
-        val fragLogin = LoginFragment.newInstance()
+        val fragLogin = LoginFragment.newInstance(insertedEmail, insertedPassword)
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragLogin)
             commit()
@@ -36,10 +39,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun callFragSignIn() {
-        val userEmail = findViewById<TextInputEditText>(R.id.tiEmail).text.toString()
-        val userPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        insertedEmail = findViewById<TextInputEditText>(R.id.tiEmail).text.toString()
+        insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
 
-        val fragSignIn = SignInFragment.newInstance(userEmail, userPassword)
+        val fragSignIn = SignInFragment.newInstance(insertedEmail, insertedPassword)
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragSignIn)
             commit()

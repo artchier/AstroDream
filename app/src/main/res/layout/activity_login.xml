@@ -7,72 +7,83 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginActivity">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/background" />
+    <include layout="@layout/background" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_marginTop="40dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+        android:fillViewport="false"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/pill_shape"
-            android:backgroundTint="@color/transparent_white"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnLoginFrag"
-                android:layout_width="165dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/pill_shape"
-                android:backgroundTint="@color/light_purple"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                android:textColor="@color/lucky_point"
-                android:text="@string/login"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSignInFrag"
-                android:layout_width="165dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@color/transparent"
-                android:backgroundTint="@color/light_purple"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                android:textColor="@color/light_purple"
-                android:text="@string/sign_in"/>
-
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/flFragment"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"/>
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_marginTop="40dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2">
+
+                <LinearLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pill_shape"
+                    android:backgroundTint="@color/transparent_white"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnLoginFrag"
+                        android:layout_width="165dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/pill_shape"
+                        android:backgroundTint="@color/light_purple"
+                        android:text="@string/login"
+                        android:textAllCaps="false"
+                        android:textColor="@color/lucky_point"
+                        android:textSize="20sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSignInFrag"
+                        android:layout_width="165dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:background="@color/transparent"
+                        android:backgroundTint="@color/light_purple"
+                        android:text="@string/sign_in"
+                        android:textAllCaps="false"
+                        android:textColor="@color/light_purple"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/flFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

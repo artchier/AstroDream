@@ -3,18 +3,15 @@ package com.example.astrodream.domain
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonArray
-import org.json.JSONArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import java.io.Serializable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-data class AsteroidRes(val data: Data)
+data class AsteroidRes(val element_count: Int, val near_earth_objects: JsonObject)
 
-data class Data(var results: ArrayList<Asteroid>)
-
-class AsteroidsMap(var near_earth_objects: List<Map<String,Asteroid>>)
-
-class Asteroid(
+data class Asteroid(
     val name: String,
     val is_potentially_hazardous_asteroid: Boolean,
     val absolute_magnitude: Double,
@@ -22,8 +19,7 @@ class Asteroid(
     val close_approach_data: JsonArray,
     val miss_distance: AsteroidDistancia,
     val orbiting_body: String
-) : Serializable {
-
+) : Serializable{
     var date: String = close_approach_data[0].toString()
 
     @RequiresApi(Build.VERSION_CODES.O)

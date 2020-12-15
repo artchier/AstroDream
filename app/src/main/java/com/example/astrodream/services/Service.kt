@@ -1,11 +1,11 @@
 package com.example.astrodream.services
 
+import com.example.astrodream.domain.AsteroidRes
 import com.example.astrodream.domain.PlainClass
 import com.google.gson.JsonObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Query
 
 private const val apikey = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"
@@ -37,6 +37,14 @@ interface Service {
         @Query("end_date")p1: String,
         @Query("api_key")p2: String = apikey
     ): JsonObject
+
+    // -----------asteroids-------------
+    @GET("neo/rest/v1/feed?")
+    suspend fun getAsteroids(
+        @Query("start_date")p0: String,
+        @Query("api_key")p1: String,
+        @Query("end_date")p2: String = "2020-12-12"
+    ): AsteroidRes
 }
 
 // url

@@ -22,13 +22,14 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
+import java.util.LinkedHashMap
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
     private lateinit var listView: ExpandableListView
     private val expandableListAdapter = ExpandableListAdapter(this)
     private val listButtonsName = arrayListOf("Listar asteroides próximos", "Listar asteroides por nome", "Listar asteroides por data", "Listar asteroides perigosos")
 
-    private val listAsteroids = HashMap<String, ArrayList<Asteroid>>()
+    private val listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
     private lateinit var navController: NavController
 
     val viewModel by viewModels<AsteroidViewModel>{
@@ -60,8 +61,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             when (groupPosition) {
                 0 -> {
                         viewModel.listResults.observe(this) {
-                            expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[0]] =
-                                it.data.results
+//                            expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[0]] =
+//                                it.list
                         }
                 }
 
@@ -71,8 +72,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                         values.value.forEach { if (it.is_potentially_hazardous_asteroid) list.add(it) }
                     }
                     viewModel.listResults.observe(this) {
-                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[1]] =
-                            it.data.results
+//                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[1]] =
+//                            it.list
                     }
                 }
 
@@ -82,8 +83,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                         values.value.forEach { if (it.is_potentially_hazardous_asteroid) list.add(it) }
                     }
                     viewModel.listResults.observe(this) {
-                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[2]] =
-                            it.data.results
+//                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[2]] =
+//                            it.list
                     }
                 }
 

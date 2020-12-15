@@ -14,7 +14,7 @@ import com.example.astrodream.ui.asteroids.AsteroidActivity
 
 class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListAdapter() {
     var listButtons = ArrayList<String>()
-    var listAsteroids = HashMap<String, ArrayList<Asteroid>>()
+    var listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
 
     override fun getGroup(groupPosition: Int): Any {
         return listButtons[groupPosition]

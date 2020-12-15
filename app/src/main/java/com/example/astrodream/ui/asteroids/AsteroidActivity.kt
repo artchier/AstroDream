@@ -27,12 +27,17 @@ import java.util.LinkedHashMap
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
     private lateinit var listView: ExpandableListView
     private val expandableListAdapter = ExpandableListAdapter(this)
-    private val listButtonsName = arrayListOf("Listar asteroides próximos", "Listar asteroides por nome", "Listar asteroides por data", "Listar asteroides perigosos")
+    private val listButtonsName = arrayListOf(
+        "Listar asteroides próximos",
+        "Listar asteroides por nome",
+        "Listar asteroides por data",
+        "Listar asteroides perigosos"
+    )
 
     private val listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
     private lateinit var navController: NavController
 
-    val viewModel by viewModels<AsteroidViewModel>{
+    val viewModel by viewModels<AsteroidViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return AsteroidViewModel(service) as T
@@ -58,44 +63,28 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
-            when (groupPosition) {
-                0 -> {
-                        viewModel.listResults.observe(this) {
-//                            expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[0]] =
-//                                it.list
+            viewModel.listResults.observe(this) {
+                when (groupPosition) {
+                    0 -> {
+                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[0]] =
+                            viewModel.listAsteroid
+                    }
+                    1 -> {
+                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[1]] =
+                            viewModel.listAsteroid
+                    }
+                    2 -> {
+                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[2]] =
+                            viewModel.listAsteroid
+                    }
+                    3 -> {
+                        val list = ArrayList<Asteroid>()
+                        for (values in listAsteroids) {
+                            values.value.forEach {
+                                if (it.is_potentially_hazardous_asteroid) list.add(it)
+                            }
                         }
-                }
-
-                1 -> {
-                    val list = ArrayList<Asteroid>()
-                    for (values in listAsteroids) {
-                        values.value.forEach { if (it.is_potentially_hazardous_asteroid) list.add(it) }
-                    }
-                    viewModel.listResults.observe(this) {
-//                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[1]] =
-//                            it.list
-                    }
-                }
-
-                2 -> {
-                    val list = ArrayList<Asteroid>()
-                    for (values in listAsteroids) {
-                        values.value.forEach { if (it.is_potentially_hazardous_asteroid) list.add(it) }
-                    }
-                    viewModel.listResults.observe(this) {
-//                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[2]] =
-//                            it.list
-                    }
-                }
-
-                3 -> {
-                    val list = ArrayList<Asteroid>()
-                    for (values in listAsteroids) {
-                        values.value.forEach { if (it.is_potentially_hazardous_asteroid) list.add(it) }
-                    }
-                    viewModel.listResults.observe(this) {
-                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[3]] =
-                            list
+                        expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[3]] = list
                     }
                 }
             }
@@ -105,7 +94,10 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     }
 
     private fun onClickAsteroids(childPos: Int, groupPos: Int) {
-        val asteroid = expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(childPos)
+        val asteroid =
+            expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(
+                childPos
+            )
         val li: LayoutInflater = this.layoutInflater
         val view: View = li.inflate(R.layout.asteroid_dialog, null)
         val tx_nome: TextView = view.findViewById(R.id.nome_asteroid_dialog)

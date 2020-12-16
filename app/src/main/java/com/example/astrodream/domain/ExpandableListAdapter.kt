@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import com.example.astrodream.R
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 
@@ -37,19 +38,30 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         val headerTitle = getGroup(groupPosition) as String
         var view = convertView
         if (convertView == null) {
-            val li: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val li: LayoutInflater =
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = li.inflate(R.layout.btn_asteroids, null)
-        }
+            }
+        val v: Toolbar = view?.findViewById(R.id.toolbar_asteroid_buttons)!!
+            when (groupPosition){
+                1 -> {
+                    if (isExpanded){
+                        v.visibility = Toolbar.VISIBLE
+                    } else {
+                        v.visibility = Toolbar.GONE
+                    }
+                }
+                else -> { v.visibility = Toolbar.GONE}
+            }
 
-        val tvListHeader: TextView = view?.findViewById(R.id.tv_btn_list) as TextView
-        tvListHeader.setTypeface(null, Typeface.NORMAL)
-        tvListHeader.text = headerTitle
+            val tvListHeader: TextView = view?.findViewById(R.id.tv_btn_list) as TextView
+            tvListHeader.setTypeface(null, Typeface.NORMAL)
+            tvListHeader.text = headerTitle
 
-        (view.findViewById(R.id.ic_btn) as ImageView).setImageResource(if (isExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down)
-        view.setBackgroundResource(if (isExpanded) R.drawable.button_style_click else R.drawable.button_style)
+            (view.findViewById(R.id.ic_btn) as ImageView).setImageResource(if (isExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down)
+            view.setBackgroundResource(if (isExpanded) R.drawable.button_style_click else R.drawable.button_style)
 
-        context.viewModel.listResults
-
+            context.viewModel.listResults
         return view
     }
 

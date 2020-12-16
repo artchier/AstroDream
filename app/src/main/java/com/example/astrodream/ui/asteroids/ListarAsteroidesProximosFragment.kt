@@ -1,4 +1,5 @@
-package com.example.astrodream.ui.asteroids//import com.example.astrodream.domain.AsteroidsAdapter
+package com.example.astrodream.ui.asteroids
+//import com.example.astrodream.domain.AsteroidsAdapter
 //
 //import android.os.Bundle
 //import androidx.fragment.app.Fragment

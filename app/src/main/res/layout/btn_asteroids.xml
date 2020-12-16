@@ -46,11 +46,14 @@
 
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/fl_btn_rv"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_asteroid_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                app:menu="@menu/menu_asteroids"
+                android:visibility="gone">
+
+            </androidx.appcompat.widget.Toolbar>
 
         </LinearLayout>
 

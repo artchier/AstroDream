@@ -2,12 +2,18 @@ package com.example.astrodream.ui.asteroids
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
+import android.widget.EditText
 import android.widget.ExpandableListView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModel
@@ -25,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_asteroid.*
 import java.util.LinkedHashMap
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
+    val list = ArrayList<Asteroid>()
     private lateinit var listView: ExpandableListView
     private val expandableListAdapter = ExpandableListAdapter(this)
     private val listButtonsName = arrayListOf(
@@ -33,6 +40,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         "Listar asteroides por data",
         "Listar asteroides perigosos"
     )
+    private var displayList = ArrayList<Asteroid>()
 
     private val listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
     private lateinit var navController: NavController
@@ -63,6 +71,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
+            searchAsteroid(v)
             viewModel.listResults.observe(this) {
                 when (groupPosition) {
                     0 -> {
@@ -72,6 +81,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                     1 -> {
                         expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[1]] =
                             viewModel.listAsteroid
+                        list.addAll(viewModel.listAsteroid)
                     }
                     2 -> {
                         expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[2]] =
@@ -126,4 +136,121 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 .show()
         }
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_asteroids, menu)
+//        val searchItem = menu?.findItem(R.id.menu_search_asteroid)
+//        if (searchItem != null){
+//            val searchView = searchItem.actionView as
+//                    SearchView
+//            val editText = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+//            editText.hint = "Digite o nome do asteroide..."
+//
+//            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+//                override fun onQueryTextSubmit(query: String?): Boolean {
+//                    return true
+//                }
+//
+//                override fun onQueryTextChange(newText: String?): Boolean {
+//                    Log.i("newText", newText.toString())
+//                    if(newText!!.isNotEmpty()){
+//                        val list = expandableListAdapter.listAsteroids[listButtonsName[1]]
+//                        Log.i("list", list.toString())
+//                        expandableListAdapter.listAsteroids[listButtonsName[1]]?.clear()
+//                        Log.i("listalimpa", expandableListAdapter.listAsteroids[listButtonsName[1]].toString())
+//                        val search = newText.toLowerCase()
+//                        list?.forEach {
+//                            var name = it.name
+//                            Log.i("name", name)
+//                            val list2 = ArrayList<Asteroid>()
+//                            if(name.toLowerCase().contains(search)) list2.add(it)
+//                            Log.i("listatualizada", list.toString())
+//                            expandableListAdapter.listAsteroids[listButtonsName[1]] = list2
+//                        }
+//                        expandableListAdapter.notifyDataSetChanged()
+//                    } else {
+//                        expandableListAdapter.listAsteroids[listButtonsName[1]]?.clear()
+//                        expandableListAdapter.listAsteroids[listButtonsName[1]] = viewModel.listAsteroid
+//                        expandableListAdapter.notifyDataSetChanged()
+//                    }
+//                    return true
+//                }
+//            })
+//        }
+//        return true
+//    }
+
+    fun searchAsteroid(view: View){
+        val searchView = view.findViewById<SearchView>(R.id.search_view_asteroid_button)
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.i("newText", newText.toString())
+                if(newText!!.isNotEmpty()){
+                    Log.i("list", list.toString())
+                    expandableListAdapter.listAsteroids[listButtonsName[1]]?.clear()
+                    Log.i("listalimpa", expandableListAdapter.listAsteroids[listButtonsName[1]].toString())
+                    val search = newText.toLowerCase()
+                    val list2 = ArrayList<Asteroid>()
+                    list?.forEach {
+                        var name = it.name
+                        Log.i("name", name)
+                        if(name.toLowerCase().contains(search)) list2.add(it)
+                        Log.i("listatualizada", list2.toString())
+                    }
+                    expandableListAdapter.listAsteroids[listButtonsName[1]] = list2
+                    expandableListAdapter.notifyDataSetChanged()
+                } else {
+                    expandableListAdapter.listAsteroids[listButtonsName[1]]?.clear()
+                    expandableListAdapter.listAsteroids[listButtonsName[1]] = viewModel.listAsteroid
+                    expandableListAdapter.notifyDataSetChanged()
+                }
+                return true
+            }
+        })
+    }
+
+//    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_asteroids, menu)
+//        val searchItem = menu?.findItem(R.id.menu_search_asteroid)
+//        if (searchItem != null){
+//            val searchView = searchItem.actionView as
+//                    SearchView
+//            val editText = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+//            editText.hint = "Digite o nome do asteroide..."
+//
+//            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+//                override fun onQueryTextSubmit(query: String?): Boolean {
+//                    return true
+//                }
+//
+//                override fun onQueryTextChange(newText: String?): Boolean {
+//                    Log.i("newText", newText.toString())
+//                    if(newText!!.isNotEmpty()){
+//                        Log.i("list", list.toString())
+//                        expandableListAdapter.listAsteroids[listButtonsName[1]]?.clear()
+//                        Log.i("listalimpa", expandableListAdapter.listAsteroids[listButtonsName[1]].toString())
+//                        val search = newText.toLowerCase()
+//                        list?.forEach {
+//                            var name = it.name
+//                            Log.i("name", name)
+//                            val list2 = ArrayList<Asteroid>()
+//                            if(name.toLowerCase().contains(search)) list2.add(it)
+//                            Log.i("listatualizada", list.toString())
+//                            expandableListAdapter.listAsteroids[listButtonsName[1]] = list2
+//                        }
+//                        expandableListAdapter.notifyDataSetChanged()
+//                    } else {
+//                        expandableListAdapter.listAsteroids[listButtonsName[1]]?.clear()
+//                        expandableListAdapter.listAsteroids[listButtonsName[1]] = viewModel.listAsteroid
+//                        expandableListAdapter.notifyDataSetChanged()
+//                    }
+//                    return true
+//                }
+//            })
+//        }
 }

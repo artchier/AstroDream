@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.SearchView
 import com.example.astrodream.R
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 
@@ -16,6 +16,7 @@ import com.example.astrodream.ui.asteroids.AsteroidActivity
 class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListAdapter() {
     var listButtons = ArrayList<String>()
     var listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
+    var listAsteroidsNames = ArrayList<String>()
 
     override fun getGroup(groupPosition: Int): Any {
         return listButtons[groupPosition]
@@ -42,16 +43,16 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = li.inflate(R.layout.btn_asteroids, null)
             }
-        val v: Toolbar = view?.findViewById(R.id.toolbar_asteroid_buttons)!!
+        val searchView: SearchView? = view?.findViewById(R.id.search_view_asteroid_button)
             when (groupPosition){
                 1 -> {
                     if (isExpanded){
-                        v.visibility = Toolbar.VISIBLE
+                            searchView?.visibility = SearchView.VISIBLE
                     } else {
-                        v.visibility = Toolbar.GONE
+                        searchView?.visibility = SearchView.GONE
                     }
                 }
-                else -> { v.visibility = Toolbar.GONE}
+                else -> { searchView?.visibility = SearchView.GONE}
             }
 
             val tvListHeader: TextView = view?.findViewById(R.id.tv_btn_list) as TextView

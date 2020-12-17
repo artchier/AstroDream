@@ -46,14 +46,37 @@
 
             </LinearLayout>
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_asteroid_buttons"
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:visibility="visible">-->
+
+<!--                <EditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@color/transparent"-->
+<!--                    android:hint="Digite o nome do asteroide..."-->
+<!--                    app:showAsAction="always"-->
+<!--                    android:icon="@drawable/ic_search"-->
+<!--                    app:actionViewClass="androidx.appcompat.widget.SearchView"/>-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view_asteroid_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:menu="@menu/menu_asteroids"
-                android:visibility="gone">
+                app:queryHint="Digite o nome do asteroide..."
+                android:visibility="gone"
+                app:searchIcon="@drawable/ic_search"/>
 
-            </androidx.appcompat.widget.Toolbar>
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/toolbar_asteroid_buttons"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:menu="@menu/menu_asteroids"-->
+<!--                android:visibility="gone">-->
+
+<!--            </androidx.appcompat.widget.Toolbar>-->
 
         </LinearLayout>
 

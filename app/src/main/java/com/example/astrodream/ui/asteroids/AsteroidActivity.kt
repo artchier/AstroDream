@@ -3,10 +3,8 @@ package com.example.astrodream.ui.asteroids
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
+import android.view.*
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ExpandableListView
 import android.widget.TextView
@@ -28,10 +26,11 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
+import kotlinx.android.synthetic.main.activity_globe.*
 import java.util.LinkedHashMap
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
-    val list = ArrayList<Asteroid>()
+    val list = mutableSetOf<Asteroid>()
     private lateinit var listView: ExpandableListView
     private val expandableListAdapter = ExpandableListAdapter(this)
     private val listButtonsName = arrayListOf(
@@ -40,7 +39,6 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         "Listar asteroides por data",
         "Listar asteroides perigosos"
     )
-    private var displayList = ArrayList<Asteroid>()
 
     private val listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
     private lateinit var navController: NavController
@@ -71,8 +69,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
-            searchAsteroid(v)
             list.addAll(viewModel.listAsteroid)
+            searchAsteroid(v)
             viewModel.listResults.observe(this) {
                 when (groupPosition) {
                     0 -> {
@@ -86,6 +84,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                     }
                     3 -> {
                         val listPerigosos = ArrayList<Asteroid>()
+
                         for (values in list) {
                                 if (values.is_potentially_hazardous_asteroid) listPerigosos.add(values)
                             }
@@ -98,11 +97,13 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         setUpMenuBehavior()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickAsteroids(childPos: Int, groupPos: Int) {
         val asteroid =
             expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(
                 childPos
             )
+        Log.i("ASTEROID DIALOG", asteroid.toString())
         val li: LayoutInflater = this.layoutInflater
         val view: View = li.inflate(R.layout.asteroid_dialog, null)
         val tx_nome: TextView = view.findViewById(R.id.nome_asteroid_dialog)
@@ -112,11 +113,11 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         val miss_distance: TextView = view.findViewById(R.id.miss_distance)
         val orbiting_body: TextView = view.findViewById(R.id.orbiting_body)
         tx_nome.text = asteroid?.name
-        absolute_magnitude.text = asteroid?.absolute_magnitude.toString()
-        relative_velocity.text = asteroid?.relative_velocity.toString()
-        close_approach_data.text = asteroid?.date
-        miss_distance.text = asteroid?.miss_distance.toString()
-        orbiting_body.text = asteroid?.orbiting_body
+        absolute_magnitude.text = "Magnitude absoluta: ${asteroid?.absolute_magnitude.toString()}"
+        relative_velocity.text = "Velocidade relativa: ${asteroid?.relative_velocity.toString()}"
+        close_approach_data.text = "Data de aproximação: ${asteroid?.getDataFormatada()}"
+        miss_distance.text = "Distância aproximada: ${asteroid?.miss_distance.toString()}"
+        orbiting_body.text = "Órbita:  ${asteroid?.orbiting_body}"
 
         run {
             MaterialAlertDialogBuilder(this)
@@ -127,7 +128,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 .setBackground(
                     ContextCompat.getColor(this, android.R.color.transparent).toDrawable()
                 )
-                .setView(R.layout.asteroid_dialog)
+                .setView(view)
                 .show()
         }
     }
@@ -151,7 +152,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                     val list2 = ArrayList<Asteroid>()
                     list?.forEach {
                         var name = it.name
-                        Log.i("name", name)
+                        Log.i("asteroid", it.toString())
                         if(name.toLowerCase().contains(search)) list2.add(it)
                         Log.i("listatualizada", list2.toString())
                     }
@@ -165,5 +166,21 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 return true
             }
         })
+    }
+
+    fun searchAsteroidDate(year: Int, month: Int, day: Int){
+            val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
+            datePicker.updateDate(year, month, day)
+            MaterialAlertDialogBuilder(this)
+                .setView(datePicker)
+                .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+//                    day = datePicker.dayOfMonth
+//                    month = datePicker.month
+//                    year = datePicker.year
+//                    data = "$day/${month + 1}/$year"
+//                    tvData.text = data
+                }
+                .setNegativeButton(resources.getString(R.string.cancelar), null)
+                .show()
     }
 }

@@ -2,12 +2,14 @@ package com.example.astrodream.domain
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import com.example.astrodream.R
 import com.example.astrodream.ui.asteroids.AsteroidActivity
@@ -16,7 +18,6 @@ import com.example.astrodream.ui.asteroids.AsteroidActivity
 class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListAdapter() {
     var listButtons = ArrayList<String>()
     var listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
-    var listAsteroidsNames = ArrayList<String>()
 
     override fun getGroup(groupPosition: Int): Any {
         return listButtons[groupPosition]
@@ -30,6 +31,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         return false
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun getGroupView(
         groupPosition: Int,
         isExpanded: Boolean,
@@ -46,10 +48,13 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         val searchView: SearchView? = view?.findViewById(R.id.search_view_asteroid_button)
             when (groupPosition){
                 1 -> {
+                //    (view?.findViewById(R.id.search_view_asteroid_button) as SearchView).setTransitionVisibility(SearchView.VISIBLE)
                     if (isExpanded){
-                            searchView?.visibility = SearchView.VISIBLE
+                          //  searchView?.visibility = SearchView.VISIBLE
+                        searchView?.setTransitionVisibility(SearchView.VISIBLE)
                     } else {
-                        searchView?.visibility = SearchView.GONE
+                      //  searchView?.visibility = SearchView.GONE
+                        searchView?.setTransitionVisibility(SearchView.GONE)
                     }
                 }
                 else -> { searchView?.visibility = SearchView.GONE}
@@ -78,6 +83,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         return groupPosition.toLong()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getChildView(
         groupPosition: Int,
         childPosition: Int,
@@ -97,7 +103,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         view.setBackgroundResource(if (isLastChild) R.drawable.button_style_click_itens else R.color.gigas)
 
         txtListChild.text = childAsteroid?.name
-        txtDataListChild.text = childAsteroid?.date
+        txtDataListChild.text = childAsteroid?.getDataFormatada()
         return view
     }
 

@@ -54,6 +54,12 @@
                 android:visibility="gone"
                 app:searchIcon="@drawable/ic_search"/>
 
-        </LinearLayout>
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:hint="Escolha uma data..."-->
+<!--                android:editable="false"/>-->
+
+<!--        </LinearLayout>-->
 
     </FrameLayout>

@@ -3,7 +3,6 @@ package com.example.astrodream.domain
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonArray
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import java.io.Serializable
 import java.time.LocalDateTime
@@ -19,11 +18,16 @@ data class Asteroid(
     val close_approach_data: JsonArray,
     val miss_distance: AsteroidDistancia,
     val orbiting_body: String
-) : Serializable{
-    var date: String = close_approach_data[0].toString()
+) : Serializable, Comparable<Asteroid>{
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getDataFormatada(): String {
-        return LocalDateTime.parse(date).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+        val date: List<String> = close_approach_data[0].asJsonObject.get("close_approach_date").toString().removeSurrounding("\"").split("-")
+        return "${date[2]}/${date[1]}/${date[0]}"
+     //   return LocalDateTime.parse(close_approach_data[0].asJsonObject.get("close_approach_date").toString().removeSurrounding("\"")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+    }
+
+    override fun compareTo(other: Asteroid): Int {
+        return name.compareTo(other.name)
     }
 }

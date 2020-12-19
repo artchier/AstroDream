@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
@@ -45,6 +46,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = li.inflate(R.layout.btn_asteroids, null)
             }
+        val calendarAsteroid: LinearLayout? = view?.findViewById(R.id.search_date_asteroid_button)
         val searchView: SearchView? = view?.findViewById(R.id.search_view_asteroid_button)
             when (groupPosition){
                 1 -> {
@@ -56,8 +58,22 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
                       //  searchView?.visibility = SearchView.GONE
                         searchView?.setTransitionVisibility(SearchView.GONE)
                     }
+                    calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
                 }
-                else -> { searchView?.visibility = SearchView.GONE}
+
+                2 -> {
+                    if (isExpanded){
+                        //  searchView?.visibility = SearchView.VISIBLE
+                        calendarAsteroid?.setTransitionVisibility(LinearLayout.VISIBLE)
+                    } else {
+                        //  searchView?.visibility = SearchView.GONE
+                        calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
+                    }
+                    searchView?.visibility = SearchView.GONE
+                }
+                else -> { searchView?.visibility = SearchView.GONE
+                    calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
+                }
             }
 
             val tvListHeader: TextView = view?.findViewById(R.id.tv_btn_list) as TextView

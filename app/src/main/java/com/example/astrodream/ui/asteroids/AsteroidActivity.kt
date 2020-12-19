@@ -4,10 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.ExpandableListView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
@@ -70,6 +67,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
             list.addAll(viewModel.listAsteroid)
+            val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
             searchAsteroid(v)
             viewModel.listResults.observe(this) {
                 when (groupPosition) {
@@ -80,6 +78,12 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[1] to viewModel.listAsteroid))
                     }
                     2 -> {
+                        val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
+                        v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener {
+                            showAsteroidCalendar(2020,11,12, editText)
+
+                        }
+
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[2] to viewModel.listAsteroid))
                     }
                     3 -> {
@@ -168,19 +172,36 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         })
     }
 
-    fun searchAsteroidDate(year: Int, month: Int, day: Int){
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun showAsteroidCalendar(year: Int, month: Int, day: Int, editText: EditText){
             val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
             datePicker.updateDate(year, month, day)
             MaterialAlertDialogBuilder(this)
                 .setView(datePicker)
                 .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
-//                    day = datePicker.dayOfMonth
-//                    month = datePicker.month
-//                    year = datePicker.year
-//                    data = "$day/${month + 1}/$year"
-//                    tvData.text = data
+                    editText.setText("${datePicker.dayOfMonth}/${datePicker.month + 1}/${datePicker.year}")
                 }
                 .setNegativeButton(resources.getString(R.string.cancelar), null)
                 .show()
+        searchAsteroidDate(editText)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun searchAsteroidDate(editText: EditText) {
+      //  val editText: EditText = v.findViewById(R.id.et_search_asteroid_date)
+
+        val listAsteroidDate = ArrayList<Asteroid>()
+        if(editText.text.isNotEmpty()) {
+            expandableListAdapter.listAsteroids[listButtonsName[2]]?.clear()
+            list.forEach {
+                if (it.getDataFormatada() == editText.text.toString()) listAsteroidDate.add(it)
+            }
+            expandableListAdapter.listAsteroids[listButtonsName[2]] = listAsteroidDate
+            expandableListAdapter.notifyDataSetChanged()
+        } else {
+            expandableListAdapter.listAsteroids[listButtonsName[2]]?.clear()
+            expandableListAdapter.listAsteroids[listButtonsName[2]] = viewModel.listAsteroid
+            expandableListAdapter.notifyDataSetChanged()
+        }
     }
 }

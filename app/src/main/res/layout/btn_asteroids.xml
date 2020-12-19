@@ -54,12 +54,33 @@
                 android:visibility="gone"
                 app:searchIcon="@drawable/ic_search"/>
 
-<!--            <EditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:hint="Escolha uma data..."-->
-<!--                android:editable="false"/>-->
+            <LinearLayout
+                android:id="@+id/search_date_asteroid_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal">
 
-<!--        </LinearLayout>-->
+            <EditText
+                android:id="@+id/et_search_asteroid_date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:hint="Escolha uma data..."
+                android:clickable="true"
+                android:inputType="date">
+
+            </EditText>
+
+                <ImageView
+                    android:id="@+id/iv_calendar_asteroids"
+                    android:layout_marginLeft="7dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_calendar" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </FrameLayout>

@@ -39,8 +39,20 @@ interface Service {
     ): JsonObject
 
     // -----------asteroids-------------
-    @GET("neo/rest/v1/feed?")
-    suspend fun getAsteroids(
+    @GET("neo/rest/v1/feed")
+    suspend fun getAsteroidsDate(
+        @Query("start_date")p0: String,
+        @Query("api_key")p1: String,
+        @Query("end_date")p2: String = "2020-12-12"
+    ): AsteroidRes
+
+    @GET("neo/rest/v1/neo/browse")
+    suspend fun getAllAsteroids(
+        @Query("api_key")p0: String,
+    ): AsteroidRes
+
+    @GET("neo/rest/v1/feed")
+    suspend fun getAsteroidId(
         @Query("start_date")p0: String,
         @Query("api_key")p1: String,
         @Query("end_date")p2: String = "2020-12-12"

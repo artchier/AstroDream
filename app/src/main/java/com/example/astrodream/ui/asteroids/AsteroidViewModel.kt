@@ -17,7 +17,7 @@ class AsteroidViewModel(val service: Service) : ViewModel() {
     fun popListResult() {
         viewModelScope.launch {
             val listAsteroids =
-                service.getAsteroids("2020-12-11", "X6SUDXPVkjgyQoyKVunHMpwomboitIigBRVCSK1M")
+                service.getAsteroidsDate("2020-12-11", "X6SUDXPVkjgyQoyKVunHMpwomboitIigBRVCSK1M")
 
             listAsteroids.near_earth_objects.keySet().toList().forEach {
                 val list = Gson().fromJson(listAsteroids.near_earth_objects.get(it),

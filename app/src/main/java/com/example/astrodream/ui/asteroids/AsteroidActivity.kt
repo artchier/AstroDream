@@ -8,7 +8,6 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModel
@@ -23,7 +22,6 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
-import kotlinx.android.synthetic.main.activity_globe.*
 import java.util.LinkedHashMap
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
@@ -81,7 +79,9 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                         val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
                         v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener {
                             showAsteroidCalendar(2020,11,12, editText)
-
+                        }
+                        v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener {
+                            searchAsteroidDate(editText)
                         }
 
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[2] to viewModel.listAsteroid))
@@ -193,10 +193,12 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         val listAsteroidDate = ArrayList<Asteroid>()
         if(editText.text.isNotEmpty()) {
             expandableListAdapter.listAsteroids[listButtonsName[2]]?.clear()
+            Log.i("EditTEXT", editText.text.toString())
             list.forEach {
                 if (it.getDataFormatada() == editText.text.toString()) listAsteroidDate.add(it)
             }
             expandableListAdapter.listAsteroids[listButtonsName[2]] = listAsteroidDate
+            Log.i("ListAsteroidDate", listAsteroidDate.toString())
             expandableListAdapter.notifyDataSetChanged()
         } else {
             expandableListAdapter.listAsteroids[listButtonsName[2]]?.clear()

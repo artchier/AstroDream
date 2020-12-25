@@ -1,5 +1,7 @@
 package com.example.astrodream.ui.asteroids
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +16,7 @@ class AsteroidViewModel(val service: Service) : ViewModel() {
     val listResults = MutableLiveData<AsteroidRes>()
     val listAsteroid = ArrayList<Asteroid>()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun popListResult() {
         viewModelScope.launch {
             val listAsteroids =
@@ -21,9 +24,9 @@ class AsteroidViewModel(val service: Service) : ViewModel() {
 
             listAsteroids.near_earth_objects.keySet().toList().forEach {
                 val list = Gson().fromJson(listAsteroids.near_earth_objects.get(it),
-                    object : TypeToken<List<Asteroid>>() {}.type
-                ) as List<Asteroid>
-                listAsteroid.addAll(list)
+                    object : TypeToken<List<AsteroidData>>() {}.type
+                ) as List<AsteroidData>
+                listAsteroid.addAll(list.map { it.getAsteroid() })
             }
             listResults.value = listAsteroids
         }

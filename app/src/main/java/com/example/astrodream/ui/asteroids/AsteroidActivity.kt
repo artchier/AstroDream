@@ -1,5 +1,6 @@
 package com.example.astrodream.ui.asteroids
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -131,6 +132,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         Log.i("ASTEROID DIALOG", asteroid.toString())
         val li: LayoutInflater = this.layoutInflater
         val view: View = li.inflate(R.layout.asteroid_dialog, null)
+        val ver_orbita: TextView = view.findViewById(R.id.btn_ver_orbita)
         val tx_nome: TextView = view.findViewById(R.id.nome_asteroid_dialog)
         val absolute_magnitude: TextView = view.findViewById(R.id.absolute_magnitude)
         val relative_velocity: TextView = view.findViewById(R.id.relative_velocity)
@@ -144,6 +146,10 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         miss_distance.text = "Distância aproximada: ${asteroid?.miss_distance.toString()}"
         orbiting_body.text = "Órbita:  ${asteroid?.orbiting_body}"
 
+        ver_orbita.setOnClickListener {
+            startActivity(Intent(this, AsteroidOrbitActivity::class.java))
+        }
+
         run {
             MaterialAlertDialogBuilder(this)
                 .setBackgroundInsetStart(70)
@@ -156,6 +162,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 .setView(view)
                 .show()
         }
+
     }
 
 

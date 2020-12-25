@@ -8,11 +8,14 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.astrodream.R
@@ -26,6 +29,7 @@ import java.util.LinkedHashMap
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
     val list = mutableSetOf<Asteroid>()
+    private val listFourAsteroids = ArrayList<Asteroid>()
     private lateinit var listView: ExpandableListView
     private val expandableListAdapter = ExpandableListAdapter(this)
     private val listButtonsName = arrayListOf(
@@ -52,11 +56,24 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         setContentView(R.layout.activity_asteroid)
 
         navController = findNavController(R.id.fl_imagem_asteroids)
+
+        val navInflater = navController.navInflater
+        val graph = navInflater.inflate (R.navigation.navigation_asteroids)
+        val navArgument = NavArgument.Builder().setDefaultValue(listFourAsteroids).build ()
+        graph.addArgument ("listFourAsteroids", navArgument)
+
+        navController.graph = graph
+
         listView = exp_list_view_asteroids
         listView.setAdapter(expandableListAdapter)
         expandableListAdapter.addListButtons(listButtonsName)
         expandableListAdapter.addListAsteroids(listAsteroids)
         viewModel.popListResult()
+
+        viewModel.listResults.observe(this) {
+            listFourAsteroids.addAll(viewModel.listAsteroid.subList(0, 4))
+            Log.i("listAsteroids", listFourAsteroids.size.toString())
+        }
 
         listView.setOnChildClickListener { parent, view, groupPosition, childPosition, id ->
             onClickAsteroids(childPosition, groupPosition)
@@ -64,6 +81,10 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
+//            if (listView.isGroupExpanded(0) || listView.isGroupExpanded(1) ||
+//                listView.isGroupExpanded(2) || listView.isGroupExpanded(3)){
+//                cardview_img_asteroids.visibility = CardView.GONE
+//            } else { cardview_img_asteroids.visibility = CardView.VISIBLE }
             list.addAll(viewModel.listAsteroid)
             val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
             searchAsteroid(v)

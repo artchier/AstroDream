@@ -1,18 +1,19 @@
 package com.example.astrodream.ui.asteroids
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
-import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -26,7 +27,13 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
-import java.util.LinkedHashMap
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.arrayListOf
+import kotlin.collections.forEach
+import kotlin.collections.linkedMapOf
+import kotlin.collections.mutableSetOf
+import kotlin.collections.set
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
     val list = mutableSetOf<Asteroid>()
@@ -146,8 +153,15 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         miss_distance.text = "Distância aproximada: ${asteroid?.miss_distance.toString()}"
         orbiting_body.text = "Órbita:  ${asteroid?.orbiting_body}"
 
+//        ver_orbita.setOnClickListener {
+//            startActivity(Intent(this, AsteroidOrbitActivity::class.java))
+//        }
+
         ver_orbita.setOnClickListener {
-            startActivity(Intent(this, AsteroidOrbitActivity::class.java))
+            val url = "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=2465633;orb=1;cov=0;log=0;cad=0#orb"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
         }
 
         run {

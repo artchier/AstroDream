@@ -45,7 +45,7 @@ data class AsteroidData(
 
 data class Asteroid(
     val name: String,
-    val is_potentially_hazardous_asteroid: Boolean?,
+    val is_potentially_hazardous_asteroid: Boolean,
     val absolute_magnitude: Double?,
     val relative_velocity: AsteroidVelocidade?,
     val close_approach_data: String?,

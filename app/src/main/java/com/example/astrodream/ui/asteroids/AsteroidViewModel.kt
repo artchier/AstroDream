@@ -1,6 +1,7 @@
 package com.example.astrodream.ui.asteroids
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import com.example.astrodream.services.Service
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class AsteroidViewModel(val service: Service) : ViewModel() {
 
@@ -20,7 +22,7 @@ class AsteroidViewModel(val service: Service) : ViewModel() {
     fun popListResult() {
         viewModelScope.launch {
             val listAsteroids =
-                service.getAsteroidsDate("2020-12-11", "X6SUDXPVkjgyQoyKVunHMpwomboitIigBRVCSK1M")
+                service.getAsteroidsDate(LocalDate.now().toString(), "X6SUDXPVkjgyQoyKVunHMpwomboitIigBRVCSK1M")
 
             listAsteroids.near_earth_objects.keySet().toList().forEach {
                 val list = Gson().fromJson(listAsteroids.near_earth_objects.get(it),
@@ -29,6 +31,7 @@ class AsteroidViewModel(val service: Service) : ViewModel() {
                 listAsteroid.addAll(list.map { it.getAsteroid() })
             }
             listResults.value = listAsteroids
+            Log.i("LIST ASTEROIDS", listResults.toString())
         }
     }
 }

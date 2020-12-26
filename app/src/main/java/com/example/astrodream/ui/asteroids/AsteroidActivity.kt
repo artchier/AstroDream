@@ -89,16 +89,16 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             false
         }
 
-//        listView.setOnGroupExpandListener {
-//            cardview_img_asteroids.visibility = CardView.GONE
-//        }
-//
-//        listView.setOnGroupCollapseListener {
-//            //            if (listView.isGroupExpanded(0) || listView.isGroupExpanded(1) ||
-////                listView.isGroupExpanded(2) || listView.isGroupExpanded(3)){
-////                cardview_img_asteroids.visibility = CardView.GONE
-////            } else { cardview_img_asteroids.visibility = CardView.VISIBLE }
-//        }
+        listView.setOnGroupExpandListener {
+            cardview_img_asteroids.visibility = CardView.GONE
+        }
+
+        listView.setOnGroupCollapseListener {
+                        if (listView.isGroupExpanded(0) || listView.isGroupExpanded(1) ||
+                listView.isGroupExpanded(2) || listView.isGroupExpanded(3)){
+                cardview_img_asteroids.visibility = CardView.GONE
+            } else { cardview_img_asteroids.visibility = CardView.VISIBLE }
+        }
 
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
 //            if (listView.isGroupExpanded(0) || listView.isGroupExpanded(1) ||
@@ -171,6 +171,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         close_approach_data.text = "Data de aproximação: ${asteroid?.close_approach_data}"
         miss_distance.text = "Distância aproximada: ${asteroid?.miss_distance}"
         orbiting_body.text = "Órbita:  ${asteroid?.orbiting_body}"
+        estimated_diameter.text = "Tamanho estimado:  ${asteroid?.estimated_diameter}"
 
         ver_orbita.setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)

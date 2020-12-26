@@ -11,7 +11,6 @@
         android:roundIcon="@mipmap/ic_astrodream_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AstroDream">
-        <activity android:name=".ui.asteroids.AsteroidOrbitActivity"></activity>
         <activity android:name=".ui.plaindailymars.PlainActivity" />
         <activity android:name=".ui.dailyimage.DailyImageActivity" />
         <activity android:name=".ui.avatar.AvatarActivity" />

@@ -86,6 +86,15 @@
         android:textColor="@color/white" />
 
     <TextView
+        android:id="@+id/estimated_diameter"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white" />
+
+    <TextView
         android:id="@+id/orbiting_body"
         android:layout_marginHorizontal="30dp"
         android:layout_marginVertical="5dp"
@@ -94,5 +103,16 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/is_potentially_hazardous_asteroid"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="5dp"
+        android:paddingBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="ASTEROIDE POTENCIALMENTE PERIGOSO"
+        android:textColor="@color/guardsman_red" />
 
 </LinearLayout>

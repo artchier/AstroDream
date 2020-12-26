@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModel
@@ -88,6 +89,17 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             false
         }
 
+//        listView.setOnGroupExpandListener {
+//            cardview_img_asteroids.visibility = CardView.GONE
+//        }
+//
+//        listView.setOnGroupCollapseListener {
+//            //            if (listView.isGroupExpanded(0) || listView.isGroupExpanded(1) ||
+////                listView.isGroupExpanded(2) || listView.isGroupExpanded(3)){
+////                cardview_img_asteroids.visibility = CardView.GONE
+////            } else { cardview_img_asteroids.visibility = CardView.VISIBLE }
+//        }
+
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
 //            if (listView.isGroupExpanded(0) || listView.isGroupExpanded(1) ||
 //                listView.isGroupExpanded(2) || listView.isGroupExpanded(3)){
@@ -146,6 +158,13 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         val close_approach_data: TextView = view.findViewById(R.id.close_approach_data)
         val miss_distance: TextView = view.findViewById(R.id.miss_distance)
         val orbiting_body: TextView = view.findViewById(R.id.orbiting_body)
+        val is_potentially_hazardous_asteroid: TextView = view.findViewById(R.id.is_potentially_hazardous_asteroid)
+        val estimated_diameter: TextView = view.findViewById(R.id.estimated_diameter)
+
+        if (asteroid?.is_potentially_hazardous_asteroid!!){
+            is_potentially_hazardous_asteroid.visibility = TextView.VISIBLE
+        }
+
         tx_nome.text = asteroid?.name
         absolute_magnitude.text = "Magnitude absoluta: ${asteroid?.absolute_magnitude}"
         relative_velocity.text = "Velocidade relativa: ${asteroid?.relative_velocity}"

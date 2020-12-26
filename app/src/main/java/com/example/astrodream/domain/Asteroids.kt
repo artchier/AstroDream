@@ -14,6 +14,7 @@ import kotlin.collections.ArrayList
 data class AsteroidRes(val element_count: Int, val near_earth_objects: JsonObject)
 
 data class AsteroidData(
+    val id: String,
     val name: String,
     val is_potentially_hazardous_asteroid: Boolean,
     val absolute_magnitude_h: Double,
@@ -71,13 +72,14 @@ data class AsteroidData(
     @RequiresApi(Build.VERSION_CODES.O)
     fun getAsteroid(): Asteroid {
        return Asteroid(
-            name, is_potentially_hazardous_asteroid,
+            id, name, is_potentially_hazardous_asteroid,
            absolute_magnitude_h, getVelocity(), getDataFormatada(), getDistancia(), getTamanho(), getOrbitingBody()
         )
     }
 }
 
 data class Asteroid(
+    val id: String,
     val name: String,
     val is_potentially_hazardous_asteroid: Boolean,
     val absolute_magnitude: Double?,

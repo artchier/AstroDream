@@ -154,9 +154,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         orbiting_body.text = "Órbita:  ${asteroid?.orbiting_body}"
 
         ver_orbita.setOnClickListener {
-            val url = "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=2465633;orb=1;cov=0;log=0;cad=0#orb"
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(url)
+            i.data = Uri.parse(getLinkExterno(asteroid?.id))
             startActivity(i)
         }
 
@@ -226,22 +225,22 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun searchAsteroidDate(editText: EditText) {
-      //  val editText: EditText = v.findViewById(R.id.et_search_asteroid_date)
-
         val listAsteroidDate = ArrayList<Asteroid>()
         if(editText.text.isNotEmpty()) {
             expandableListAdapter.listAsteroids[listButtonsName[2]]?.clear()
-            Log.i("EditTEXT", editText.text.toString())
             list.forEach {
                 if (it.close_approach_data == editText.text.toString()) listAsteroidDate.add(it)
             }
             expandableListAdapter.listAsteroids[listButtonsName[2]] = listAsteroidDate
-            Log.i("ListAsteroidDate", listAsteroidDate.toString())
             expandableListAdapter.notifyDataSetChanged()
         } else {
             expandableListAdapter.listAsteroids[listButtonsName[2]]?.clear()
             expandableListAdapter.listAsteroids[listButtonsName[2]] = viewModel.listAsteroid
             expandableListAdapter.notifyDataSetChanged()
         }
+    }
+
+    fun getLinkExterno(id: String?): String{
+        return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
     }
 }

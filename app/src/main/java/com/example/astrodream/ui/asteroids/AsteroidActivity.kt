@@ -147,15 +147,11 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         val miss_distance: TextView = view.findViewById(R.id.miss_distance)
         val orbiting_body: TextView = view.findViewById(R.id.orbiting_body)
         tx_nome.text = asteroid?.name
-        absolute_magnitude.text = "Magnitude absoluta: ${asteroid?.absolute_magnitude.toString()}"
-        relative_velocity.text = "Velocidade relativa: ${asteroid?.relative_velocity.toString()}"
-        close_approach_data.text = "Data de aproximação: ${asteroid?.getDataFormatada()}"
-        miss_distance.text = "Distância aproximada: ${asteroid?.miss_distance.toString()}"
+        absolute_magnitude.text = "Magnitude absoluta: ${asteroid?.absolute_magnitude}"
+        relative_velocity.text = "Velocidade relativa: ${asteroid?.relative_velocity}"
+        close_approach_data.text = "Data de aproximação: ${asteroid?.close_approach_data}"
+        miss_distance.text = "Distância aproximada: ${asteroid?.miss_distance}"
         orbiting_body.text = "Órbita:  ${asteroid?.orbiting_body}"
-
-//        ver_orbita.setOnClickListener {
-//            startActivity(Intent(this, AsteroidOrbitActivity::class.java))
-//        }
 
         ver_orbita.setOnClickListener {
             val url = "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=2465633;orb=1;cov=0;log=0;cad=0#orb"
@@ -237,7 +233,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             expandableListAdapter.listAsteroids[listButtonsName[2]]?.clear()
             Log.i("EditTEXT", editText.text.toString())
             list.forEach {
-                if (it.getDataFormatada() == editText.text.toString()) listAsteroidDate.add(it)
+                if (it.close_approach_data == editText.text.toString()) listAsteroidDate.add(it)
             }
             expandableListAdapter.listAsteroids[listButtonsName[2]] = listAsteroidDate
             Log.i("ListAsteroidDate", listAsteroidDate.toString())

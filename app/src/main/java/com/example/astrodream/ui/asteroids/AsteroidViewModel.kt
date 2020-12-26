@@ -31,7 +31,7 @@ class AsteroidViewModel(val service: Service) : ViewModel() {
                 listAsteroid.addAll(list.map { it.getAsteroid() })
             }
             listResults.value = listAsteroids
-            Log.i("LIST ASTEROIDS", listResults.toString())
+            Log.i("LIST ASTEROIDS", listAsteroid.map { it.relative_velocity }.toString())
         }
     }
 }

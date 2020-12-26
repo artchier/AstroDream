@@ -28,9 +28,9 @@ class AsteroidsDetailsFragment() : Fragment() {
         val bundle = bundleOf("listFourAsteroids" to asteroidList)
         val asteroid = arguments?.get("Asteroid") as Asteroid
         view.name_asteroid_fltransparente.text = asteroid.name
-        view.tv_data_asteroid_fltransparent.text = "Data de aproximação: ${asteroid.getDataFormatada()}"
-//        view.tv_tamanho_asteroid_fltransparent.text = asteroid.absolute_magnitude.toString()
-//        view.tv_velocidade_asteroid_fltransparent.text = asteroid.relative_velocity.toString()
+        view.tv_data_asteroid_fltransparent.text = "Data de aproximação: ${asteroid.close_approach_data}"
+        view.tv_tamanho_asteroid_fltransparent.text = "Tamanho estimado: ${asteroid.estimated_diameter}"
+        view.tv_velocidade_asteroid_fltransparent.text = "Velocidade estimada: ${asteroid.relative_velocity}"
 
         view.arrowup.setOnClickListener {
             findNavController().navigate(R.id.action_asteroidsFragment_to_asteroidsDetailsFragment, bundle)

@@ -94,17 +94,13 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
         listView.setOnGroupCollapseListener {
-                        if (listView.isGroupExpanded(0) || listView.isGroupExpanded(1) ||
-                listView.isGroupExpanded(2) || listView.isGroupExpanded(3)){
-                cardview_img_asteroids.visibility = CardView.GONE
-            } else { cardview_img_asteroids.visibility = CardView.VISIBLE }
+            if (!listView.isGroupExpanded(0) || !listView.isGroupExpanded(1) ||
+                !listView.isGroupExpanded(2) || !listView.isGroupExpanded(3)){
+                cardview_img_asteroids.visibility = CardView.VISIBLE
+            }
         }
 
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
-//            if (listView.isGroupExpanded(0) || listView.isGroupExpanded(1) ||
-//                listView.isGroupExpanded(2) || listView.isGroupExpanded(3)){
-//                cardview_img_asteroids.visibility = CardView.GONE
-//            } else { cardview_img_asteroids.visibility = CardView.VISIBLE }
             list.addAll(viewModel.listAsteroid)
             val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
             searchAsteroid(v)

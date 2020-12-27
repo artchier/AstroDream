@@ -38,6 +38,7 @@ import kotlin.collections.set
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
     val list = mutableSetOf<Asteroid>()
+    private var lastExpandablePosition: Int = -1
     private val listFourAsteroids = ArrayList<Asteroid>()
     private lateinit var listView: ExpandableListView
     private val expandableListAdapter = ExpandableListAdapter(this)
@@ -190,7 +191,6 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
     }
 
-
     fun searchAsteroid(view: View){
         val searchView = view.findViewById<SearchView>(R.id.search_view_asteroid_button)
 
@@ -258,5 +258,13 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
     fun getLinkExterno(id: String?): String{
         return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
+    }
+
+    fun collapsedGroupView(id: Int){
+        listView.collapseGroup(id)
+    }
+
+    fun expandadGroupView(id: Int){
+        listView.expandGroup(id)
     }
 }

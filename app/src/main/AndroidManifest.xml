@@ -18,7 +18,7 @@
         <activity android:name=".ui.globe.GlobeActivity" />
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.favorites.FavoritesActivity" />
-        <activity android:name=".ui.asteroids.AsteroidActivity" />
+        <activity android:name=".ui.asteroids.AsteroidActivity" android:windowSoftInputMode="stateHidden|adjustResize|adjustPan"/>
         <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

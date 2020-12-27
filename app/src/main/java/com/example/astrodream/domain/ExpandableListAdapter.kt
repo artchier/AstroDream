@@ -1,15 +1,13 @@
 package com.example.astrodream.domain
 
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Typeface
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseExpandableListAdapter
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import com.example.astrodream.R
@@ -48,14 +46,15 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
             }
         val calendarAsteroid: LinearLayout? = view?.findViewById(R.id.search_date_asteroid_button)
         val searchView: SearchView? = view?.findViewById(R.id.search_view_asteroid_button)
+
+
             when (groupPosition){
                 1 -> {
-                //    (view?.findViewById(R.id.search_view_asteroid_button) as SearchView).setTransitionVisibility(SearchView.VISIBLE)
                     if (isExpanded){
-                          //  searchView?.visibility = SearchView.VISIBLE
+                        //  searchView?.visibility = SearchView.VISIBLE
                         searchView?.setTransitionVisibility(SearchView.VISIBLE)
                     } else {
-                      //  searchView?.visibility = SearchView.GONE
+                        //  searchView?.visibility = SearchView.GONE
                         searchView?.setTransitionVisibility(SearchView.GONE)
                     }
                     calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
@@ -63,6 +62,8 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
 
                 2 -> {
                     if (isExpanded){
+                        val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
+                        btn?.setOnClickListener { context.collapsedGroupView(groupPosition) }
                         //  searchView?.visibility = SearchView.VISIBLE
                         calendarAsteroid?.setTransitionVisibility(LinearLayout.VISIBLE)
                     } else {
@@ -140,4 +141,5 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         listAsteroids.putAll(map)
         notifyDataSetChanged()
     }
+
 }

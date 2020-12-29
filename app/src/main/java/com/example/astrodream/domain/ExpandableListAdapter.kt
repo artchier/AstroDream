@@ -47,13 +47,26 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         val calendarAsteroid: LinearLayout? = view?.findViewById(R.id.search_date_asteroid_button)
         val searchView: SearchView? = view?.findViewById(R.id.search_view_asteroid_button)
 
-
             when (groupPosition){
                 1 -> {
+                    val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
+                            btn?.setOnClickListener {
+                                        if (isExpanded) {
+                                            context.collapsedGroupView(groupPosition)
+                                        }else {
+                                            context.expandadGroupView(groupPosition)
+                                        }
+                                notifyDataSetChanged()
+                            }
                     if (isExpanded){
-                        //  searchView?.visibility = SearchView.VISIBLE
+//                        val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
+//                        btn?.setOnClickListener {
+//                            context.collapsedGroupView(groupPosition) }
                         searchView?.setTransitionVisibility(SearchView.VISIBLE)
                     } else {
+//                        val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
+//                        btn?.setOnClickListener {
+//                            context.expandadGroupView(groupPosition) }
                         //  searchView?.visibility = SearchView.GONE
                         searchView?.setTransitionVisibility(SearchView.GONE)
                     }
@@ -61,12 +74,18 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
                 }
 
                 2 -> {
+                    val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
+                    btn?.setOnClickListener {
+                        if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(
+                            groupPosition
+                        )
+                    }
                     if (isExpanded){
-                        val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
-                        btn?.setOnClickListener { context.collapsedGroupView(groupPosition) }
                         //  searchView?.visibility = SearchView.VISIBLE
                         calendarAsteroid?.setTransitionVisibility(LinearLayout.VISIBLE)
                     } else {
+//                        val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
+//                        view?.setOnClickListener { context.expandadGroupView(groupPosition) }
                         //  searchView?.visibility = SearchView.GONE
                         calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
                     }

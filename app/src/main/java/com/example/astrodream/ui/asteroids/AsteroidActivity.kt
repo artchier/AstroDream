@@ -100,42 +100,42 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 cardview_img_asteroids.visibility = CardView.VISIBLE
             }
         }
-
-        listView.setOnGroupClickListener { parent, v, groupPosition, id ->
-            list.addAll(viewModel.listAsteroid)
-            val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
-            searchAsteroid(v)
-            viewModel.listResults.observe(this) {
-                when (groupPosition) {
-                    0 -> {
-                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[0] to viewModel.listAsteroid))
-                    }
-                    1 -> {
-                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[1] to viewModel.listAsteroid))
-                    }
-                    2 -> {
-                        val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
-                        v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener {
-                            showAsteroidCalendar(2020,11,12, editText)
-                        }
-                        v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener {
-                            searchAsteroidDate(editText)
-                        }
-
-                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[2] to viewModel.listAsteroid))
-                    }
-                    3 -> {
-                        val listPerigosos = ArrayList<Asteroid>()
-
-                        for (values in list) {
-                                if (values.is_potentially_hazardous_asteroid) listPerigosos.add(values)
-                            }
-                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[3] to listPerigosos))
-                    }
-                }
-            }
-            false
-        }
+        onGroupClickEvent()
+//        listView.setOnGroupClickListener { parent, v, groupPosition, id ->
+//            list.addAll(viewModel.listAsteroid)
+//            val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
+//            searchAsteroid(v)
+//            viewModel.listResults.observe(this) {
+//                when (groupPosition) {
+//                    0 -> {
+//                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[0] to viewModel.listAsteroid))
+//                    }
+//                    1 -> {
+//                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[1] to viewModel.listAsteroid))
+//                    }
+//                    2 -> {
+//                        val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
+//                        v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener {
+//                            showAsteroidCalendar(2020,11,12, editText)
+//                        }
+//                        v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener {
+//                            searchAsteroidDate(editText)
+//                        }
+//
+//                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[2] to viewModel.listAsteroid))
+//                    }
+//                    3 -> {
+//                        val listPerigosos = ArrayList<Asteroid>()
+//
+//                        for (values in list) {
+//                                if (values.is_potentially_hazardous_asteroid) listPerigosos.add(values)
+//                            }
+//                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[3] to listPerigosos))
+//                    }
+//                }
+//            }
+//            false
+//        }
         setUpMenuBehavior()
     }
 
@@ -260,11 +260,57 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun collapsedGroupView(id: Int){
         listView.collapseGroup(id)
+        onGroupClickEvent()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun expandadGroupView(id: Int){
         listView.expandGroup(id)
+        viewModel.listResults.observe(this) {
+            expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[id] to viewModel.listAsteroid))
+        }
+        onGroupClickEvent()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun onGroupClickEvent(){
+        listView.setOnGroupClickListener { parent, v, groupPosition, id ->
+            list.addAll(viewModel.listAsteroid)
+            searchAsteroid(v)
+            viewModel.listResults.observe(this) {
+                when (groupPosition) {
+                    0 -> {
+                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[0] to viewModel.listAsteroid))
+                    }
+                    1 -> {
+                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[1] to viewModel.listAsteroid))
+                    }
+                    2 -> {
+                        val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
+                        v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener {
+                            showAsteroidCalendar(2020,11,12, editText)
+                        }
+                        v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener {
+                            searchAsteroidDate(editText)
+                        }
+
+                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[2] to viewModel.listAsteroid))
+                    }
+                    3 -> {
+                        val listPerigosos = ArrayList<Asteroid>()
+
+                        for (values in list) {
+                            if (values.is_potentially_hazardous_asteroid) listPerigosos.add(values)
+                        }
+                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[3] to listPerigosos))
+                    }
+                }
+            }
+            false
+        }
+
     }
 }

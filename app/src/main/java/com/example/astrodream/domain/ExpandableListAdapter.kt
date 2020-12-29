@@ -59,15 +59,8 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
                                 notifyDataSetChanged()
                             }
                     if (isExpanded){
-//                        val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
-//                        btn?.setOnClickListener {
-//                            context.collapsedGroupView(groupPosition) }
                         searchView?.setTransitionVisibility(SearchView.VISIBLE)
                     } else {
-//                        val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
-//                        btn?.setOnClickListener {
-//                            context.expandadGroupView(groupPosition) }
-                        //  searchView?.visibility = SearchView.GONE
                         searchView?.setTransitionVisibility(SearchView.GONE)
                     }
                     calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
@@ -81,12 +74,8 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
                         )
                     }
                     if (isExpanded){
-                        //  searchView?.visibility = SearchView.VISIBLE
                         calendarAsteroid?.setTransitionVisibility(LinearLayout.VISIBLE)
                     } else {
-//                        val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
-//                        view?.setOnClickListener { context.expandadGroupView(groupPosition) }
-                        //  searchView?.visibility = SearchView.GONE
                         calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
                     }
                     searchView?.visibility = SearchView.GONE

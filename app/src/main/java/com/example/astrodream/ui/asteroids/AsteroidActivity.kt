@@ -28,6 +28,7 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
+import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.arrayListOf
@@ -35,10 +36,10 @@ import kotlin.collections.forEach
 import kotlin.collections.linkedMapOf
 import kotlin.collections.mutableSetOf
 import kotlin.collections.set
+import kotlin.coroutines.CoroutineContext
 
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
     val list = mutableSetOf<Asteroid>()
-    private var lastExpandablePosition: Int = -1
     private val listFourAsteroids = ArrayList<Asteroid>()
     private lateinit var listView: ExpandableListView
     private val expandableListAdapter = ExpandableListAdapter(this)
@@ -78,7 +79,6 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         listView.setAdapter(expandableListAdapter)
         expandableListAdapter.addListButtons(listButtonsName)
         expandableListAdapter.addListAsteroids(listAsteroids)
-        viewModel.popListResult()
 
         viewModel.listResults.observe(this) {
             listFourAsteroids.addAll(viewModel.listAsteroid.subList(0, 4))
@@ -137,7 +137,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
         ver_orbita.setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(getLinkExterno(asteroid?.id))
+            i.data = Uri.parse(asteroid.linkExterno)
             startActivity(i)
         }
 
@@ -221,32 +221,31 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
     }
 
-    fun getLinkExterno(id: String?): String{
-        return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun collapsedGroupView(id: Int){
         listView.collapseGroup(id)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun expandadGroupView(id: Int){
         listView.expandGroup(id)
-        viewModel.listResults.observe(this) {
-            expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[id] to viewModel.listAsteroid))
-            onGroupClickEvent()
-        }
+//        viewModel.listResults.observe(this) {
+//            expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[id] to viewModel.listAsteroid))
+//        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun onGroupClickEvent(){
+        Log.i("onGroupClickEvent", "do")
         listView.setOnGroupClickListener { parent, v, groupPosition, id ->
+            viewModel.execute(v)
             list.addAll(viewModel.listAsteroid)
             searchAsteroid(v)
             viewModel.listResults.observe(this) {
                 when (groupPosition) {
                     0 -> {
+                        Log.i("0", "do")
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[0] to viewModel.listAsteroid))
                     }
                     1 -> {
@@ -277,4 +276,52 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
     }
+
+//    inner class ProgressBarAsteroid : CoroutineScope {
+//        private var job: Job = Job()
+//
+//        override val coroutineContext: CoroutineContext
+//            get() = Dispatchers.Main + job
+//
+//        fun cancel() {
+//            job.cancel()
+//        }
+//
+//        fun execute() = launch {
+//            onPreExecute()
+//            val result = doInBackground()
+//            onPostExecute(result)
+//        }
+//
+//        @RequiresApi(Build.VERSION_CODES.O)
+//        private suspend fun doInBackground(): String = withContext(Dispatchers.IO) {
+//            Log.i("doInBackground", "do")
+//            viewModel.popListResult()
+//            onGroupClickEvent()
+//            return@withContext "Executado"
+//        }
+//
+//        private fun onPreExecute() {
+//            Log.i("onPreExecute", "do")
+//            showHideProgressBar(false)
+//        }
+//
+//        private fun onPostExecute(result: String) {
+//            Log.i("onPostExecute", "do")
+//            if (result.equals("Executado")) {
+//                showHideProgressBar(true)
+//            }
+//        }
+//
+//        fun showHideProgressBar(visible: Boolean){
+//            Log.i("showHideProgressBar", "do")
+//            listView.setOnGroupClickListener{ parent, v, groupPosition, id ->
+//                val progressBar: ProgressBar = v.findViewById(R.id.progressbar_asteroides)
+//                if(visible) progressBar.visibility = ProgressBar.VISIBLE
+//                else progressBar.visibility = ProgressBar.GONE
+//                false
+//            }
+//                false
+//        }
+//    }
 }

@@ -46,6 +46,13 @@
 
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/progressbar_asteroides"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ProgressBarAsteroids"
+                android:visibility="gone"/>
+
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_view_asteroid_button"
                 android:layout_width="match_parent"
@@ -60,7 +67,7 @@
                 android:id="@+id/search_date_asteroid_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
 

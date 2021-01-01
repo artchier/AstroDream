@@ -1,7 +1,6 @@
 package com.example.astrodream.domain
 
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Typeface
 import android.os.Build
 import android.view.LayoutInflater
@@ -128,7 +127,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         view.setBackgroundResource(if (isLastChild) R.drawable.button_style_click_itens else R.color.gigas)
 
         txtListChild.text = childAsteroid?.name
-        txtDataListChild.text = childAsteroid?.getDataFormatada()
+        txtDataListChild.text = childAsteroid?.close_approach_data
         return view
     }
 
@@ -149,5 +148,4 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         listAsteroids.putAll(map)
         notifyDataSetChanged()
     }
-
 }

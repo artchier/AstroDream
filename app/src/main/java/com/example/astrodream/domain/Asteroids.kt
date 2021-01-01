@@ -48,6 +48,10 @@ data class AsteroidData(
         } LD"
     }
 
+    fun getLinkExterno(): String{
+        return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
+    }
+
     fun getOrbitingBody(): String{
         val orbita = close_approach_data[0].asJsonObject.get("orbiting_body")
             .toString().removeSurrounding("\"")
@@ -73,7 +77,7 @@ data class AsteroidData(
     fun getAsteroid(): Asteroid {
        return Asteroid(
             id, name, is_potentially_hazardous_asteroid,
-           absolute_magnitude_h, getVelocity(), getDataFormatada(), getDistancia(), getTamanho(), getOrbitingBody()
+           absolute_magnitude_h, getVelocity(), getDataFormatada(), getDistancia(), getTamanho(), getOrbitingBody(), getLinkExterno()
         )
     }
 }
@@ -87,10 +91,9 @@ data class Asteroid(
     val close_approach_data: String?,
     val miss_distance: String?,
     val estimated_diameter: String,
-    val orbiting_body: String?
+    val orbiting_body: String?,
+    val linkExterno: String?
 ) : Serializable, Comparable<Asteroid>{
-
-    fun getDataFormatada() = close_approach_data
 
     override fun compareTo(other: Asteroid): Int {
         return name.compareTo(other.name)

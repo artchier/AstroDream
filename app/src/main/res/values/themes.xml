@@ -20,6 +20,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="ProgressBarAsteroids">
+        <item name="colorAccent">@android:color/white</item>
+    </style>
+
     <style name="NavigationView2">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@font/roboto_light</item>

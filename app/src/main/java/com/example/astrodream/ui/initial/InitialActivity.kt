@@ -63,11 +63,11 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     }
 
     private fun dailyImage() {
-        viewModel.populateList()
-        viewModel.focusResult.observe(this) {
-            Glide.with(this).asBitmap()
-                .load(it.url)
-                .into(ivDaily)
-        }
+//        viewModel.populateList()
+//        viewModel.focusResult.observe(this) {
+//            Glide.with(this).asBitmap()
+//                .load(it.url)
+//                .into(ivDaily)
+//        }
     }
 }

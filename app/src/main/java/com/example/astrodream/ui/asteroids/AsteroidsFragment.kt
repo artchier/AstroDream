@@ -9,7 +9,6 @@ import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.astrodream.R
-import com.example.astrodream.domain.Asteroid
 import kotlinx.android.synthetic.main.fragment_asteroids.view.*
 
 class AsteroidsFragment : Fragment() {
@@ -26,7 +25,7 @@ class AsteroidsFragment : Fragment() {
         listAsteroidViews.addAll(arrayListOf(view.iv_asteroids1, view.iv_asteroids2,
             view.iv_asteroids3, view.iv_asteroids4))
 
-        val asteroidslist = arguments?.get("listFourAsteroids") as ArrayList<Asteroid>
+        val asteroidslist = arguments?.get("listFourAsteroids") as ArrayList<*>
 
         listAsteroidViews.forEach { it ->
             it.setOnClickListener {

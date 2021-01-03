@@ -2,14 +2,10 @@ package com.example.astrodream.domain
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.astrodream.domain.util.format
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import java.io.Serializable
-import java.lang.reflect.Array
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.collections.ArrayList
 
 data class AsteroidRes(val element_count: Int, val near_earth_objects: JsonObject)
 
@@ -28,31 +24,31 @@ data class AsteroidData(
         return "${date[2]}/${date[1]}/${date[0]}"
     }
 
-    fun getVelocity(): String{
+    private fun getVelocity(): String{
         return "${close_approach_data[0].asJsonObject.get("relative_velocity")
             .asJsonObject.get("kilometers_per_second")
-            .toString().removeSurrounding("\"").subSequence(0, 4)
+            .toString().removeSurrounding("\"").toDouble().format(2)
     } km/s"
     }
 
-    fun getTamanho(): String{
+    private fun getTamanho(): String{
         return "${estimated_diameter.get("meters")
-            .asJsonObject.get("estimated_diameter_max").toString().subSequence(0, 4)
+            .asJsonObject.get("estimated_diameter_max").toString().toDouble().format(2)
     } metros"
     }
 
-    fun getDistancia(): String {
+    private fun getDistancia(): String {
         return "${close_approach_data[0].asJsonObject.get("miss_distance")
             .asJsonObject.get("lunar")
-            .toString().removeSurrounding("\"").subSequence(0, 5)
+            .toString().removeSurrounding("\"").toDouble().format(2)
         } LD"
     }
 
-    fun getLinkExterno(): String{
+    private fun getLinkExterno(): String{
         return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
     }
 
-    fun getOrbitingBody(): String{
+    private fun getOrbitingBody(): String{
         val orbita = close_approach_data[0].asJsonObject.get("orbiting_body")
             .toString().removeSurrounding("\"")
         when (orbita){
@@ -69,6 +65,8 @@ data class AsteroidData(
         return "Indefinido"
     }
 
+    private fun getMagnitudeAbsoluta(): String = absolute_magnitude_h.format(2)
+
     override fun compareTo(other: AsteroidData): Int {
         return name.compareTo(other.name)
     }
@@ -77,7 +75,7 @@ data class AsteroidData(
     fun getAsteroid(): Asteroid {
        return Asteroid(
             id, name, is_potentially_hazardous_asteroid,
-           absolute_magnitude_h, getVelocity(), getDataFormatada(), getDistancia(), getTamanho(), getOrbitingBody(), getLinkExterno()
+           getMagnitudeAbsoluta(), getVelocity(), getDataFormatada(), getDistancia(), getTamanho(), getOrbitingBody(), getLinkExterno()
         )
     }
 }
@@ -86,7 +84,7 @@ data class Asteroid(
     val id: String,
     val name: String,
     val is_potentially_hazardous_asteroid: Boolean,
-    val absolute_magnitude: Double?,
+    val absolute_magnitude: String?,
     val relative_velocity: String?,
     val close_approach_data: String?,
     val miss_distance: String?,

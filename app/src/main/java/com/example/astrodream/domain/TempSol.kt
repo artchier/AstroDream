@@ -6,15 +6,13 @@ import com.google.gson.reflect.TypeToken
 import kotlin.math.roundToInt
 
 data class TempSol(
-    val PRE: JsonObject,
-    val maxTemp: String = "x",
-    val minTemp: String = "x"
+    val PRE: JsonObject
 ) {
     var solMars: Long = 0
     var maxTempMars: String = ""
     var minTempMars: String = ""
 
-    fun wakeUp(sol: Long) {
+    fun setTemperature(sol: Long) {
         solMars = sol
         val maxTempFah =
             Gson().fromJson(this.PRE.get("mx"), object : TypeToken<Double>() {}.type) as Double

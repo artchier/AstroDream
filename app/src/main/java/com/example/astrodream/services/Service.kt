@@ -2,12 +2,11 @@ package com.example.astrodream.services
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.domain.*
 import com.google.gson.JsonArray
-import com.example.astrodream.domain.Patent
-import com.example.astrodream.domain.Software
-import com.example.astrodream.domain.Spinoff
 import com.google.gson.JsonObject
+import com.haroldadmin.cnradapter.NetworkResponse
+import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -27,23 +26,23 @@ interface Service {
     suspend fun getDaily(
         @Query("date") date: String,
         @Query("api_key") apikey: String = apikeyMarsAndDaily,
-    ): PlainClass
+    ): NetworkResponse<PlainClass, DailyErrorResponse>
 
+    /* ------------------------------------------- Mars ----------------------------------------- */
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
     suspend fun getMars(
         @Query("earth_date") date: String,
         @Query("api_key") apikey: String = apikeyMarsAndDaily,
-    ): JsonObject
+    ): NetworkResponse<JsonObject, JsonObject>
 
-    /* ------------------------------------------- Mars ----------------------------------------- */
     @GET("insight_weather/")
     suspend fun getMarsTemp(
         @Query("feedtype") feedtype: String,
         @Query("ver") ver: String,
         @Query("api_key") apikey: String = apikeyMarsAndDaily,
-    ): JsonObject
+    ): NetworkResponse<JsonObject, JsonObject>
 
-
+    /* ------------------------------------------- Asteroid ------------------------------------- */
     @GET("neo/rest/v1/feed")
     suspend fun getResults(
         @Query("start_date")p0: String,
@@ -96,6 +95,7 @@ const val urlNasa = "https://api.nasa.gov/"
 val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(urlNasa)
     .addConverterFactory(GsonConverterFactory.create())
+    .addCallAdapterFactory(NetworkResponseAdapterFactory())
     .build()
 
 // Passar instancia do retrofit para o service

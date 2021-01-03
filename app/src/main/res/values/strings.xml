@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AstroDream</string>
-    <string name="imagem_de_hoje">Imagem de hoje</string>
+    <string name="imagem_de_hoje">Imagem do dia</string>
     <string name="user_config">Configurações</string>
     <string name="nome">Nome</string>
     <string name="senha">Senha</string>
@@ -51,7 +51,7 @@
     <string name="imagem_globo">Imagem globo</string>
     <string name="usar_como_papel_de_parede">Usar como papel de parede</string>
     <string name="copartilhar">Copartilhar</string>
-    <string name="curiosity_rover">Curiosity Rover:</string>
+    <string name="curiosity_rover">Curiosity Rover</string>
     <string name="bom_dia_terraqueo">Bom dia, terráqueo!</string>
     <string name="cone_curiosity_rover">Ícone Curiosity Rover</string>
     <string name="avatar">Avatar</string>
@@ -88,4 +88,11 @@
 
     <string name="logo">logo</string>
     <string name="date_picker_instruction">Clique no botão piscando logo abaixo para escolher o dia em que você quer ver o Globo!</string>
+    <string name="usar_como_wallpaper">Usar como wallpaper automaticamente</string>
+    <string name="title_placeholder">Title placeholder</string>
+    <string name="date_placeholder">Date placeholder</string>
+    <string name="image_full_screen">Imagem full screen</string>
+    <string name="skip_full_screen">Sair do modo full screen</string>
+    <string name="more_information">More information</string>
+    <string name="picture_of_mars">Picture of Mars</string>
 </resources>

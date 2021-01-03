@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
@@ -42,48 +43,48 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plain)
         setUpMenuBehavior()
-        Log.i("===PlainActivity====", viewModel.toString())
 
         AndroidThreeTen.init(this)
 
         addFragment(newDetailFrag(), "ROOT_TAG")
-        Log.i("PlainActivity", viewModel.toString())
 
+        piImage.show()
         viewModel.populateList()
 
-        // Nevegação entre os tabs inferiores
+        // Navegação entre os tabs inferiores
         bottomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        val detailFrag = findFragByTAG("DETAIL_TAG")
-                        if (detailFrag is PlainDetailFragment) {
-                            removeFragment(detailFrag)
+                    when (tab?.position) {
+                        0 -> {
+                            val detailFrag = findFragByTAG("DETAIL_TAG")
+                            if (detailFrag is PlainDetailFragment) {
+                                removeFragment(detailFrag)
+                            }
+                            viewModel.selectRoot()
+                            fromHistToRoot()
                         }
-                        viewModel.selectRoot()
-                        fromHistToRoot()
-                    }
-                    1 -> {
-                        if (supportFragmentManager.findFragmentByTag("HIST_TAG") == null) {
-                            addFragment(newHistoryFrag(), "HIST_TAG")
-                        } else {
-                            fromRootToHist()
+                        1 -> {
+                            if (supportFragmentManager.findFragmentByTag("HIST_TAG") == null) {
+                                addFragment(newHistoryFrag(), "HIST_TAG")
+                            } else {
+                                fromRootToHist()
+                            }
                         }
                     }
-                }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                    }
-                    1 -> {
-                        val detailFrag = findFragByTAG("DETAIL_TAG")
-                        if (detailFrag is PlainDetailFragment) {
-                            supportFragmentManager.popBackStackImmediate("HIST_TAG", 0)
+                    when (tab?.position) {
+                        0 -> {
+                        }
+                        1 -> {
+                            val detailFrag = findFragByTAG("DETAIL_TAG")
+                            if (detailFrag is PlainDetailFragment) {
+                                supportFragmentManager.popBackStackImmediate("HIST_TAG", 0)
+                            }
                         }
                     }
-                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -101,6 +102,7 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
             }
         }
     }
+
     override fun onBackPressed() {
         if (dlPlain.isDrawerOpen(GravityCompat.END)) {
             dlPlain.closeDrawer(GravityCompat.END)

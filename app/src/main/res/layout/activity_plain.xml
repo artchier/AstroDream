@@ -46,7 +46,17 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constrainedHeight="true"
                 app:layout_constraintHeight_default="spread"
-                app:layout_constraintBottom_toTopOf="@+id/bottomTabs" />
+                app:layout_constraintBottom_toTopOf="@+id/bottomTabs" >
+
+                <com.google.android.material.progressindicator.ProgressIndicator
+                    android:id="@+id/piImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:indicatorType="circular"
+                    app:indicatorColor="@color/teal_200"
+                    style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/bottomTabs"

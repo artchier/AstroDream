@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:cardBackgroundColor="@color/gigas">
+        android:background="@color/transparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,7 +23,29 @@
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                android:contentDescription="@string/picture_of_mars" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/ivRecentMars"
+                android:orientation="vertical"
+                android:background="@color/black"
+                android:alpha="0.6"
+                android:gravity="center"
+                android:padding="5dp">
+            <TextView
+                android:id="@+id/tvMarsRecentCamera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto"
+                android:textStyle="bold"
+                android:gravity="center" />
+            </LinearLayout>
 
 <!--            Date and temperature information -->
             <LinearLayout
@@ -40,9 +62,9 @@
                     android:id="@+id/tvMarsRecentDateSol"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sol 706"
+                    android:text=""
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:fontFamily="@font/roboto"
                     android:textStyle="bold"
                     android:gravity="center" />
@@ -50,35 +72,37 @@
                     android:id="@+id/tvMarsRecentDateEarth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="20 de Novembro"
+                    android:text=""
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:fontFamily="@font/roboto_light"
                     android:gravity="center" />
+
                 <LinearLayout
                     android:layout_width="100dp"
                     android:layout_height="5dp"
                     android:background="@drawable/line"
-                    android:layout_margin="5dp"></LinearLayout>
+                    android:layout_margin="5dp" />
                 <TextView
                     android:id="@+id/tvMarsRecentMaxTemp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Máxima: -11°C"
+                    android:text=""
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:fontFamily="@font/roboto_light"
                     android:gravity="center" />
                 <TextView
                     android:id="@+id/tvMarsRecentMinTemp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mínima: -93°C"
+                    android:text=""
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:fontFamily="@font/roboto_light"
                     android:gravity="center" />
             </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

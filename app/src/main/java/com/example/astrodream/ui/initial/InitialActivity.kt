@@ -26,7 +26,7 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     private val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PlainViewModel(service, PlainActivityType.DailyImage) as T
+                return PlainViewModel(service, PlainActivityType.Initial) as T
             }
         }
     }
@@ -35,7 +35,6 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
         AndroidThreeTen.init(this)
-        Log.i("===InitialActivity====", viewModel.toString())
 
         dailyImage()
         cvDaily.setOnClickListener {
@@ -62,8 +61,10 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     }
 
     private fun dailyImage() {
+        piInitial.show()
         viewModel.populateList()
         viewModel.focusResult.observe(this) {
+            piInitial.hide()
             Glide.with(this).asBitmap()
                 .load(it.url)
                 .into(ivDaily)

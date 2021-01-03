@@ -1,6 +1,5 @@
 package com.example.astrodream.ui.plaindailymars
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,11 +19,6 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view:View =  inflater.inflate(layoutId, container, false)
-
-//        viewModel.listResults.observe(viewLifecycleOwner) {
-//            plainDetail = viewModel.listResults.value!![0]
-//            popView(view)
-//        }
 
         viewModel.focusResult.observe(viewLifecycleOwner) {
             plainDetail = viewModel.focusResult.value!!

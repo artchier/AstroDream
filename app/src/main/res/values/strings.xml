@@ -87,4 +87,19 @@
     <string name="velocidade_template">"Velocidade: %s km/s"</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Url Imagens AsteroidActivity -->
+    <string name="url_imagem_globo">"https://i.ibb.co/gzJBqz8/planeta.gif"</string>
+    <string name="url_esquerda_cima">https://i.ibb.co/CbVJ2hD/20210102–001705.gif</string>
+    <string name="url_direita_cima">https://i.ibb.co/Jv2rWVw/20210102–002216.gif</string>
+    <string name="url_esquerda_baixo">https://i.ibb.co/Bz5Lytp/20210102–002637.gif</string>
+    <string name="url_direta_baixo">https://i.ibb.co/Pc46jmT/20210102–002851.gif</string>
+
+    <!-- Dialog erro sem internet -->
+    <string name="sem_internei_tema">Erro na comunicação com a NASA!</string>
+    <string name="descricao_erro_internet">Parece que você está sem internet, astronauta! Conecte-se à internet para voltar a navegar pelas curiosidades do espaço.</string>
+
+    <!-- Dialog erro desconhecido -->
+    <string name="erro_desconhecido_tema">Missão abortada temporariamente!</string>
+    <string name="descricao_erro_desconhecido">Aconteceu um erro desconhecido na sua missão, astronauta! Por favor, tente novamente mais tarde.</string>
 </resources>

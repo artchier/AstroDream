@@ -1,7 +1,8 @@
 package com.example.astrodream.ui.asteroids
 
+import android.content.res.Resources
+import android.util.AndroidRuntimeException
 import android.view.View
-import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -10,27 +11,38 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.example.astrodream.R
+import com.example.astrodream.domain.exceptions.InternetConnectionException
+import com.example.astrodream.domain.exceptions.UnknownErrorException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
+import kotlin.Exception
 
 class AsteroidsFragmentViewModel(val fragment: Fragment): ViewModel() {
     private val listRequestBuilder = ArrayList<RequestBuilder<GifDrawable>>()
 
     fun execute(v: View) = viewModelScope.launch {
         onPreExecute(v)
-        val result = doInBackground(v)
+        var result = ""
+        try { result = doInBackground(v) }
+        catch (e: InternetConnectionException){ fragment.context?.let { e.showImageWithoutInternetConnection(it) } }
+        catch (e: UnknownErrorException){ fragment.context?.let { e.showImageUnknownError(it) }}
         onPostExecute(result, v)
     }
 
     private suspend fun doInBackground(v: View): String = withContext(Dispatchers.IO) {
-        launch {
-            listRequestBuilder.addAll(arrayListOf(loadImage("https://i.ibb.co/gzJBqz8/planeta.gif"),
-                loadImage("https://i.ibb.co/CbVJ2hD/20210102-001705.gif"),
-                loadImage("https://i.ibb.co/Jv2rWVw/20210102-002216.gif"),
-                loadImage("https://i.ibb.co/Bz5Lytp/20210102-002637.gif"),
-                loadImage("https://i.ibb.co/Pc46jmT/20210102-002851.gif")))
-        }
+            launch {
+                try {
+                listRequestBuilder.addAll(arrayListOf(loadImage(Resources.getSystem().getString(R.string.url_imagem_globo)),
+                    loadImage(Resources.getSystem().getString(R.string.url_esquerda_cima)),
+                    loadImage(Resources.getSystem().getString(R.string.url_direita_cima)),
+                    loadImage(Resources.getSystem().getString(R.string.url_esquerda_baixo)),
+                    loadImage(Resources.getSystem().getString(R.string.url_direta_baixo))))
+                } catch (e: IOException) { throw InternetConnectionException() }
+                  catch (e: Exception) { throw UnknownErrorException() }
+            }
+
         return@withContext "executado"
     }
 

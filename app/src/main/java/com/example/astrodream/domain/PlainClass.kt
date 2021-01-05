@@ -1,10 +1,5 @@
 package com.example.astrodream.domain
 
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
-import kotlin.math.roundToInt
-
 data class PlainClass(
     val title: String = "x",
     val date: String = "x",

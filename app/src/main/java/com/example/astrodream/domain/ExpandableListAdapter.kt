@@ -12,7 +12,7 @@ import com.example.astrodream.R
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 
 
-class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListAdapter() {
+class ExpandableListAdapter(val context: AsteroidActivity) : BaseExpandableListAdapter() {
     var listButtons = ArrayList<String>()
     var listAsteroids = HashMap<String, ArrayList<Asteroid>>()
 
@@ -75,7 +75,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         val childAsteroid = getChild(groupPosition, childPosition) as Asteroid?
         var view = convertView
         if (convertView == null) {
-          val li: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val li: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = li.inflate(R.layout.item_btn_asteroids, null)
         }
         val txtListChild: TextView = view?.findViewById(R.id.tv_name_asteroid) as TextView
@@ -96,12 +96,12 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         return listButtons.size
     }
 
-    fun addListButtons(list: ArrayList<String>){
+    fun addListButtons(list: ArrayList<String>) {
         listButtons.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun addListAsteroids(map: HashMap<String, ArrayList<Asteroid>>){
+    fun addListAsteroids(map: HashMap<String, ArrayList<Asteroid>>) {
         listAsteroids.putAll(map)
         notifyDataSetChanged()
     }

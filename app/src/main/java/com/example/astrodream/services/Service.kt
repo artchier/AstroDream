@@ -42,26 +42,26 @@ interface Service {
 
     @GET("neo/rest/v1/feed")
     suspend fun getResults(
-        @Query("start_date")p0: String,
-        @Query("end_date")p1: String,
-        @Query("api_key")p2: String = apikeyApp,
+        @Query("start_date") startDate: String,
+        @Query("end_date") endDate: String,
+        @Query("api_key") apikey: String = apikeyApp,
     ): JsonObject
 
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")
     suspend fun getPatents(
         @Query("api_key") apikey: String = apikeyApp,
-    ) : Patent
+    ): Patent
 
     @GET("techtransfer/software/")
     suspend fun getSoftwares(
         @Query("api_key") apikey: String = apikeyApp,
-    ) : Software
+    ): Software
 
     @GET("techtransfer/spinoff/")
     suspend fun getSpinoffs(
         @Query("api_key") apikey: String = apikeyApp,
-    ) : Spinoff
+    ): Spinoff
 
     /* ------------------------------------------ Globe ----------------------------------------- */
 

@@ -21,7 +21,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_fav_recycler, container, false)
 
@@ -38,7 +38,6 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
             // Caso tenha dados no bundle, ou seja, o fragment foi carregado a partir da seleção de uma tab,
             // popula o RecyclerView com os items corretos
             if (container != null) {
-                Log.i("XXXXX", "oie!")
                 // Salva dados do bundle em variaveis
                 val type = requireArguments().getString("type") as String
                 // Atualiza a lista de itens favoritos

@@ -12,16 +12,7 @@ import kotlinx.android.synthetic.main.activity_avatar.*
 
 class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
 
-    lateinit var listAvatar: List<Int>
-    lateinit var adapter: AvatarAdapter
-    private lateinit var view: View
-    private lateinit var dialog: AlertDialog
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_avatar)
-
-        listAvatar = listOf(
+    private val listAvatar: List<Int> = listOf(
             R.drawable.ic_avatar_normal1,
             R.drawable.ic_avatar_normal2,
             R.drawable.ic_avatar_normal3,
@@ -32,29 +23,27 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
             R.drawable.ic_avatar_naked,
             R.drawable.ic_avatar_nuts,
             R.drawable.ic_avatar_suit
-        )
+    )
+    lateinit var adapter: AvatarAdapter
+    private lateinit var buyAvatarView: View
+    private lateinit var buyAvatarDialog: AlertDialog
 
-        view = View.inflate(this, R.layout.buy_avatar_dialog, null)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_avatar)
 
-        dialog = MaterialAlertDialogBuilder(this)
-            .setBackground(
-                ContextCompat.getColor(this, android.R.color.transparent).toDrawable()
-            )
-            .setView(view)
+        buyAvatarView = View.inflate(this, R.layout.buy_avatar_dialog, null)
+
+        buyAvatarDialog = MaterialAlertDialogBuilder(this)
+            .setBackground(ContextCompat.getColor(this, android.R.color.transparent).toDrawable())
+            .setView(buyAvatarView)
             .setBackgroundInsetStart(70)
             .setBackgroundInsetEnd(70)
             .setBackgroundInsetTop(10)
             .setBackgroundInsetBottom(100)
             .create()
 
-        adapter = AvatarAdapter(
-            this,
-            listAvatar,
-            ivAvatar,
-            tvTotal,
-            view,
-            dialog
-        )
+        adapter = AvatarAdapter(this, listAvatar, ivAvatar, tvTotal, buyAvatarView, buyAvatarDialog)
 
         rvAvatar.adapter = adapter
 

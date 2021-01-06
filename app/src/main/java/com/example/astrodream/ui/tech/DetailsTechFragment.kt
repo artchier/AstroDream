@@ -23,6 +23,7 @@ class DetailsTechFragment : Fragment() {
         val software = arguments?.getStringArrayList("software")
         val spinoff = arguments?.getStringArrayList("spinoff")
 
+        // TODO melhorar isso
         if (patent != null) {
 
             if (patent[10] != "") {

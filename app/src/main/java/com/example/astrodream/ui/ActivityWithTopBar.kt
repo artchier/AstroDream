@@ -134,9 +134,6 @@ abstract class ActivityWithTopBar(
             drawerLayout.closeDrawer(GravityCompat.END)
             return
         }
-        val sharedPreferences = getSharedPreferences("first_time", MODE_PRIVATE).edit()
-        sharedPreferences.putBoolean("globe", false)
-        sharedPreferences.apply()
         super.onBackPressed()
     }
 }

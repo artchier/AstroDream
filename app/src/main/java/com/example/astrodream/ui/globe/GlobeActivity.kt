@@ -155,11 +155,12 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
             try {
                 if (indexGlobe - 1 >= 0) {
                     indexGlobe--
-                    //ivGlobe.setImageBitmap(null)
+
                     Glide.with(this).asBitmap()
                         .load(viewModel.epicImage.value?.get(indexGlobe))
                         .transform(RoundedCorners(50))
                         .into(ivGlobe)
+
                     Toast.makeText(
                         this@GlobeActivity,
                         "indexGlobe: $indexGlobe",
@@ -175,53 +176,62 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
     override fun onResume() {
         super.onResume()
-        if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean("globe", true)) {
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(1000)
-                clTutorialGlobe.animate()
-                    .alpha(1.0f)
-                    .setListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(p0: Animator?) { }
-
-                        override fun onAnimationEnd(p0: Animator?) {
-                            val view =
-                                View.inflate(this@GlobeActivity, R.layout.astrodialog, null)
-                            view.ivDialog.visibility = GONE
-                            view.tvAppName.visibility = GONE
-                            view.tvDialog1.text = getString(R.string.date_picker_instruction)
-                            view.tvDialog2.visibility = GONE
-                            view.tvDialog3.visibility = GONE
-                            val dialog = MaterialAlertDialogBuilder(this@GlobeActivity)
-                                .setBackground(
-                                    ContextCompat.getColor(
-                                        this@GlobeActivity,
-                                        android.R.color.transparent
-                                    ).toDrawable()
-                                )
-                                .setView(view)
-                                .setOnDismissListener {
-                                    this@GlobeActivity.clTutorialGlobe.animate()
-                                        .alpha(0f)
-                                        .setListener(null)
-                                        .duration = 500
-                                    it.cancel()
-                                    fabData.clearAnimation()
-                                }.create()
-
-                            dialog.window?.setDimAmount(0f)
-                            dialog.show()
-
-                            fabData.startAnimation(animation)
-                        }
-
-                        override fun onAnimationCancel(p0: Animator?) {}
-
-                        override fun onAnimationRepeat(p0: Animator?) {}
-                    }).duration = 500
-
-                delay(500)
-                fabData.startAnimation(animation)
-            }
+        if (!getSharedPreferences("first_time", MODE_PRIVATE).getBoolean("globe", true)) {
+            return
         }
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1000)
+            clTutorialGlobe.animate()
+                .alpha(1.0f)
+                .setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(p0: Animator?) {}
+
+                    override fun onAnimationEnd(p0: Animator?) {
+                        val view =
+                            View.inflate(this@GlobeActivity, R.layout.astrodialog, null)
+                        view.ivDialog.visibility = GONE
+                        view.tvAppName.visibility = GONE
+                        view.tvDialog1.text = getString(R.string.date_picker_instruction)
+                        view.tvDialog2.visibility = GONE
+                        view.tvDialog3.visibility = GONE
+                        val dialog = MaterialAlertDialogBuilder(this@GlobeActivity)
+                            .setBackground(
+                                ContextCompat.getColor(
+                                    this@GlobeActivity,
+                                    android.R.color.transparent
+                                ).toDrawable()
+                            )
+                            .setView(view)
+                            .setOnDismissListener {
+                                this@GlobeActivity.clTutorialGlobe.animate()
+                                    .alpha(0f)
+                                    .setListener(null)
+                                    .duration = 500
+                                it.cancel()
+                                fabData.clearAnimation()
+                            }.create()
+
+                        dialog.window?.setDimAmount(0f)
+                        dialog.show()
+
+                        fabData.startAnimation(animation)
+                    }
+
+                    override fun onAnimationCancel(p0: Animator?) {}
+
+                    override fun onAnimationRepeat(p0: Animator?) {}
+                }).duration = 500
+
+            delay(500)
+            fabData.startAnimation(animation)
+        }
+
+    }
+
+    override fun onBackPressed() {
+        val sharedPreferences = getSharedPreferences("first_time", MODE_PRIVATE).edit()
+        sharedPreferences.putBoolean("globe", false)
+        sharedPreferences.apply()
+        super.onBackPressed()
     }
 }

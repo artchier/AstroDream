@@ -45,9 +45,7 @@ class FavAdapter (private val favsList: ArrayList<Favorite>, val listener: OnCli
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
         val favorite: Favorite = favsList.get(position)
         // Pega a imagem do favorito e coloca na ImageView
-        Glide.with(holder.itemView).asBitmap()
-            .load(favorite.img)
-            .into(holder.ivFav)
+        Glide.with(holder.itemView).asBitmap().load(favorite.img).into(holder.ivFav)
         // Preenche o primeiro TextView
         holder.tv1Fav.text = favorite.descrip1
         // Preenche o segundo TextView

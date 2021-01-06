@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.astrodream.R
+import com.example.astrodream.domain.enums.FavoriteType
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_favorites.*
@@ -19,8 +20,8 @@ import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 
 class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
 
-    private lateinit var navController : NavController
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,123 +46,11 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
         // Navegação entre os tabs inferiores
         bottomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "today")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                    1 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "asteroid")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                    2 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "globe")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                    3 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "tech")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                    4 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "mars")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                }
+                onTabSelectedBehaiviour(tab, navOptions)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "today")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                    1 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "asteroid")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                    2 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "globe")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                    3 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "tech")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                    4 -> {
-                        val bundleRest: Bundle = Bundle().apply {
-                            putString("type", "mars")
-                        }
-                        // Reload a FavRecyclerFragment
-                        findNavController(R.id.navHostfragFavs).navigate(
-                            R.id.favRecyclerFragment,
-                            bundleRest,
-                            navOptions
-                        )
-                    }
-                }
+                onTabSelectedBehaiviour(tab, navOptions)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -181,7 +70,6 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
         val colors: ColorStateList = resources.getColorStateList(R.color.tabs_selector, theme)
 
         for (i in 0 until tabIcons.size) {
-            Log.i("XXX", tabIcons.toString())
             bottomTabs.addTab(bottomTabs.newTab())
             val tab: TabLayout.Tab = bottomTabs.getTabAt(i)!!
             tab.setIcon(tabIcons[i])
@@ -193,6 +81,25 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
         }
 
         setUpMenuBehavior()
+    }
+
+    private fun onTabSelectedBehaiviour(tab: TabLayout.Tab?, navOptions: NavOptions) {
+        val type = when (tab?.position) {
+            0 -> FavoriteType.Today.toString()
+            1 -> FavoriteType.Asteroid.toString()
+            2 -> FavoriteType.Globe.toString()
+            3 -> FavoriteType.Tech.toString()
+            else -> FavoriteType.Mars.toString()
+        }
+
+        val bundleRest = Bundle().apply {
+            putString("type", type)
+        }
+        findNavController(R.id.navHostfragFavs).navigate(
+            R.id.favRecyclerFragment,
+            bundleRest,
+            navOptions
+        )
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -207,20 +114,19 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
     override fun onBackPressed() {
         if (dlFavs.isDrawerOpen(GravityCompat.END)) {
             dlFavs.closeDrawer(GravityCompat.END)
+            return
         }
-        else {
-            val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
-            val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
+        val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
+        val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
 
-            if (currFrag != R.id.favRecyclerFragment) {
-                navController.navigateUp(appBarConfiguration)
-            }
-            else if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment) {
-                bottomTabs.getTabAt(0)?.select()
-            }
-            else if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment) {
-                finish()
-            }
+        if (currFrag != R.id.favRecyclerFragment) {
+            navController.navigateUp(appBarConfiguration)
+            return
         }
+        if (bottomTabs.selectedTabPosition != 0) {
+            bottomTabs.getTabAt(0)?.select()
+            return
+        }
+        finish()
     }
 }

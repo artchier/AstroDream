@@ -1,19 +1,19 @@
 package com.example.astrodream.ui.tech.spinoffs
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astrodream.domain.Spinoff
 import com.example.astrodream.services.Service
+import com.example.astrodream.ui.tech.TechViewModel
 import kotlinx.coroutines.launch
 
-class SpinoffsViewModel(val service: Service) : ViewModel() {
-    val spinoffs = MutableLiveData<Spinoff>()
+class SpinoffsViewModel(service: Service) : TechViewModel<Spinoff>(service) {
+    override val techPieces = MutableLiveData<Spinoff>()
 
-    fun getSpinoffs() {
+    override fun getTechPieces() {
         viewModelScope.launch {
             val spinoffList = service.getSpinoffs()
-            spinoffs.value = spinoffList
+            techPieces.value = spinoffList
         }
     }
 }

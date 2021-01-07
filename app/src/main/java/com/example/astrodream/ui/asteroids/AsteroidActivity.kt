@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.*
@@ -32,9 +31,7 @@ import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
 import kotlinx.coroutines.launch
-import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.arrayListOf
@@ -73,11 +70,9 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
         // ##### Opções de navigation da imagem de asteroides #####
         navController = findNavController(R.id.fl_imagem_asteroids)
-        val navInflater = navController.navInflater
-        val graph = navInflater.inflate (R.navigation.navigation_asteroids)
+        val graph = navController.navInflater.inflate (R.navigation.navigation_asteroids)
         val navArgument = NavArgument.Builder().setDefaultValue(listFourAsteroids).build ()
         graph.addArgument ("listFourAsteroids", navArgument)
-
         navController.graph = graph
 
         // ##### Opções do ExpandableListAdapter #####
@@ -95,11 +90,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
         // ##### Opções da viewModel #####
-        Log.i("inicio", Instant.now().toString())
         viewModel.viewModelScope.launch { viewModel.doInBackground() }
         viewModel.listResults.observe(this) {
-            Log.i("list", viewModel.listAsteroid.subList(0, 4).toString())
-            Log.i("inicio", Instant.now().toString())
             listAllAsteroids.addAll(viewModel.listAsteroid)
             listFourAsteroids.addAll(viewModel.listAsteroid.subList(0, 4)) }
 
@@ -146,7 +138,6 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                     expandableListAdapter.listAsteroids[listButtonsName[1]]?.clear()
 
                     val list = ArrayList<Asteroid>()
-
                     listAllAsteroids.forEach { if(it.name.toLowerCase(Locale.getDefault()).contains(newText.toLowerCase(Locale.getDefault()))) list.add(it) }
 
                     expandableListAdapter.listAsteroids[listButtonsName[1]] = list
@@ -166,7 +157,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         val date: LocalDate = LocalDate.now()
         val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
 
-        datePicker.updateDate(date.year, date.monthValue, date.dayOfMonth)
+        datePicker.updateDate(date.year, date.monthValue - 1, date.dayOfMonth)
 
             MaterialAlertDialogBuilder(this)
                 .setView(datePicker)
@@ -191,7 +182,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             expandableListAdapter.notifyDataSetChanged()
         } else {
             expandableListAdapter.listAsteroids[listButtonsName[2]]?.clear()
-            expandableListAdapter.listAsteroids[listButtonsName[2]] = viewModel.listAsteroid
+            expandableListAdapter.listAsteroids[listButtonsName[2]] = listAllAsteroids.toList() as ArrayList<Asteroid>
             expandableListAdapter.notifyDataSetChanged()
         }
     }
@@ -204,37 +195,27 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun onGroupClickEvent(){
-        Log.i("onGroupClickEvent", "do")
         listView.setOnGroupClickListener { _, v, groupPosition, _ ->
             viewModel.execute(v)
-            listAllAsteroids.addAll(viewModel.listAsteroid)
-            searchAsteroid(v)
             viewModel.listResults.observe(this) {
                 when (groupPosition) {
                     0 -> {
-                        Log.i("0", "do")
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[0] to viewModel.listAsteroid))
                     }
                     1 -> {
+                        searchAsteroid(v)
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[1] to viewModel.listAsteroid))
                     }
                     2 -> {
                         val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
-                        v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener {
-                            showAsteroidCalendar(editText)
-                        }
-                        v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener {
-                            searchAsteroidDate(editText)
-                        }
+                        v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener { showAsteroidCalendar(editText) }
+                        v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener { searchAsteroidDate(editText) }
 
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[2] to viewModel.listAsteroid))
                     }
                     3 -> {
                         val listPerigosos = ArrayList<Asteroid>()
-
-                        for (values in listAllAsteroids) {
-                            if (values.is_potentially_hazardous_asteroid) listPerigosos.add(values)
-                        }
+                        listAllAsteroids.forEach { if (it.is_potentially_hazardous_asteroid) listPerigosos.add(it) }
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[3] to listPerigosos))
                     }
                 }
@@ -243,52 +224,4 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
     }
-
-//    inner class ProgressBarAsteroid : CoroutineScope {
-//        private var job: Job = Job()
-//
-//        override val coroutineContext: CoroutineContext
-//            get() = Dispatchers.Main + job
-//
-//        fun cancel() {
-//            job.cancel()
-//        }
-//
-//        fun execute() = launch {
-//            onPreExecute()
-//            val result = doInBackground()
-//            onPostExecute(result)
-//        }
-//
-//        @RequiresApi(Build.VERSION_CODES.O)
-//        private suspend fun doInBackground(): String = withContext(Dispatchers.IO) {
-//            Log.i("doInBackground", "do")
-//            viewModel.popListResult()
-//            onGroupClickEvent()
-//            return@withContext "Executado"
-//        }
-//
-//        private fun onPreExecute() {
-//            Log.i("onPreExecute", "do")
-//            showHideProgressBar(false)
-//        }
-//
-//        private fun onPostExecute(result: String) {
-//            Log.i("onPostExecute", "do")
-//            if (result.equals("Executado")) {
-//                showHideProgressBar(true)
-//            }
-//        }
-//
-//        fun showHideProgressBar(visible: Boolean){
-//            Log.i("showHideProgressBar", "do")
-//            listView.setOnGroupClickListener{ parent, v, groupPosition, id ->
-//                val progressBar: ProgressBar = v.findViewById(R.id.progressbar_asteroides)
-//                if(visible) progressBar.visibility = ProgressBar.VISIBLE
-//                else progressBar.visibility = ProgressBar.GONE
-//                false
-//            }
-//                false
-//        }
-//    }
 }

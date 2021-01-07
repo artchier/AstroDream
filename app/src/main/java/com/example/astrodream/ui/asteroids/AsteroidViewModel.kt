@@ -23,7 +23,7 @@ class AsteroidViewModel(private val service: Service, private val context: Conte
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun execute(v: View) = viewModelScope.launch {
-            onPreExecute(v)
+        if (listAsteroid.isEmpty()) onPreExecute(v)
             doInBackground()
             onPostExecute(v)
         }

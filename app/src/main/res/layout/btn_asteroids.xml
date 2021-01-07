@@ -98,6 +98,16 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/asteroid_not_found"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Asteroide não encontrado"
+                android:textColor="@color/guardsman_red"
+                android:fontFamily="@font/roboto"
+                android:visibility="gone"
+                android:gravity="center"/>
+
         </LinearLayout>
 
     </FrameLayout>

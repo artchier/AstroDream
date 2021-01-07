@@ -2,7 +2,6 @@ package com.example.astrodream.ui.asteroids
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
@@ -11,13 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astrodream.R
 import com.example.astrodream.domain.*
-import com.example.astrodream.domain.exceptions.InternetConnectionException
-import com.example.astrodream.domain.exceptions.UnknownErrorException
 import com.example.astrodream.services.Service
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.time.LocalDate
 
 class AsteroidViewModel(private val service: Service, private val context: Context) : ViewModel() {
@@ -35,7 +31,6 @@ class AsteroidViewModel(private val service: Service, private val context: Conte
         @RequiresApi(Build.VERSION_CODES.O)
         suspend fun doInBackground() {
             viewModelScope.launch {
-                try {
                     val listAsteroids =
                         service.getAsteroidsDate(LocalDate.now().toString(), context.getString(R.string.api_key))
 
@@ -48,14 +43,6 @@ class AsteroidViewModel(private val service: Service, private val context: Conte
                     }
 
                     listResults.postValue(listAsteroids)
-
-                } catch (e: IOException) {
-                    Log.e("AsteroidViewModel", "doInBackground: ${e.stackTraceToString()}")
-                    throw InternetConnectionException()
-                } catch (e: Exception) {
-                    Log.e("AsteroidViewModel", "doInBackground: ${e.stackTraceToString()}")
-                    throw UnknownErrorException()
-                }
             }
         }
 

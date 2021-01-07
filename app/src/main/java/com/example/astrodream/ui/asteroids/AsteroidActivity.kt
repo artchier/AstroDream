@@ -32,7 +32,9 @@ import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.arrayListOf
@@ -46,16 +48,11 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     private val listAsteroidsButtons = LinkedHashMap<String, ArrayList<Asteroid>>()
     private val listAllAsteroids = mutableSetOf<Asteroid>()
     private val listFourAsteroids = ArrayList<Asteroid>()
+    private val expandableListAdapter = ExpandableListAdapter(this)
     private lateinit var listView: ExpandableListView
     private lateinit var navController: NavController
-    private lateinit var expandableListAdapter: ExpandableListAdapter
 
-    private val listButtonsName = arrayListOf(
-        getString(R.string.button_1),
-        getString(R.string.button_2),
-        getString(R.string.button_3),
-        getString(R.string.button_4)
-    )
+    private var listButtonsName = ArrayList<String>()
 
     private val viewModel by viewModels<AsteroidViewModel> {
         object : ViewModelProvider.Factory {
@@ -70,14 +67,20 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_asteroid)
 
+        // ##### Set nome dos botões #####
+        listButtonsName = arrayListOf(getString(R.string.button_1), getString(R.string.button_2),
+        getString(R.string.button_3), getString(R.string.button_4))
+
         // ##### Opções de navigation da imagem de asteroides #####
         navController = findNavController(R.id.fl_imagem_asteroids)
-        navController.graph = navController.navInflater.inflate(R.navigation.navigation_asteroids)
-        navController.graph.addArgument ("listFourAsteroids",
-            NavArgument.Builder().setDefaultValue(listFourAsteroids).build())
+        val navInflater = navController.navInflater
+        val graph = navInflater.inflate (R.navigation.navigation_asteroids)
+        val navArgument = NavArgument.Builder().setDefaultValue(listFourAsteroids).build ()
+        graph.addArgument ("listFourAsteroids", navArgument)
+
+        navController.graph = graph
 
         // ##### Opções do ExpandableListAdapter #####
-        expandableListAdapter = ExpandableListAdapter(this)
         expandableListAdapter.addListButtons(listButtonsName)
         expandableListAdapter.addListAsteroids(listAsteroidsButtons)
 
@@ -92,10 +95,13 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
         // ##### Opções da viewModel #####
+        Log.i("inicio", Instant.now().toString())
         viewModel.viewModelScope.launch { viewModel.doInBackground() }
         viewModel.listResults.observe(this) {
+            Log.i("list", viewModel.listAsteroid.subList(0, 4).toString())
+            Log.i("inicio", Instant.now().toString())
             listAllAsteroids.addAll(viewModel.listAsteroid)
-            listFourAsteroids.addAll(listAllAsteroids.toList().subList(0, 4)) }
+            listFourAsteroids.addAll(viewModel.listAsteroid.subList(0, 4)) }
 
         // ##### Outras opções #####
         onGroupClickEvent()
@@ -191,18 +197,10 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun collapsedGroupView(id: Int){
-        listView.collapseGroup(id)
-
-    }
+    fun collapsedGroupView(id: Int){ listView.collapseGroup(id) }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun expandadGroupView(id: Int){
-        listView.expandGroup(id)
-//        viewModel.listResults.observe(this) {
-//            expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter.listButtons[id] to viewModel.listAsteroid))
-//        }
-    }
+    fun expandadGroupView(id: Int){ listView.expandGroup(id) }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun onGroupClickEvent(){

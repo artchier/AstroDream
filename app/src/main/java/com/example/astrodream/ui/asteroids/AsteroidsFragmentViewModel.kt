@@ -1,7 +1,6 @@
 package com.example.astrodream.ui.asteroids
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
@@ -11,33 +10,22 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.example.astrodream.R
-import com.example.astrodream.domain.exceptions.InternetConnectionException
-import com.example.astrodream.domain.exceptions.UnknownErrorException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
-import kotlin.Exception
 
 class AsteroidsFragmentViewModel(val fragment: Fragment) : ViewModel() {
     private val listRequestBuilder = ArrayList<RequestBuilder<GifDrawable>>()
 
     fun execute(v: View) = viewModelScope.launch {
         onPreExecute(v)
-        try {
-            doInBackground()
-        } catch (e: InternetConnectionException) {
-            fragment.context?.let { e.showImageWithoutInternetConnection(it) }
-        } catch (e: UnknownErrorException) {
-            fragment.context?.let { e.showImageUnknownError(it) }
-        }
+        doInBackground()
         onPostExecute(v)
     }
 
     @SuppressLint("LongLogTag")
     private suspend fun doInBackground() = withContext(Dispatchers.IO) {
         this.launch {
-            try {
                 listRequestBuilder.addAll(
                     arrayListOf(
                         loadImage(fragment.context?.resources?.getString(R.string.url_imagem_globo)),
@@ -47,13 +35,6 @@ class AsteroidsFragmentViewModel(val fragment: Fragment) : ViewModel() {
                         loadImage(fragment.context?.resources?.getString(R.string.url_direta_baixo))
                     )
                 )
-            } catch (e: IOException) {
-                Log.e("AsteroidsFragmentViewModel", "doInBackground: ${e.stackTraceToString()}")
-                throw InternetConnectionException()
-            } catch (e: Exception) {
-                Log.e("AsteroidsFragmentViewModel", "doInBackground: ${e.stackTraceToString()}")
-                throw UnknownErrorException()
-            }
         }
     }
 

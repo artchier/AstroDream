@@ -17,17 +17,11 @@ class ExpandableListAdapter(val context: AsteroidActivity) : BaseExpandableListA
     var listButtons = ArrayList<String>()
     var listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
 
-    override fun getGroup(groupPosition: Int): Any {
-        return listButtons[groupPosition]
-    }
+    override fun getGroup(groupPosition: Int): Any { return listButtons[groupPosition] }
 
-    override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
-        return true
-    }
+    override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean { return true }
 
-    override fun hasStableIds(): Boolean {
-        return false
-    }
+    override fun hasStableIds(): Boolean { return false }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun getGroupView(
@@ -49,17 +43,13 @@ class ExpandableListAdapter(val context: AsteroidActivity) : BaseExpandableListA
 
         when (groupPosition) {
             1 -> {
-                btn?.setOnClickListener {
-                    if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(groupPosition)
-                }
+                btn?.setOnClickListener { if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(groupPosition) }
                 if (isExpanded) searchView?.setTransitionVisibility(SearchView.VISIBLE) else searchView?.setTransitionVisibility(SearchView.GONE)
                 calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
             }
 
             2 -> {
-                btn?.setOnClickListener {
-                    if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(groupPosition)
-                }
+                btn?.setOnClickListener { if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(groupPosition) }
                 if (isExpanded) calendarAsteroid?.setTransitionVisibility(LinearLayout.VISIBLE) else calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
                 searchView?.visibility = SearchView.GONE
             }
@@ -80,17 +70,11 @@ class ExpandableListAdapter(val context: AsteroidActivity) : BaseExpandableListA
         return view as View
     }
 
-    override fun getChildrenCount(groupPosition: Int): Int {
-        return listAsteroids[listButtons[groupPosition]]?.size ?: 0
-    }
+    override fun getChildrenCount(groupPosition: Int): Int { return listAsteroids[listButtons[groupPosition]]?.size ?: 0 }
 
-    override fun getChild(groupPosition: Int, childPosition: Int): Any? {
-        return listAsteroids[listButtons[groupPosition]]?.get(childPosition)
-    }
+    override fun getChild(groupPosition: Int, childPosition: Int): Any? { return listAsteroids[listButtons[groupPosition]]?.get(childPosition) }
 
-    override fun getGroupId(groupPosition: Int): Long {
-        return groupPosition.toLong()
-    }
+    override fun getGroupId(groupPosition: Int): Long { return groupPosition.toLong() }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getChildView(
@@ -115,13 +99,9 @@ class ExpandableListAdapter(val context: AsteroidActivity) : BaseExpandableListA
         return view as View
     }
 
-    override fun getChildId(groupPosition: Int, childPosition: Int): Long {
-        return childPosition.toLong()
-    }
+    override fun getChildId(groupPosition: Int, childPosition: Int): Long { return childPosition.toLong() }
 
-    override fun getGroupCount(): Int {
-        return listButtons.size
-    }
+    override fun getGroupCount(): Int { return listButtons.size }
 
     fun addListButtons(list: ArrayList<String>) {
         listButtons.addAll(list)

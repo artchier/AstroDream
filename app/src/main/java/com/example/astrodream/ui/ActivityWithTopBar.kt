@@ -1,6 +1,7 @@
 package com.example.astrodream.ui
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
@@ -133,6 +134,9 @@ abstract class ActivityWithTopBar(
             drawerLayout.closeDrawer(GravityCompat.END)
             return
         }
+        val sharedPreferences = getSharedPreferences("first_time", MODE_PRIVATE).edit()
+        sharedPreferences.putBoolean("globe", false)
+        sharedPreferences.apply()
         super.onBackPressed()
     }
 }

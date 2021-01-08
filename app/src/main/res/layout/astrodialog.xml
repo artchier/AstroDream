@@ -3,17 +3,20 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_rectangle2"
-    android:paddingBottom="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="20dp">
 
     <ImageView
+        android:id="@+id/ivDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:background="@drawable/ic_logo" />
+        android:background="@drawable/ic_logo"
+        android:contentDescription="@string/logo" />
 
     <TextView
+        android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -24,6 +27,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tvDialog1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
@@ -35,6 +39,7 @@
         android:textColor="@android:color/white" />
 
     <TextView
+        android:id="@+id/tvDialog2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
@@ -43,9 +48,10 @@
         android:paddingEnd="15dp"
         android:text="@string/descricao_2"
         android:textAlignment="textStart"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 
     <TextView
+        android:id="@+id/tvDialog3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
@@ -54,5 +60,5 @@
         android:paddingEnd="15dp"
         android:text="@string/descricao_3"
         android:textAlignment="textStart"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 </LinearLayout>

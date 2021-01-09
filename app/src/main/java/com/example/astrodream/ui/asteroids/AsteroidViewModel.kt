@@ -1,42 +1,52 @@
 package com.example.astrodream.ui.asteroids
 
-import android.util.Log
+import android.content.Context
+import android.os.Build
+import android.view.View
+import android.widget.ProgressBar
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.astrodream.domain.Asteroid
-import com.example.astrodream.domain.AsteroidRes
-import com.example.astrodream.domain.Data
+import com.example.astrodream.R
+import com.example.astrodream.domain.*
 import com.example.astrodream.services.Service
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
-class AsteroidViewModel(val service: Service) : ViewModel() {
+class AsteroidViewModel(private val service: Service, private val context: Context) : ViewModel() {
 
     val listResults = MutableLiveData<AsteroidRes>()
+    val listAsteroid = ArrayList<Asteroid>()
 
-    fun popListResult() {
-        viewModelScope.launch {
-            val listAsteroids = mutableListOf<Asteroid>()
-            var dateTT = LocalDate.now()
-            val response = service.getResults(
-                dateTT.toString(),
-                dateTT.minusDays(2).toString(),
-                "X6SUDXPVkjgyQoyKVunHMpwomboitIigBRVCSK1M"
-            )
-            for (i in 1..3) {
-                val responseAtDate = response.get("near_earth_objects").asJsonObject.get(dateTT.toString()).asJsonArray
-                val totalAsteroids = Gson().fromJson(responseAtDate,
-                    object : TypeToken<List<Asteroid>>() {}.type) as List<Asteroid>
-                listAsteroids.addAll(totalAsteroids)
-                dateTT = dateTT.minusDays(1)
-            }
-
-            val asteroids = AsteroidRes(Data(listAsteroids.toList() as ArrayList<Asteroid>))
-
-            listResults.value = asteroids
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun execute(v: View) = viewModelScope.launch {
+        if (listAsteroid.isEmpty()) onPreExecute(v)
+            doInBackground()
+            onPostExecute(v)
         }
-    }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        suspend fun doInBackground() {
+            viewModelScope.launch {
+                    val listAsteroids =
+                        service.getAsteroidsDate(LocalDate.now().toString(), context.getString(R.string.api_key))
+
+                    listAsteroids.near_earth_objects.keySet().toList().forEach {
+                        val list = Gson().fromJson(
+                            listAsteroids.near_earth_objects.get(it),
+                            object : TypeToken<List<AsteroidData>>() {}.type
+                        ) as List<AsteroidData>
+                        listAsteroid.addAll(list.map { a -> a.getAsteroid() })
+                    }
+
+                    listResults.postValue(listAsteroids)
+            }
+        }
+
+        private fun onPreExecute(v: View) { v.findViewById<ProgressBar>(R.id.progressbar_asteroides).visibility = ProgressBar.VISIBLE }
+
+        private fun onPostExecute(v: View) { v.findViewById<ProgressBar>(R.id.progressbar_asteroides).visibility = ProgressBar.GONE }
 }

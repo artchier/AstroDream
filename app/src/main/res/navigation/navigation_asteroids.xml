@@ -20,7 +20,7 @@
         android:label="fragment_asteroids_details"
         tools:layout="@layout/fragment_asteroids_details" >
         <action
-            android:id="@+id/action_asteroidsDetailsFragment_to_asteroidsFragment"
+            android:id="@+id/action_asteroidsFragment_to_asteroidsDetailsFragment"
             app:destination="@id/asteroidsFragment" />
     </fragment>
 

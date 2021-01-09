@@ -1,5 +1,7 @@
 package com.example.astrodream.services
 
+
+import com.example.astrodream.domain.AsteroidRes
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import com.example.astrodream.domain.PlainClass
@@ -51,6 +53,25 @@ interface Service {
         @Query("api_key")p2: String = apikeyMarsAndDaily,
     ): JsonObject
 
+    /* ------------------------------------------- Asteroids ----------------------------------------- */
+    @GET("neo/rest/v1/feed")
+    suspend fun getAsteroidsDate(
+        @Query("start_date")p0: String,
+        @Query("api_key")p1: String
+    ): AsteroidRes
+
+    @GET("neo/rest/v1/neo/browse")
+    suspend fun getAllAsteroids(
+        @Query("api_key")p0: String,
+    ): AsteroidRes
+
+    @GET("neo/rest/v1/feed")
+    suspend fun getAsteroidId(
+        @Query("start_date")p0: String,
+        @Query("api_key")p1: String,
+        @Query("end_date")p2: String
+    ): AsteroidRes
+  
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")
     suspend fun getPatents(
@@ -81,6 +102,7 @@ interface Service {
         @Path("chosenDate") chosenDate: String,
         @Query("api_key") apikey: String = apikeyGlobe,
     ): JsonArray
+
 }
 
 @SuppressLint("SimpleDateFormat")

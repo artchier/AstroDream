@@ -3,8 +3,6 @@ package com.example.astrodream.ui.plaindailymars
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
-import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat

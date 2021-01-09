@@ -36,7 +36,7 @@ class MarsAdapter(
     // Essa função infla o layout e já repete os itens
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(context).inflate(R.layout.card_mars_post, container, false)
-        val marsPic = marsPicsList[position].img_src
+        val marsPic = if (marsPicsList[position].img_src != "") { marsPicsList[position].img_src } else { R.drawable.no_internet }
         val marsCamera = marsPicsList[position].camera.full_name
 
         val circularProgressDrawable = CircularProgressDrawable(container.context)
@@ -61,8 +61,8 @@ class MarsAdapter(
         view.tvMarsRecentCamera.text = marsCamera
 
         view.ivRecentMars.setOnClickListener {
-            if (marsPic is String) { // marcPic is String when API request is successful
-                val intent: Intent = Intent(view.context, FullScreenImgActivity::class.java)
+            if (marsPic != "") { // marcPic is not empty String when API request is successful
+                val intent = Intent(view.context, FullScreenImgActivity::class.java)
                 intent.putExtra("img", marsPic)
                 startActivity(container.context, intent, null)
             }

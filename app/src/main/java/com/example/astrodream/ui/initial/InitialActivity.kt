@@ -64,9 +64,10 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         piInitial.show()
         viewModel.populateList()
         viewModel.focusResult.observe(this) {
+            val img = if (it.url != "") { it.url } else { R.drawable.no_internet }
             piInitial.hide()
             Glide.with(this).asBitmap()
-                .load(it.url)
+                .load(img)
                 .into(ivDaily)
         }
     }

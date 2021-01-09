@@ -1,10 +1,8 @@
 package com.example.astrodream.ui.plaindailymars
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.astrodream.R
 import com.example.astrodream.domain.Camera
 import com.example.astrodream.domain.MarsImage
 import com.example.astrodream.domain.PlainClass
@@ -16,16 +14,20 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
-import kotlin.system.measureTimeMillis
 
 class PlainViewModel(val service: Service, private val type: PlainActivityType): ViewModel() {
 
-    val listResults = MutableLiveData<MutableList<PlainClass>>()
     val focusResult = MutableLiveData<PlainClass>()
     val hasOngoingRequest = MutableLiveData<Boolean>()
-    var adapterHistory = PlainAdapter()
-    var numFetches = 0
+    // TODO: implementar o hasInternetConnection para abrir dialog caso nao haja conexao.
+    // TODO: ao dar "OK" no dialog, voltar para Initial
+    val hasInternetConnection = MutableLiveData<Boolean>()
+
+    private var numFetches = 0
     private var timesToFetch = 24
+
+    // RecyclerView adapter
+    var adapterHistory = PlainAdapter()
 
     // List of dates with available temperature
     private var availableTempListLong = listOf<Long>()
@@ -49,9 +51,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
     fun populateList() {
 
         hasOngoingRequest.value = true
-        listResults.value = emptyDummyList
-        if (numFetches == 0) { adapterHistory.addList(emptyDummyList) }
-
+        adapterHistory.addList(emptyDummyList)
 
         viewModelScope.launch {
             when(type) {
@@ -61,23 +61,13 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
                 }
 
                 PlainActivityType.DailyImage -> {
-                    if (numFetches == 0) {
-                        fetchDailyImage()
-                        detailRoot = detail
-                        focusResult.value = detailRoot
-                    }
-                    for (i in 2..timesToFetch) {
+                    for (i in 1..timesToFetch) {
                         fetchDailyImage()
                     }
                 }
 
                 PlainActivityType.Mars -> {
-                    if (numFetches == 0) {
-                        fetchRoverPics()
-                        detailRoot = detail
-                        focusResult.value = detailRoot
-                    }
-                    for (i in 2..timesToFetch) {
+                    for (i in 1..timesToFetch) {
                         fetchRoverPics()
                     }
                 }
@@ -91,14 +81,18 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
         when (val dummy = service.getDaily(date.toString())) {
             is NetworkResponse.Success -> {
                 // Handle successful response
-                if ((dummy.body.url as String).contains("youtube")) {
+                if ((dummy.body.url).contains("youtube")) {
                     date = date.minusDays(1)
                     fetchDailyImage()
                 } else {
                     detail = dummy.body
                     detail.date = date.format(dateFormatter).toString()
-                    date = date.minusDays(1)
+                    if (!::detailRoot.isInitialized) {
+                        detailRoot = detail
+                        focusResult.value = detailRoot
+                    }
                     adapterHistory.replaceItem(detail)
+                    date = date.minusDays(1)
                 }
             }
             is NetworkResponse.ServerError -> {
@@ -108,11 +102,19 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
             }
             is NetworkResponse.NetworkError -> {
                 // Handle network error
-                detail = PlainClass(title = "Ooops, estamos sem internet!", url = R.drawable.image_placeholder, explanation = "Ooops, estamos sem internet!")
+                detail = PlainClass(title = "", url = "", explanation = "")
+                if (!::detailRoot.isInitialized) {
+                    detailRoot = detail
+                    focusResult.value = detailRoot
+                }
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors
-                detail = PlainClass(title = "Ooops", url = R.drawable.image_placeholder, explanation = "O que será que aconteceu?")
+                detail = PlainClass(title = "", url = "", explanation = "")
+                if (!::detailRoot.isInitialized) {
+                    detailRoot = detail
+                    focusResult.value = detailRoot
+                }
             }
         }
     }
@@ -155,21 +157,37 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
                     }
 
                     detail.earth_date = date.format(dateFormatter).toString()
-                    date = date.minusDays(1)
+                    if (!::detailRoot.isInitialized) {
+                        detailRoot = detail
+                        focusResult.value = detailRoot
+                    }
                     adapterHistory.replaceItem(detail)
+                    date = date.minusDays(1)
                 }
             }
             is NetworkResponse.ServerError -> {
                 // Handle server error
-                detail = PlainClass(earth_date = "Ooops", img_list = listOf(MarsImage(1, Camera("", "O que será que aconteceu?"), R.drawable.image_placeholder)))
+                detail = PlainClass(earth_date = "", img_list = listOf(MarsImage(0, Camera("", "O que será que aconteceu?"), "")))
+                if (!::detailRoot.isInitialized) {
+                    detailRoot = detail
+                    focusResult.value = detailRoot
+                }
             }
             is NetworkResponse.NetworkError -> {
                 // Handle network error
-                detail = PlainClass(earth_date = "Ooops", img_list = listOf(MarsImage(1, Camera("", "Estamos sem internet!"), R.drawable.image_placeholder)))
+                detail = PlainClass(earth_date = "", img_list = listOf(MarsImage(0, Camera("", "Estamos sem internet!"), "")))
+                if (!::detailRoot.isInitialized) {
+                    detailRoot = detail
+                    focusResult.value = detailRoot
+                }
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors
-                detail = PlainClass(earth_date = "Ooops", img_list = listOf(MarsImage(1, Camera("", "O que será que aconteceu?"), R.drawable.image_placeholder)))
+                detail = PlainClass(earth_date = "", img_list = listOf(MarsImage(0, Camera("", "O que será que aconteceu?"), "")))
+                if (!::detailRoot.isInitialized) {
+                    detailRoot = detail
+                    focusResult.value = detailRoot
+                }
             }
         }
     }

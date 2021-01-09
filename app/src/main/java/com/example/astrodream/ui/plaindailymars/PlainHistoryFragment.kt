@@ -41,16 +41,6 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
 
         setUpScroller(view.rvHistory, view.rvHistory.layoutManager as GridLayoutManager)
 
-        viewModel.listResults.observe(viewLifecycleOwner) {
-            // This observer is triggered when this fragment view is created
-            // The if condition avoids adding the 'lisResults' at this event and considers only
-            // real state changes
-            if (viewModel.numFetches > 0 && viewModel.hasOngoingRequest.value!!) {
-                view.rvHistory.suppressLayout(true)
-                viewModel.adapterHistory.addList(it)
-                view.rvHistory.suppressLayout(false)
-            }
-        }
         viewModel.hasOngoingRequest.observe(viewLifecycleOwner) {
             if (!it) {
                 // If last item of RecyclerView is visible, request new fetch
@@ -93,7 +83,6 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
                     if (lastVisibleItem + 6 < items || items >= maxItems) return
                     if (viewModel.hasOngoingRequest.value!!) return
 
-//                    hasOngoingRequest = true
                     piRecycler.visibility = View.VISIBLE
                     viewModel.populateList()
                 }

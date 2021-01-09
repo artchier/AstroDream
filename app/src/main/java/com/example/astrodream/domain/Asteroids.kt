@@ -14,20 +14,23 @@ data class Data(var results: ArrayList<Asteroid>)
 
 class AsteroidsMap(var near_earth_objects: List<Map<String,Asteroid>>)
 
-class Asteroid(
+data class Asteroid(
+    val id: String,
     val name: String,
     val is_potentially_hazardous_asteroid: Boolean,
-    val absolute_magnitude: Double,
-    val relative_velocity: AsteroidVelocidade,
-    val close_approach_data: JsonArray,
-    val miss_distance: AsteroidDistancia,
-    val orbiting_body: String
-) : Serializable {
+    val absolute_magnitude: String?,
+    val relative_velocity: String?,
+    val close_approach_data: String?,
+    val miss_distance: String?,
+    val estimated_diameter: String,
+    val orbiting_body: String?,
+    val linkExterno: String?
+) : Serializable, Comparable<Asteroid>{
 
-    var date: String = close_approach_data[0].toString()
+    var date: String = close_approach_data.toString()
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getDataFormatada(): String {
-        return LocalDateTime.parse(date).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+
+    override fun compareTo(other: Asteroid): Int {
+        return name.compareTo(other.name)
     }
 }

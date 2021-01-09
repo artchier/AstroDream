@@ -12,7 +12,6 @@ import com.example.astrodream.domain.PlainClass
 import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.android.synthetic.main.item_detail.view.*
 
-
 class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
 
     lateinit var listener: OnClickDetailListener
@@ -47,7 +46,7 @@ class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
-        val container = holder.itemView.shimmer_view_container as ShimmerFrameLayout
+        val shimmerContainer = holder.itemView.shimmer_view_container as ShimmerFrameLayout
         val detail: PlainClass = listHistory[position]
         val daily = detail.date != "" && detail.earth_date == ""
         val mars = detail.date == "" && detail.earth_date != ""
@@ -62,18 +61,17 @@ class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
             holder.tvDetail.text = dateRef
             holder.itemView.btnFavPlain.isChecked = false
             holder.itemView.btnFavPlain.isEnabled = true
-            container.stopShimmer()
-            container.visibility = View.GONE
+            shimmerContainer.stopShimmer()
+            shimmerContainer.visibility = View.GONE
         }
         else {
             holder.ivDetail.setImageResource(android.R.color.transparent)
             holder.tvDetail.text = ""
             holder.itemView.btnFavPlain.isChecked = false
             holder.itemView.btnFavPlain.isEnabled = false
-            container.startShimmer()
-            container.visibility = View.VISIBLE
+            shimmerContainer.startShimmer()
+            shimmerContainer.visibility = View.VISIBLE
         }
-
     }
 
     override fun getItemCount() = listHistory.size

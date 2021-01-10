@@ -13,7 +13,7 @@ import com.example.astrodream.R
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 
 
-class ExpandableListAdapter(val context: AsteroidActivity) : BaseExpandableListAdapter() {
+class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListAdapter() {
     var listButtons = ArrayList<String>()
     var listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
 
@@ -103,12 +103,12 @@ class ExpandableListAdapter(val context: AsteroidActivity) : BaseExpandableListA
 
     override fun getGroupCount(): Int { return listButtons.size }
 
-    fun addListButtons(list: ArrayList<String>) {
+    fun addListButtons(list: ArrayList<String>){
         listButtons.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun addListAsteroids(map: HashMap<String, ArrayList<Asteroid>>) {
+    fun addListAsteroids(map: HashMap<String, ArrayList<Asteroid>>){
         listAsteroids.putAll(map)
         notifyDataSetChanged()
     }

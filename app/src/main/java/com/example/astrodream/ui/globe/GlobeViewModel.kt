@@ -31,6 +31,7 @@ class GlobeViewModel(private val service: Service) : ViewModel() {
                 imageArray.value = imageArrayList
 
             } catch (e: Exception) {
+                // TODO dar algum feedback na interface para o usuário aqui
                 Log.e("GlobeViewModel", "Erro ao carregar imagens: ${e.message}")
             }
         }

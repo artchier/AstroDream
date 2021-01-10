@@ -18,39 +18,35 @@ import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val apikeyMarsAndDaily = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"
-private const val apikeyTech = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"
-private const val apikeyGlobe = "vX6o8l9GQAr14bmNLonbmLz0Bq2ggLh2wvYfB7C4"
-
 // Endpoints
 interface Service {
     /* --------------------------------------- DailyImages -------------------------------------- */
     @GET("planetary/apod")
     suspend fun getDaily(
         @Query("date") date: String,
-        @Query("api_key") apikey: String = apikeyMarsAndDaily,
+        @Query("api_key") apikey: String = apikeyApp,
     ): PlainClass
 
+    /* ------------------------------------------- Mars ----------------------------------------- */
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
     suspend fun getMars(
         @Query("earth_date") date: String,
-        @Query("api_key") apikey: String = apikeyMarsAndDaily,
+        @Query("api_key") apikey: String = apikeyApp,
     ): JsonObject
 
-    /* ------------------------------------------- Mars ----------------------------------------- */
     @GET("insight_weather/")
     suspend fun getMarsTemp(
         @Query("feedtype") feedtype: String,
         @Query("ver") ver: String,
-        @Query("api_key") apikey: String = apikeyMarsAndDaily,
+        @Query("api_key") apikey: String = apikeyApp,
     ): JsonObject
 
 
     @GET("neo/rest/v1/feed")
     suspend fun getResults(
-        @Query("start_date")p0: String,
-        @Query("end_date")p1: String,
-        @Query("api_key")p2: String = apikeyMarsAndDaily,
+        @Query("start_date") startDate: String,
+        @Query("end_date") endDate: String,
+        @Query("api_key") apikey: String = apikeyApp,
     ): JsonObject
 
     /* ------------------------------------------- Asteroids ----------------------------------------- */
@@ -75,18 +71,18 @@ interface Service {
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")
     suspend fun getPatents(
-        @Query("api_key") apikey: String = apikeyTech,
-    ) : Patent
+        @Query("api_key") apikey: String = apikeyApp,
+    ): Patent
 
     @GET("techtransfer/software/")
     suspend fun getSoftwares(
-        @Query("api_key") apikey: String = apikeyTech,
-    ) : Software
+        @Query("api_key") apikey: String = apikeyApp,
+    ): Software
 
     @GET("techtransfer/spinoff/")
     suspend fun getSpinoffs(
-        @Query("api_key") apikey: String = apikeyTech,
-    ) : Spinoff
+        @Query("api_key") apikey: String = apikeyApp,
+    ): Spinoff
 
     /* ------------------------------------------ Globe ----------------------------------------- */
 
@@ -94,22 +90,23 @@ interface Service {
     suspend fun getEPIC(
         @Path("extension") extension: String,
         @Path("name") name: String,
-        @Query("api_key") apikey: String = apikeyGlobe,
+        @Query("api_key") apikey: String = apikeyApp,
     ): Bitmap
 
     @GET("EPIC/api/natural/date/{chosenDate}")
     suspend fun getAllEPIC(
         @Path("chosenDate") chosenDate: String,
-        @Query("api_key") apikey: String = apikeyGlobe,
+        @Query("api_key") apikey: String = apikeyApp,
     ): JsonArray
 
 }
 
 @SuppressLint("SimpleDateFormat")
-fun buildGlobeImageUrl(date: Date, name: String, apikey: String = apikeyGlobe): String =
-    "https://api.nasa.gov/EPIC/archive/natural/${
-        SimpleDateFormat("yyyy/MM/dd").format(date)
-    }/png/${name}.png?api_key=$apikey"
+fun buildGlobeImageUrl(date: Date, name: String, apikey: String = apikeyApp): String {
+    val dataFormatada = SimpleDateFormat("yyyy/MM/dd").format(date)
+
+    return "https://api.nasa.gov/EPIC/archive/natural/$dataFormatada/png/$name.png?api_key=$apikey"
+}
 
 // url
 const val urlNasa = "https://api.nasa.gov/"

@@ -10,18 +10,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.astrodream.R
 import com.example.astrodream.domain.Favorite
+import com.example.astrodream.domain.enums.FavoriteType
 import kotlinx.android.synthetic.main.fragment_fav_recycler.view.*
 
 class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
 
-    private var listFavs = dummyFavData("today")
+    private var listFavs = dummyFavData(FavoriteType.Today)
     private var adapterFav = FavAdapter(listFavs, this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_fav_recycler, container, false)
 
@@ -29,20 +30,17 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         view.rvFav.adapter = adapterFav
 
         // Cria o layout do RecyclerView
-        if (container != null) {
-            view.rvFav.layoutManager = LinearLayoutManager(container.context)
-        }
+        view.rvFav.layoutManager = LinearLayoutManager(container?.context)
         view.rvFav.setHasFixedSize(true)
 
         try {
             // Caso tenha dados no bundle, ou seja, o fragment foi carregado a partir da seleção de uma tab,
             // popula o RecyclerView com os items corretos
             if (container != null) {
-                Log.i("XXXXX", "oie!")
                 // Salva dados do bundle em variaveis
                 val type = requireArguments().getString("type") as String
                 // Atualiza a lista de itens favoritos
-                listFavs = dummyFavData(type)
+                listFavs = dummyFavData(FavoriteType.valueOf(type))
                 // Atualiza o adapter de acordo com a tab selecionada
                 adapterFav = FavAdapter(listFavs, this)
                 // Atribui o adapter criado acima ao adapter do RecyclerView
@@ -69,7 +67,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         //  essa parte quando estivermos acessando a API pois estou
         //  apenas abrindo o mesmo "favorito" independente de qual é escolhido da lista
         when (fav.type) {
-            "today" -> {
+            FavoriteType.Today -> {
                 val bundleRest: Bundle = Bundle().apply {
                     putString("title", fav.descrip1)
                     putString("date", fav.descrip2)
@@ -80,7 +78,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                     bundleRest
                 )
             }
-            "asteroid" -> {
+            FavoriteType.Asteroid -> {
                 val bundleRest: Bundle = Bundle().apply {
                     putString("name", "1979 XB")
                     putString("date", "17/12/1979")
@@ -94,7 +92,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                     bundleRest
                 )
             }
-            "globe" -> {
+            FavoriteType.Globe -> {
                 val bundleRest: Bundle = Bundle().apply {
                     putString("date", fav.descrip1)
                     putString("img", fav.img)
@@ -104,7 +102,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                     bundleRest
                 )
             }
-            "tech" -> {
+            FavoriteType.Tech -> {
                 val bundleRest: Bundle = Bundle().apply {
                     putString("typeTech", fav.descrip1)
                     putString("title", fav.descrip2)
@@ -119,7 +117,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                     bundleRest
                 )
             }
-            "mars" -> {
+            FavoriteType.Mars -> {
                 val bundleRest: Bundle = Bundle().apply {
                     putStringArrayList(
                         "marsPicsList", arrayListOf(
@@ -143,9 +141,9 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
 
     }
 
-    private fun dummyFavData(type: String): ArrayList<Favorite> {
+    private fun dummyFavData(type: FavoriteType): ArrayList<Favorite> {
         when (type) {
-            "today" -> {
+            FavoriteType.Today -> {
                 return arrayListOf(
                     Favorite(
                         type,
@@ -179,7 +177,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                     )
                 )
             }
-            "asteroid" -> {
+            FavoriteType.Asteroid -> {
                 return arrayListOf(
                     Favorite(
                         type,
@@ -213,7 +211,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                     )
                 )
             }
-            "globe" -> {
+            FavoriteType.Globe -> {
                 return arrayListOf(
                     Favorite(
                         type,
@@ -247,7 +245,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                     )
                 )
             }
-            "tech" -> {
+            FavoriteType.Tech -> {
                 return arrayListOf(
                     Favorite(
                         type,
@@ -281,7 +279,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                     )
                 )
             }
-            "mars" -> {
+            FavoriteType.Mars -> {
                 return arrayListOf(
                     Favorite(
                         type,
@@ -316,7 +314,6 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                 )
             }
         }
-        return arrayListOf()
     }
 
 }

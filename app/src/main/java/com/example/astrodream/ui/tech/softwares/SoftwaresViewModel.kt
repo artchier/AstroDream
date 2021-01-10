@@ -1,19 +1,20 @@
 package com.example.astrodream.ui.tech.softwares
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astrodream.domain.Software
 import com.example.astrodream.services.Service
+import com.example.astrodream.ui.tech.TechViewModel
 import kotlinx.coroutines.launch
 
-class SoftwaresViewModel(val service: Service) : ViewModel() {
-    val softwares = MutableLiveData<Software>()
+class SoftwaresViewModel(service: Service) : TechViewModel<Software>(service) {
 
-    fun getSoftwares() {
+    override val techPieces = MutableLiveData<Software>()
+
+    override fun getTechPieces() {
         viewModelScope.launch {
             val softwareList = service.getSoftwares()
-            softwares.value = softwareList
+            techPieces.value = softwareList
         }
     }
 }

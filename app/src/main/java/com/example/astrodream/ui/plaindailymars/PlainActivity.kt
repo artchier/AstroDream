@@ -19,8 +19,8 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 import kotlinx.android.synthetic.main.activity_plain.*
 
-abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType)
-    : ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
+abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType) :
+    ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
 
     /*
     * Se esse construtor não estiver aqui,
@@ -30,7 +30,7 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     constructor() : this(0, PlainActivityType.DailyImage)
 
     val viewModel by viewModels<PlainViewModel> {
-        object : ViewModelProvider.Factory{
+        object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return PlainViewModel(service, type) as T
             }
@@ -73,16 +73,14 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                    when (tab?.position) {
-                        0 -> {
-                        }
-                        1 -> {
-                            val detailFrag = findFragByTAG("DETAIL_TAG")
-                            if (detailFrag is PlainDetailFragment) {
-                                supportFragmentManager.popBackStackImmediate("HIST_TAG", 0)
-                            }
+                when (tab?.position) {
+                    1 -> {
+                        val detailFrag = findFragByTAG("DETAIL_TAG")
+                        if (detailFrag is PlainDetailFragment) {
+                            supportFragmentManager.popBackStackImmediate("HIST_TAG", 0)
                         }
                     }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -104,6 +102,7 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     override fun onBackPressed() {
         if (dlPlain.isDrawerOpen(GravityCompat.END)) {
             dlPlain.closeDrawer(GravityCompat.END)
+            return
         }
 
         else {
@@ -112,10 +111,12 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
             if (bottomTabs.selectedTabPosition == 0) {
                 finish()
                 startActivity(Intent(this, InitialActivity::class.java))
+                return
             }
 
             if (bottomTabs.selectedTabPosition != 0 && detailFrag !is PlainDetailFragment) {
                 bottomTabs.getTabAt(0)?.select()
+                return
             }
 
             if (bottomTabs.selectedTabPosition != 0 && detailFrag is PlainDetailFragment) {

@@ -11,7 +11,7 @@ import com.example.astrodream.R
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
 
 class DetailsTechFragment : Fragment() {
-    private lateinit var contextTechActivity : TechActivity
+    private lateinit var contextTechActivity: TechActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,35 +23,19 @@ class DetailsTechFragment : Fragment() {
         val software = arguments?.getStringArrayList("software")
         val spinoff = arguments?.getStringArrayList("spinoff")
 
-        if (patent != null) {
+        val techPiece = patent ?: software ?: spinoff ?: return view
 
-            if (patent[10] != "") {
-                Glide.with(contextTechActivity).asBitmap()
-                    .load(patent[10])
-                    .into(view.ivTech)
-            } else {
-                view.ivTech.setImageResource(R.drawable.ic_tecnologia)
-            }
-
-            view.tvCodReferenceTech.text = patent[1]
-            view.tvTitleTech.text = patent[2]
-            view.tvDescTech.text = patent[3]
-
-        } else if (software != null) {
-
+        if (techPiece[10] != "") {
+            Glide.with(contextTechActivity).asBitmap()
+                .load(techPiece[10])
+                .into(view.ivTech)
+        } else {
             view.ivTech.setImageResource(R.drawable.ic_tecnologia)
-            view.tvCodReferenceTech.text = software[1]
-            view.tvTitleTech.text = software[2]
-            view.tvDescTech.text = software[3]
-
-        } else if (spinoff != null) {
-
-            view.ivTech.setImageResource(R.drawable.ic_tecnologia)
-            view.tvCodReferenceTech.text = spinoff[1]
-            view.tvTitleTech.text = spinoff[2]
-            view.tvDescTech.text = spinoff[3]
-
         }
+
+        view.tvCodReferenceTech.text = techPiece[1]
+        view.tvTitleTech.text = techPiece[2]
+        view.tvDescTech.text = techPiece[3]
 
         return view
     }

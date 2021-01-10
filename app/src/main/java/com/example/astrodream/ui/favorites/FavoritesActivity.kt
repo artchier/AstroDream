@@ -96,6 +96,7 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
     override fun onBackPressed() {
         if (dlFavs.isDrawerOpen(GravityCompat.END)) {
             dlFavs.closeDrawer(GravityCompat.END)
+            return
         }
         else {
             val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
@@ -103,9 +104,11 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
 
             if (currFrag != R.id.favRecyclerFragment) {
                 navController.navigateUp(appBarConfiguration)
+                return
             }
             else if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment) {
                 bottomTabs.getTabAt(0)?.select()
+                return
             }
             else if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment) {
                 finish()

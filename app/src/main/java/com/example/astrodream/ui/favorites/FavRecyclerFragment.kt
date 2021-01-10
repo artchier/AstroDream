@@ -27,7 +27,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_fav_recycler, container, false)
 

@@ -1,5 +1,3 @@
 package com.example.astrodream.domain
 
-data class Patent(
-    val results: List<List<String>>
-)
+class Patent(results: List<List<String>>) : TechPiece(results)

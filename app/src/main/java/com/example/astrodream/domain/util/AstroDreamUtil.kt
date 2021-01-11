@@ -55,6 +55,6 @@ fun Double.format(digits: Int) = "%.${digits}f".format(this)
 
 fun ExpandableListView.isSomeGroupExpandad(): Boolean {
     if (this.isGroupExpanded(0) || this.isGroupExpanded(1) ||
-        this.isGroupExpanded(2) || this.isGroupExpanded(3)) return true
+            this.isGroupExpanded(2) || this.isGroupExpanded(3)) return true
     return false
 }

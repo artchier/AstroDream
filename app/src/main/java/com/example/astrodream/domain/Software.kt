@@ -1,5 +1,3 @@
 package com.example.astrodream.domain
 
-data class Software(
-    val results: List<List<String>>
-)
+class Software(results: List<List<String>>) : TechPiece(results)

@@ -24,8 +24,8 @@ import kotlinx.android.synthetic.main.activity_plain.*
 import kotlinx.android.synthetic.main.dialog_info_daily.view.*
 import kotlinx.android.synthetic.main.fragment_daily.view.*
 
-abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType)
-    : ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
+abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType) :
+    ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
 
     // TODO: tentar implementar o Navigation conforme o FavoritesActivity
     /*
@@ -36,7 +36,7 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     constructor() : this(0, PlainActivityType.DailyImage)
 
     val viewModel by viewModels<PlainViewModel> {
-        object : ViewModelProvider.Factory{
+        object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return PlainViewModel(service, type) as T
             }
@@ -95,24 +95,23 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     override fun onBackPressed() {
         if (dlPlain.isDrawerOpen(GravityCompat.END)) {
             dlPlain.closeDrawer(GravityCompat.END)
+            return
         }
 
-        else {
-            val detailFrag = findFragByTAG("DETAIL_TAG")
+        val detailFrag = findFragByTAG("DETAIL_TAG")
 
-            if (bottomTabs.selectedTabPosition == 0) {
-                finish()
-                startActivity(Intent(this, InitialActivity::class.java))
-            }
-
-            if (bottomTabs.selectedTabPosition != 0 && detailFrag !is PlainDetailFragment) {
-                bottomTabs.getTabAt(0)?.select()
-            }
-
-            if (bottomTabs.selectedTabPosition != 0 && detailFrag is PlainDetailFragment) {
-                bottomTabs.getTabAt(1)?.select()
-            }
+        if (bottomTabs.selectedTabPosition == 0) {
+            finish()
+            startActivity(Intent(this, InitialActivity::class.java))
+            return
         }
+
+        if (detailFrag !is PlainDetailFragment) {
+            bottomTabs.getTabAt(0)?.select()
+            return
+        }
+
+        bottomTabs.getTabAt(1)?.select()
     }
 
     abstract fun newDetailFrag(): Fragment

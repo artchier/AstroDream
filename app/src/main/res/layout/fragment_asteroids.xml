@@ -4,7 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/black"
     tools:context=".ui.asteroids.AsteroidsFragment">
+
+    <ProgressBar
+        android:id="@+id/progressbar_fragment_asteroides"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:theme="@style/ProgressBarAsteroids"/>
 
     <ImageView
         android:id="@+id/iv_terra"
@@ -15,29 +22,29 @@
 
     <ImageView
         android:id="@+id/iv_asteroids1"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:scaleType="fitXY"
         android:layout_gravity="right" />
 
     <ImageView
         android:id="@+id/iv_asteroids2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:scaleType="fitXY"
         android:layout_gravity="left" />
 
     <ImageView
         android:id="@+id/iv_asteroids3"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:scaleType="fitXY"
         android:layout_gravity="bottom" />
 
     <ImageView
         android:id="@+id/iv_asteroids4"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_gravity="end"
         android:scaleType="fitXY"
         android:layout_marginTop="150dp" />

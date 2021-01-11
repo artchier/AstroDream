@@ -19,8 +19,8 @@ import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 
 class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
 
-    private lateinit var navController : NavController
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     val viewModel: FavViewModel by viewModels()
 
@@ -77,21 +77,20 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
     override fun onBackPressed() {
         if (dlFavs.isDrawerOpen(GravityCompat.END)) {
             dlFavs.closeDrawer(GravityCompat.END)
+            return
         }
-        else {
-            val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
-            val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
+        val navHostFrag = supportFragmentManager.findFragmentById(R.id.navHostfragFavs)
+        val currFrag = navHostFrag?.findNavController()?.currentDestination?.id
 
-            if (currFrag != R.id.favRecyclerFragment) {
-                navController.navigateUp(appBarConfiguration)
-            }
-            else if (bottomTabs.selectedTabPosition != 0 && currFrag == R.id.favRecyclerFragment) {
-                bottomTabs.getTabAt(0)?.select()
-            }
-            else if (bottomTabs.selectedTabPosition == 0 && currFrag == R.id.favRecyclerFragment) {
-                finish()
-            }
+        if (currFrag != R.id.favRecyclerFragment) {
+            navController.navigateUp(appBarConfiguration)
+            return
         }
+        if (bottomTabs.selectedTabPosition != 0) {
+            bottomTabs.getTabAt(0)?.select()
+            return
+        }
+        finish()
     }
 
     fun reselectTab() {

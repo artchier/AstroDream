@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_daily"
+    app:startDestination="@id/dailyFragment">
+
+    <fragment
+        android:id="@+id/dailyFragment"
+        android:name="com.example.astrodream.ui.dailyimage.DailyImageFragment"
+        android:label="fragment_daily"
+        tools:layout="@layout/fragment_daily" >
+        <action
+            android:id="@+id/action_dailyFragment_to_dailyHistoryFragment"
+            app:destination="@id/dailyHistoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dailyHistoryFragment"
+        android:name="com.example.astrodream.ui.dailyimage.DailyImageHistoryFragment"
+        android:label="fragment_daily_history"
+        tools:layout="@layout/fragment_daily_history" >
+        <action
+            android:id="@+id/action_dailyHistoryFragment_to_dailyFragment"
+            app:destination="@id/dailyFragment" />
+    </fragment>
+</navigation>

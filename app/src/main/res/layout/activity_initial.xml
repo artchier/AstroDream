@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dlInitial"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.initial.InitialActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/background" />
+
+        <include
+            android:id="@+id/tbInitial"
+            layout="@layout/app_tool_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvImagemHoje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/imagem_de_hoje"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@id/cvDaily"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tbInitial" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvDaily"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintBottom_toTopOf="@id/tvFazerHoje"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvImagemHoje"
+                app:cardCornerRadius="30dp">
+                    <ImageView
+                        android:id="@+id/ivDaily"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:scaleType="centerCrop"
+                        android:foregroundGravity="center"
+                        android:overScrollMode="never" />
+                </androidx.cardview.widget.CardView>
+
+
+                <!--        <androidx.viewpager.widget.ViewPager-->
+<!--            android:id="@+id/vpImagemHoje"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="140dp"-->
+<!--            android:layout_marginStart="30dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="30dp"-->
+<!--            android:background="@drawable/button_style"-->
+<!--            android:clipToPadding="false"-->
+<!--            android:foregroundGravity="center"-->
+<!--            android:overScrollMode="never"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/tvFazerHoje"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tvImagemHoje" />-->
+
+        <TextView
+            android:id="@+id/tvFazerHoje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_light"
+            android:paddingTop="15dp"
+            android:text="@string/o_que_vamos_fazer_hoje"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cvDaily" />
+
+        <Button
+            android:id="@+id/btAsteriodes"
+            android:layout_width="145dp"
+            android:layout_height="130dp"
+            android:background="@drawable/pill_shape"
+            android:drawableTop="@drawable/ic_asteroide"
+            android:fontFamily="@font/homespun_regular"
+            android:text="@string/asteroides"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@id/btTecnologias"
+            app:layout_constraintEnd_toStartOf="@id/btGlobo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvFazerHoje" />
+
+        <Button
+            android:id="@+id/btGlobo"
+            android:layout_width="145dp"
+            android:layout_height="130dp"
+            android:background="@drawable/pill_shape"
+            android:drawableTop="@drawable/ic_globo"
+            android:fontFamily="@font/homespun_regular"
+            android:text="@string/globo"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/btAsteriodes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btAsteriodes"
+            app:layout_constraintTop_toTopOf="@id/btAsteriodes" />
+
+        <Button
+            android:id="@+id/btTecnologias"
+            android:layout_width="145dp"
+            android:layout_height="130dp"
+            android:background="@drawable/pill_shape"
+            android:drawableTop="@drawable/ic_tecnologia"
+            android:fontFamily="@font/homespun_regular"
+            android:text="@string/tecnologias"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/btAsteriodes"
+            app:layout_constraintStart_toStartOf="@id/btAsteriodes"
+            app:layout_constraintTop_toBottomOf="@id/btAsteriodes" />
+
+        <Button
+            android:id="@+id/btMarte"
+            android:layout_width="145dp"
+            android:layout_height="130dp"
+            android:background="@drawable/pill_shape"
+            android:drawableTop="@drawable/ic_marte"
+            android:fontFamily="@font/homespun_regular"
+            android:text="@string/marte"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/btGlobo"
+            app:layout_constraintStart_toStartOf="@id/btGlobo"
+            app:layout_constraintTop_toTopOf="@id/btTecnologias" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nvLateralMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/header_layout" />
+
+            <include layout="@layout/lateral_menu" />
+
+        </LinearLayout>
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

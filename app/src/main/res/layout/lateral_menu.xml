@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/clLateralMenu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gigas"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rounded_rectangle"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_background" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="25dp"
+            android:background="@android:color/transparent"
+            android:gravity="start|center"
+            android:text="@string/daily_image"
+            android:textAllCaps="false"
+            android:theme="@style/NavigationView1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llAsteroides"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rounded_rectangle"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="@id/llBackground"
+        app:layout_constraintStart_toStartOf="@id/llBackground"
+        app:layout_constraintTop_toBottomOf="@id/llBackground">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_asteroide" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="25dp"
+            android:background="@android:color/transparent"
+            android:gravity="start|center"
+            android:text="@string/asteroides"
+            android:textAllCaps="false"
+            android:theme="@style/NavigationView1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llGlobo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rounded_rectangle"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="@id/llAsteroides"
+        app:layout_constraintStart_toStartOf="@id/llAsteroides"
+        app:layout_constraintTop_toBottomOf="@id/llAsteroides">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_globo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="25dp"
+            android:background="@android:color/transparent"
+            android:gravity="start|center"
+            android:text="@string/globo"
+            android:textAllCaps="false"
+            android:theme="@style/NavigationView1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llTecnologias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rounded_rectangle"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="@id/llGlobo"
+        app:layout_constraintStart_toStartOf="@id/llGlobo"
+        app:layout_constraintTop_toBottomOf="@id/llGlobo">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_tecnologia" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:background="@android:color/transparent"
+            android:gravity="start|center"
+            android:text="@string/tecnologias"
+            android:textAllCaps="false"
+            android:theme="@style/NavigationView1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llMarte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rounded_rectangle"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="@id/llTecnologias"
+        app:layout_constraintStart_toStartOf="@id/llTecnologias"
+        app:layout_constraintTop_toBottomOf="@id/llTecnologias">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_marte" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:background="@android:color/transparent"
+            android:gravity="start|center"
+            android:text="@string/marte"
+            android:textAllCaps="false"
+            android:theme="@style/NavigationView1" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/llMarte" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFavoritos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/ic_favoritos"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:paddingStart="80dp"
+        android:paddingEnd="0dp"
+        android:text="@string/favoritos"
+        android:textAllCaps="false"
+        android:theme="@style/NavigationView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnConfig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/ic_config"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:paddingStart="80dp"
+        android:paddingEnd="0dp"
+        android:text="@string/config"
+        android:textAllCaps="false"
+        android:theme="@style/NavigationView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFavoritos" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSobre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/ic_sobre"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:paddingStart="80dp"
+        android:paddingEnd="0dp"
+        android:text="@string/sobre"
+        android:textAllCaps="false"
+        android:theme="@style/NavigationView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnConfig" />
+</androidx.constraintlayout.widget.ConstraintLayout>

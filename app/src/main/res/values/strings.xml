@@ -1,3 +1,130 @@
 <resources>
     <string name="app_name">AstroDream</string>
+    <string name="imagem_de_hoje">Imagem de hoje</string>
+    <string name="user_config">Configurações</string>
+    <string name="nome">Nome</string>
+    <string name="senha">Senha</string>
+    <string name="alterar">Alterar</string>
+    <string name="data_estelar">Data estelar: XXXXX</string>
+    <string name="o_que_vamos_fazer_hoje">O que vamos fazer hoje?</string>
+    <string name="asteroides">Asteroides</string>
+    <string name="globo">Globo</string>
+    <string name="marte">Marte</string>
+    <string name="tecnologias">Tecnologias</string>
+    <string name="ver_avatar">Ver avatar</string>
+
+    <string name="asteroides_minusculo">Asteroides</string>
+    <string name="globo_minusculo">Globo</string>
+    <string name="tecnologias_minusculo">Tecnologias</string>
+    <string name="marte_minusculo">Marte</string>
+
+    <!-- Login Activity -->
+    <string name="login">Login</string>
+    <string name="sign_in">Cadastrar</string>
+    <!-- Login Fragment -->
+    <string name="email">Email</string>
+    <string name="password">Senha</string>
+    <string name="forgot_password">Esqueci minha senha</string>
+    <string name="google_sign_in">Logar com Google</string>
+    <string name="facebook_sign_in">Logar com Facebook</string>
+    <string name="or">ou</string>
+    <!-- SignIn Fragment -->
+    <string name="name">Nome</string>
+    <string name="confirm_password">Confirme a senha</string>
+
+    <string name="favoritos">Favoritos</string>
+    <string name="config">Configurações</string>
+    <string name="sobre">Sobre</string>
+
+    <string name="descricao_1">O AstroDream é o aplicativo que te conecta com as estrelas, o espaço, o universo, os astros e com a ciência. Se você é um amante dos mistérios do espaço, esse aplicativo é para você.</string>
+    <string name="descricao_2">O aplicativo AstroDream fornece funcionalidades que disponibilizam informações e interações interessantes. Além de agregar conhecimento ao usuário, agrega uma experiência imersiva e divertida.</string>
+
+    <string name="descricao_3">Nesse app você poderá explorar Marte, saberá sobre os asteróides que passam perto do nosso planeta, saberá sobre algumas tencologias incríveis desenvolvidas pela Nasa, verá imagens atualizadas da Terra e poderá alterar seu plano de fundo com imagens disponibilizadas pelo nosso app.</string>
+
+    <string name="comprar">Comprar</string>
+
+    <string name="recente">Recente</string>
+    <string name="historico">Histórico</string>
+    <string name="icone_asteroide">Ícone asteroide</string>
+    <string name="foto_do_asteroide">Foto do asteroide</string>
+    <string name="favoritar">Favoritar</string>
+    <string name="imagem_globo">Imagem globo</string>
+    <string name="usar_como_papel_de_parede">Usar como papel de parede</string>
+    <string name="copartilhar">Copartilhar</string>
+    <string name="curiosity_rover">Curiosity Rover:</string>
+    <string name="bom_dia_terraqueo">Bom dia, terráqueo!</string>
+    <string name="cone_curiosity_rover">Ícone Curiosity Rover</string>
+    <string name="avatar">Avatar</string>
+    <string name="imagem_tecnologia">Imagem tecnologia</string>
+
+    <string name="cancelar">Cancelar</string>
+    <string name="ok">OK</string>
+    <string name="selecionar_data">Selecionar data</string>
+
+    <string name="explorar_tecnologias">Explorar tecnologias</string>
+    <string name="listar_patentes">Listar patentes</string>
+    <string name="listar_softwares">Listar softwares</string>
+    <string name="listar_spinoffs">Listar spinoffs</string>
+    <string name="explorar_patentes">Explorar patentes</string>
+    <string name="explorar_softwares">Explorar softwares</string>
+    <string name="explorar_spinoffs">Explorar spinoffs</string>
+    <string name="listar_asteroides_por_data">Listar asteroides por data</string>
+    <string name="listar_asteroides_perigosos">Listar asteroides perigosos</string>
+    <string name="listar_asteroides_por_nome">Listar asteroides por nome</string>
+    <string name="listar_asteroides_pr_ximos">Listar asteroides próximos</string>
+    <string name="date_template">Data: %s</string>
+
+    <string name="daily_image">Imagem do dia</string>
+    <string name="todays">Do dia</string>
+    <string name="previous">Anteriores</string>
+
+    <string name="nome_template">"Asteroide (%s)"</string>
+    <string name="classificacao_template">"Classificação: %s"</string>
+    <string name="aproximacao_sol_template">"Aproximação do sol: %s"</string>
+    <string name="aproximacao_terra_template">"Aproximação da terra: %s"</string>
+    <string name="distancia_template">"Distância mínima da terra: %s LD"</string>
+    <string name="magnitute_template">"Magnitude Absoluta: %s"</string>
+    <string name="velocidade_template">"Velocidade: %s km/s"</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Url Imagens AsteroidActivity -->
+    <string name="url_imagem_globo">https://i.ibb.co/gzJBqz8/planeta.gif</string>
+    <string name="url_esquerda_cima">https://i.ibb.co/CbVJ2hD/20210102–001705.gif</string>
+    <string name="url_direita_cima">https://i.ibb.co/Jv2rWVw/20210102–002216.gif</string>
+    <string name="url_esquerda_baixo">https://i.ibb.co/Bz5Lytp/20210102–002637.gif</string>
+    <string name="url_direta_baixo">https://i.ibb.co/Pc46jmT/20210102–002851.gif</string>
+
+    <!-- Dialog erro sem internet -->
+    <string name="sem_internei_tema">Erro na comunicação com a NASA!</string>
+    <string name="descricao_erro_internet">Parece que você está sem internet, astronauta! Conecte-se à internet para voltar a navegar pelas curiosidades do espaço.</string>
+
+    <!-- Dialog erro desconhecido -->
+    <string name="erro_desconhecido_tema">Missão abortada temporariamente!</string>
+    <string name="descricao_erro_desconhecido">Aconteceu um erro desconhecido na sua missão, astronauta! Por favor, tente novamente mais tarde.</string>
+
+    <!-- Fragment AsteroidsDetailsFragment -->
+    <string name="data_asteroide">"Data de aproximação: %s"</string>
+    <string name="tamanho_estimado_asteroide">"Tamanho estimado: %s"</string>
+    <string name="velocidade_estimada_asteroide">"Velocidade estimada: %s"</string>
+
+    <!-- AsteroidViewModel -->
+    <string name="api_key">X6SUDXPVkjgyQoyKVunHMpwomboitIigBRVCSK1M</string>
+
+    <!-- AsteroidActivity -->
+    <string name="button_1">Listar asteroides próximos</string>
+    <string name="button_2">Listar asteroides por nome</string>
+    <string name="button_3">Listar asteroides por data</string>
+    <string name="button_4">Listar asteroides perigosos</string>
+    <string name="dialog_absolute_magnitude">Magnitude absoluta: %s</string>
+    <string name="dialog_relative_velocity">Velocidade relativa: %s</string>
+    <string name="dialog_close_approach_data">Data de aproximação: %s</string>
+    <string name="dialog_miss_distance">Distância aproximada: %s</string>
+    <string name="dialog_orbiting_body">Órbita: %s</string>
+    <string name="dialog_estimated_diameter">Tamanho estimado: %s</string>
+
+    <string name="logo">logo</string>
+    <string name="date_picker_instruction">Clique no botão piscando logo abaixo para escolher o dia em que você quer ver o Globo!</string>
+    <string name="tech_image_description">Imagem da tecnologia</string>
 </resources>

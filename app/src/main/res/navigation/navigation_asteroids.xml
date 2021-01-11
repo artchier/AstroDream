@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_asteroids"
+    app:startDestination="@id/asteroidsFragment">
+
+    <fragment
+        android:id="@+id/asteroidsFragment"
+        android:name="com.example.astrodream.ui.asteroids.AsteroidsFragment"
+        android:label="fragment_asteroids"
+        tools:layout="@layout/fragment_asteroids" >
+        <action
+            android:id="@+id/action_asteroidsFragment_to_asteroidsDetailsFragment"
+            app:destination="@id/asteroidsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/asteroidsDetailsFragment"
+        android:name="com.example.astrodream.ui.asteroids.AsteroidsDetailsFragment"
+        android:label="fragment_asteroids_details"
+        tools:layout="@layout/fragment_asteroids_details" >
+        <action
+            android:id="@+id/action_asteroidsFragment_to_asteroidsDetailsFragment"
+            app:destination="@id/asteroidsFragment" />
+    </fragment>
+
+</navigation>

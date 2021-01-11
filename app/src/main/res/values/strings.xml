@@ -88,4 +88,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logo">logo</string>
+    <string name="instrucao">Clique no botão piscando logo abaixo para escolher o dia em que você quer ver o Globo!</string>
+    <string name="imagem_anterior">Imagem Anterior</string>
+    <string name="imagem_posterior">Imagem Posterior</string>
 </resources>

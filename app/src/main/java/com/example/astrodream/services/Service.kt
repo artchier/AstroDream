@@ -30,7 +30,7 @@ interface Service {
         @Path("name") name: String
     ): Bitmap
 
-    @GET("EPIC/api/natural/date/{chosenDate}?api_key=vX6o8l9GQAr14bmNLonbmLz0Bq2ggLh2wvYfB7C4")
+    @GET("EPIC/api/natural/date/{chosenDate}?api_key=$apikeyApp")
     suspend fun getAllEPIC(
         @Path("chosenDate") chosenDate: String
     ): JsonArray

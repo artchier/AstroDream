@@ -3,6 +3,8 @@ package com.example.astrodream.ui.plaindailymars
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
@@ -14,14 +16,18 @@ import com.example.astrodream.R
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 import kotlinx.android.synthetic.main.activity_plain.*
+import kotlinx.android.synthetic.main.dialog_info_daily.view.*
+import kotlinx.android.synthetic.main.fragment_daily.view.*
 
 abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType)
     : ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
 
+    // TODO: tentar implementar o Navigation conforme o FavoritesActivity
     /*
     * Se esse construtor não estiver aqui,
     * a linha <activity android:name=".ui.plaindailymars.PlainActivity" />
@@ -55,32 +61,18 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
             override fun onTabSelected(tab: TabLayout.Tab?) {
                     when (tab?.position) {
                         0 -> {
-                            val detailFrag = findFragByTAG("DETAIL_TAG")
-                            if (detailFrag is PlainDetailFragment) {
-                                removeFragment(detailFrag)
-                            }
-                            viewModel.selectRoot()
                             fromHistToRoot()
                         }
                         1 -> {
-                            if (supportFragmentManager.findFragmentByTag("HIST_TAG") == null) {
-                                addFragment(newHistoryFrag(), "HIST_TAG")
-                            } else {
-                                fromRootToHist()
-                            }
+                            fromRootToHist()
                         }
                     }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                     when (tab?.position) {
-                        0 -> {
-                        }
                         1 -> {
-                            val detailFrag = findFragByTAG("DETAIL_TAG")
-                            if (detailFrag is PlainDetailFragment) {
-                                supportFragmentManager.popBackStackImmediate("HIST_TAG", 0)
-                            }
+                            reselectHist()
                         }
                     }
             }
@@ -88,17 +80,16 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
 
-        // Alteração da cor dos icones dos tabs inferiores (selecionado ou não)
-        val colors: ColorStateList = resources.getColorStateList(R.color.tabs_selector, theme)
+        // Configurações da tab inferior
+        configBottomTabs()
 
-        for (i in 0 until bottomTabs.tabCount) {
-            val tab: TabLayout.Tab = bottomTabs.getTabAt(i)!!
-            var icon = tab.icon
-            if (icon != null) {
-                icon = DrawableCompat.wrap(icon)
-                DrawableCompat.setTintList(icon, colors)
+        // Dialog em caso de perda de conexão
+        viewModel.hasInternetConnection.observe(this) {
+            if (!it) {
+                showNoConnectionDialog()
             }
         }
+
     }
 
     override fun onBackPressed() {
@@ -127,20 +118,25 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     abstract fun newDetailFrag(): Fragment
     abstract fun newHistoryFrag(): Fragment
 
-    fun addFragment(fragment: Fragment, tag: String) {
+    private fun addFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.commit {
             addToBackStack(tag)
             add(R.id.plainContainer, fragment, tag)
         }
     }
 
-    fun removeFragment(fragment: Fragment) {
+    private fun removeFragment(fragment: Fragment) {
         supportFragmentManager.commit {
             remove(fragment)
         }
     }
 
     fun fromHistToRoot() {
+        val detailFrag = findFragByTAG("DETAIL_TAG")
+        if (detailFrag is PlainDetailFragment) {
+            removeFragment(detailFrag)
+        }
+        viewModel.selectRoot()
         supportFragmentManager.commit {
             hide(supportFragmentManager.findFragmentByTag("HIST_TAG")!!)
             show(supportFragmentManager.findFragmentByTag("ROOT_TAG")!!)
@@ -148,16 +144,54 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     }
 
     fun fromRootToHist() {
-        supportFragmentManager.commit {
-            hide(supportFragmentManager.findFragmentByTag("ROOT_TAG")!!)
-            show(supportFragmentManager.findFragmentByTag("HIST_TAG")!!)
+        if (supportFragmentManager.findFragmentByTag("HIST_TAG") == null) {
+                                addFragment(newHistoryFrag(), "HIST_TAG")
+                            } else {
+            supportFragmentManager.commit {
+                hide(supportFragmentManager.findFragmentByTag("ROOT_TAG")!!)
+                show(supportFragmentManager.findFragmentByTag("HIST_TAG")!!)
+            }
         }
     }
 
-    fun findFragByTAG(tag: String) = supportFragmentManager.findFragmentByTag(tag)
+    private fun reselectHist() {
+        val detailFrag = findFragByTAG("DETAIL_TAG")
+        if (detailFrag is PlainDetailFragment) {
+            supportFragmentManager.popBackStackImmediate("HIST_TAG", 0)
+        }
+    }
+
+    private fun findFragByTAG(tag: String) = supportFragmentManager.findFragmentByTag(tag)
 
     override fun showDetailView() {
         addFragment(newDetailFrag(), "DETAIL_TAG")
     }
 
+    private fun configBottomTabs() {
+        val colors: ColorStateList = resources.getColorStateList(R.color.tabs_selector, theme)
+
+        for (i in 0 until bottomTabs.tabCount) {
+            val tab: TabLayout.Tab = bottomTabs.getTabAt(i)!!
+            var icon = tab.icon
+            if (icon != null) {
+                icon = DrawableCompat.wrap(icon)
+                DrawableCompat.setTintList(icon, colors)
+            }
+        }
+    }
+
+    private fun showNoConnectionDialog() {
+        val dialogView = View.inflate(this, R.layout.dialog_info_daily, null)
+        dialogView.tvInfoDaily.text = "Ooops, estamos sem internet!"
+
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setView(dialogView)
+            .create()
+
+        dialogView.btnOk.setOnClickListener {
+            dialog.dismiss()
+            finish()
+        }
+        dialog.show()
+    }
 }

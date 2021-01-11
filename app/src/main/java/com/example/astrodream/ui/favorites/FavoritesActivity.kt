@@ -28,6 +28,8 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
 
+        setUpMenuBehavior()
+
         // Configuração do Navigation Component
         navController = findNavController(R.id.navHostfragFavs) // Container dos fragments
         appBarConfiguration = AppBarConfiguration(navController.graph) // Pega o graph do controller
@@ -41,9 +43,8 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
                 when (tab?.position) {
                     0 -> { viewModel.setFavType("daily") }
                     1 -> { viewModel.setFavType("asteroid") }
-                    2 -> { viewModel.setFavType("globe") }
-                    3 -> { viewModel.setFavType("tech") }
-                    4 -> { viewModel.setFavType("mars") }
+                    2 -> { viewModel.setFavType("tech") }
+                    3 -> { viewModel.setFavType("mars") }
                 }
                 findNavController(R.id.navHostfragFavs).navigate(
                     R.id.favRecyclerFragment,
@@ -60,28 +61,8 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
         })
 
         // Configurações da tab inferior
-        // TODO: aumentar o tamanho dos icones
-        val tabIcons = arrayListOf(
-            R.drawable.ic_background,
-            R.drawable.ic_asteroide,
-            R.drawable.ic_globo,
-            R.drawable.ic_tecnologia,
-            R.drawable.ic_marte
-        )
-        val colors: ColorStateList = resources.getColorStateList(R.color.tabs_selector, theme)
+        configBottomTabs()
 
-        for (i in 0 until tabIcons.size) {
-            bottomTabs.addTab(bottomTabs.newTab())
-            val tab: TabLayout.Tab = bottomTabs.getTabAt(i)!!
-            tab.setIcon(tabIcons[i])
-            var icon = tab.icon
-            if (icon != null) {
-                icon = DrawableCompat.wrap(icon)
-                DrawableCompat.setTintList(icon, colors)
-            }
-        }
-
-        setUpMenuBehavior()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -121,4 +102,27 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
             navController.navigateUp(appBarConfiguration)
         }
     }
+
+    private fun configBottomTabs() {
+        // TODO: aumentar o tamanho dos icones
+        val tabIcons = arrayListOf(
+            R.drawable.ic_background,
+            R.drawable.ic_asteroide,
+            R.drawable.ic_tecnologia,
+            R.drawable.ic_marte
+        )
+        val colors: ColorStateList = resources.getColorStateList(R.color.tabs_selector, theme)
+
+        for (i in 0 until tabIcons.size) {
+            bottomTabs.addTab(bottomTabs.newTab())
+            val tab: TabLayout.Tab = bottomTabs.getTabAt(i)!!
+            tab.setIcon(tabIcons[i])
+            var icon = tab.icon
+            if (icon != null) {
+                icon = DrawableCompat.wrap(icon)
+                DrawableCompat.setTintList(icon, colors)
+            }
+        }
+    }
+
 }

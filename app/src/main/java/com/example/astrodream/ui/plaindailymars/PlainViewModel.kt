@@ -21,7 +21,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
     val hasOngoingRequest = MutableLiveData<Boolean>()
     // TODO: implementar o hasInternetConnection para abrir dialog caso nao haja conexao.
     // TODO: ao dar "OK" no dialog, voltar para Initial
-    val hasInternetConnection = MutableLiveData<Boolean>()
+    val hasInternetConnection = MutableLiveData(true)
 
     private var numFetches = 0
     private var timesToFetch = 24
@@ -107,6 +107,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
                     detailRoot = detail
                     focusResult.value = detailRoot
                 }
+                if(hasInternetConnection.value!!) { hasInternetConnection.value = false }
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors
@@ -180,6 +181,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
                     detailRoot = detail
                     focusResult.value = detailRoot
                 }
+                if(hasInternetConnection.value!!) { hasInternetConnection.value = false }
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors
@@ -217,6 +219,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
             }
             is NetworkResponse.NetworkError -> {
                 // Handle network error
+                if(hasInternetConnection.value!!) { hasInternetConnection.value = false }
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors

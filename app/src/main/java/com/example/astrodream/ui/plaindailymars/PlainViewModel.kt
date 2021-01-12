@@ -78,14 +78,14 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
     }
 
     private suspend fun fetchDailyImage() {
-        when (val dummy = service.getDaily(date.toString())) {
+        when (val response = service.getDaily(date.toString())) {
             is NetworkResponse.Success -> {
                 // Handle successful response
-                if ((dummy.body.url).contains("youtube")) {
+                if ((response.body.url).contains("youtube")) {
                     date = date.minusDays(1)
                     fetchDailyImage()
                 } else {
-                    detail = dummy.body
+                    detail = response.body
                     detail.date = date.format(dateFormatter).toString()
                     if (!::detailRoot.isInitialized) {
                         detailRoot = detail

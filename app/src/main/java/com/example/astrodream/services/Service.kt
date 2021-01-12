@@ -103,7 +103,7 @@ interface Service {
 fun buildGlobeImageUrl(date: Date, name: String, apikey: String = apikeyApp): String {
     val dataFormatada = SimpleDateFormat("yyyy/MM/dd").format(date)
 
-    return "https://api.nasa.gov/EPIC/archive/natural/$dataFormatada/png/$name.png?api_key=$apikey"
+    return "${urlNasa}EPIC/archive/natural/$dataFormatada/png/$name.png?api_key=$apikey"
 }
 
 // url

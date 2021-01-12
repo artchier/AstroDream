@@ -5,9 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.ContextThemeWrapper
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.DatePicker
@@ -54,21 +52,29 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_globe)
 
+        btPreviousGlobe.alpha = 0f
+        btNextGlobe.alpha = 0f
+
+        //animação do pisque do botão de escolher data
         animation = AlphaAnimation(0.5f, 1f)
         animation.repeatMode = Animation.REVERSE
         animation.repeatCount = Animation.INFINITE
         animation.duration = 300
 
         animation2 = AlphaAnimation(0f, 1f)
-        animation2.duration = 300
+        animation2.duration = 400
         animation2.repeatCount = 4
         animation2.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(p0: Animation?) {
+                btPreviousGlobe.alpha = 1f
+                btNextGlobe.alpha = 1f
                 btPreviousGlobe.isClickable = false
                 btNextGlobe.isClickable = false
             }
 
             override fun onAnimationEnd(p0: Animation?) {
+                btPreviousGlobe.alpha = 0f
+                btNextGlobe.alpha = 0f
                 btPreviousGlobe.isClickable = true
                 btNextGlobe.isClickable = true
             }
@@ -84,7 +90,15 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         //clique do botão "Escolher Data"
         fabData.setOnClickListener {
             val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
-            datePicker.updateDate(year, month, day)
+
+            when (datePicker.dayOfMonth) {
+                day -> datePicker.updateDate(year, month, day - 1)
+                else -> datePicker.updateDate(year, month, day)
+
+            }
+            val now = Calendar.getInstance()
+            now.add(Calendar.DAY_OF_MONTH, -1)
+            datePicker.maxDate = now.timeInMillis
 
             MaterialAlertDialogBuilder(this)
                 .setView(datePicker)
@@ -106,9 +120,44 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         }
 
         viewModel.imageArray.observe(this) {
-            //Pega a imagem da API e mostra na ImageView
-            // TODO pegar essa imagem deve ser responsabilidade de algum service
-            it.forEach { it1 ->
+
+            Glide.with(this).asBitmap()
+                .load(buildGlobeImageUrl(date, it[0]))
+                .transform(RoundedCorners(50))
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap>?
+                    ) {
+                        viewModel.saveEPIC(resource)
+                        pbGlobe.visibility = GONE
+                        ivGlobe.setImageBitmap(resource)
+                        if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean(
+                                "globe",
+                                true
+                            )
+                        ) {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                delay(1000)
+                                btPreviousGlobe.startAnimation(animation2)
+                                btNextGlobe.startAnimation(animation2)
+                            }
+                        }
+                        Toast.makeText(
+                            this@GlobeActivity,
+                            "indexGlobe1: $indexGlobe",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+
+                    }
+
+                })
+
+            //tratamento das outras imagens
+            it.subList(1, it.size).forEach { it1 ->
                 Glide.with(this).asBitmap()
                     .load(buildGlobeImageUrl(date, it1))
                     .transform(RoundedCorners(50))
@@ -118,7 +167,11 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                             transition: Transition<in Bitmap>?
                         ) {
                             viewModel.saveEPIC(resource)
-                            Toast.makeText(this@GlobeActivity, "indexGlobe1: $indexGlobe", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@GlobeActivity,
+                                "indexGlobe1: $indexGlobe",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {}
@@ -126,28 +179,31 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
             }
         }
 
-        viewModel.epicImage.observe(this) {
-            if (it.size == viewModel.imageArray.value?.size) {
-                pbGlobe.visibility = GONE
-                ivGlobe.setImageBitmap(viewModel.epicImage.value?.get(0))
-                btPreviousGlobe.animation = animation2
-                btNextGlobe.animation = animation2
-            }
-        }
-
         btNextGlobe.setOnClickListener {
             try {
+                if (viewModel.epicImage.value!!.size < viewModel.imageArray.value!!.size) {
+                    ivGlobe.setImageBitmap(null)
+                    pbGlobe.visibility = VISIBLE
+                }
                 if (indexGlobe + 1 < viewModel.imageArray.value!!.size - 1) {
                     indexGlobe++
-
-                    Glide.with(this).asBitmap()
-                        .load(viewModel.epicImage.value?.get(indexGlobe))
-                        .transform(RoundedCorners(50))
-                        .into(ivGlobe)
-
+                    if (pbGlobe.visibility == VISIBLE) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            delay(1000)
+                            pbGlobe.visibility = GONE
+                            Glide.with(this@GlobeActivity).asBitmap()
+                                .load(viewModel.epicImage.value?.get(indexGlobe))
+                                .transform(RoundedCorners(50))
+                                .into(ivGlobe)
+                        }
+                    } else {
+                        Glide.with(this@GlobeActivity).asBitmap()
+                            .load(viewModel.epicImage.value?.get(indexGlobe))
+                            .transform(RoundedCorners(50))
+                            .into(ivGlobe)
+                    }
                 }
             } catch (ignored: Exception) {
-                Toast.makeText(this, "Erro ao processar imagem", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -155,7 +211,6 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
             try {
                 if (indexGlobe - 1 >= 0) {
                     indexGlobe--
-
                     Glide.with(this).asBitmap()
                         .load(viewModel.epicImage.value?.get(indexGlobe))
                         .transform(RoundedCorners(50))
@@ -168,7 +223,6 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     ).show()
                 }
             } catch (ignored: Exception) {
-                Toast.makeText(this, "Erro ao processar imagem", Toast.LENGTH_SHORT).show()
             }
         }
         setUpMenuBehavior()
@@ -187,8 +241,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     override fun onAnimationStart(p0: Animator?) {}
 
                     override fun onAnimationEnd(p0: Animator?) {
-                        val view =
-                            View.inflate(this@GlobeActivity, R.layout.astrodialog, null)
+                        val view = inflate(this@GlobeActivity, R.layout.astrodialog, null)
                         view.ivDialog.visibility = GONE
                         view.tvAppName.visibility = GONE
                         view.tvDialog1.text = getString(R.string.date_picker_instruction)

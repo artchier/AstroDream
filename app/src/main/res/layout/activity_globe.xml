@@ -65,22 +65,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btPreviousGlobe"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/gigas"
-                android:alpha="0"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/gigas"
+                android:contentDescription="@string/imagem_anterior"
+                android:src="@drawable/ic_arrow_left"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <ImageView
                 android:id="@+id/btNextGlobe"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/gigas"
-                android:alpha="0"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/gigas"
+                android:contentDescription="@string/imagem_posterior"
+                android:src="@drawable/ic_arrow_right"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -103,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0"
-            android:background="@color/semitransparente"/>
+            android:background="@color/semitransparente" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

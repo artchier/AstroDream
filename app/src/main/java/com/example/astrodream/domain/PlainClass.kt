@@ -5,7 +5,8 @@ data class PlainClass(
     val date: String = "x",
     val url: String = "x",
     var earth_date: String = "x",
+    var sol: Long = 1,
     var img_list: List<String> = listOf("x"),
-    var maxTemp: String = "x",
-    var minTemp: String = "x"
+    var maxTemp: String = "Temperaturas",
+    var minTemp: String = "indisponiveis"
 )

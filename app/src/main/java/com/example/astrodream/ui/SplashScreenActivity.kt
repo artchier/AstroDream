@@ -1,10 +1,8 @@
 package com.example.astrodream.ui
 
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import com.example.astrodream.R
 import com.example.astrodream.ui.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
@@ -22,9 +20,6 @@ class SplashScreenActivity : AppCompatActivity() {
             callInitialActivity()
             finish()
         }
-        /*Handler().postDelayed({
-
-        }, 1000)*/
     }
 
     private fun callInitialActivity() {

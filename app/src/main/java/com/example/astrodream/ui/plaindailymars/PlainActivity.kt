@@ -3,6 +3,7 @@ package com.example.astrodream.ui.plaindailymars
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
@@ -19,18 +20,18 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 import kotlinx.android.synthetic.main.activity_plain.*
 
-abstract class PlainActivity(toolbarTitleString: Int, val type: String) : ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
+abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType) :
+    ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
 
     /*
     * Se esse construtor não estiver aqui,
     * a linha <activity android:name=".ui.plaindailymars.PlainActivity" />
     * no AndroidManifest.xml fica vermelha e pede um construtor vazio e sem parâmetros
-    *
-    * */
-    constructor() : this(0, "")
+    */
+    constructor() : this(0, PlainActivityType.DailyImage)
 
     val viewModel by viewModels<PlainViewModel> {
-        object : ViewModelProvider.Factory{
+        object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return PlainViewModel(service, type) as T
             }
@@ -41,12 +42,14 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: String) : Activi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plain)
         setUpMenuBehavior()
+        Log.i("===PlainActivity====", viewModel.toString())
 
         AndroidThreeTen.init(this)
 
         addFragment(newDetailFrag(), "ROOT_TAG")
+        Log.i("PlainActivity", viewModel.toString())
 
-        viewModel.popList()
+        viewModel.populateList()
 
         // Nevegação entre os tabs inferiores
         bottomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -72,8 +75,6 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: String) : Activi
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
-                    0 -> {
-                    }
                     1 -> {
                         val detailFrag = findFragByTAG("DETAIL_TAG")
                         if (detailFrag is PlainDetailFragment) {
@@ -98,27 +99,27 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: String) : Activi
             }
         }
     }
+
     override fun onBackPressed() {
         if (dlPlain.isDrawerOpen(GravityCompat.END)) {
             dlPlain.closeDrawer(GravityCompat.END)
+            return
         }
 
-        else {
-            val detailFrag = findFragByTAG("DETAIL_TAG")
+        val detailFrag = findFragByTAG("DETAIL_TAG")
 
-            if (bottomTabs.selectedTabPosition == 0) {
-                finish()
-                startActivity(Intent(this, InitialActivity::class.java))
-            }
-
-            if (bottomTabs.selectedTabPosition != 0 && detailFrag !is PlainDetailFragment) {
-                bottomTabs.getTabAt(0)?.select()
-            }
-
-            if (bottomTabs.selectedTabPosition != 0 && detailFrag is PlainDetailFragment) {
-                bottomTabs.getTabAt(1)?.select()
-            }
+        if (bottomTabs.selectedTabPosition == 0) {
+            finish()
+            startActivity(Intent(this, InitialActivity::class.java))
+            return
         }
+
+        if (detailFrag !is PlainDetailFragment) {
+            bottomTabs.getTabAt(0)?.select()
+            return
+        }
+
+        bottomTabs.getTabAt(1)?.select()
     }
 
     abstract fun newDetailFrag(): Fragment

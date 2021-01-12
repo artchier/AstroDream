@@ -26,9 +26,11 @@
             layout="@layout/app_tool_bar" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardview_img_asteroids"
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:layout_marginHorizontal="10dp"
+            android:visibility="visible"
             app:cardBackgroundColor="@color/transparent"
             app:cardCornerRadius="20dp">
 

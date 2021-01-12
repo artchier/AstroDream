@@ -31,6 +31,7 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_plain_history, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,11 +43,14 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
 
         setUpScroller(view.rvHistory, view.rvHistory.layoutManager as GridLayoutManager)
 
+        viewModel.populateList()
+        hasOngoingRequest = true
         viewModel.listResults.observe(viewLifecycleOwner) {
             adapterHistory.addList(it)
-            hasOngoingRequest = false
         }
-        hasOngoingRequest = true
+        viewModel.hasOngoingRequest.observe(viewLifecycleOwner) {
+            hasOngoingRequest = it
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -78,7 +82,7 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
                     if (hasOngoingRequest) return
 
                     hasOngoingRequest = true
-                    viewModel.popList()
+                    viewModel.populateList()
                 }
             }
         )

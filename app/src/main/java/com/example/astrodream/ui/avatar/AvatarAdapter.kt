@@ -14,21 +14,18 @@ import kotlinx.android.synthetic.main.buy_avatar_dialog.view.*
 class AvatarAdapter(
     private val context: Context,
     private val listAvatars: List<Int>,
-    private val ivAvatar: ImageView,
+    private val ivSelectedAvatar: ImageView,
     private val tvTotal: TextView,
-    private val dialog: View,
+    private val buyAvatarView: View,
     private val buyAvatarDialog: AlertDialog
-) :
-    RecyclerView.Adapter<AvatarAdapter.AvatarViewHolder>() {
+) : RecyclerView.Adapter<AvatarAdapter.AvatarViewHolder>() {
 
     class AvatarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val avatarImageView: ImageView = view.findViewById(R.id.ivCardAvatar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvatarViewHolder {
-        val view =
-            LayoutInflater.from(context).inflate(R.layout.recycler_item_avatar, parent, false)
-
+        val view = LayoutInflater.from(context).inflate(R.layout.recycler_item_avatar, parent, false)
         return AvatarViewHolder(view)
     }
 
@@ -39,15 +36,14 @@ class AvatarAdapter(
 
         holder.avatarImageView.setOnClickListener {
 
-            dialog.btnComprar.setOnClickListener {
-                val total =
-                    tvTotal.text.toString().toInt() - dialog.tvPriceAvatar.text.toString().toInt()
+            buyAvatarView.btnComprar.setOnClickListener {
+                val total = tvTotal.text.toString().toInt() - buyAvatarView.tvPriceAvatar.text.toString().toInt()
                 tvTotal.text = total.toString()
-                ivAvatar.setImageResource(avatar)
+                ivSelectedAvatar.setImageResource(avatar)
                 buyAvatarDialog.dismiss()
             }
 
-            dialog.btnCancelar.setOnClickListener {
+            buyAvatarView.btnCancelar.setOnClickListener {
                 buyAvatarDialog.dismiss()
             }
 

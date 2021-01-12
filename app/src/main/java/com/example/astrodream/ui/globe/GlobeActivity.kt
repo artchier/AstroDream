@@ -2,11 +2,9 @@ package com.example.astrodream.ui.globe
 
 import android.animation.Animator
 import android.graphics.Bitmap
-import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.ContextThemeWrapper
-import android.view.View
 import android.view.View.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -33,8 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDate
 import java.util.*
 
 class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
@@ -124,18 +120,9 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         }
 
         viewModel.imageArray.observe(this) {
-            //Pega a imagem da API
-            // TODO pegar essa imagem deve ser responsabilidade de algum service
 
-            //Tratamento primeira imagem
             Glide.with(this).asBitmap()
-                .load(
-                    "https://api.nasa.gov/EPIC/archive/natural/${
-                        SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(
-                            date
-                        )
-                    }/png/${it[0]}.png?api_key=$apikeyApp"
-                )
+                .load(buildGlobeImageUrl(date, it[0]))
                 .transform(RoundedCorners(50))
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(
@@ -186,8 +173,6 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {}
 
                         override fun onLoadCleared(placeholder: Drawable?) {}
                     })
@@ -256,8 +241,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     override fun onAnimationStart(p0: Animator?) {}
 
                     override fun onAnimationEnd(p0: Animator?) {
-                        val view =
-                            View.inflate(this@GlobeActivity, R.layout.astrodialog, null)
+                        val view = inflate(this@GlobeActivity, R.layout.astrodialog, null)
                         view.ivDialog.visibility = GONE
                         view.tvAppName.visibility = GONE
                         view.tvDialog1.text = getString(R.string.date_picker_instruction)

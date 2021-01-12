@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 
-class PlainViewModel(val service: Service, val type: PlainActivityType): ViewModel() {
+class PlainViewModel(val service: Service, private val type: PlainActivityType): ViewModel() {
 
     val listResults = MutableLiveData<PlainClass>()
     val focusResult = MutableLiveData<PlainClass>()
@@ -21,12 +21,12 @@ class PlainViewModel(val service: Service, val type: PlainActivityType): ViewMod
     private var numFetches = 0
     private val timesToFetch = 24
 
-    var date = LocalDate.now()
-    lateinit var detail: PlainClass
-    lateinit var detailRoot: PlainClass
+    private var date: LocalDate = LocalDate.now()
+    private lateinit var detail: PlainClass
+    private lateinit var detailRoot: PlainClass
 
-    var listTemp: MutableList<TempSol> = mutableListOf()
-    var availableTempListLong = listOf<Long>()
+    private var listTemp: MutableList<TempSol> = mutableListOf()
+    private var availableTempListLong = listOf<Long>()
 
     fun populateList() {
         hasOngoingRequest.value = true

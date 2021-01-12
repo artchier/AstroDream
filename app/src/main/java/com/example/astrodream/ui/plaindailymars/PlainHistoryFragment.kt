@@ -10,20 +10,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
+import kotlinx.android.synthetic.main.fragment_plain_history.*
 import kotlinx.android.synthetic.main.fragment_plain_history.view.*
 
 abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailListener {
 
-    lateinit var adapterHistory: PlainAdapter
-    lateinit var actionListener: ActionListener
+    private lateinit var actionListener: ActionListener
 
-    var hasOngoingRequest = false
+    val maxItems = 96
+
+    val viewModel : PlainViewModel by activityViewModels()
 
     interface ActionListener {
         fun showDetailView()
     }
-
-    val viewModel : PlainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,25 +31,25 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_plain_history, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        adapterHistory = PlainAdapter(this)
-        view.rvHistory.adapter = adapterHistory
-        view.rvHistory.setHasFixedSize(true)
+        viewModel.adapterHistory.listener = this
+        view.rvHistory.adapter = viewModel.adapterHistory
 
         setUpScroller(view.rvHistory, view.rvHistory.layoutManager as GridLayoutManager)
 
-        viewModel.populateList()
-        hasOngoingRequest = true
-        viewModel.listResults.observe(viewLifecycleOwner) {
-            adapterHistory.addList(it)
-        }
         viewModel.hasOngoingRequest.observe(viewLifecycleOwner) {
-            hasOngoingRequest = it
+            if (!it) {
+                // If last item of RecyclerView is visible, request new fetch
+                if ((view.rvHistory.layoutManager as GridLayoutManager).findLastVisibleItemPosition() == viewModel.adapterHistory.itemCount - 1 && viewModel.adapterHistory.itemCount < maxItems) {
+                    viewModel.populateList()
+                }
+                // Else, hide progress indicator (spinner)
+                else { piRecycler.visibility = View.INVISIBLE }
+            }
         }
     }
 
@@ -63,25 +63,27 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
     }
 
     override fun onClickDetail(position: Int) {
-        viewModel.selectDetail(adapterHistory.listHistory[position])
-        actionListener.showDetailView()
+        if (viewModel.adapterHistory.listHistory[position].earth_date != "" || viewModel.adapterHistory.listHistory[position].date != "") {
+            viewModel.selectDetail(viewModel.adapterHistory.listHistory[position])
+            actionListener.showDetailView()
+        }
     }
 
-    fun setUpScroller(recyclerView: RecyclerView, gridLayoutManager: GridLayoutManager) {
+    private fun setUpScroller(recyclerView: RecyclerView, gridLayoutManager: GridLayoutManager) {
         recyclerView.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
-                    if (dy <= 0) return
+                    val lastVisibleItem = gridLayoutManager.findLastVisibleItemPosition()
+                    val items = viewModel.adapterHistory.itemCount
 
-                    val lastVisbleItem = gridLayoutManager.findLastVisibleItemPosition()
-                    val itens = adapterHistory.itemCount
+                    if (dy < 0) return
 
-                    if (lastVisbleItem + 6 < itens || itens > 100) return
-                    if (hasOngoingRequest) return
+                    if (lastVisibleItem + 6 < items || items >= maxItems) return
+                    if (viewModel.hasOngoingRequest.value!!) return
 
-                    hasOngoingRequest = true
+                    piRecycler.visibility = View.VISIBLE
                     viewModel.populateList()
                 }
             }

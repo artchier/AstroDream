@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.R
@@ -27,7 +26,7 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     private val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PlainViewModel(service, PlainActivityType.DailyImage) as T
+                return PlainViewModel(service, PlainActivityType.Initial) as T
             }
         }
     }
@@ -36,7 +35,6 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
         AndroidThreeTen.init(this)
-        Log.i("===InitialActivity====", viewModel.toString())
 
         dailyImage()
         cvDaily.setOnClickListener {
@@ -63,11 +61,14 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     }
 
     private fun dailyImage() {
-//        viewModel.populateList()
-//        viewModel.focusResult.observe(this) {
-//            Glide.with(this).asBitmap()
-//                .load(it.url)
-//                .into(ivDaily)
-//        }
+        piInitial.show()
+        viewModel.populateList()
+        viewModel.focusResult.observe(this) {
+            val img = if (it.url != "") { it.url } else { R.drawable.no_internet }
+            piInitial.hide()
+            Glide.with(this).asBitmap()
+                .load(img)
+                .into(ivDaily)
+        }
     }
 }

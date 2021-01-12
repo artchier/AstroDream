@@ -4,35 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/round_top"
-    android:backgroundTint="@color/gigas"
     tools:context=".ui.dailyimage.DailyImageFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/dailyHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:padding="10dp"
+            android:background="@drawable/round_top"
+            android:backgroundTint="@color/gigas"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnShareDaily">
 
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Titulo"
+                    android:text="@string/title_placeholder"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:fontFamily="@font/roboto"
@@ -42,81 +44,90 @@
                     android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Data"
+                    android:text="@string/date_placeholder"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:fontFamily="@font/roboto_light"/>
             </LinearLayout>
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
             <ImageButton
-                android:id="@+id/shareDaily"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/btnShareDaily"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@null"
                 android:scaleType="fitEnd"
-                android:src="@drawable/ic_share" />
+                android:src="@drawable/ic_share"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnFavDaily"/>
 
-        </LinearLayout>
+            <ToggleButton
+                android:id="@+id/btnFavDaily"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/selector_favorite"
+                android:checked="false"
+                android:scaleType="fitCenter"
+                android:text=""
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardIv"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clDailyImg"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/dailyHeader"
             app:layout_constraintBottom_toTopOf="@+id/dailyFooter"
-            app:cardCornerRadius="40dp">
+            android:background="@color/transparent">
             <ImageView
                 android:id="@+id/cvDaily"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"/>
+            <LinearLayout
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:alpha="0.6"
+                android:background="@drawable/info_box_mars"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/btnInfoDaily"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_info"
+                    android:contentDescription="@string/more_information" />
+            </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
-
-        <ImageButton
-            android:id="@+id/btnFavDaily"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@null"
-            android:scaleType="fitEnd"
-            android:src="@drawable/ic_star_border"
-            android:contentDescription="@string/favoritar"
-            app:layout_constraintBottom_toBottomOf="@+id/cardIv"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="20dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/dailyFooter"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:paddingHorizontal="10dp"
+            android:background="@color/gigas"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-            <ImageButton
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkDaily"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@null"
-                android:scaleType="fitEnd"
-                android:src="@drawable/ic_checkbox_out"
-                android:layout_marginLeft="10dp" />
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Usar como wallpaper automaticamente"
+                android:buttonTint="@color/white"
+                android:fontFamily="@font/roboto_light"
+                android:text="@string/usar_como_wallpaper"
                 android:textColor="@color/white"
-                android:textSize="16dp"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="16sp" />
+
         </LinearLayout>
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

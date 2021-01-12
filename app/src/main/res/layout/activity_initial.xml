@@ -25,97 +25,118 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/tvImagemHoje"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/imagem_de_hoje"
-            android:textColor="@android:color/white"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toTopOf="@id/cvDaily"
+        <FrameLayout
+            android:id="@+id/clDaily"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="0dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            app:layout_constraintBottom_toTopOf="@id/tvFazerHoje"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tbInitial" />
+            app:layout_constraintTop_toBottomOf="@id/tbInitial" >
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvDaily"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="30dp"
-                app:layout_constraintBottom_toTopOf="@id/tvFazerHoje"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvImagemHoje"
-                app:cardCornerRadius="30dp">
-                    <ImageView
-                        android:id="@+id/ivDaily"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clipToPadding="false"
-                        android:scaleType="centerCrop"
-                        android:foregroundGravity="center"
-                        android:overScrollMode="never" />
-                </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toTopOf="parent">
+                <ImageView
+                    android:id="@+id/ivDaily"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:scaleType="centerCrop"
+                    android:overScrollMode="never"
+                    android:layout_margin="0dp"/>
+<!--                    <include layout="@layout/daily_background"/>-->
+                <com.google.android.material.progressindicator.ProgressIndicator
+                    android:id="@+id/piInitial"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:indicatorType="circular"
+                    app:indicatorColor="@color/teal_200"
+                    style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+                    android:layout_gravity="center"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                android:paddingHorizontal="10dp"
+                android:elevation="20dp"
+                android:layout_gravity="center_horizontal">
+                <TextView
+                    android:id="@+id/tvImagemHoje"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center_horizontal"
+                    android:text="@string/imagem_de_hoje"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </LinearLayout>
 
 
-                <!--        <androidx.viewpager.widget.ViewPager-->
-<!--            android:id="@+id/vpImagemHoje"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="140dp"-->
-<!--            android:layout_marginStart="30dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginEnd="30dp"-->
-<!--            android:background="@drawable/button_style"-->
-<!--            android:clipToPadding="false"-->
-<!--            android:foregroundGravity="center"-->
-<!--            android:overScrollMode="never"-->
-<!--            app:layout_constraintBottom_toTopOf="@id/tvFazerHoje"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/tvImagemHoje" />-->
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvFazerHoje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:fontFamily="@font/roboto_light"
-            android:paddingTop="15dp"
+            android:paddingTop="30dp"
             android:text="@string/o_que_vamos_fazer_hoje"
             android:textColor="@android:color/white"
             android:textSize="20sp"
+            android:layout_marginBottom="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cvDaily" />
+            app:layout_constraintBottom_toTopOf="@id/btAsteriodes" />
 
         <Button
             android:id="@+id/btAsteriodes"
             android:layout_width="145dp"
-            android:layout_height="130dp"
+            android:layout_height="100dp"
             android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_asteroide"
             android:fontFamily="@font/homespun_regular"
+            android:padding="0dp"
             android:text="@string/asteroides"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
+            android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toTopOf="@id/btTecnologias"
             app:layout_constraintEnd_toStartOf="@id/btGlobo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvFazerHoje" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btGlobo"
             android:layout_width="145dp"
-            android:layout_height="130dp"
+            android:layout_height="100dp"
             android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_globo"
             android:fontFamily="@font/homespun_regular"
+            android:padding="0dp"
             android:text="@string/globo"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/btAsteriodes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btAsteriodes"
@@ -124,33 +145,37 @@
         <Button
             android:id="@+id/btTecnologias"
             android:layout_width="145dp"
-            android:layout_height="130dp"
+            android:layout_height="100dp"
             android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_tecnologia"
             android:fontFamily="@font/homespun_regular"
+            android:padding="0dp"
             android:text="@string/tecnologias"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
+            android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/btAsteriodes"
-            app:layout_constraintStart_toStartOf="@id/btAsteriodes"
-            app:layout_constraintTop_toBottomOf="@id/btAsteriodes" />
+            app:layout_constraintStart_toStartOf="@id/btAsteriodes" />
 
         <Button
             android:id="@+id/btMarte"
             android:layout_width="145dp"
-            android:layout_height="130dp"
+            android:layout_height="100dp"
             android:background="@drawable/pill_shape"
             android:drawableTop="@drawable/ic_marte"
             android:fontFamily="@font/homespun_regular"
+            android:padding="0dp"
             android:text="@string/marte"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@id/btGlobo"
             app:layout_constraintStart_toStartOf="@id/btGlobo"
             app:layout_constraintTop_toTopOf="@id/btTecnologias" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

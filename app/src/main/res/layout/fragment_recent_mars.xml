@@ -4,8 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/round_top"
-    android:backgroundTint="@color/gigas"
     tools:context=".ui.mars.RecentMarsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +17,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp"
+            android:background="@drawable/round_top"
+            android:backgroundTint="@color/gigas"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -26,12 +26,12 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
-                app:cardBackgroundColor="@color/black"
-                app:cardCornerRadius="20dp">
+                app:cardBackgroundColor="@color/lucky_point"
+                app:cardCornerRadius="35dp">
 
                 <ImageView
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_marte"
                     android:contentDescription="@string/cone_curiosity_rover" />
@@ -56,7 +56,7 @@
                     android:id="@+id/postDescr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bom_dia_terraqueo"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:fontFamily="@font/roboto_light"/>
@@ -67,14 +67,16 @@
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <ImageButton
+            <ToggleButton
                 android:id="@+id/btnFavMars"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@null"
-                android:scaleType="fitEnd"
-                android:src="@drawable/ic_star_border"
-                android:contentDescription="@string/favoritar" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/selector_favorite"
+                android:checked="false"
+                android:scaleType="fitCenter"
+                android:text=""
+                android:textOff=""
+                android:textOn=""/>
 
         </LinearLayout>
 
@@ -94,7 +96,8 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/gigas"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

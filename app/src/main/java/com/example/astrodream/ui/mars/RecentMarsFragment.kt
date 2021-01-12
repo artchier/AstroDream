@@ -1,16 +1,15 @@
 package com.example.astrodream.ui.mars
 
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.astrodream.R
-import com.example.astrodream.ui.dailyimage.DailyImageFragment
+import com.example.astrodream.ui.favorites.FavViewModel
+import com.example.astrodream.ui.plaindailymars.PlainActivity
 import com.example.astrodream.ui.plaindailymars.PlainDetailFragment
+import com.example.astrodream.ui.plaindailymars.PlainViewModel
 import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import me.relex.circleindicator.CircleIndicator
+import android.util.Log
 
 class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
 
@@ -21,6 +20,9 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
     lateinit var adapterMars: MarsAdapter
 
     override fun popView(view: View) {
+
+        val contextActivity = this.requireActivity()
+
         adapterMars = MarsAdapter(
             view.context,
             plainDetail.img_list,

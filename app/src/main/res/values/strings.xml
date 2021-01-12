@@ -125,6 +125,8 @@
     <string name="dialog_estimated_diameter">Tamanho estimado: %s</string>
 
     <string name="logo">logo</string>
+    <string name="imagem_anterior">Imagem Anterior</string>
+    <string name="imagem_posterior">Imagem Posterior</string>
     <string name="date_picker_instruction">Clique no botão piscando logo abaixo para escolher o dia em que você quer ver o Globo!</string>
     <string name="tech_image_description">Imagem da tecnologia</string>
 </resources>

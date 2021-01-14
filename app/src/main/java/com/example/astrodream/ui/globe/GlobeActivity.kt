@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View.*
 import android.view.animation.AlphaAnimation
@@ -16,8 +17,13 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.Request
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
 import com.example.astrodream.services.buildGlobeImageUrl
@@ -109,10 +115,17 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     month = datePicker.month
                     year = datePicker.year
 
-                    date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse("$day/${month + 1}/$year")!!
+                    date = SimpleDateFormat(
+                        "dd/MM/yyyy",
+                        Locale.getDefault()
+                    ).parse("$day/${month + 1}/$year")!!
                     tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
                     indexGlobe = 0
-                    viewModel.getAllEPIC(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date).toString())
+                    viewModel.getAllEPIC(
+                        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                            date
+                        ).toString()
+                    )
                     pbGlobe.visibility = VISIBLE
                 }
                 .setNegativeButton(resources.getString(R.string.cancelar), null)
@@ -121,40 +134,67 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
         viewModel.imageArray.observe(this) {
 
-            Glide.with(this).asBitmap()
-                .load(buildGlobeImageUrl(date, it[0]))
-                .transform(RoundedCorners(50))
-                .into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(
-                        resource: Bitmap,
-                        transition: Transition<in Bitmap>?
-                    ) {
-                        viewModel.saveEPIC(resource)
-                        pbGlobe.visibility = GONE
-                        ivGlobe.setImageBitmap(resource)
-                        if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean(
-                                "globe",
-                                true
-                            )
-                        ) {
-                            CoroutineScope(Dispatchers.Main).launch {
-                                delay(1000)
-                                btPreviousGlobe.startAnimation(animation2)
-                                btNextGlobe.startAnimation(animation2)
-                            }
+            //it.forEach{ it1 ->
+                Glide.with(this).asBitmap()
+                    .load(buildGlobeImageUrl(date, it[0]))
+                    .listener(object : RequestListener<Bitmap> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Bitmap>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return false
                         }
-                        Toast.makeText(
-                            this@GlobeActivity,
-                            "indexGlobe1: $indexGlobe",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
 
-                    override fun onLoadCleared(placeholder: Drawable?) {
+                        override fun onResourceReady(
+                            resource: Bitmap?,
+                            model: Any?,
+                            target: Target<Bitmap>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            pbGlobe.visibility = GONE
+                            if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean(
+                                    "globe_buttons",
+                                    true
+                                )
+                            ) {
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    delay(1000)
+                                    btPreviousGlobe.startAnimation(animation2)
+                                    btNextGlobe.startAnimation(animation2)
+                                    getSharedPreferences("first_time", MODE_PRIVATE).edit()
+                                        .putBoolean("globe_buttons", false)
+                                        .apply()
+                                }
+                            }
+                            return false
+                        }
 
-                    }
+                    })
+                    .transform(RoundedCorners(50))
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            viewModel.saveEPIC(resource)
+                            ivGlobe.setImageBitmap(resource)
+                            //Log.v("TAG", it1)
+                            Toast.makeText(
+                                this@GlobeActivity,
+                                "indexGlobe1: $indexGlobe",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
-                })
+                        override fun onLoadCleared(placeholder: Drawable?) {
+
+                        }
+
+                    })
+            //}
 
             //tratamento das outras imagens
             it.subList(1, it.size).forEach { it1 ->
@@ -177,6 +217,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                         override fun onLoadCleared(placeholder: Drawable?) {}
                     })
             }
+
         }
 
         btNextGlobe.setOnClickListener {
@@ -188,14 +229,32 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                 if (indexGlobe + 1 < viewModel.imageArray.value!!.size - 1) {
                     indexGlobe++
                     if (pbGlobe.visibility == VISIBLE) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            delay(1000)
-                            pbGlobe.visibility = GONE
-                            Glide.with(this@GlobeActivity).asBitmap()
-                                .load(viewModel.epicImage.value?.get(indexGlobe))
-                                .transform(RoundedCorners(50))
-                                .into(ivGlobe)
-                        }
+                        Glide.with(this).asBitmap()
+                            .load(viewModel.epicImage.value?.get(indexGlobe))
+                            .listener(object : RequestListener<Bitmap> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Bitmap>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    return false
+                                }
+
+                                override fun onResourceReady(
+                                    resource: Bitmap?,
+                                    model: Any?,
+                                    target: Target<Bitmap>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    pbGlobe.visibility = GONE
+                                    return false
+                                }
+
+                            })
+                            .transform(RoundedCorners(50))
+                            .into(ivGlobe)
                     } else {
                         Glide.with(this@GlobeActivity).asBitmap()
                             .load(viewModel.epicImage.value?.get(indexGlobe))
@@ -208,6 +267,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         }
 
         btPreviousGlobe.setOnClickListener {
+            pbGlobe.visibility = GONE
             try {
                 if (indexGlobe - 1 >= 0) {
                     indexGlobe--
@@ -230,61 +290,61 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
     override fun onResume() {
         super.onResume()
-        if (!getSharedPreferences("first_time", MODE_PRIVATE).getBoolean("globe", true)) {
-            return
+        if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean("globe_datePicker", true)) {
+            fabData.isClickable = false
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1000)
+                clTutorialGlobe.animate()
+                    .alpha(1.0f)
+                    .setListener(object : Animator.AnimatorListener {
+                        override fun onAnimationStart(p0: Animator?) {
+                        }
+
+                        override fun onAnimationEnd(p0: Animator?) {
+                            val view = inflate(this@GlobeActivity, R.layout.astrodialog, null)
+                            view.ivDialog.visibility = GONE
+                            view.tvAppName.visibility = GONE
+                            view.tvDialog1.text = getString(R.string.date_picker_instruction)
+                            view.tvDialog2.visibility = GONE
+                            view.tvDialog3.visibility = GONE
+                            val dialog = MaterialAlertDialogBuilder(this@GlobeActivity)
+                                .setBackground(
+                                    ContextCompat.getColor(
+                                        this@GlobeActivity,
+                                        android.R.color.transparent
+                                    ).toDrawable()
+                                )
+                                .setView(view)
+                                .setOnDismissListener {
+                                    this@GlobeActivity.clTutorialGlobe.animate()
+                                        .alpha(0f)
+                                        .setListener(null)
+                                        .duration = 500
+                                    it.cancel()
+                                    fabData.clearAnimation()
+                                }.create()
+
+                            dialog.window?.setDimAmount(0f)
+                            dialog.show()
+
+                            fabData.isClickable = true
+                        }
+
+                        override fun onAnimationCancel(p0: Animator?) {}
+
+                        override fun onAnimationRepeat(p0: Animator?) {}
+                    }).duration = 500
+
+                delay(500)
+                fabData.startAnimation(animation)
+            }
         }
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(1000)
-            clTutorialGlobe.animate()
-                .alpha(1.0f)
-                .setListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(p0: Animator?) {}
-
-                    override fun onAnimationEnd(p0: Animator?) {
-                        val view = inflate(this@GlobeActivity, R.layout.astrodialog, null)
-                        view.ivDialog.visibility = GONE
-                        view.tvAppName.visibility = GONE
-                        view.tvDialog1.text = getString(R.string.date_picker_instruction)
-                        view.tvDialog2.visibility = GONE
-                        view.tvDialog3.visibility = GONE
-                        val dialog = MaterialAlertDialogBuilder(this@GlobeActivity)
-                            .setBackground(
-                                ContextCompat.getColor(
-                                    this@GlobeActivity,
-                                    android.R.color.transparent
-                                ).toDrawable()
-                            )
-                            .setView(view)
-                            .setOnDismissListener {
-                                this@GlobeActivity.clTutorialGlobe.animate()
-                                    .alpha(0f)
-                                    .setListener(null)
-                                    .duration = 500
-                                it.cancel()
-                                fabData.clearAnimation()
-                            }.create()
-
-                        dialog.window?.setDimAmount(0f)
-                        dialog.show()
-
-                        fabData.startAnimation(animation)
-                    }
-
-                    override fun onAnimationCancel(p0: Animator?) {}
-
-                    override fun onAnimationRepeat(p0: Animator?) {}
-                }).duration = 500
-
-            delay(500)
-            fabData.startAnimation(animation)
-        }
-
     }
 
     override fun onBackPressed() {
-        val sharedPreferences = getSharedPreferences("first_time", MODE_PRIVATE).edit()
-        sharedPreferences.putBoolean("globe", false)
-        sharedPreferences.apply()
+        getSharedPreferences("first_time", MODE_PRIVATE).edit()
+            .putBoolean("globe_datePicker", false)
+            .apply()
         super.onBackPressed()
     }
 }

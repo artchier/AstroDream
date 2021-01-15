@@ -7,7 +7,8 @@ import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabase
 import kotlinx.coroutines.launch
 
-class DetailsTechViewModel(val serviceDatabase: ServiceDatabase) : ViewModel(){
+class DetailsTechViewModel(private val serviceDatabase: ServiceDatabase) : ViewModel() {
+    
     fun addTechDB(tech: Tech) {
         viewModelScope.launch {
             serviceDatabase.addTechTask(tech)
@@ -16,8 +17,8 @@ class DetailsTechViewModel(val serviceDatabase: ServiceDatabase) : ViewModel(){
 
     fun getAllTechnologiesDB() {
         viewModelScope.launch {
-            var listTechnologies = serviceDatabase.getAllTechnologiesTask()
-            Log.i("Tecnologias", listTechnologies[0].toString())
+            val listTechnologies = serviceDatabase.getAllTechnologiesTask()
+            Log.i("Tecnologias", listTechnologies.toString())
         }
     }
 }

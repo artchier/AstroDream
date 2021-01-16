@@ -58,20 +58,12 @@ class FullScreenImgActivity : AppCompatActivity() {
     private var imageWidth: Int = 0
     private var imageHeight: Int = 0
 
-    private var downloadAction: () -> Unit = {}
-    private var useAsWallpaperAction: () -> Unit = {}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_img)
 
         imgURL = intent.extras?.getString("img") ?: ""
         hdimgURL = intent.extras?.getString("hdimg") ?: ""
-
-        useAsWallpaperAction = {
-            Toast.makeText(baseContext, "A imagem em alta definição está sendo baixada!", Toast.LENGTH_LONG).show()
-        }
-        downloadAction = useAsWallpaperAction
 
         ivFull.doOnLayout {
             viewWidth = ivFull.width

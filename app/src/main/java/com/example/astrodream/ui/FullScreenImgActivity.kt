@@ -1,25 +1,42 @@
 package com.example.astrodream.ui
 
+import android.content.ContentValues
+import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.GestureDetector
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.doOnLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
+import com.example.astrodream.services.setImageAsWallpaper
 import kotlinx.android.synthetic.main.activity_full_screen_img.*
+import java.io.File
+import java.io.File.separator
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 class FullScreenImgActivity : AppCompatActivity() {
 
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private lateinit var gestureDetector: GestureDetector
+    private lateinit var imgURL: String
+    private lateinit var hdimgURL: String
     private var scaleFactor = 1.0f
 
     var mMatrix = Matrix()
@@ -45,13 +62,15 @@ class FullScreenImgActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_img)
 
-        val img = intent.extras?.getString("img")
+        imgURL = intent.extras?.getString("img") ?: ""
+        hdimgURL = intent.extras?.getString("hdimg") ?: ""
 
         ivFull.doOnLayout {
             viewWidth = ivFull.width
             viewHeight = ivFull.height
+
             Glide.with(this)
-                .load(img)
+                .load(imgURL)
                 .into(object : CustomTarget<Drawable?>() {
                     override fun onResourceReady(
                         resource: Drawable,
@@ -67,20 +86,65 @@ class FullScreenImgActivity : AppCompatActivity() {
                         ivFull.scaleType = ImageView.ScaleType.MATRIX
                         fitToScreen()
                     }
-                    override fun onLoadCleared(placeholder: Drawable?) { }
+                    override fun onLoadCleared(placeholder: Drawable?) {}
                 })
         }
 
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
         gestureDetector = GestureDetector(this, GestureListener())
 
-        ic_close_fullscreen.setOnClickListener { finish() }
+        ivCloseFullscreen.setOnClickListener { finish() }
+    }
 
+    private fun saveImage(bitmap: Bitmap, context: Context, folderName: String) {
+        if (android.os.Build.VERSION.SDK_INT >= 29) {
+            val values = contentValues()
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$folderName")
+            values.put(MediaStore.Images.Media.IS_PENDING, true)
+            // RELATIVE_PATH and IS_PENDING are introduced in API 29.
 
+            val uri: Uri? = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            if (uri != null) {
+                saveImageToStream(bitmap, context.contentResolver.openOutputStream(uri))
+                values.put(MediaStore.Images.Media.IS_PENDING, false)
+                context.contentResolver.update(uri, values, null, null)
+            }
+        } else {
+            val directory = File(Environment.getExternalStorageDirectory().toString() + separator + folderName)
+            // getExternalStorageDirectory is deprecated in API 29
+
+            if (!directory.exists()) {
+                directory.mkdirs()
+            }
+            val fileName = System.currentTimeMillis().toString() + ".png"
+            val file = File(directory, fileName)
+            saveImageToStream(bitmap, FileOutputStream(file))
+            val values = contentValues()
+            values.put(MediaStore.Images.Media.DATA, file.absolutePath)
+            // .DATA is deprecated in API 29
+            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        }
+    }
+
+    private fun contentValues() : ContentValues {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+        return values
+    }
+
+    private fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
+        if (outputStream != null) {
+            try {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                outputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
-
         scaleGestureDetector.onTouchEvent(motionEvent)
         gestureDetector.onTouchEvent(motionEvent)
 
@@ -97,7 +161,7 @@ class FullScreenImgActivity : AppCompatActivity() {
                 val dy = currentPoint.y - mLast.y
                 val fixTransX = getFixDragTrans(dx, viewWidth.toFloat(), origWidth * scaleFactor)
                 val fixTransY = getFixDragTrans(dy, viewHeight.toFloat(), origHeight * scaleFactor)
-                mMatrix!!.postTranslate(fixTransX, fixTransY)
+                mMatrix.postTranslate(fixTransX, fixTransY)
                 fixTranslation()
                 mLast[currentPoint.x] = currentPoint.y
             }
@@ -117,7 +181,41 @@ class FullScreenImgActivity : AppCompatActivity() {
             distanceX: Float,
             distanceY: Float
         ): Boolean { return false }
-        override fun onLongPress(e: MotionEvent?) {}
+
+        override fun onLongPress(e: MotionEvent?) {
+            PopupMenu(this@FullScreenImgActivity, ivCloseFullscreen, Gravity.TOP).apply {
+                inflate(R.menu.menu_fullscreen_images)
+                setOnMenuItemClickListener {
+                    Toast.makeText(baseContext, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
+
+                    val url = if (hdimgURL != "") hdimgURL else imgURL
+
+                    Glide.with(this@FullScreenImgActivity)
+                        .load(url)
+                        .into(object : CustomTarget<Drawable?>() {
+                            override fun onResourceReady(
+                                resource: Drawable,
+                                transition: Transition<in Drawable?>?
+                            ) {
+                                when (it.itemId) {
+                                    R.id.downloadImageItem -> {
+                                        saveImage(resource.toBitmap(), baseContext, getString(R.string.app_name))
+                                        Toast.makeText(baseContext, "Imagem salva!", Toast.LENGTH_LONG).show()
+                                    }
+                                    R.id.useAsWallpaperItem -> {
+                                        setImageAsWallpaper(baseContext, resource)
+                                        Toast.makeText(baseContext, "Wallpaper atualizado!", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            }
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+                        })
+
+                    true
+                }
+            }.show()
+        }
+
         override fun onFling(
             e1: MotionEvent?,
             e2: MotionEvent?,
@@ -125,10 +223,12 @@ class FullScreenImgActivity : AppCompatActivity() {
             velocityY: Float
         ): Boolean { return false }
         override fun onSingleTapConfirmed(e: MotionEvent?): Boolean { return false }
+
         override fun onDoubleTap(e: MotionEvent?): Boolean {
             fitToScreen()
             return false
         }
+
         override fun onDoubleTapEvent(e: MotionEvent?): Boolean { return false }
     }
 
@@ -144,6 +244,7 @@ class FullScreenImgActivity : AppCompatActivity() {
             mode = ZOOM
             return true
         }
+
         override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
             var mScaleFactor = scaleGestureDetector.scaleFactor
             val prevScale = scaleFactor
@@ -168,7 +269,7 @@ class FullScreenImgActivity : AppCompatActivity() {
         }
     }
 
-    private  fun fitToScreen() {
+    private fun fitToScreen() {
         scaleFactor = 1f
         val scale: Float
         val drawable = ivFull.drawable
@@ -187,12 +288,8 @@ class FullScreenImgActivity : AppCompatActivity() {
     }
 
     private fun centerImage(scale: Float, imageWidth: Int, imageHeight: Int) {
-        var redundantYSpace = (viewHeight.toFloat()
-                - scale * imageHeight.toFloat())
-        var redundantXSpace = (viewWidth.toFloat()
-                - scale * imageWidth.toFloat())
-        redundantYSpace /= 2.toFloat()
-        redundantXSpace /= 2.toFloat()
+        val redundantYSpace = (viewHeight.toFloat() - scale * imageHeight.toFloat()) / 2
+        val redundantXSpace = (viewWidth.toFloat() - scale * imageWidth.toFloat()) / 2
         mMatrix.postTranslate(redundantXSpace, redundantYSpace)
         origWidth = viewWidth - redundantXSpace * 2
         origHeight = viewHeight - redundantYSpace * 2

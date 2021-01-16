@@ -4,6 +4,7 @@ data class PlainClass(
     val title: String = "",
     var date: String = "",
     val url: String = "",
+    val hdurl: String = "",
     val explanation: String = "",
     var earth_date: String = "",
     var sol: Long = 1,

@@ -102,7 +102,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
             }
             is NetworkResponse.NetworkError -> {
                 // Handle network error
-                detail = PlainClass(title = "", url = "", explanation = "")
+                detail = PlainClass()
                 if (!::detailRoot.isInitialized) {
                     detailRoot = detail
                     focusResult.value = detailRoot
@@ -111,7 +111,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors
-                detail = PlainClass(title = "", url = "", explanation = "")
+                detail = PlainClass()
                 if (!::detailRoot.isInitialized) {
                     detailRoot = detail
                     focusResult.value = detailRoot

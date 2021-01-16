@@ -123,7 +123,7 @@
                 android:layout_height="match_parent"
                 android:buttonTint="@color/white"
                 android:fontFamily="@font/roboto_light"
-                android:text="@string/usar_como_wallpaper"
+                android:text="@string/usar_como_wallpaper_auto"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 

@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.GestureDetector
 import android.view.Gravity
 import android.view.MotionEvent
@@ -36,6 +35,8 @@ class FullScreenImgActivity : AppCompatActivity() {
 
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private lateinit var gestureDetector: GestureDetector
+    private lateinit var imgURL: String
+    private lateinit var hdimgURL: String
     private var scaleFactor = 1.0f
 
     var mMatrix = Matrix()
@@ -64,8 +65,8 @@ class FullScreenImgActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_img)
 
-        val imgURL = intent.extras?.getString("img")
-        val hdimgURL = intent.extras?.getString("hdimg")
+        imgURL = intent.extras?.getString("img") ?: ""
+        hdimgURL = intent.extras?.getString("hdimg") ?: ""
 
         useAsWallpaperAction = {
             Toast.makeText(baseContext, "A imagem em alta definição está sendo baixada!", Toast.LENGTH_LONG).show()
@@ -92,24 +93,6 @@ class FullScreenImgActivity : AppCompatActivity() {
                         ivFull.imageMatrix = mMatrix
                         ivFull.scaleType = ImageView.ScaleType.MATRIX
                         fitToScreen()
-
-                        if (hdimgURL == null) {
-                            updateDownloadAndWallpaperAction(resource)
-                        }
-                    }
-                    override fun onLoadCleared(placeholder: Drawable?) {}
-                })
-
-            if (hdimgURL == null) return@doOnLayout
-
-            Glide.with(this)
-                .load(hdimgURL)
-                .into(object : CustomTarget<Drawable?>() {
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable?>?
-                    ) {
-                        updateDownloadAndWallpaperAction(resource)
                     }
                     override fun onLoadCleared(placeholder: Drawable?) {}
                 })
@@ -119,24 +102,6 @@ class FullScreenImgActivity : AppCompatActivity() {
         gestureDetector = GestureDetector(this, GestureListener())
 
         ivCloseFullscreen.setOnClickListener { finish() }
-    }
-
-    private fun updateDownloadAndWallpaperAction(resource: Drawable) {
-        downloadAction = {
-            Toast.makeText(baseContext, "Imagem salva!", Toast.LENGTH_LONG).show()
-            saveImage(resource.toBitmap(), baseContext, getString(R.string.app_name))
-        }
-
-        useAsWallpaperAction = {
-            try {
-                Toast.makeText(baseContext, "Atualizando wallpaper...", Toast.LENGTH_SHORT).show()
-                setImageAsWallpaper(baseContext, resource)
-                Toast.makeText(baseContext, "Wallpaper atualizado!", Toast.LENGTH_LONG).show()
-            } catch (e: Exception) {
-                Log.e("FullScreenImgActivity", "Erro ao atualizar wallpaper: ${e.message}")
-                Toast.makeText(baseContext, "Erro ao usar imagem como wallpaper!", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 
     private fun saveImage(bitmap: Bitmap, context: Context, folderName: String) {
@@ -229,10 +194,30 @@ class FullScreenImgActivity : AppCompatActivity() {
             PopupMenu(this@FullScreenImgActivity, ivCloseFullscreen, Gravity.TOP).apply {
                 inflate(R.menu.menu_fullscreen_images)
                 setOnMenuItemClickListener {
-                    when (it.itemId) {
-                        R.id.downloadImageItem -> downloadAction()
-                        R.id.useAsWallpaperItem -> useAsWallpaperAction()
-                    }
+                    Toast.makeText(baseContext, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
+
+                    val url = if (hdimgURL != "") hdimgURL else imgURL
+
+                    Glide.with(this@FullScreenImgActivity)
+                        .load(url)
+                        .into(object : CustomTarget<Drawable?>() {
+                            override fun onResourceReady(
+                                resource: Drawable,
+                                transition: Transition<in Drawable?>?
+                            ) {
+                                when (it.itemId) {
+                                    R.id.downloadImageItem -> {
+                                        saveImage(resource.toBitmap(), baseContext, getString(R.string.app_name))
+                                        Toast.makeText(baseContext, "Imagem salva!", Toast.LENGTH_LONG).show()
+                                    }
+                                    R.id.useAsWallpaperItem -> {
+                                        setImageAsWallpaper(baseContext, resource)
+                                        Toast.makeText(baseContext, "Wallpaper atualizado!", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            }
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+                        })
 
                     true
                 }

@@ -7,13 +7,16 @@ import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
+import com.example.astrodream.services.setImageAsWallpaper
 import kotlinx.android.synthetic.main.activity_full_screen_img.*
 
 class FullScreenImgActivity : AppCompatActivity() {
@@ -45,13 +48,19 @@ class FullScreenImgActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_img)
 
-        val img = intent.extras?.getString("img")
+        val imgURL = intent.extras?.getString("img")
+        val hdimgURL = intent.extras?.getString("hdimg")
+
+        btnUsarWallpaper.setOnClickListener {
+            Toast.makeText(baseContext, "A imagem em alta definição está sendo baixada!", Toast.LENGTH_LONG).show()
+        }
 
         ivFull.doOnLayout {
             viewWidth = ivFull.width
             viewHeight = ivFull.height
+
             Glide.with(this)
-                .load(img)
+                .load(imgURL)
                 .into(object : CustomTarget<Drawable?>() {
                     override fun onResourceReady(
                         resource: Drawable,
@@ -66,17 +75,44 @@ class FullScreenImgActivity : AppCompatActivity() {
                         ivFull.imageMatrix = mMatrix
                         ivFull.scaleType = ImageView.ScaleType.MATRIX
                         fitToScreen()
+
+                        if (hdimgURL == null) {
+                            updateOnClickWallpaper(resource)
+                        }
                     }
-                    override fun onLoadCleared(placeholder: Drawable?) { }
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+                })
+
+            if (hdimgURL == null) return@doOnLayout
+
+            Glide.with(this)
+                .load(hdimgURL)
+                .into(object : CustomTarget<Drawable?>() {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable?>?
+                    ) {
+                        updateOnClickWallpaper(resource)
+                    }
+                    override fun onLoadCleared(placeholder: Drawable?) {}
                 })
         }
 
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
         gestureDetector = GestureDetector(this, GestureListener())
 
-        ic_close_fullscreen.setOnClickListener { finish() }
+        ivCloseFullscreen.setOnClickListener { finish() }
+    }
 
-
+    private fun updateOnClickWallpaper(resource: Drawable) {
+        findViewById<Button>(R.id.btnUsarWallpaper).setOnClickListener {
+            try {
+                setImageAsWallpaper(baseContext, resource)
+                Toast.makeText(baseContext, "Wallpaper atualizado!", Toast.LENGTH_LONG).show()
+            } catch (ignored: Exception) {
+                Toast.makeText(baseContext, "Erro ao usar imagem como wallpaper!", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
@@ -97,7 +133,7 @@ class FullScreenImgActivity : AppCompatActivity() {
                 val dy = currentPoint.y - mLast.y
                 val fixTransX = getFixDragTrans(dx, viewWidth.toFloat(), origWidth * scaleFactor)
                 val fixTransY = getFixDragTrans(dy, viewHeight.toFloat(), origHeight * scaleFactor)
-                mMatrix!!.postTranslate(fixTransX, fixTransY)
+                mMatrix.postTranslate(fixTransX, fixTransY)
                 fixTranslation()
                 mLast[currentPoint.x] = currentPoint.y
             }
@@ -144,6 +180,7 @@ class FullScreenImgActivity : AppCompatActivity() {
             mode = ZOOM
             return true
         }
+
         override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
             var mScaleFactor = scaleGestureDetector.scaleFactor
             val prevScale = scaleFactor
@@ -168,7 +205,7 @@ class FullScreenImgActivity : AppCompatActivity() {
         }
     }
 
-    private  fun fitToScreen() {
+    private fun fitToScreen() {
         scaleFactor = 1f
         val scale: Float
         val drawable = ivFull.drawable
@@ -187,12 +224,8 @@ class FullScreenImgActivity : AppCompatActivity() {
     }
 
     private fun centerImage(scale: Float, imageWidth: Int, imageHeight: Int) {
-        var redundantYSpace = (viewHeight.toFloat()
-                - scale * imageHeight.toFloat())
-        var redundantXSpace = (viewWidth.toFloat()
-                - scale * imageWidth.toFloat())
-        redundantYSpace /= 2.toFloat()
-        redundantXSpace /= 2.toFloat()
+        val redundantYSpace = (viewHeight.toFloat() - scale * imageHeight.toFloat()) / 2
+        val redundantXSpace = (viewWidth.toFloat() - scale * imageWidth.toFloat()) / 2
         mMatrix.postTranslate(redundantXSpace, redundantYSpace)
         origWidth = viewWidth - redundantXSpace * 2
         origHeight = viewHeight - redundantYSpace * 2

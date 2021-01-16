@@ -131,11 +131,12 @@
 
     <string name="tech_image_description">Imagem da tecnologia</string>
 
-    <string name="usar_como_wallpaper">Usar como wallpaper automaticamente</string>
+    <string name="usar_como_wallpaper_auto">Usar como wallpaper automaticamente</string>
     <string name="title_placeholder">Title placeholder</string>
     <string name="date_placeholder">Date placeholder</string>
     <string name="image_full_screen">Imagem full screen</string>
     <string name="skip_full_screen">Sair do modo full screen</string>
     <string name="more_information">More information</string>
     <string name="picture_of_mars">Picture of Mars</string>
+    <string name="usar_como_wallpaper">Usar como wallpaper</string>
 </resources>

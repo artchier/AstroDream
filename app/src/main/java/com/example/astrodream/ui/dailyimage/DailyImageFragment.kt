@@ -8,7 +8,6 @@ import com.example.astrodream.R
 import com.example.astrodream.ui.plaindailymars.PlainDetailFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_info_daily.view.*
-import kotlinx.android.synthetic.main.fragment_daily.*
 import kotlinx.android.synthetic.main.fragment_daily.view.*
 
 class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
@@ -29,6 +28,7 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
             if (plainDetail.url != "") { // plainDetail.url is not empty String when API request is successful
                 val intent = Intent(view.context, FullScreenImgActivity::class.java)
                 intent.putExtra("img", plainDetail.url)
+                intent.putExtra("hdimg", plainDetail.hdurl)
                 startActivity(intent)
             }
         }

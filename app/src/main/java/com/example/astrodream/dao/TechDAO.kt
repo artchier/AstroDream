@@ -12,4 +12,7 @@ interface TechDAO {
 
     @Query("SELECT * FROM technologies")
     suspend fun getAllTechnologies(): List<Tech>
+
+    @Query("DELETE FROM technologies")
+    suspend fun deleteAllTechnologies()
 }

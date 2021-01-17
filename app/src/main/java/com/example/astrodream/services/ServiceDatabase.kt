@@ -7,6 +7,8 @@ interface ServiceDatabase {
     suspend fun addTechTask(tech: Tech)
 
     suspend fun getAllTechnologiesTask(): List<Tech>
+
+    suspend fun deleteAllTechnologiesTask()
 }
 
 class ServiceDatabaseImplementationTech(val techDAO: TechDAO) : ServiceDatabase {
@@ -16,5 +18,9 @@ class ServiceDatabaseImplementationTech(val techDAO: TechDAO) : ServiceDatabase 
 
     override suspend fun getAllTechnologiesTask(): List<Tech> {
         return techDAO.getAllTechnologies()
+    }
+
+    override suspend fun deleteAllTechnologiesTask() {
+        techDAO.deleteAllTechnologies()
     }
 }

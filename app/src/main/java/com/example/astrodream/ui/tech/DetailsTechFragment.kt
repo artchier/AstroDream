@@ -70,7 +70,6 @@ class DetailsTechFragment : Fragment() {
 
         btnFavorTech.setOnClickListener {
             viewModel.addTechDB(Tech(techPiece[1], techPiece[2], techPiece[3]))
-            Toast.makeText(contextTechActivity, viewModel.msg, Toast.LENGTH_SHORT).show()
         }
 
         viewModel.getAllTechnologiesDB()

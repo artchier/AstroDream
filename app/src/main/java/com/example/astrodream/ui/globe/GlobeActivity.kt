@@ -119,7 +119,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     if (day >= maxDay || day == maxDay - 1) {
                         Toast.makeText(this, "Escolha uma data anterior", Toast.LENGTH_LONG)
                             .show()
-                    } else if (date != SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(
+                    } else if (date != SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).parse(
                             tvData.text.toString()
                         )
                     ) {

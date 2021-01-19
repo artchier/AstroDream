@@ -1,5 +1,8 @@
 package com.example.astrodream.ui.plaindailymars
 
+import android.util.Log
+import android.view.View
+import android.widget.ToggleButton
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,7 +10,9 @@ import com.example.astrodream.domain.Camera
 import com.example.astrodream.domain.MarsImage
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.domain.TempSol
+import com.example.astrodream.entitiesDatabase.MarsRoom
 import com.example.astrodream.services.Service
+import com.example.astrodream.services.ServiceDBMars
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.haroldadmin.cnradapter.NetworkResponse
@@ -15,7 +20,9 @@ import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 
-class PlainViewModel(val service: Service, private val type: PlainActivityType): ViewModel() {
+class PlainViewModel(val service: Service, private val type: PlainActivityType, val repository: ServiceDBMars): ViewModel() {
+
+    val listFavsMars = MutableLiveData<List<MarsRoom>>()
 
     val focusResult = MutableLiveData<PlainClass>()
     val hasOngoingRequest = MutableLiveData<Boolean>()
@@ -239,6 +246,31 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
 
     fun selectRoot() {
         focusResult.value = detailRoot
+    }
+
+    fun favMarsDB(mars: MarsRoom, favBtn: ToggleButton) {
+        viewModelScope.launch {
+            if(repository.getMarsAtDateTask(mars.earth_date) == null) {
+                repository.addMarsTask(mars)
+                Log.i("===PLAINVIEWMODEL==", repository.getAllMarsFavsTask().toString())
+                favBtn.isChecked = true
+            } else {
+                repository.deleteMarsTask(mars)
+                favBtn.isChecked = false
+            }
+        }
+    }
+
+    fun favMarsState(mars: MarsRoom, favBtn: ToggleButton) {
+        viewModelScope.launch {
+            favBtn.isChecked = repository.getMarsAtDateTask(mars.earth_date) != null
+        }
+    }
+
+    fun getAllMarsDB() {
+        viewModelScope.launch {
+            listFavsMars.value = repository.getAllMarsFavsTask()
+        }
     }
 
 }

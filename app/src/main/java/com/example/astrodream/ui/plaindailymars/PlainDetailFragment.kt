@@ -39,4 +39,5 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
     }
 
     abstract fun popView(view: View)
+
 }

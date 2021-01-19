@@ -13,6 +13,9 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.astrodream.R
+import com.example.astrodream.database.AppDatabase
+import com.example.astrodream.services.ServiceDBImplementationMars
+import com.example.astrodream.services.ServiceDBMars
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
@@ -35,10 +38,13 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     */
     constructor() : this(0, PlainActivityType.DailyImage)
 
+    private lateinit var db: AppDatabase
+    private lateinit var repository: ServiceDBMars
+
     val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PlainViewModel(service, type) as T
+                return PlainViewModel(service, type, repository) as T
             }
         }
     }
@@ -47,6 +53,9 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plain)
         setUpMenuBehavior()
+
+        db = AppDatabase.invoke(this)
+        repository = ServiceDBImplementationMars(db.marsDAO())
 
         AndroidThreeTen.init(this)
 

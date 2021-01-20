@@ -2,11 +2,9 @@ package com.example.astrodream.ui.tech
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -32,7 +30,7 @@ class DetailsTechFragment : Fragment() {
     private val viewModel by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailsTechViewModel(serviceDatabase) as T
+                return DetailsTechViewModel(serviceDatabase, contextTechActivity) as T
             }
         }
     }
@@ -70,15 +68,22 @@ class DetailsTechFragment : Fragment() {
         db = AppDatabase.invoke(contextTechActivity)
         serviceDatabase = ServiceDatabaseImplementationTech(db.techDAO())
 
-        btnFavorTech.setOnClickListener {
+        viewModel.getTechByCodeDB(techPiece[1])
+        viewModel.tech.observe(contextTechActivity) {
+            if (it != null) {
+                btnFavorTech.setImageResource(R.drawable.ic_star_filled)
+            } else {
+                btnFavorTech.setImageResource(R.drawable.ic_star_border)
+            }
+        }
 
-            viewModel.getTechByCodeDB(techPiece[1])
-            viewModel.tech.observe(contextTechActivity) {
-                if (it == null) {
-                    viewModel.addTechDB(Tech(techPiece[1], techPiece[2], techPiece[3]))
-                    Log.i("Tech", "Novo item adicionado aos favoritos!")
+        btnFavorTech.setOnClickListener {
+            viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3]))
+            viewModel.isFav.observe(contextTechActivity) {
+                if (it) {
+                    btnFavorTech.setImageResource(R.drawable.ic_star_filled)
                 } else {
-                    Log.i("Tech", "Este item ja está nos favoritos!")
+                    btnFavorTech.setImageResource(R.drawable.ic_star_border)
                 }
             }
         }
@@ -87,13 +92,5 @@ class DetailsTechFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is TechActivity) contextTechActivity = context
-    }
-
-    private fun refreshCurrentFragment() {
-        val currentFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.detailsTechFragment)
-        val fragmentTransaction = requireFragmentManager().beginTransaction()
-        currentFragment?.let { fragmentTransaction.detach(it) }
-        currentFragment?.let { fragmentTransaction.attach(it) }
-        fragmentTransaction.commit()
     }
 }

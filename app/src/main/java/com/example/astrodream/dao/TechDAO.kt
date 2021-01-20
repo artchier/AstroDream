@@ -10,6 +10,9 @@ interface TechDAO {
     @Insert
     suspend fun addTech(tech: Tech)
 
+    @Query("DELETE FROM technologies WHERE codReferenceTech = :codReference")
+    suspend fun deleteTech(codReference: String)
+
     @Query("SELECT * FROM technologies")
     suspend fun getAllTechnologies(): List<Tech>
 

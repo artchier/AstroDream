@@ -3,7 +3,7 @@ package com.example.astrodream.services
 import com.example.astrodream.dao.TechDAO
 import com.example.astrodream.entitiesDatabase.Tech
 
-interface ServiceDatabase {
+interface ServiceDatabaseTech {
     suspend fun addTechTask(tech: Tech)
 
     suspend fun deleteTechTask(codReference: String)
@@ -15,7 +15,7 @@ interface ServiceDatabase {
     suspend fun deleteAllTechnologiesTask()
 }
 
-class ServiceDatabaseImplementationTech(val techDAO: TechDAO) : ServiceDatabase {
+class ServiceDatabaseImplementationTech(val techDAO: TechDAO) : ServiceDatabaseTech {
     override suspend fun addTechTask(tech: Tech) {
         techDAO.addTech(tech)
     }

@@ -5,53 +5,47 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astrodream.entitiesDatabase.Tech
-import com.example.astrodream.services.ServiceDatabase
+import com.example.astrodream.services.ServiceDatabaseTech
 import kotlinx.coroutines.launch
 
-class DetailsTechViewModel(var serviceDatabase: ServiceDatabase, val context: Context) : ViewModel(){
+class DetailsTechViewModel(var serviceDatabaseTech: ServiceDatabaseTech, val context: Context) : ViewModel(){
     val listTech = MutableLiveData<List<Tech>>()
     val tech = MutableLiveData<Tech>()
     val isFav = MutableLiveData<Boolean>()
 
     fun favTechDB(tech: Tech) {
         viewModelScope.launch {
-            if (serviceDatabase.getTechByCodeTask(tech.codReferenceTech) == null) {
-                serviceDatabase.addTechTask(tech)
+            if (serviceDatabaseTech.getTechByCodeTask(tech.codReferenceTech) == null) {
+                serviceDatabaseTech.addTechTask(tech)
                 isFav.value = true
             } else {
-                serviceDatabase.deleteTechTask(tech.codReferenceTech)
+                serviceDatabaseTech.deleteTechTask(tech.codReferenceTech)
                 isFav.value = false
             }
         }
     }
 
-    fun addTechDB(tech: Tech) {
+    fun deleteAllTechnologiesDB() {
         viewModelScope.launch {
-            serviceDatabase.addTechTask(tech)
+            serviceDatabaseTech.deleteAllTechnologiesTask()
         }
     }
 
     fun deleteTechDB(codReference: String) {
         viewModelScope.launch {
-            serviceDatabase.deleteTechTask(codReference)
+            serviceDatabaseTech.deleteTechTask(codReference)
         }
     }
 
     fun getAllTechnologiesDB() {
         viewModelScope.launch {
-            listTech.value = serviceDatabase.getAllTechnologiesTask()
+            listTech.value = serviceDatabaseTech.getAllTechnologiesTask()
         }
     }
 
     fun getTechByCodeDB(codReference: String) {
         viewModelScope.launch {
-            tech.value = serviceDatabase.getTechByCodeTask(codReference)
-        }
-    }
-
-    fun deleteAllTechnologiesDB() {
-        viewModelScope.launch {
-            serviceDatabase.deleteAllTechnologiesTask()
+            tech.value = serviceDatabaseTech.getTechByCodeTask(codReference)
         }
     }
 }

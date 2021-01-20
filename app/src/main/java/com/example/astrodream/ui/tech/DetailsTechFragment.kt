@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.entitiesDatabase.Tech
-import com.example.astrodream.services.ServiceDatabase
+import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
@@ -23,14 +23,14 @@ class DetailsTechFragment : Fragment() {
     private lateinit var contextTechActivity: TechActivity
 
     private lateinit var db: AppDatabase
-    private lateinit var serviceDatabase: ServiceDatabase
+    private lateinit var serviceDatabaseTech: ServiceDatabaseTech
 
     private lateinit var techPiece: ArrayList<String>
 
     private val viewModel by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailsTechViewModel(serviceDatabase, contextTechActivity) as T
+                return DetailsTechViewModel(serviceDatabaseTech, contextTechActivity) as T
             }
         }
     }
@@ -66,7 +66,7 @@ class DetailsTechFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         db = AppDatabase.invoke(contextTechActivity)
-        serviceDatabase = ServiceDatabaseImplementationTech(db.techDAO())
+        serviceDatabaseTech = ServiceDatabaseImplementationTech(db.techDAO())
 
         viewModel.getTechByCodeDB(techPiece[1])
         viewModel.tech.observe(contextTechActivity) {

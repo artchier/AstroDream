@@ -126,6 +126,10 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             startActivity(i)
         }
 
+        view.findViewById<ImageView>(R.id.android_favs).setOnClickListener {
+            onAsteroidFavsClickEvent(it)
+        }
+
         AstroDreamUtil.showDialogMessage(this, view)
     }
 
@@ -219,5 +223,10 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             }
             false
         }
+    }
+
+    fun onAsteroidFavsClickEvent(view: View){
+        if (view.background == getDrawable(R.drawable.ic_star_border)) view.setBackgroundResource(R.drawable.ic_star_filled)
+        else view.setBackgroundResource(R.drawable.ic_star_border)
     }
 }

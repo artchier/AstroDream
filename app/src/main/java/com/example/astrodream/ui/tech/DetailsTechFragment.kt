@@ -2,11 +2,12 @@ package com.example.astrodream.ui.tech
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +19,7 @@ import com.example.astrodream.services.ServiceDatabase
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
+
 
 class DetailsTechFragment : Fragment() {
     private lateinit var contextTechActivity: TechActivity
@@ -69,14 +71,29 @@ class DetailsTechFragment : Fragment() {
         serviceDatabase = ServiceDatabaseImplementationTech(db.techDAO())
 
         btnFavorTech.setOnClickListener {
-            viewModel.addTechDB(Tech(techPiece[1], techPiece[2], techPiece[3]))
-        }
 
-        viewModel.getAllTechnologiesDB()
+            viewModel.getTechByCodeDB(techPiece[1])
+            viewModel.tech.observe(contextTechActivity) {
+                if (it == null) {
+                    viewModel.addTechDB(Tech(techPiece[1], techPiece[2], techPiece[3]))
+                    Log.i("Tech", "Novo item adicionado aos favoritos!")
+                } else {
+                    Log.i("Tech", "Este item ja está nos favoritos!")
+                }
+            }
+        }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is TechActivity) contextTechActivity = context
+    }
+
+    private fun refreshCurrentFragment() {
+        val currentFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.detailsTechFragment)
+        val fragmentTransaction = requireFragmentManager().beginTransaction()
+        currentFragment?.let { fragmentTransaction.detach(it) }
+        currentFragment?.let { fragmentTransaction.attach(it) }
+        fragmentTransaction.commit()
     }
 }

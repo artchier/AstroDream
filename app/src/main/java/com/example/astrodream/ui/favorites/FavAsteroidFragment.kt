@@ -1,6 +1,5 @@
 package com.example.astrodream.ui.favorites
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
-import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
 import kotlinx.android.synthetic.main.fragment_asteroid_orbit.view.*

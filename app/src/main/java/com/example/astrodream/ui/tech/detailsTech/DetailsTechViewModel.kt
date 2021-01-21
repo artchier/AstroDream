@@ -1,4 +1,4 @@
-package com.example.astrodream.ui.tech
+package com.example.astrodream.ui.tech.detailsTech
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData

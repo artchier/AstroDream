@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
+import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.ui.tech.TechActivity
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
 import kotlinx.android.synthetic.main.fragment_fav_tech.view.*
@@ -27,19 +28,21 @@ class FavTechFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_details_tech, container, false)
 
-        val tech = viewModel.detail.value as List<*>
+        val tech = viewModel.detail.value as Tech
 
-        if (tech[10] != "") {
-            Glide.with(contextTechActivity).asBitmap()
-                .load(tech[10])
-                .into(view.ivTech)
-        } else {
-            view.ivTech.setImageResource(R.drawable.ic_tecnologia)
-        }
+//        if (tech[10] != "") {
+//            Glide.with(contextTechActivity).asBitmap()
+//                .load(tech[10])
+//                .into(view.ivTech)
+//        } else {
+//            view.ivTech.setImageResource(R.drawable.ic_tecnologia)
+//        }
 
-        view.tvCodReferenceTech.text = tech[1] as String
-        view.tvTitleTech.text = tech[2] as String
-        view.tvDescTech.text = tech[3] as String
+        view.ivTech.setImageResource(R.drawable.ic_tecnologia)
+
+        view.tvCodReferenceTech.text = tech.codReferenceTech
+        view.tvTitleTech.text = tech.titleTech
+        view.tvDescTech.text = tech.descTech
 
         return view
     }

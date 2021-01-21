@@ -1,15 +1,15 @@
 package com.example.astrodream.ui.mars
 
+import android.os.Bundle
 import android.view.View
+import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
 import com.example.astrodream.R
-import com.example.astrodream.ui.favorites.FavViewModel
-import com.example.astrodream.ui.plaindailymars.PlainActivity
 import com.example.astrodream.ui.plaindailymars.PlainDetailFragment
 import com.example.astrodream.ui.plaindailymars.PlainViewModel
 import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import me.relex.circleindicator.CircleIndicator
-import android.util.Log
+import com.example.astrodream.entitiesDatabase.MarsRoom
 
 class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
 
@@ -18,6 +18,15 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
     }
 
     lateinit var adapterMars: MarsAdapter
+    val viewModel: PlainViewModel by activityViewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view.btnFavMars.setOnClickListener{
+            viewModel.favPlainDB(plainDetail, it as ToggleButton, requireActivity())
+        }
+    }
 
     override fun popView(view: View) {
 
@@ -42,6 +51,10 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
         // Acerta o texto acima da imagem para mostrar o dia do post
         view.postDescr.text = plainDetail.earth_date
 
+        view.btnFavMars.isChecked = plainDetail.isFav
+//        viewModel.favMarsState(MarsRoom(plainDetail.earth_date, plainDetail.sol, plainDetail.maxTemp, plainDetail.minTemp), view.btnFavMars)
+
     }
+
 
 }

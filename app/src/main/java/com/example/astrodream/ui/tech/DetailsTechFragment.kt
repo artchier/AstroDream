@@ -65,7 +65,7 @@ class DetailsTechFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         db = AppDatabase.invoke(contextTechActivity)
-        serviceDatabase = ServiceDatabaseImplementationTech(db.techDAO())
+        serviceDatabase = ServiceDatabaseImplementationTech(db. techDAO())
 
         btnFavorTech.setOnClickListener {
             viewModel.addTechDB(Tech(techPiece[1], techPiece[2], techPiece[3]))

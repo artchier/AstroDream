@@ -20,6 +20,7 @@ import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.astrodream.R
+import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.domain.ExpandableListAdapter
 import com.example.astrodream.domain.util.AstroDreamUtil
@@ -48,7 +49,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     private val expandableListAdapter = ExpandableListAdapter(this)
     private lateinit var listView: ExpandableListView
     private lateinit var navController: NavController
-
+    private lateinit var db: AppDatabase
     private var listButtonsName = ArrayList<String>()
 
     private val viewModel by viewModels<AsteroidViewModel> {
@@ -96,6 +97,10 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         viewModel.listResults.observe(this) {
             listAllAsteroids.addAll(viewModel.listAsteroid)
             listFourAsteroids.addAll(viewModel.listAsteroid.subList(0, 4)) }
+
+        // ##### Opções de banco de dados #####
+        db = AppDatabase.invoke(this)
+
 
         // ##### Outras opções #####
         onGroupClickEvent()
@@ -228,5 +233,9 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     fun onAsteroidFavsClickEvent(view: View){
         if (view.background == getDrawable(R.drawable.ic_star_border)) view.setBackgroundResource(R.drawable.ic_star_filled)
         else view.setBackgroundResource(R.drawable.ic_star_border)
+    }
+
+    fun addAsteroidOnDataBase(){
+
     }
 }

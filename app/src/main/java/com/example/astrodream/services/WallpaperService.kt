@@ -13,13 +13,14 @@ import android.net.Uri
 import android.os.Environment
 import android.os.PersistableBundle
 import android.provider.MediaStore
-import android.service.wallpaper.WallpaperService
+import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 const val WALLPAPER_JOB_ID = 10001
+const val TAG = "WallpaperService"
 
 fun setImageAsWallpaper(screenSize: Point, context: Context, image: Drawable) {
     val bitmap = image.toBitmap()
@@ -27,7 +28,7 @@ fun setImageAsWallpaper(screenSize: Point, context: Context, image: Drawable) {
     val cropY: Float
     val cropX: Float
 
-    if (bitmap.width >= bitmap.height) {
+    if (bitmap.height / bitmap.height <= screenSize.y / screenSize.x) {
         cropY = bitmap.height.toFloat()
         cropX = (screenSize.x.toFloat() / screenSize.y.toFloat()) * cropY
     }
@@ -99,11 +100,15 @@ fun scheduleWallpaperChange(context: Context) {
 
     val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
     jobScheduler.schedule(builder.build())
+
+    Log.d(TAG, "Job para mudar papel de parede marcado")
 }
 
 fun cancelWallpaperChange(context: Context) {
     val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
     jobScheduler.cancel(WALLPAPER_JOB_ID)
+
+    Log.d(TAG, "Job para mudar papel de parede cancelado")
 }
 
 private fun contentValues() : ContentValues {

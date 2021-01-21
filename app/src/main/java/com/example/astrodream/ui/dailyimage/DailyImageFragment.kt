@@ -1,5 +1,6 @@
 package com.example.astrodream.ui.dailyimage
 
+import android.content.Context
 import android.content.Intent
 import android.view.View
 import com.bumptech.glide.Glide
@@ -55,6 +56,11 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
             }
         }
 
+        val prefs = requireActivity().getSharedPreferences("wallpaper_job", Context.MODE_PRIVATE)
+        val scheduled = prefs.getBoolean("scheduled", false)
+
+        view.checkDaily.isChecked = scheduled
+
         view.checkDaily.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 scheduleWallpaperChange(requireContext())
@@ -62,6 +68,8 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
             else {
                 cancelWallpaperChange(requireContext())
             }
+
+            prefs.edit().putBoolean("scheduled", isChecked).apply()
         }
     }
 }

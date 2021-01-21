@@ -61,7 +61,7 @@ class SetWallpaperJob : JobService() {
                         transition: Transition<in Drawable?>?
                     ) {
                         val extras = params!!.extras
-                        val screenSize = Point(extras.getInt("height"), extras.getInt("width"))
+                        val screenSize = Point(extras.getInt("width"), extras.getInt("height"))
 
                         setImageAsWallpaper(screenSize, baseContext, resource)
                         // Terminamos o Job de fato

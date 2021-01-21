@@ -2,14 +2,14 @@ package com.example.astrodream.ui.initial
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.R
-import com.example.astrodream.services.service
+import com.example.astrodream.database.AppDatabase
+import com.example.astrodream.services.*
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
@@ -23,10 +23,13 @@ import kotlinx.android.synthetic.main.activity_initial.cvDaily
 
 class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
 
+    private lateinit var db: AppDatabase
+    private lateinit var repository: ServiceDBDaily
+
     private val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PlainViewModel(service, PlainActivityType.Initial) as T
+                return PlainViewModel(service, PlainActivityType.Initial, repository) as T
             }
         }
     }
@@ -35,6 +38,9 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
         AndroidThreeTen.init(this)
+
+        db = AppDatabase.invoke(this)
+        repository = ServiceDBImplementationDaily(db.dailyDAO())
 
         dailyImage()
         cvDaily.setOnClickListener {

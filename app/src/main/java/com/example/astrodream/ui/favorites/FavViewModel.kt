@@ -2,12 +2,19 @@ package com.example.astrodream.ui.favorites
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.astrodream.domain.*
+import com.example.astrodream.services.ServiceDB
+import com.example.astrodream.services.ServiceDBDaily
+import com.example.astrodream.services.ServiceDBMars
+import com.example.astrodream.services.ServiceDatabase
+import kotlinx.coroutines.launch
 
-class FavViewModel: ViewModel() {
+class FavViewModel(val dailyRepository: ServiceDBDaily, val techRepository: ServiceDatabase, val marsRepository: ServiceDBMars): ViewModel() {
 
     var detail = MutableLiveData<Any>() // TODO: criar sealed class??
     var favType = MutableLiveData("daily")
+    var favList = MutableLiveData<List<Any>>()
 
     fun selectDetail(detailSelected: Any) { // TODO: criar sealed class??
         detail.value = detailSelected
@@ -19,44 +26,47 @@ class FavViewModel: ViewModel() {
 
     // TODO: dados de exemplo apenas, é necessário buscar dados do db
     // TODO: remover globo?
-    fun dummyFavData(type: String): List<Any> {
+    fun dummyFavData(type: String) {
         when (type) {
             "daily" -> {
-                return listOf(
-                    PlainClass(
-                        title = "Dark Molecular Cloud Barnard 68",
-                        date = "22/11/2020",
-                        url = "https://apod.nasa.gov/apod/image/2011/barnard68v2_vlt_960.jpg",
-                        explanation = "xxxxxx"
-                    ),
-                    PlainClass(
-                        title = "Mars and Meteor over Jade Dragon Snow Mountain",
-                        date = "21/11/2020",
-                        url = "https://apod.nasa.gov/apod/image/2011/LeonidmeteorandMarsoverYulongsnowmountain1050.jpg",
-                        explanation = "yyyyyy"
-                    ),
-                    PlainClass(
-                        title = "Global Map: Mars at Opposition",
-                        date = "20/11/2020",
-                        url = "https://apod.nasa.gov/apod/image/2011/marsglobalmap_1100.jpg",
-                        explanation = "zzzzzz"
-                    ),
-                    PlainClass(
-                        title = "Crew-1 Mission Launch Streak",
-                        date = "19/11/2020",
-                        url = "https://apod.nasa.gov/apod/image/2011/spacex-crew-1-JenScottPhotography-11_1050.jpg",
-                        explanation = "aaaaa"
-                    ),
-                    PlainClass(
-                        title = "A Double Star Cluster in Perseus",
-                        date = "18/11/2020",
-                        url = "https://apod.nasa.gov/apod/image/2011/DoubleCluster_Polanski_960.jpg",
-                        explanation = "bbbbb"
-                    )
-                )
+                viewModelScope.launch {
+                    favList.value = dailyRepository.getAllDailyFavsTask()
+                }
+//                return listOf(
+//                    PlainClass(
+//                        title = "Dark Molecular Cloud Barnard 68",
+//                        date = "22/11/2020",
+//                        url = "https://apod.nasa.gov/apod/image/2011/barnard68v2_vlt_960.jpg",
+//                        explanation = "xxxxxx"
+//                    ),
+//                    PlainClass(
+//                        title = "Mars and Meteor over Jade Dragon Snow Mountain",
+//                        date = "21/11/2020",
+//                        url = "https://apod.nasa.gov/apod/image/2011/LeonidmeteorandMarsoverYulongsnowmountain1050.jpg",
+//                        explanation = "yyyyyy"
+//                    ),
+//                    PlainClass(
+//                        title = "Global Map: Mars at Opposition",
+//                        date = "20/11/2020",
+//                        url = "https://apod.nasa.gov/apod/image/2011/marsglobalmap_1100.jpg",
+//                        explanation = "zzzzzz"
+//                    ),
+//                    PlainClass(
+//                        title = "Crew-1 Mission Launch Streak",
+//                        date = "19/11/2020",
+//                        url = "https://apod.nasa.gov/apod/image/2011/spacex-crew-1-JenScottPhotography-11_1050.jpg",
+//                        explanation = "aaaaa"
+//                    ),
+//                    PlainClass(
+//                        title = "A Double Star Cluster in Perseus",
+//                        date = "18/11/2020",
+//                        url = "https://apod.nasa.gov/apod/image/2011/DoubleCluster_Polanski_960.jpg",
+//                        explanation = "bbbbb"
+//                    )
+//                )
             }
             "asteroid" -> {
-                return listOf(
+                favList.value = listOf(
                     Asteroid(
                         "1",
                         "Ananda",
@@ -120,7 +130,7 @@ class FavViewModel: ViewModel() {
                 )
             }
             "globe" -> {
-                return listOf(
+                favList.value = listOf(
                     Favorite(
                         type,
                         1,
@@ -159,7 +169,7 @@ class FavViewModel: ViewModel() {
                 )
             }
             "tech" -> {
-                return listOf(
+                favList.value = listOf(
                     listOf(
                         "",
                         "XXX-YYYY-ZZ",
@@ -228,7 +238,7 @@ class FavViewModel: ViewModel() {
                 )
             }
             "mars" -> {
-                return listOf(
+                favList.value = listOf(
                     PlainClass(
                         earth_date = "20/11/2020",
                         sol = 706,
@@ -277,7 +287,6 @@ class FavViewModel: ViewModel() {
                 )
             }
         }
-        return arrayListOf()
     }
 
 }

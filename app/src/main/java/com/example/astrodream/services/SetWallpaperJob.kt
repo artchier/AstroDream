@@ -3,6 +3,7 @@ package com.example.astrodream.services
 import android.annotation.SuppressLint
 import android.app.job.JobParameters
 import android.app.job.JobService
+import android.graphics.Point
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -20,9 +21,7 @@ class SetWallpaperJob : JobService() {
 
         GlobalScope.launch {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            val calendar = Calendar.getInstance()
-            calendar.time = Date()
-
+            val calendar = Calendar.getInstance().apply { time = Date() }
             var failCount = 0
             var imageUrl = ""
 
@@ -54,15 +53,17 @@ class SetWallpaperJob : JobService() {
                 return@launch
             }
 
-
-            Glide.with(applicationContext)
+            Glide.with(baseContext)
                 .load(imageUrl)
                 .into(object : CustomTarget<Drawable?>() {
                     override fun onResourceReady(
                         resource: Drawable,
                         transition: Transition<in Drawable?>?
                     ) {
-                        setImageAsWallpaper(applicationContext, resource)
+                        val extras = params!!.extras
+                        val screenSize = Point(extras.getInt("height"), extras.getInt("width"))
+
+                        setImageAsWallpaper(screenSize, baseContext, resource)
                         // Terminamos o Job de fato
                         jobFinished(params, false)
                     }

@@ -11,6 +11,7 @@ import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
+import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.service.wallpaper.WallpaperService
 import androidx.core.graphics.drawable.toBitmap
@@ -20,10 +21,7 @@ import java.io.OutputStream
 
 const val WALLPAPER_JOB_ID = 10001
 
-fun setImageAsWallpaper(context: Context, image: Drawable) {
-    val screenSize = Point()
-    context.display!!.getRealSize(screenSize)
-
+fun setImageAsWallpaper(screenSize: Point, context: Context, image: Drawable) {
     val bitmap = image.toBitmap()
 
     val cropY: Float
@@ -81,14 +79,23 @@ fun saveImage(bitmap: Bitmap, context: Context, folderName: String) {
 }
 
 fun scheduleWallpaperChange(context: Context) {
-    val componentName = ComponentName(context, WallpaperService::class.java)
+    val componentName = ComponentName(context, SetWallpaperJob::class.java)
     val builder = JobInfo.Builder(WALLPAPER_JOB_ID, componentName)
+
+    val screenSize = Point()
+    context.display!!.getRealSize(screenSize)
+
+    val bundle = PersistableBundle().apply {
+        putInt("height", screenSize.y)
+        putInt("width", screenSize.x)
+    }
 
     builder.setPersisted(true)
         .setPeriodic(86400000) // Milisegundos em um dia
         .setRequiresCharging(false)
         .setRequiresDeviceIdle(false)
         .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+        .setExtras(bundle)
 
     val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
     jobScheduler.schedule(builder.build())

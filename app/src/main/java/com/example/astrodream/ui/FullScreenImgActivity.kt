@@ -1,6 +1,7 @@
 package com.example.astrodream.ui
 
 import android.graphics.Matrix
+import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -146,7 +147,10 @@ class FullScreenImgActivity : AppCompatActivity() {
                                         Toast.makeText(baseContext, "Imagem salva!", Toast.LENGTH_LONG).show()
                                     }
                                     R.id.useAsWallpaperItem -> {
-                                        setImageAsWallpaper(baseContext, resource)
+                                        val screenSize = Point()
+                                        baseContext.display!!.getRealSize(screenSize)
+
+                                        setImageAsWallpaper(screenSize, baseContext, resource)
                                         Toast.makeText(baseContext, "Wallpaper atualizado!", Toast.LENGTH_LONG).show()
                                     }
                                 }

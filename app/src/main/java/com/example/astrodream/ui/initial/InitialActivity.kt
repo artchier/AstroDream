@@ -17,7 +17,6 @@ import com.example.astrodream.ui.globe.GlobeActivity
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 import com.example.astrodream.ui.plaindailymars.PlainActivityType
 import com.example.astrodream.ui.plaindailymars.PlainViewModel
-import com.example.astrodream.ui.tech.TechActivity
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_initial.*
 import kotlinx.android.synthetic.main.activity_initial.cvDaily

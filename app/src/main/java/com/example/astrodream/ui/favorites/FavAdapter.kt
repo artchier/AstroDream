@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
-import com.example.astrodream.domain.Favorite
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.Tech
@@ -70,6 +69,7 @@ class FavAdapter(
 
                 // img = if(favorite[10] != "") favorite[10]!!.toString() else R.drawable.ic_tecnologia.toString()
 
+                img = "https://lh3.googleusercontent.com/proxy/ntdtUa7YalOxdtRCagcpxwy6r98mY5PUA2e1cITfc9h1PZc0TQ7JS66hl9f5wjVUMeUPf9JR9Gp74vswb2jWmFRqyvO2x8AxliPeRxMnu7ksqRUq4OxWaPvvkE384BENmTPHGqmYeb8j"
                 text1 = favorite.typeTech
                 text2 = favorite.titleTech
             }

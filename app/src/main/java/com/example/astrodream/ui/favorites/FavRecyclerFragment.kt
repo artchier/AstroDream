@@ -39,7 +39,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
             // Atualiza a lista de itens favoritos
             viewModel.dummyFavData(type)
             viewModel.favList.observe(viewLifecycleOwner) {
-                if(it != null) {
+                if(it != null && !viewModel.hasOngoingQuery.value!!) {
                     listFavs = it
                     // Atualiza o adapter de acordo com a tab selecionada
                     adapterFav = FavAdapter(listFavs, this, type)

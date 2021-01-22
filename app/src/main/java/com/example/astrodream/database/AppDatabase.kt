@@ -8,10 +8,11 @@ import com.example.astrodream.dao.DailyDAO
 import com.example.astrodream.dao.MarsDAO
 import com.example.astrodream.dao.TechDAO
 import com.example.astrodream.entitiesDatabase.DailyRoom
+import com.example.astrodream.entitiesDatabase.MarsPicRoom
 import com.example.astrodream.entitiesDatabase.MarsRoom
 import com.example.astrodream.entitiesDatabase.Tech
 
-@Database(entities = [Tech::class, MarsRoom::class, DailyRoom::class], version = 1)
+@Database(entities = [Tech::class, MarsRoom::class, MarsPicRoom::class, DailyRoom::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun techDAO(): TechDAO

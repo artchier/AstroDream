@@ -9,7 +9,9 @@ import androidx.fragment.app.activityViewModels
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.domain.util.AstroDreamUtil
 import com.example.astrodream.domain.util.transformDailyDBClassToPlain
+import com.example.astrodream.domain.util.transformMarsDBClassToPlain
 import com.example.astrodream.entitiesDatabase.DailyRoom
+import com.example.astrodream.entitiesDatabase.MarsRoom
 import com.example.astrodream.ui.favorites.FavViewModel
 
 abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
@@ -25,7 +27,7 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
 
         val contextActivity = this.requireActivity()
 
-        if ( contextActivity is PlainActivity ) {
+        if (contextActivity is PlainActivity) {
             val viewModel: PlainViewModel by activityViewModels()
 
             viewModel.focusResult.observe(viewLifecycleOwner) {
@@ -34,8 +36,15 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
             }
         } else {
             val viewModel: FavViewModel by activityViewModels()
-            val dailyRoom = viewModel.detail.value as DailyRoom
-            plainDetail = AstroDreamUtil.transformDailyDBClassToPlain(dailyRoom).apply { isFav = true }
+            if(viewModel.favType.value == "daily") {
+                val dailyRoom = viewModel.detail.value as DailyRoom
+                plainDetail =
+                    AstroDreamUtil.transformDailyDBClassToPlain(dailyRoom).apply { isFav = true }
+            }
+            if(viewModel.favType.value == "mars") {
+                val marsRoom = viewModel.detail.value as PlainClass
+                plainDetail = marsRoom
+            }
             popView(view)
         }
 

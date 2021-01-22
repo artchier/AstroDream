@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -36,11 +37,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.arrayListOf
-import kotlin.collections.forEach
-import kotlin.collections.linkedMapOf
-import kotlin.collections.mutableSetOf
 import kotlin.collections.set
+
 
 @Suppress("UNCHECKED_CAST")
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
@@ -103,6 +101,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         viewModel.listResults.observe(this) {
             listAllAsteroids.addAll(viewModel.listAsteroid)
             listFourAsteroids.addAll(viewModel.listAsteroid.subList(0, 4)) }
+        viewModel.getAllAsteroidsDB()
 
         // ##### Outras opções #####
         onGroupClickEvent()
@@ -113,8 +112,12 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickAsteroids(childPos: Int, groupPos: Int) {
         val asteroid = expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(childPos)
+        val isAsteroidInDB = viewModel.listAllAsteroidsDB.map { it.codeAsteroid }.contains(asteroid?.name)
 
         val view: View = this.layoutInflater.inflate(R.layout.asteroid_dialog, null)
+        val starFavorites = view.findViewById<View>(R.id.android_favs)
+
+        starFavorites.setBackgroundResource(if (isAsteroidInDB) R.drawable.ic_star_filled else R.drawable.ic_star_border)
 
         if (asteroid?.is_potentially_hazardous_asteroid!!)
             view.findViewById<TextView>(R.id.is_potentially_hazardous_asteroid).visibility = TextView.VISIBLE
@@ -135,17 +138,18 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         view.findViewById<TextView>(R.id.orbiting_body).text = listStrings[6]
         view.findViewById<TextView>(R.id.estimated_diameter).text = listStrings[7]
 
-        Log.i("TAG", viewModel.getAllAsteroidsDB().toString())
-
         view.findViewById<TextView>(R.id.btn_ver_orbita).setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(listStrings[1])
             startActivity(i)
         }
 
-        view.findViewById<View>(R.id.android_favs).setOnClickListener {
-            onAsteroidFavsClickEvent(it, *listStrings)
+        starFavorites.setOnClickListener {
+            onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings)
+//            (view.parent as ViewGroup).removeView(view)
+//            onClickAsteroids(childPos, groupPos)
             Log.i("TAG", "clicando")
+//            AstroDreamUtil.showDialogMessage(this, view)
         }
 
         AstroDreamUtil.showDialogMessage(this, view)
@@ -244,18 +248,21 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private fun onAsteroidFavsClickEvent(view: View, vararg string: String){
-        if (view.background == getDrawable(R.drawable.ic_star_border)) {
-            view.background = getDrawable(R.drawable.ic_star_filled)
-            viewModel.addAsteroidDB(
-                AsteroidRoom(string[0], string[1], AstroDreamUtil.returnTextOf(*string))
-            )
+    private fun onAsteroidFavsClickEvent(view: View, isInDB: Boolean, vararg string: String){
+        val asteroid = AsteroidRoom(string[0], string[1], AstroDreamUtil.returnTextOf(*string))
+        if (!isInDB) {
+            view.setBackgroundResource(R.drawable.ic_star_filled)
+                viewModel.addAsteroidInDB(asteroid)
         }
         else {
-            view.background = getDrawable(R.drawable.ic_star_border)
-            viewModel.deleteAsteroidsDB(
-                AsteroidRoom(string[0], string[1], AstroDreamUtil.returnTextOf(*string))
-            )
+            view.setBackgroundResource(R.drawable.ic_star_border)
+                viewModel.deleteAsteroidInDB(asteroid)
         }
     }
+
+//    private fun isAsteroidInDB(name: String): Boolean{
+//        viewModel.getOneAsteroidDB(name)
+//        val asteroidDB: AsteroidRoom? = viewModel.oneAsteroid
+//        return asteroidDB != null
+//    }
 }

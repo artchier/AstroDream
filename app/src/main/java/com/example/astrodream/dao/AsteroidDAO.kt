@@ -16,4 +16,7 @@ interface AsteroidDAO {
 
     @Delete
     suspend fun deleteAsteroidRoom(asteroid: AsteroidRoom)
+
+    @Query("SELECT * FROM asteroids where codeAsteroid LIKE :asteroidName")
+    fun getAsteroid(asteroidName: String): AsteroidRoom?
 }

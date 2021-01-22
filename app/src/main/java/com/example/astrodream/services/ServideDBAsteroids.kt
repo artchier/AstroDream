@@ -7,6 +7,7 @@ interface ServiceDBAsteroids {
     suspend fun addAsteroidTask(asteroide: AsteroidRoom)
     suspend fun getAllAsteroidsFavsTask(): List<AsteroidRoom>
     suspend fun deleteAsteroidsTask(asteroid: AsteroidRoom)
+    suspend fun getOneAsteroidTask(name: String): AsteroidRoom?
 }
 
 class ServiceDBAsteroidsImpl(val asteroidDAO: AsteroidDAO): ServiceDBAsteroids{
@@ -21,4 +22,9 @@ class ServiceDBAsteroidsImpl(val asteroidDAO: AsteroidDAO): ServiceDBAsteroids{
     override suspend fun deleteAsteroidsTask(asteroid: AsteroidRoom) {
         asteroidDAO.deleteAsteroidRoom(asteroid)
     }
+
+    override suspend fun getOneAsteroidTask(name: String): AsteroidRoom? {
+        return asteroidDAO.getAsteroid(name)
+    }
+
 }

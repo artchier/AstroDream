@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.astrodream.R
@@ -37,14 +38,19 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         if (container != null) {
             val type = viewModel.favType.value!!
             // Atualiza a lista de itens favoritos
-            listFavs = viewModel.dummyFavData(type)
-            // Atualiza o adapter de acordo com a tab selecionada
-            adapterFav = FavAdapter(listFavs, this, type)
-            // Atribui o adapter criado acima ao adapter do RecyclerView
-            view.rvFav.adapter = adapterFav
-            // Cria o layout do RecyclerView
-            view.rvFav.layoutManager = LinearLayoutManager(container.context)
-            view.rvFav.setHasFixedSize(true)
+            viewModel.dummyFavData(type)
+            viewModel.favList.observe(viewLifecycleOwner) {
+                if(it != null && !viewModel.hasOngoingQuery.value!!) {
+                    listFavs = it
+                    // Atualiza o adapter de acordo com a tab selecionada
+                    adapterFav = FavAdapter(listFavs, this, type)
+                    // Atribui o adapter criado acima ao adapter do RecyclerView
+                    view.rvFav.adapter = adapterFav
+                    // Cria o layout do RecyclerView
+                    view.rvFav.layoutManager = LinearLayoutManager(container.context)
+                    view.rvFav.setHasFixedSize(true)
+                }
+            }
         }
 
         return view

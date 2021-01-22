@@ -37,6 +37,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
                 view = inflate(R.layout.btn_asteroids, null)
             }
         }
+
         val calendarAsteroid: LinearLayout? = view?.findViewById(R.id.search_date_asteroid_button)
         val searchView: SearchView? = view?.findViewById(R.id.search_view_asteroid_button)
         val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)

@@ -26,6 +26,7 @@ class AsteroidViewModel(
 
     val listResults = MutableLiveData<AsteroidRes>()
     val listAsteroid = ArrayList<Asteroid>()
+    var listAllAsteroidsDB = ArrayList<AsteroidRoom>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun execute(v: View) = viewModelScope.launch {
@@ -63,26 +64,45 @@ class AsteroidViewModel(
         v.findViewById<ProgressBar>(R.id.progressbar_asteroides).visibility = ProgressBar.GONE
     }
 
-
     // ####### OPÇÕES DO BANCO DE DADOS #######
 
-    fun addAsteroidDB(asteroid: AsteroidRoom) {
+    private fun addAsteroidDB (asteroid: AsteroidRoom){
         viewModelScope.launch {
+            featureaddAsteroidDB(asteroid)
+        }
+    }
+
+    fun getAllAsteroidsDB(){
+        viewModelScope.launch {
+           listAllAsteroidsDB = featuregetAllAsteroidsDB() as ArrayList<AsteroidRoom>
+        }
+    }
+
+    private fun deleteAsteroidsDB(asteroid: AsteroidRoom){
+        viewModelScope.launch {
+            featuredeleteAsteroidsDB(asteroid)
+        }
+    }
+
+    private suspend fun featureaddAsteroidDB(asteroid: AsteroidRoom) {
             serviceDB.addAsteroidTask(asteroid)
-        }
     }
 
-    fun getAllAsteroidsDB(): List<AsteroidRoom> {
-        var listAsteroid: List<AsteroidRoom>? = null
-        viewModelScope.launch {
-            listAsteroid = serviceDB.getAllAsteroidsFavsTask()
-        }
-        return listAsteroid ?: listOf()
+    private suspend fun featuregetAllAsteroidsDB(): List<AsteroidRoom> {
+        return serviceDB.getAllAsteroidsFavsTask()
     }
 
-    fun deleteAsteroidsDB(asteroid: AsteroidRoom) {
-        viewModelScope.launch {
+    private suspend fun featuredeleteAsteroidsDB(asteroid: AsteroidRoom) {
             serviceDB.deleteAsteroidsTask(asteroid)
-        }
+    }
+
+    fun addAsteroidInDB(asteroid: AsteroidRoom){
+        listAllAsteroidsDB.add(asteroid)
+        addAsteroidDB(asteroid)
+    }
+
+    fun deleteAsteroidInDB(asteroid: AsteroidRoom){
+        listAllAsteroidsDB.remove(asteroid)
+        deleteAsteroidsDB(asteroid)
     }
 }

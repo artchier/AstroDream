@@ -11,6 +11,7 @@ import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.domain.Favorite
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import kotlinx.android.synthetic.main.item_fav.view.*
 
 class FavAdapter(
@@ -55,10 +56,10 @@ class FavAdapter(
                 text2 = favorite.date
             }
             "asteroid" -> {
-                val favorite = favsList[position] as Asteroid
-                img = favorite.linkExterno ?: ""
-                text1 = favorite.name
-                text2 = favorite.close_approach_data ?: ""
+                val favorite = favsList[position] as AsteroidRoom
+                img = ""
+                text1 = favorite.codeAsteroid
+                text2 = ""
             }
             // TODO: implementar uma classe Tech para saber se é patente, software ou spinoff
             "tech" -> {

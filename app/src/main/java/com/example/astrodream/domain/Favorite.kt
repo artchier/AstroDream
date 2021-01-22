@@ -4,7 +4,7 @@ package com.example.astrodream.domain
 // type         id                          data1               data2                       data3
 //-----------------------------------------------------------------------------------------------------------
 // "daily"      id do item na tabela db     Titulo da imagem    Dia                         url da imagem
-// "asteroid"   id do item na tabela db     Nome                Dia mais proximo da Terra   url da imagem
+// "asteroid"   id do item na tabela db     Nome                url                         descricao
 // "globe"      id do item na tabela db     Dia                 ---                         url da imagem
 // "tech"       id do item na tabela db     Tipo                Titulo                      url da imagem
 // "mars"       id do item na tabela db     Dia em Sol          Dia                         url da imagem

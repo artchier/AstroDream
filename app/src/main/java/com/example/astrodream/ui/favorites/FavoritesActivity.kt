@@ -15,8 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
-import com.example.astrodream.services.ServiceDBAsteroids
-import com.example.astrodream.services.ServiceDBAsteroidsImpl
+import com.example.astrodream.services.*
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_favorites.*
@@ -28,12 +27,15 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private lateinit var db: AppDatabase
+    private lateinit var repositoryDaily: ServiceDBDaily
+    private lateinit var repositoryTech: ServiceDatabaseTech
+    private lateinit var repositoryMars: ServiceDBMars
     private lateinit var repositoryAsteroid: ServiceDBAsteroids
 
     val viewModel by viewModels<FavViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return FavViewModel(repositoryAsteroid) as T
+                return FavViewModel(repositoryDaily, repositoryTech, repositoryMars) as T
             }
         }
     }
@@ -45,6 +47,9 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
         setUpMenuBehavior()
 
         db = AppDatabase.invoke(this)
+        repositoryDaily = ServiceDBImplementationDaily(db.dailyDAO())
+        repositoryTech = ServiceDatabaseImplementationTech(db.techDAO())
+        repositoryMars = ServiceDBImplementationMars(db.marsDAO())
         repositoryAsteroid = ServiceDBAsteroidsImpl(db.asteroidDAO())
 
         // Configuração do Navigation Component
@@ -63,6 +68,7 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
                     2 -> { viewModel.setFavType("tech") }
                     3 -> { viewModel.setFavType("mars") }
                 }
+
                 findNavController(R.id.navHostfragFavs).navigate(
                     R.id.favRecyclerFragment,
                     null,

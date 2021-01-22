@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "67163504194",
+    "project_id": "astrodream-10d6d",
+    "storage_bucket": "astrodream-10d6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67163504194:android:fcf80c8d21849a7a6777db",
+        "android_client_info": {
+          "package_name": "com.example.astrodream"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67163504194-qhspiuiosc0sfvt9k8j5mmt15p1i9o16.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.astrodream",
+            "certificate_hash": "3783af0bbb201f65d8434af6b13e3fce307a8a7d"
+          }
+        },
+        {
+          "client_id": "67163504194-hjucfh631cgv65fuegvfqbp51n016lg0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOQ5D6GjrY-NTLQEF_TOUrUJmNRLFNIVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67163504194-hjucfh631cgv65fuegvfqbp51n016lg0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

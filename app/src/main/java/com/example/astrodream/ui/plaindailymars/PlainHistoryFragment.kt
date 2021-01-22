@@ -6,14 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
+import com.example.astrodream.domain.PlainClass
 import kotlinx.android.synthetic.main.fragment_plain_history.*
 import kotlinx.android.synthetic.main.fragment_plain_history.view.*
 
-abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailListener {
+abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailListener, PlainAdapter.OnClickFavListener {
 
     private lateinit var actionListener: ActionListener
 
@@ -37,6 +39,7 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
         super.onViewCreated(view, savedInstanceState)
         
         viewModel.adapterHistory.listener = this
+        viewModel.adapterHistory.favListener = this
         view.rvHistory.adapter = viewModel.adapterHistory
 
         setUpScroller(view.rvHistory, view.rvHistory.layoutManager as GridLayoutManager)
@@ -67,6 +70,10 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
             viewModel.selectDetail(viewModel.adapterHistory.listHistory[position])
             actionListener.showDetailView()
         }
+    }
+
+    override fun onClickFav(detail: PlainClass, btnFav: ToggleButton) {
+        viewModel.favPlainDB(detail, btnFav, requireActivity())
     }
 
     private fun setUpScroller(recyclerView: RecyclerView, gridLayoutManager: GridLayoutManager) {

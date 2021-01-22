@@ -22,21 +22,21 @@ interface Service {
     @GET("planetary/apod")
     suspend fun getDaily(
         @Query("date") date: String,
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): NetworkResponse<PlainClass, DailyErrorResponse>
 
     /* ------------------------------------------- Mars ----------------------------------------- */
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
     suspend fun getMars(
         @Query("earth_date") date: String,
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): NetworkResponse<JsonObject, JsonObject>
 
     @GET("insight_weather/")
     suspend fun getMarsTemp(
         @Query("feedtype") feedtype: String,
         @Query("ver") ver: String,
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): NetworkResponse<JsonObject, JsonObject>
 
     /* ------------------------------------------- Asteroid ------------------------------------- */
@@ -44,7 +44,7 @@ interface Service {
     suspend fun getResults(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): JsonObject
 
     @GET("neo/rest/v1/feed")
@@ -55,7 +55,7 @@ interface Service {
 
     @GET("neo/rest/v1/neo/browse")
     suspend fun getAllAsteroids(
-        @Query("api_key")p0: String,
+        @Query("api_key")p0: String
     ): AsteroidRes
 
     @GET("neo/rest/v1/feed")
@@ -68,17 +68,17 @@ interface Service {
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")
     suspend fun getPatents(
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): Patent
 
     @GET("techtransfer/software/")
     suspend fun getSoftwares(
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): Software
 
     @GET("techtransfer/spinoff/")
     suspend fun getSpinoffs(
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): Spinoff
 
     /* ------------------------------------------ Globe ----------------------------------------- */
@@ -87,19 +87,19 @@ interface Service {
     suspend fun getEPIC(
         @Path("extension") extension: String,
         @Path("name") name: String,
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): Bitmap
 
     @GET("EPIC/api/natural/date/{chosenDate}")
     suspend fun getAllEPIC(
         @Path("chosenDate") chosenDate: String,
-        @Query("api_key") apikey: String = apikeyApp,
+        @Query("api_key") apikey: String = apiKeyApp
     ): JsonArray
 
 }
 
 @SuppressLint("SimpleDateFormat")
-fun buildGlobeImageUrl(date: Date, name: String, apikey: String = apikeyApp): String {
+fun buildGlobeImageUrl(date: Date, name: String, apikey: String = apiKeyApp): String {
     val dataFormatada = SimpleDateFormat("yyyy/MM/dd").format(date)
 
     return "${urlNasa}EPIC/archive/natural/$dataFormatada/png/$name.png?api_key=$apikey"

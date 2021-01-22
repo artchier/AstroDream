@@ -9,11 +9,11 @@ import com.example.astrodream.entitiesDatabase.AsteroidRoom
 @Dao
 interface AsteroidDAO {
     @Insert
-    suspend fun addAsteroid(asteroid: AsteroidRoom)
+    suspend fun addAsteroidRoom(asteroid: AsteroidRoom)
 
     @Query("SELECT * FROM asteroids")
-    suspend fun getAllAsteroidsFavs(): List<AsteroidRoom>
+    suspend fun getAllAsteroids(): List<AsteroidRoom>
 
     @Delete
-    suspend fun deleteAsteroid(asteroid: AsteroidRoom)
+    suspend fun deleteAsteroidRoom(asteroid: AsteroidRoom)
 }

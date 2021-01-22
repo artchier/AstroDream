@@ -1,5 +1,6 @@
 package com.example.astrodream.ui.dailyimage
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -20,6 +21,8 @@ import com.example.astrodream.services.ServiceDBImplementationDaily
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.plaindailymars.PlainActivity
 import com.example.astrodream.ui.plaindailymars.PlainActivityType
+import com.example.astrodream.services.cancelWallpaperChange
+import com.example.astrodream.services.scheduleWallpaperChange
 import com.example.astrodream.ui.plaindailymars.PlainDetailFragment
 import com.example.astrodream.ui.plaindailymars.PlainViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -59,10 +62,13 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
 
     override fun popView(view: View) {
         val img = if (plainDetail.url != "") { plainDetail.url } else { R.drawable.no_internet }
+
         view.tvTitle.text = plainDetail.title
+
         Glide.with(view).asBitmap()
             .load(img)
             .into(view.cvDaily)
+
         view.tvDate.text = plainDetail.date
 
         view.cvDaily.setOnClickListener {
@@ -75,10 +81,13 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
         }
 
         val dialogView = View.inflate(this.requireContext(), R.layout.dialog_info_daily, null)
+
         dialogView.tvInfoDaily.text = plainDetail.explanation
+
         val dialog = MaterialAlertDialogBuilder(this.requireContext())
             .setView(dialogView)
             .create()
+
         view.btnInfoDaily.setOnClickListener {
             if (plainDetail.explanation != "") { // plainDetail.explanation is not empty String when API request is successful
                 dialogView.btnOk.setOnClickListener {
@@ -91,6 +100,21 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
         view.btnFavDaily.isChecked = plainDetail.isFav
 //        viewModel.favDailyState(DailyRoom(plainDetail.title, plainDetail.date, plainDetail.explanation), view.btnFavDaily)
 
+        val prefs = requireActivity().getSharedPreferences("wallpaper_job", Context.MODE_PRIVATE)
+        val scheduled = prefs.getBoolean("scheduled", false)
+
+        view.checkDaily.isChecked = scheduled
+
+        view.checkDaily.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                scheduleWallpaperChange(requireContext())
+            }
+            else {
+                cancelWallpaperChange(requireContext())
+            }
     }
 
+            prefs.edit().putBoolean("scheduled", isChecked).apply()
+        }
+    }
 }

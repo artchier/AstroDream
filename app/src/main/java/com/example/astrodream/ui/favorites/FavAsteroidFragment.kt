@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.astrodream.R
+import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import kotlinx.android.synthetic.main.fragment_asteroid_favs.view.*
 
@@ -28,6 +29,9 @@ class FavAsteroidFragment : Fragment() {
         val descricao = asteroid.description
 
         view.nome_asteroid_favs.text = "Asteroide $name"
+        view.findViewById<View>(R.id.asteroid_favs_fragment).setOnClickListener {
+
+        }
 
         view.btn_ver_orbita_favs.setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)

@@ -5,8 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -20,12 +22,13 @@ import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.astrodream.R
+import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.domain.ExpandableListAdapter
-import com.example.astrodream.domain.util.AstroDreamUtil
-import com.example.astrodream.domain.util.formatDate
-import com.example.astrodream.domain.util.isSomeGroupExpandad
-import com.example.astrodream.domain.util.showDialogMessage
+import com.example.astrodream.domain.util.*
+import com.example.astrodream.entitiesDatabase.AsteroidRoom
+import com.example.astrodream.services.ServiceDBAsteroids
+import com.example.astrodream.services.ServiceDBAsteroidsImpl
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -34,11 +37,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.arrayListOf
-import kotlin.collections.forEach
-import kotlin.collections.linkedMapOf
-import kotlin.collections.mutableSetOf
 import kotlin.collections.set
+
 
 @Suppress("UNCHECKED_CAST")
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
@@ -48,13 +48,14 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     private val expandableListAdapter = ExpandableListAdapter(this)
     private lateinit var listView: ExpandableListView
     private lateinit var navController: NavController
-
+    private lateinit var db: AppDatabase
+    private lateinit var serviceDB: ServiceDBAsteroids
     private var listButtonsName = ArrayList<String>()
 
     private val viewModel by viewModels<AsteroidViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return AsteroidViewModel(service, this@AsteroidActivity) as T
+                return AsteroidViewModel(service, serviceDB, this@AsteroidActivity) as T
             }
         }
     }
@@ -69,6 +70,10 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             getString(R.string.button_1), getString(R.string.button_2),
             getString(R.string.button_3), getString(R.string.button_4)
         )
+
+        // ##### Opções de banco de dados #####
+        db = AppDatabase.invoke(this)
+        serviceDB = ServiceDBAsteroidsImpl(db.asteroidDAO())
 
         // ##### Opções de navigation da imagem de asteroides #####
         navController = findNavController(R.id.fl_imagem_asteroids)
@@ -96,6 +101,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         viewModel.listResults.observe(this) {
             listAllAsteroids.addAll(viewModel.listAsteroid)
             listFourAsteroids.addAll(viewModel.listAsteroid.subList(0, 4)) }
+        viewModel.getAllAsteroidsDB()
 
         // ##### Outras opções #####
         onGroupClickEvent()
@@ -106,24 +112,44 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickAsteroids(childPos: Int, groupPos: Int) {
         val asteroid = expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(childPos)
+        val isAsteroidInDB = viewModel.listAllAsteroidsDB.map { it.codeAsteroid }.contains(asteroid?.name)
 
         val view: View = this.layoutInflater.inflate(R.layout.asteroid_dialog, null)
+        val starFavorites = view.findViewById<View>(R.id.android_favs)
+
+        starFavorites.setBackgroundResource(if (isAsteroidInDB) R.drawable.ic_star_filled else R.drawable.ic_star_border)
 
         if (asteroid?.is_potentially_hazardous_asteroid!!)
             view.findViewById<TextView>(R.id.is_potentially_hazardous_asteroid).visibility = TextView.VISIBLE
 
-        view.findViewById<TextView>(R.id.nome_asteroid_dialog).text = asteroid.name
-        view.findViewById<TextView>(R.id.absolute_magnitude).text = getString(R.string.dialog_absolute_magnitude, asteroid.absolute_magnitude)
-        view.findViewById<TextView>(R.id.relative_velocity).text = getString(R.string.dialog_relative_velocity, asteroid.relative_velocity)
-        view.findViewById<TextView>(R.id.close_approach_data).text = getString(R.string.dialog_close_approach_data, asteroid.close_approach_data)
-        view.findViewById<TextView>(R.id.miss_distance).text = getString(R.string.dialog_miss_distance, asteroid.miss_distance)
-        view.findViewById<TextView>(R.id.orbiting_body).text = getString(R.string.dialog_orbiting_body, asteroid.orbiting_body)
-        view.findViewById<TextView>(R.id.estimated_diameter).text = getString(R.string.dialog_estimated_diameter, asteroid.estimated_diameter)
+        val listStrings = arrayOf(asteroid.name, asteroid.linkExterno.toString(),
+            getString(R.string.dialog_absolute_magnitude, asteroid.absolute_magnitude),
+            getString(R.string.dialog_relative_velocity, asteroid.relative_velocity),
+            getString(R.string.dialog_close_approach_data, asteroid.close_approach_data),
+            getString(R.string.dialog_miss_distance, asteroid.miss_distance),
+            getString(R.string.dialog_orbiting_body, asteroid.orbiting_body),
+            getString(R.string.dialog_estimated_diameter, asteroid.estimated_diameter))
+
+        view.findViewById<TextView>(R.id.nome_asteroid_dialog).text = listStrings[0]
+        view.findViewById<TextView>(R.id.absolute_magnitude).text = listStrings[2]
+        view.findViewById<TextView>(R.id.relative_velocity).text = listStrings[3]
+        view.findViewById<TextView>(R.id.close_approach_data).text = listStrings[4]
+        view.findViewById<TextView>(R.id.miss_distance).text = listStrings[5]
+        view.findViewById<TextView>(R.id.orbiting_body).text = listStrings[6]
+        view.findViewById<TextView>(R.id.estimated_diameter).text = listStrings[7]
 
         view.findViewById<TextView>(R.id.btn_ver_orbita).setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(asteroid.linkExterno)
+            i.data = Uri.parse(listStrings[1])
             startActivity(i)
+        }
+
+        starFavorites.setOnClickListener {
+            onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings)
+//            (view.parent as ViewGroup).removeView(view)
+//            onClickAsteroids(childPos, groupPos)
+            Log.i("TAG", "clicando")
+//            AstroDreamUtil.showDialogMessage(this, view)
         }
 
         AstroDreamUtil.showDialogMessage(this, view)
@@ -219,5 +245,23 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             }
             false
         }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun onAsteroidFavsClickEvent(view: View, isInDB: Boolean, vararg string: String){
+        val asteroid = getAsteroidRoom(*string)
+        if (!isInDB) {
+            view.setBackgroundResource(R.drawable.ic_star_filled)
+                viewModel.addAsteroidInDB(asteroid)
+        }
+        else {
+            view.setBackgroundResource(R.drawable.ic_star_border)
+                viewModel.deleteAsteroidInDB(asteroid)
+        }
+    }
+
+    fun getAsteroidRoom(vararg strings: String): AsteroidRoom{
+        val list = strings.toList().subList(2, strings.size).toTypedArray()
+        return AsteroidRoom(strings[0], strings[1], AstroDreamUtil.returnTextOf(*list))
     }
 }

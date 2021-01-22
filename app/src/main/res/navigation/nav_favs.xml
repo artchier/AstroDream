@@ -45,5 +45,5 @@
         android:id="@+id/asteroidOrbitFragment"
         android:name="com.example.astrodream.ui.favorites.FavAsteroidFragment"
         android:label="fragment_asteroid_orbit"
-        tools:layout="@layout/fragment_asteroid_orbit" />
+        tools:layout="@layout/fragment_asteroid_favs" />
 </navigation>

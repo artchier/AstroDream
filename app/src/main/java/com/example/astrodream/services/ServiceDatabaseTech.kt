@@ -10,12 +10,12 @@ interface ServiceDatabaseTech {
 
     suspend fun getAllTechnologiesTask(): List<Tech>
 
-    suspend fun getTechByCodeTask(codReference: String): Tech
+    suspend fun getTechByCodeTask(codReference: String): Tech?
 
     suspend fun deleteAllTechnologiesTask()
 }
 
-class ServiceDatabaseImplementationTech(val techDAO: TechDAO) : ServiceDatabaseTech {
+class ServiceDatabaseImplementationTech(private val techDAO: TechDAO) : ServiceDatabaseTech {
     override suspend fun addTechTask(tech: Tech) {
         techDAO.addTech(tech)
     }
@@ -28,7 +28,7 @@ class ServiceDatabaseImplementationTech(val techDAO: TechDAO) : ServiceDatabaseT
         return techDAO.getAllTechnologies()
     }
 
-    override suspend fun getTechByCodeTask(codReference: String): Tech {
+    override suspend fun getTechByCodeTask(codReference: String): Tech? {
         return techDAO.getTechByCode(codReference)
     }
 

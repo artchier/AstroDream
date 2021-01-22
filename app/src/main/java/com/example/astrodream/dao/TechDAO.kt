@@ -17,7 +17,7 @@ interface TechDAO {
     suspend fun getAllTechnologies(): List<Tech>
 
     @Query("SELECT * FROM technologies WHERE codReferenceTech LIKE :codReference")
-    suspend fun getTechByCode(codReference: String): Tech
+    suspend fun getTechByCode(codReference: String): Tech?
 
     @Query("DELETE FROM technologies")
     suspend fun deleteAllTechnologies()

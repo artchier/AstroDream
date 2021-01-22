@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.astrodream.dao.AvatarDAO
 import com.example.astrodream.dao.DailyDAO
 import com.example.astrodream.dao.MarsDAO
+import com.example.astrodream.dao.AsteroidDAO
 import com.example.astrodream.dao.TechDAO
 import com.example.astrodream.entitiesDatabase.*
 
@@ -15,7 +16,8 @@ import com.example.astrodream.entitiesDatabase.*
         MarsRoom::class,
         MarsPicRoom::class,
         DailyRoom::class,
-        Avatar::class],
+        Avatar::class,
+        AsteroidRoom::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -24,6 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun marsDAO(): MarsDAO
     abstract fun dailyDAO(): DailyDAO
     abstract fun avatarDAO(): AvatarDAO
+    abstract fun asteroidDAO(): AsteroidDAO
 
     companion object {
         @Volatile

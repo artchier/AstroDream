@@ -30,11 +30,12 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
     private lateinit var repositoryDaily: ServiceDBDaily
     private lateinit var repositoryTech: ServiceDatabaseTech
     private lateinit var repositoryMars: ServiceDBMars
+    private lateinit var repositoryAsteroid: ServiceDBAsteroids
 
     val viewModel by viewModels<FavViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return FavViewModel(repositoryDaily, repositoryTech, repositoryMars) as T
+                return FavViewModel(repositoryDaily, repositoryTech, repositoryMars, repositoryAsteroid) as T
             }
         }
     }
@@ -49,6 +50,7 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
         repositoryDaily = ServiceDBImplementationDaily(db.dailyDAO())
         repositoryTech = ServiceDatabaseImplementationTech(db.techDAO())
         repositoryMars = ServiceDBImplementationMars(db.marsDAO())
+        repositoryAsteroid = ServiceDBAsteroidsImpl(db.asteroidDAO())
 
         // Configuração do Navigation Component
         navController = findNavController(R.id.navHostfragFavs) // Container dos fragments
@@ -83,7 +85,6 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
 
         // Configurações da tab inferior
         configBottomTabs()
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

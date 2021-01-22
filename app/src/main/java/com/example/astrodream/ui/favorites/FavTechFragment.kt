@@ -40,7 +40,7 @@ class FavTechFragment : Fragment() {
         }
     }
 
-    val viewModelFav: FavViewModel by activityViewModels()
+    private val viewModelFav: FavViewModel by activityViewModels()
 
     lateinit var tech: Tech
 
@@ -51,14 +51,6 @@ class FavTechFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_details_tech, container, false)
 
         tech = viewModelFav.detail.value as Tech
-
-//        if (tech[10] != "") {
-//            Glide.with(contextTechActivity).asBitmap()
-//                .load(tech[10])
-//                .into(view.ivTech)
-//        } else {
-//            view.ivTech.setImageResource(R.drawable.ic_tecnologia)
-//        }
 
         view.ivTech.setImageResource(R.drawable.ic_tecnologia)
 

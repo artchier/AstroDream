@@ -24,6 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.lang.StringBuilder
 
 class AstroDreamUtil {
     companion object
@@ -145,4 +146,10 @@ fun ExpandableListView.isSomeGroupExpandad(): Boolean {
     if (this.isGroupExpanded(0) || this.isGroupExpanded(1) ||
             this.isGroupExpanded(2) || this.isGroupExpanded(3)) return true
     return false
+}
+
+fun AstroDreamUtil.Companion.returnTextOf(vararg string: String): String{
+    val sb = StringBuilder()
+    string.forEach { sb.append("\n$it") }
+    return sb.toString()
 }

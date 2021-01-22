@@ -249,7 +249,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun onAsteroidFavsClickEvent(view: View, isInDB: Boolean, vararg string: String){
-        val asteroid = AsteroidRoom(string[0], string[1], AstroDreamUtil.returnTextOf(*string))
+        val asteroid = getAsteroidRoom(*string)
         if (!isInDB) {
             view.setBackgroundResource(R.drawable.ic_star_filled)
                 viewModel.addAsteroidInDB(asteroid)
@@ -260,9 +260,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
     }
 
-//    private fun isAsteroidInDB(name: String): Boolean{
-//        viewModel.getOneAsteroidDB(name)
-//        val asteroidDB: AsteroidRoom? = viewModel.oneAsteroid
-//        return asteroidDB != null
-//    }
+    fun getAsteroidRoom(vararg strings: String): AsteroidRoom{
+        val list = strings.toList().subList(2, strings.size).toTypedArray()
+        return AsteroidRoom(strings[0], strings[1], AstroDreamUtil.returnTextOf(*list))
+    }
 }

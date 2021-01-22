@@ -27,7 +27,7 @@ class FavAsteroidFragment : Fragment() {
         val url = asteroid.urlOrbit
         val descricao = asteroid.description
 
-        view.nome_asteroid_favs.text = "Asteroide ($name)"
+        view.nome_asteroid_favs.text = "Asteroide $name"
 
         view.btn_ver_orbita_favs.setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)

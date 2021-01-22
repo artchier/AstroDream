@@ -13,6 +13,7 @@ import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.domain.Favorite
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.entitiesDatabase.DailyRoom
+import com.example.astrodream.entitiesDatabase.MarsRoom
 import kotlinx.android.synthetic.main.item_fav.view.*
 import java.io.File
 

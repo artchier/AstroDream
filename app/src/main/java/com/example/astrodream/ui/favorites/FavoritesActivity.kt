@@ -66,6 +66,7 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
                     2 -> { viewModel.setFavType("tech") }
                     3 -> { viewModel.setFavType("mars") }
                 }
+
                 findNavController(R.id.navHostfragFavs).navigate(
                     R.id.favRecyclerFragment,
                     null,

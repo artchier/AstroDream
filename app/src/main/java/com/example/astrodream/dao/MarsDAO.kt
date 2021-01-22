@@ -1,9 +1,8 @@
 package com.example.astrodream.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import com.example.astrodream.entitiesDatabase.AllPicsFromDate
+import com.example.astrodream.entitiesDatabase.MarsPicRoom
 import com.example.astrodream.entitiesDatabase.MarsRoom
 
 @Dao
@@ -19,4 +18,11 @@ interface MarsDAO {
 
     @Delete
     suspend fun deleteMars(mars: MarsRoom)
+
+    @Insert
+    suspend fun addMarsPic(marsPic: MarsPicRoom)
+
+    @Transaction
+    @Query("SELECT * FROM mars WHERE earth_date = :date")
+    suspend fun getMarsPicsAtDate(date: String): AllPicsFromDate
 }

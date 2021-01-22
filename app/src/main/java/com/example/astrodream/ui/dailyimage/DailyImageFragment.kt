@@ -112,7 +112,6 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
             else {
                 cancelWallpaperChange(requireContext())
             }
-    }
 
             prefs.edit().putBoolean("scheduled", isChecked).apply()
         }

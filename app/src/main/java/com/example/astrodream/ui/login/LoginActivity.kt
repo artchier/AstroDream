@@ -1,11 +1,14 @@
 package com.example.astrodream.ui.login
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.example.astrodream.R
+import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -13,9 +16,16 @@ class LoginActivity : AppCompatActivity() {
     private var insertedEmail = ""
     private var insertedPassword= ""
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            startActivity(Intent(this, InitialActivity::class.java))
+            finish()
+        }
 
         callFragLogin()
 

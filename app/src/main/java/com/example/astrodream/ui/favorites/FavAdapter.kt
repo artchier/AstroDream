@@ -1,5 +1,6 @@
 package com.example.astrodream.ui.favorites
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,10 @@ import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.domain.Favorite
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.entitiesDatabase.DailyRoom
+import com.example.astrodream.entitiesDatabase.MarsRoom
 import kotlinx.android.synthetic.main.item_fav.view.*
+import java.io.File
 
 class FavAdapter(
     private val favsList: List<Any>,
@@ -44,12 +48,13 @@ class FavAdapter(
     }
 
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
-        var img: Any = ""
+        var img: String = ""
         var text1 = ""
         var text2 = ""
         when(type) {
             "daily" -> {
-                val favorite = favsList[position] as PlainClass
+                val favRoom = favsList[position] as DailyRoom
+                val favorite = PlainClass(title = favRoom.title, date = favRoom.date, url = favRoom.url, explanation = favRoom.explanation)
                 img = favorite.url
                 text1 = favorite.title
                 text2 = favorite.date
@@ -64,9 +69,9 @@ class FavAdapter(
             "tech" -> {
                 val favorite = favsList[position] as List<*>
                 img = if(favorite[10] != "") {
-                    favorite[10]!!
+                    favorite[10]!!.toString()
                 } else {
-                    R.drawable.ic_tecnologia
+                    R.drawable.ic_tecnologia.toString()
                 }
                 text1 = "Patente"
                 text2 = favorite[2] as String
@@ -80,13 +85,15 @@ class FavAdapter(
         }
 
         // Pega a imagem do favorito e coloca na ImageView
-        Glide.with(holder.itemView).asBitmap()
+        Glide.with(holder.itemView)
             .load(img)
             .into(holder.ivFav)
         // Preenche o primeiro TextView
         holder.tv1Fav.text = text1
         // Preenche o segundo TextView
         holder.tv2Fav.text = text2
+
+        Log.i("===FAVADAPTER==", "${File(img)}")
     }
 
     override fun getItemCount() = favsList.size

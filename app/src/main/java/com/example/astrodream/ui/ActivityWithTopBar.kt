@@ -19,13 +19,17 @@ import com.example.astrodream.ui.dailyimage.DailyImageActivity
 import com.example.astrodream.ui.favorites.FavoritesActivity
 import com.example.astrodream.ui.globe.GlobeActivity
 import com.example.astrodream.ui.initial.InitialActivity
+import com.example.astrodream.ui.login.LoginActivity
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.userconfig.UserConfigActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
+import kotlinx.android.synthetic.main.lateral_menu.*
 
 abstract class ActivityWithTopBar(
     private val toolbarTiteTitleId: Int,
@@ -114,6 +118,11 @@ abstract class ActivityWithTopBar(
                 )
                 .setView(R.layout.astrodialog)
                 .show()
+        }
+
+        btnLogout.setOnClickListener {
+            Firebase.auth.signOut()
+            goToActivityIfNotAlreadyThere(LoginActivity::class.java)
         }
     }
 

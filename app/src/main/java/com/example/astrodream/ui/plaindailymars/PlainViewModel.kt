@@ -49,20 +49,19 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
 
 
     fun populateList() {
-
         hasOngoingRequest.value = true
         adapterHistory.addList(emptyDummyList)
 
         viewModelScope.launch {
             when(type) {
                 PlainActivityType.Initial -> {
-                    fetchDailyImage()
+                    fetchDailyImage(date)
                     focusResult.value = detail
                 }
 
                 PlainActivityType.DailyImage -> {
                     for (i in 1..timesToFetch) {
-                        fetchDailyImage()
+                        fetchDailyImage(date)
                     }
                 }
 
@@ -77,13 +76,12 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
         }
     }
 
-    private suspend fun fetchDailyImage() {
+    private suspend fun fetchDailyImage(date: LocalDate) {
         when (val response = service.getDaily(date.toString())) {
             is NetworkResponse.Success -> {
                 // Handle successful response
                 if ((response.body.url).contains("youtube")) {
-                    date = date.minusDays(1)
-                    fetchDailyImage()
+                    fetchDailyImage(date.minusDays(1))
                 } else {
                     detail = response.body
                     detail.date = date.format(dateFormatter).toString()
@@ -92,13 +90,12 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType):
                         focusResult.value = detailRoot
                     }
                     adapterHistory.replaceItem(detail)
-                    date = date.minusDays(1)
+                    this.date = date.minusDays(1)
                 }
             }
             is NetworkResponse.ServerError -> {
                 // Handle server error (unavailable date falls into ServerError)
-                date = date.minusDays(1)
-                fetchDailyImage()
+                fetchDailyImage(date.minusDays(1))
             }
             is NetworkResponse.NetworkError -> {
                 // Handle network error

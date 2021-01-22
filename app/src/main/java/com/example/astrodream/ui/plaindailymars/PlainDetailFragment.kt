@@ -22,7 +22,7 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
 
         val contextActivity = this.requireActivity()
 
-        if ( contextActivity is PlainActivity ) {
+        if (contextActivity is PlainActivity) {
             val viewModel: PlainViewModel by activityViewModels()
 
             viewModel.focusResult.observe(viewLifecycleOwner) {

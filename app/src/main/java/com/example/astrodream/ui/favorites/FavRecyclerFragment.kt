@@ -14,7 +14,7 @@ import com.example.astrodream.R
 import kotlinx.android.synthetic.main.fragment_fav_recycler.*
 import kotlinx.android.synthetic.main.fragment_fav_recycler.view.*
 
-class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
+class FavRecyclerFragment() : Fragment(), FavAdapter.OnClickFavListener {
 
     private lateinit var listFavs: List<Any>  // TODO: criar sealed class??
     private lateinit var adapterFav: FavAdapter

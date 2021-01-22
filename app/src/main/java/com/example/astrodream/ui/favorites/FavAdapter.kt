@@ -1,5 +1,6 @@
 package com.example.astrodream.ui.favorites
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import com.example.astrodream.domain.Asteroid
-import com.example.astrodream.domain.Favorite
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import kotlinx.android.synthetic.main.item_fav.view.*
@@ -57,7 +56,7 @@ class FavAdapter(
             }
             "asteroid" -> {
                 val favorite = favsList[position] as AsteroidRoom
-                img = ""
+                img = R.drawable.asteroide
                 text1 = favorite.codeAsteroid
                 text2 = ""
             }

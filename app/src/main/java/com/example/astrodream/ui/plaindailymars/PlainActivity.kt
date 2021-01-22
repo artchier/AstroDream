@@ -3,7 +3,6 @@ package com.example.astrodream.ui.plaindailymars
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.graphics.drawable.DrawableCompat
@@ -13,7 +12,8 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.astrodream.R
-import com.example.astrodream.services.service
+import com.example.astrodream.database.AppDatabase
+import com.example.astrodream.services.*
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,7 +22,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 import kotlinx.android.synthetic.main.activity_plain.*
 import kotlinx.android.synthetic.main.dialog_info_daily.view.*
-import kotlinx.android.synthetic.main.fragment_daily.view.*
 
 abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType) :
     ActivityWithTopBar(toolbarTitleString, R.id.dlPlain), PlainHistoryFragment.ActionListener {
@@ -35,10 +34,19 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     */
     constructor() : this(0, PlainActivityType.DailyImage)
 
+    private lateinit var db: AppDatabase
+    private lateinit var repositoryDaily: ServiceDBDaily
+    private lateinit var repositoryMars: ServiceDBMars
+
     val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return PlainViewModel(service, type) as T
+                if(type == PlainActivityType.DailyImage) {
+                    return PlainViewModel(service, type, repositoryDaily) as T
+                }
+                else {
+                    return PlainViewModel(service, type, repositoryMars) as T
+                }
             }
         }
     }
@@ -47,6 +55,13 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plain)
         setUpMenuBehavior()
+
+        db = AppDatabase.invoke(this)
+        if(type == PlainActivityType.DailyImage) {
+            repositoryDaily = ServiceDBImplementationDaily(db.dailyDAO())
+        } else if(type == PlainActivityType.Mars) {
+            repositoryMars = ServiceDBImplementationMars(db.marsDAO())
+        }
 
         AndroidThreeTen.init(this)
 

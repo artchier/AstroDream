@@ -7,6 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.transformDailyDBClassToPlain
+import com.example.astrodream.domain.util.transformMarsDBClassToPlain
+import com.example.astrodream.entitiesDatabase.DailyRoom
+import com.example.astrodream.entitiesDatabase.MarsRoom
 import com.example.astrodream.ui.favorites.FavViewModel
 
 abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
@@ -31,7 +36,15 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
             }
         } else {
             val viewModel: FavViewModel by activityViewModels()
-            plainDetail = (viewModel.detail.value as PlainClass?)!!
+            if(viewModel.favType.value == "daily") {
+                val dailyRoom = viewModel.detail.value as DailyRoom
+                plainDetail =
+                    AstroDreamUtil.transformDailyDBClassToPlain(dailyRoom).apply { isFav = true }
+            }
+            if(viewModel.favType.value == "mars") {
+                val marsRoom = viewModel.detail.value as PlainClass
+                plainDetail = marsRoom
+            }
             popView(view)
         }
 
@@ -39,4 +52,5 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
     }
 
     abstract fun popView(view: View)
+
 }

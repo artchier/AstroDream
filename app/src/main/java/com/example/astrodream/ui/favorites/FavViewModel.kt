@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class FavViewModel(val asteroidRepository: ServiceDBAsteroids): ViewModel() {
 
     var detail = MutableLiveData<Any>() // TODO: criar sealed class??
-    var favType = MutableLiveData("asteroid")
+    var favType = MutableLiveData("daily")
     var favList = MutableLiveData<List<Any>>()
     var hasOngoingQuery = MutableLiveData(false)
 

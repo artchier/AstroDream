@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -12,6 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.astrodream.R
+import com.example.astrodream.database.AppDatabase
+import com.example.astrodream.services.ServiceDBAsteroids
+import com.example.astrodream.services.ServiceDBAsteroidsImpl
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_favorites.*
@@ -22,13 +27,25 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    val viewModel: FavViewModel by viewModels()
+    private lateinit var db: AppDatabase
+    private lateinit var repositoryAsteroid: ServiceDBAsteroids
+
+    val viewModel by viewModels<FavViewModel> {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return FavViewModel(repositoryAsteroid) as T
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
 
         setUpMenuBehavior()
+
+        db = AppDatabase.invoke(this)
+        repositoryAsteroid = ServiceDBAsteroidsImpl(db.asteroidDAO())
 
         // Configuração do Navigation Component
         navController = findNavController(R.id.navHostfragFavs) // Container dos fragments

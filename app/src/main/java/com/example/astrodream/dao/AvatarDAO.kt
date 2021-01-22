@@ -16,8 +16,11 @@ interface AvatarDAO {
     suspend fun buyAvatar(avatar: Avatar)
 
     @Update
-    suspend fun updateLastClickedAvatar(avatar1: Avatar, avatar2: Avatar)
+    suspend fun updateLastClickedAvatar(newAvatar: Avatar, oldAvatar: Avatar)
 
-    @Query("SELECT * FROM avatar ORDER by price")
+    @Query("SELECT * FROM avatar WHERE lastClicked = :lastClicked")
+    suspend fun getLastClickedAvatar(lastClicked: String = "true"): Avatar
+
+    @Query("SELECT * FROM avatar")
     suspend fun getAllAvatars(): List<Avatar>?
 }

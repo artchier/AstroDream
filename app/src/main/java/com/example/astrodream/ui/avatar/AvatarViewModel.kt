@@ -1,10 +1,10 @@
 package com.example.astrodream.ui.avatar
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.entitiesDatabase.Avatar
 import com.example.astrodream.services.AvatarServiceImplementation
@@ -19,10 +19,24 @@ class AvatarViewModel(application: Application) : AndroidViewModel(application) 
         get() = listAvatars
 
     var lastClickedAvatar = MutableLiveData<Avatar>()
+    private val _lastClickedAvatar: MutableLiveData<Avatar>
+        get() = lastClickedAvatar
 
-    fun addAllAvatarsTask(avatars: List<Avatar>) {
+    fun addAllAvatarsTask() {
+        listAvatars.value = listOf(
+            Avatar(R.drawable.ic_avatar_normal1, 100, "true", "false"),
+            Avatar(R.drawable.ic_avatar_normal2, 100, "true", "false"),
+            Avatar(R.drawable.ic_avatar_normal3, 100, "true", "false"),
+            Avatar(R.drawable.ic_avatar_normal5, 100, "true", "false"),
+            Avatar(R.drawable.ic_avatar_normal4, 200, "true", "false"),
+            Avatar(R.drawable.ic_avatar_suit, 200, "true", "false"),
+            Avatar(R.drawable.ic_avatar_naked, 300, "true", "false"),
+            Avatar(R.drawable.ic_avatar_nuts, 300, "true", "false"),
+            Avatar(R.drawable.ic_avatar_alien, 350, "true", "false"),
+            Avatar(R.drawable.ic_avatar_astronaut, 350, "true", "false")
+        )
         viewModelScope.launch {
-            avatarService.addAllAvatarsTask(avatars)
+            avatarService.addAllAvatarsTask(_listAvatars.value!!)
         }
     }
 
@@ -38,9 +52,15 @@ class AvatarViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun updateLastClickedAvatarTask(avatar1: Avatar, avatar2: Avatar){
-        viewModelScope.launch{
-            avatarService.updateLastClickedAvatarTask(avatar1, avatar2)
+    fun getLastClickedAvatarTask() {
+        viewModelScope.launch {
+            _lastClickedAvatar.value = avatarService.getLastClickedAvatarTask()
+        }
+    }
+
+    fun updateLastClickedAvatarTask(newAvatar: Avatar, oldAvatar: Avatar) {
+        viewModelScope.launch {
+            avatarService.updateLastClickedAvatarTask(newAvatar, oldAvatar)
         }
     }
 }

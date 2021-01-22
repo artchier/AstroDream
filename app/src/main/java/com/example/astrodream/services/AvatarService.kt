@@ -1,7 +1,5 @@
 package com.example.astrodream.services
 
-import androidx.room.Query
-import androidx.room.Update
 import com.example.astrodream.dao.AvatarDAO
 import com.example.astrodream.entitiesDatabase.Avatar
 
@@ -11,7 +9,9 @@ interface AvatarService {
 
     suspend fun buyAvatarTask(avatar: Avatar)
 
-    suspend fun updateLastClickedAvatarTask(avatar1: Avatar, avatar2: Avatar)
+    suspend fun updateLastClickedAvatarTask(newAvatar: Avatar, oldAvatar: Avatar)
+
+    suspend fun getLastClickedAvatarTask(): Avatar
 
     suspend fun getAllAvatarsTask(): List<Avatar>?
 }
@@ -25,8 +25,12 @@ class AvatarServiceImplementation(private val avatarDAO: AvatarDAO) : AvatarServ
         avatarDAO.buyAvatar(avatar)
     }
 
-    override suspend fun updateLastClickedAvatarTask(avatar1: Avatar, avatar2: Avatar) {
-        avatarDAO.updateLastClickedAvatar(avatar1, avatar2)
+    override suspend fun updateLastClickedAvatarTask(newAvatar: Avatar, oldAvatar: Avatar) {
+        avatarDAO.updateLastClickedAvatar(newAvatar, oldAvatar)
+    }
+
+    override suspend fun getLastClickedAvatarTask(): Avatar {
+        return avatarDAO.getLastClickedAvatar()
     }
 
     override suspend fun getAllAvatarsTask(): List<Avatar>? {

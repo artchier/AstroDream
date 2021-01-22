@@ -1,7 +1,6 @@
 package com.example.astrodream.ui
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
@@ -29,7 +28,6 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
-import kotlinx.android.synthetic.main.lateral_menu.*
 
 abstract class ActivityWithTopBar(
     private val toolbarTiteTitleId: Int,
@@ -74,6 +72,7 @@ abstract class ActivityWithTopBar(
         val btnFavoritos = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnFavoritos)
         val btnConfig = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnConfig)
         val btnSobre = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnSobre)
+        val btnLogout = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnLogout)
 
         btnAvatar.setOnClickListener {
             goToActivityIfNotAlreadyThere(AvatarActivity::class.java)

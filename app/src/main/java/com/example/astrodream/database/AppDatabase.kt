@@ -4,20 +4,26 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.astrodream.dao.AvatarDAO
 import com.example.astrodream.dao.DailyDAO
 import com.example.astrodream.dao.MarsDAO
 import com.example.astrodream.dao.TechDAO
-import com.example.astrodream.entitiesDatabase.DailyRoom
-import com.example.astrodream.entitiesDatabase.MarsPicRoom
-import com.example.astrodream.entitiesDatabase.MarsRoom
-import com.example.astrodream.entitiesDatabase.Tech
+import com.example.astrodream.entitiesDatabase.*
 
-@Database(entities = [Tech::class, MarsRoom::class, MarsPicRoom::class, DailyRoom::class], version = 1)
+@Database(
+    entities = [Tech::class,
+        MarsRoom::class,
+        MarsPicRoom::class,
+        DailyRoom::class,
+        Avatar::class],
+    version = 1
+)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun techDAO(): TechDAO
     abstract fun marsDAO(): MarsDAO
     abstract fun dailyDAO(): DailyDAO
+    abstract fun avatarDAO(): AvatarDAO
 
     companion object {
         @Volatile

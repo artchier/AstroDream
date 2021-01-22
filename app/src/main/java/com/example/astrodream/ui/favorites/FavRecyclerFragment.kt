@@ -14,7 +14,7 @@ import com.example.astrodream.R
 import kotlinx.android.synthetic.main.fragment_fav_recycler.*
 import kotlinx.android.synthetic.main.fragment_fav_recycler.view.*
 
-class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
+class FavRecyclerFragment : Fragment() {
 
     private lateinit var listFavs: List<Any>  // TODO: criar sealed class??
     private lateinit var adapterFav: FavAdapter
@@ -26,7 +26,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_fav_recycler, container, false)
 
@@ -43,7 +43,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
                 if(it != null && !viewModel.hasOngoingQuery.value!!) {
                     listFavs = it
                     // Atualiza o adapter de acordo com a tab selecionada
-                    adapterFav = FavAdapter(listFavs, this, type)
+                    adapterFav = FavAdapter(listFavs, this::onClickFav, type)
                     // Atribui o adapter criado acima ao adapter do RecyclerView
                     view.rvFav.adapter = adapterFav
                     // Cria o layout do RecyclerView
@@ -61,8 +61,7 @@ class FavRecyclerFragment : Fragment(), FavAdapter.OnClickFavListener {
         recyclerViewState = rvFav.layoutManager?.onSaveInstanceState()!!
     }
 
-    override fun onClickFav(position: Int) {
-
+    private fun onClickFav(position: Int) {
         // Pega a posição do favorito clicado
         viewModel.selectDetail(listFavs[position])
 

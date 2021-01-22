@@ -9,7 +9,7 @@ import com.example.astrodream.services.ServiceDatabaseTech
 import kotlinx.coroutines.launch
 
 class DetailsTechViewModel(var serviceDatabaseTech: ServiceDatabaseTech, val context: Context) : ViewModel(){
-    val listTech = MutableLiveData<List<Tech>>()
+    private val listTech = MutableLiveData<List<Tech>>()
     val tech = MutableLiveData<Tech>()
     val isFav = MutableLiveData<Boolean>()
 

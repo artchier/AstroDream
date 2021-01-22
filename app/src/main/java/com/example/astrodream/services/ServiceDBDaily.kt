@@ -10,7 +10,7 @@ interface ServiceDBDaily: ServiceDB {
     suspend fun deleteDailyTask(daily: DailyRoom)
 }
 
-class ServiceDBImplementationDaily(val dailyDAO: DailyDAO) : ServiceDBDaily {
+class ServiceDBImplementationDaily(private val dailyDAO: DailyDAO) : ServiceDBDaily {
     override suspend fun addDailyTask(daily: DailyRoom) {
         dailyDAO.addDaily(daily)
     }

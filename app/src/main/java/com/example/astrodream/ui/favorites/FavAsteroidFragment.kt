@@ -20,7 +20,7 @@ class FavAsteroidFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_asteroid_favs, container, false)
 
         val asteroid = viewModel.detail.value as AsteroidRoom

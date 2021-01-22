@@ -21,13 +21,9 @@ import java.io.File
 
 class FavAdapter(
     private val favsList: List<Any>,
-    val listener: OnClickFavListener,
+    val onClickFav: (Int) -> Unit,
     val type: String
 ): RecyclerView.Adapter<FavAdapter.FavViewHolder>() {
-
-    interface OnClickFavListener {
-        fun onClickFav(position: Int)
-    }
 
     inner class FavViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var ivFav : ImageView = itemView.ivFav
@@ -39,7 +35,7 @@ class FavAdapter(
         override fun onClick(v: View?) {
             val position = adapterPosition // posição do item que será clicado
             if(position != RecyclerView.NO_POSITION)
-                listener.onClickFav(position)
+                onClickFav(position)
         }
     }
 
@@ -50,7 +46,8 @@ class FavAdapter(
     }
 
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
-        var img: String = ""
+        var img = ""
+        var iconId = 0
         var text1 = ""
         var text2 = ""
         when(type) {
@@ -63,16 +60,13 @@ class FavAdapter(
             }
             "asteroid" -> {
                 val favorite = favsList[position] as AsteroidRoom
-                img = R.drawable.asteroide
+                iconId = R.drawable.asteroide
                 text1 = favorite.codeAsteroid
                 text2 = ""
             }
             "tech" -> {
                 val favorite = favsList[position] as Tech
-
-                // img = if(favorite[10] != "") favorite[10]!!.toString() else R.drawable.ic_tecnologia.toString()
-
-                img = "https://lh3.googleusercontent.com/proxy/ntdtUa7YalOxdtRCagcpxwy6r98mY5PUA2e1cITfc9h1PZc0TQ7JS66hl9f5wjVUMeUPf9JR9Gp74vswb2jWmFRqyvO2x8AxliPeRxMnu7ksqRUq4OxWaPvvkE384BENmTPHGqmYeb8j"
+                iconId = R.drawable.ic_tecnologia
                 text1 = favorite.typeTech
                 text2 = favorite.titleTech
             }
@@ -85,9 +79,14 @@ class FavAdapter(
         }
 
         // Pega a imagem do favorito e coloca na ImageView
-        Glide.with(holder.itemView)
-            .load(img)
-            .into(holder.ivFav)
+        if (img != "") {
+            Glide.with(holder.itemView)
+                .load(img)
+                .into(holder.ivFav)
+        }
+        else {
+            holder.ivFav.setImageResource(iconId)
+        }
         // Preenche o primeiro TextView
         holder.tv1Fav.text = text1
         // Preenche o segundo TextView

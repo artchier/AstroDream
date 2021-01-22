@@ -39,10 +39,7 @@ class AsteroidViewModel(
     suspend fun doInBackground() {
         viewModelScope.launch {
             val listAsteroids =
-                serviceAPI.getAsteroidsDate(
-                    LocalDate.now().toString(),
-                    context.getString(R.string.api_key)
-                )
+                serviceAPI.getAsteroidsDate(LocalDate.now().toString())
 
             listAsteroids.near_earth_objects.keySet().toList().forEach {
                 val list = Gson().fromJson(

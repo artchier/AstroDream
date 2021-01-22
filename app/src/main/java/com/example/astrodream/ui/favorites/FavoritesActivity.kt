@@ -35,7 +35,7 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
     val viewModel by viewModels<FavViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return FavViewModel(repositoryDaily, repositoryTech, repositoryMars) as T
+                return FavViewModel(repositoryDaily, repositoryTech, repositoryMars, repositoryAsteroid) as T
             }
         }
     }
@@ -85,7 +85,6 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
 
         // Configurações da tab inferior
         configBottomTabs()
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

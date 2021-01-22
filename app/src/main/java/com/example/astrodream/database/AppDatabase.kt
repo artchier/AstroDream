@@ -16,8 +16,8 @@ import com.example.astrodream.entitiesDatabase.*
         MarsRoom::class,
         MarsPicRoom::class,
         DailyRoom::class,
-        Avatar::class],
-        AsteroidRoom::class,
+        Avatar::class,
+        AsteroidRoom::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {

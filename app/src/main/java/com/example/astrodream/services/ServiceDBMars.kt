@@ -16,7 +16,7 @@ interface ServiceDBMars: ServiceDB {
     suspend fun getMarsPicsAtDateTask(date: String): AllPicsFromDate
 }
 
-class ServiceDBImplementationMars(val marsDAO: MarsDAO) : ServiceDBMars {
+class ServiceDBImplementationMars(private val marsDAO: MarsDAO) : ServiceDBMars {
     override suspend fun addMarsTask(mars: MarsRoom) {
         marsDAO.addMars(mars)
     }

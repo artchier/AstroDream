@@ -1,11 +1,12 @@
-package com.example.astrodream.ui.tech
+package com.example.astrodream.ui.tech.detailsTech
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,23 +14,25 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.entitiesDatabase.Tech
-import com.example.astrodream.services.ServiceDatabase
+import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
+import com.example.astrodream.ui.tech.TechActivity
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
+
 
 class DetailsTechFragment : Fragment() {
     private lateinit var contextTechActivity: TechActivity
 
     private lateinit var db: AppDatabase
-    private lateinit var serviceDatabase: ServiceDatabase
+    private lateinit var serviceDatabaseTech: ServiceDatabaseTech
 
     private lateinit var techPiece: ArrayList<String>
 
     private val viewModel by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailsTechViewModel(serviceDatabase) as T
+                return DetailsTechViewModel(serviceDatabaseTech, contextTechActivity) as T
             }
         }
     }
@@ -65,13 +68,29 @@ class DetailsTechFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         db = AppDatabase.invoke(contextTechActivity)
-        serviceDatabase = ServiceDatabaseImplementationTech(db.techDAO())
+        serviceDatabaseTech = ServiceDatabaseImplementationTech(db.techDAO())
 
-        btnFavorTech.setOnClickListener {
-            viewModel.addTechDB(Tech(techPiece[1], techPiece[2], techPiece[3]))
+        viewModel.getTechByCodeDB(techPiece[1])
+        viewModel.tech.observe(contextTechActivity) {
+            if (it != null) {
+                btnFavorTech.setImageResource(R.drawable.ic_star_filled)
+            } else {
+                btnFavorTech.setImageResource(R.drawable.ic_star_border)
+            }
         }
 
-        viewModel.getAllTechnologiesDB()
+        btnFavorTech.setOnClickListener {
+            val typeTech = arguments?.getString("type")
+
+            viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3], typeTech!!))
+            viewModel.isFav.observe(contextTechActivity) {
+                if (it) {
+                    btnFavorTech.setImageResource(R.drawable.ic_star_filled)
+                } else {
+                    btnFavorTech.setImageResource(R.drawable.ic_star_border)
+                }
+            }
+        }
     }
 
     override fun onAttach(context: Context) {

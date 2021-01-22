@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsTechFragment"
-        android:name="com.example.astrodream.ui.tech.DetailsTechFragment"
+        android:name="com.example.astrodream.ui.tech.detailsTech.DetailsTechFragment"
         android:label="fragment_details_tech"
         tools:layout="@layout/fragment_details_tech" />
 </navigation>

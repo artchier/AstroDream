@@ -28,7 +28,7 @@ class FavoritesActivity : ActivityWithTopBar(R.string.favoritos, R.id.dlFavs) {
 
     private lateinit var db: AppDatabase
     private lateinit var repositoryDaily: ServiceDBDaily
-    private lateinit var repositoryTech: ServiceDatabase
+    private lateinit var repositoryTech: ServiceDatabaseTech
     private lateinit var repositoryMars: ServiceDBMars
 
     val viewModel by viewModels<FavViewModel> {

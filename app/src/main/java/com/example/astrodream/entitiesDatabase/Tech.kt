@@ -11,6 +11,8 @@ data class Tech(
 
     var titleTech: String,
 
-    var descTech: String
+    var descTech: String,
+
+    var typeTech: String
 )
 

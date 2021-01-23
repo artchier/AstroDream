@@ -19,7 +19,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
-import com.example.astrodream.services.saveImage
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.saveImage
 import com.example.astrodream.services.setImageAsWallpaper
 import kotlinx.android.synthetic.main.activity_full_screen_img.*
 
@@ -143,7 +144,7 @@ class FullScreenImgActivity : AppCompatActivity() {
                             ) {
                                 when (it.itemId) {
                                     R.id.downloadImageItem -> {
-                                        saveImage(resource.toBitmap(), baseContext, getString(R.string.app_name))
+                                        AstroDreamUtil.saveImage(resource.toBitmap(), baseContext, getString(R.string.app_name))
                                         Toast.makeText(baseContext, "Imagem salva!", Toast.LENGTH_LONG).show()
                                     }
                                     R.id.useAsWallpaperItem -> {

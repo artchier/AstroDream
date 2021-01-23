@@ -14,7 +14,7 @@ interface MarsDAO {
     suspend fun getAllMarsFavs(): List<MarsRoom>
 
     @Query("SELECT * FROM mars WHERE earth_date = :date")
-    suspend fun getMarsAtDate(date: String): MarsRoom
+    suspend fun getMarsAtDate(date: String): MarsRoom?
 
     @Delete
     suspend fun deleteMars(mars: MarsRoom)

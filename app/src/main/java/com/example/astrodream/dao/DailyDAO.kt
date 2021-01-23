@@ -16,7 +16,7 @@ interface DailyDAO {
     suspend fun getAllDailyFavs(): List<DailyRoom>
 
     @Query("SELECT * FROM daily WHERE date = :date")
-    suspend fun getDailyAtDate(date: String): DailyRoom
+    suspend fun getDailyAtDate(date: String): DailyRoom?
 
     @Delete
     suspend fun deleteDaily(daily: DailyRoom)

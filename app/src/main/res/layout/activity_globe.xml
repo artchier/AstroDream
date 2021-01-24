@@ -36,54 +36,30 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/rounded_rectangle"
+            android:background="@drawable/rounded_rectangle3"
             android:backgroundTint="@color/midnight_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/ivGlobe"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vpGlobe"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/imagem_globo"
-                android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:foregroundGravity="center"
+                android:overScrollMode="never"
+                app:layout_constraintBottom_toTopOf="@+id/ciGlobe"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/clGlobe" />
 
-            <ProgressBar
-                android:id="@+id/pbGlobe"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:indeterminateTint="@color/white"
-                android:visibility="gone"
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/ciGlobe"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btPreviousGlobe"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/gigas"
-                android:alpha="0"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btNextGlobe"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/gigas"
-                android:alpha="0"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -103,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0"
-            android:background="@color/semitransparente"/>
+            android:background="@color/semitransparente" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

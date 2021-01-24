@@ -1,5 +1,7 @@
 package com.example.astrodream.ui.favorites
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,20 +10,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import com.example.astrodream.domain.Favorite
+import com.example.astrodream.domain.Asteroid
+import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.entitiesDatabase.DailyRoom
+import com.example.astrodream.entitiesDatabase.Tech
+import com.example.astrodream.entitiesDatabase.MarsRoom
+import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import kotlinx.android.synthetic.main.item_fav.view.*
+import java.io.File
 
-// Essa classe adapter recebe uma lista de favoritos e popula o RecyclerView do FavRecyclerFragment
-// Recebe também um listener que quando houver click irá chamar a interface que fará a conexão com a FavRecyclerFragment
+class FavAdapter(
+    private val favsList: List<Any>,
+    val onClickFav: (Int) -> Unit,
+    val type: String
+): RecyclerView.Adapter<FavAdapter.FavViewHolder>() {
 
-class FavAdapter (private val favsList: ArrayList<Favorite>, val listener: OnClickFavListener): RecyclerView.Adapter<FavAdapter.FavViewHolder>() {
-
-    interface OnClickFavListener {
-        fun onClickFav(position: Int)
-    }
-
-    // Classe interna. Essa classe vai inflar o layout do item_fav.xml através do onCreateViewHolder
-    // O inner pega tudo da classe pai (nesse caso, queremos acessar o listener do construtor do FavAdapter)
     inner class FavViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var ivFav : ImageView = itemView.ivFav
         var tv1Fav : TextView = itemView.tv1Fav
@@ -31,8 +34,8 @@ class FavAdapter (private val favsList: ArrayList<Favorite>, val listener: OnCli
         }
         override fun onClick(v: View?) {
             val position = adapterPosition // posição do item que será clicado
-            if(position != RecyclerView.NO_POSITION) // esse if garante que estamos clicando em um item existente no RecyclerView, pois pode acontecer de a parte grafica não atualizar e o usuario vê um item que não está mais lá e clica nele
-                listener.onClickFav(position)
+            if(position != RecyclerView.NO_POSITION)
+                onClickFav(position)
         }
     }
 
@@ -43,13 +46,53 @@ class FavAdapter (private val favsList: ArrayList<Favorite>, val listener: OnCli
     }
 
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
-        val favorite: Favorite = favsList.get(position)
+        var img = ""
+        var iconId = 0
+        var text1 = ""
+        var text2 = ""
+        when(type) {
+            "daily" -> {
+                val favRoom = favsList[position] as DailyRoom
+                val favorite = PlainClass(title = favRoom.title, date = favRoom.date, url = favRoom.url, explanation = favRoom.explanation)
+                img = favorite.url
+                text1 = favorite.title
+                text2 = favorite.date
+            }
+            "asteroid" -> {
+                val favorite = favsList[position] as AsteroidRoom
+                iconId = R.drawable.asteroide
+                text1 = favorite.codeAsteroid
+                text2 = ""
+            }
+            "tech" -> {
+                val favorite = favsList[position] as Tech
+                iconId = R.drawable.ic_tecnologia
+                text1 = favorite.typeTech
+                text2 = favorite.titleTech
+            }
+            "mars" -> {
+                val favorite = favsList[position] as PlainClass
+                img = favorite.img_list[0].img_src
+                text1 = "Sol " + favorite.sol.toString()
+                text2 = favorite.earth_date
+            }
+        }
+
         // Pega a imagem do favorito e coloca na ImageView
-        Glide.with(holder.itemView).asBitmap().load(favorite.img).into(holder.ivFav)
+        if (img != "") {
+            Glide.with(holder.itemView)
+                .load(img)
+                .into(holder.ivFav)
+        }
+        else {
+            holder.ivFav.setImageResource(iconId)
+        }
         // Preenche o primeiro TextView
-        holder.tv1Fav.text = favorite.descrip1
+        holder.tv1Fav.text = text1
         // Preenche o segundo TextView
-        holder.tv2Fav.text = favorite.descrip2
+        holder.tv2Fav.text = text2
+
+        Log.i("===FAVADAPTER==", "${File(img)}")
     }
 
     override fun getItemCount() = favsList.size

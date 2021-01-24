@@ -1,7 +1,6 @@
 package com.example.astrodream.ui
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
@@ -19,12 +18,15 @@ import com.example.astrodream.ui.dailyimage.DailyImageActivity
 import com.example.astrodream.ui.favorites.FavoritesActivity
 import com.example.astrodream.ui.globe.GlobeActivity
 import com.example.astrodream.ui.initial.InitialActivity
+import com.example.astrodream.ui.login.LoginActivity
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.userconfig.UserConfigActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
 
 abstract class ActivityWithTopBar(
@@ -70,6 +72,7 @@ abstract class ActivityWithTopBar(
         val btnFavoritos = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnFavoritos)
         val btnConfig = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnConfig)
         val btnSobre = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnSobre)
+        val btnLogout = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnLogout)
 
         btnAvatar.setOnClickListener {
             goToActivityIfNotAlreadyThere(AvatarActivity::class.java)
@@ -114,6 +117,11 @@ abstract class ActivityWithTopBar(
                 )
                 .setView(R.layout.astrodialog)
                 .show()
+        }
+
+        btnLogout.setOnClickListener {
+            Firebase.auth.signOut()
+            goToActivityIfNotAlreadyThere(LoginActivity::class.java)
         }
     }
 

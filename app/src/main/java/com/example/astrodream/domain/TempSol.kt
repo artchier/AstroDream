@@ -1,25 +1,21 @@
 package com.example.astrodream.domain
 
-import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
 import kotlin.math.roundToInt
 
 data class TempSol(
-    val PRE: JsonObject,
-    val maxTemp: String = "x",
-    val minTemp: String = "x"
+    val AT: JsonObject?,
+    val PRE: JsonObject?,
 ) {
     var solMars: Long = 0
     var maxTempMars: String = ""
     var minTempMars: String = ""
 
-    fun wakeUp(sol: Long) {
+    fun setTemperature(sol: Long) {
         solMars = sol
-        val maxTempFah =
-            Gson().fromJson(this.PRE.get("mx"), object : TypeToken<Double>() {}.type) as Double
-        val minTempFah =
-            Gson().fromJson(this.PRE.get("mn"), object : TypeToken<Double>() {}.type) as Double
+        val source = PRE ?: AT ?: return
+        val maxTempFah = source.get("mx").toString().toDouble()
+        val minTempFah = source.get("mn").toString().toDouble()
         maxTempMars = (((maxTempFah) - 32) * 5 / 9).roundToInt().toString()
         minTempMars = (((minTempFah) - 32) * 5 / 9).roundToInt().toString()
     }

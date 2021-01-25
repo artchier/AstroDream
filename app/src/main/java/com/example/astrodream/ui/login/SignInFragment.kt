@@ -2,7 +2,6 @@ package com.example.astrodream.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +38,7 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
         @JvmStatic
         fun newInstance(email: String, password: String) =
             SignInFragment().apply {
-                arguments = creteBundle(email, password)
+                arguments = createBundle(email, password)
             }
     }
 

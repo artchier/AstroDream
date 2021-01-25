@@ -11,10 +11,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -33,10 +30,10 @@ import kotlinx.android.synthetic.main.user_email_password.*
 class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 
     private lateinit var googleSignInClient: GoogleSignInClient
-    private val RC_SIGN_IN_GOOGLE = 120
+    /*private val RC_SIGN_IN_GOOGLE = 120*/
     private lateinit var auth: FirebaseAuth
 
-    private lateinit var callbackManager: CallbackManager
+    //private lateinit var callbackManager: CallbackManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +45,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         auth = Firebase.auth
 
         startLoginButtonFacebook(view)
-        firebaseCallback()
+        //firebaseCallback()
 
         view.findViewById<Button>(R.id.btnLogin).setOnClickListener {
             login()
@@ -58,33 +55,36 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             loginWithGoogle()
         }
 
-        view.findViewById<LoginButton>(R.id.btnLoginFacebook).setOnClickListener {
-            view.findViewById<LoginButton>(R.id.btnLoginFacebook).registerCallback(
-                callbackManager,
-                object : FacebookCallback<LoginResult> {
-                    override fun onSuccess(result: LoginResult?) {
-                        firebaseAuthWithFacebook(result!!.accessToken)
-                        Toast.makeText(requireContext(), "Caí aqui!", Toast.LENGTH_SHORT).show()
-                    }
+        /*view.findViewById<LoginButton>(R.id.btnLoginFacebook).setOnClickListener {
 
-                    override fun onCancel() {
-                        Toast.makeText(
-                            requireContext(),
-                            "Cancelado o login com Facebook!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        }*/
 
-                    override fun onError(error: FacebookException?) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Erro no login com Facebook!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        view.findViewById<LoginButton>(R.id.btnLoginFacebook).registerCallback(
+            callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    firebaseAuthWithFacebook(result.accessToken)
+                    Toast.makeText(requireContext(), "Caí aqui!", Toast.LENGTH_SHORT).show()
+                }
 
-                })
-        }
+                override fun onCancel() {
+                    Toast.makeText(
+                        requireContext(),
+                        "Cancelado o login com Facebook!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onError(error: FacebookException?) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Erro no login com Facebook!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("TAG", error.toString())
+                }
+
+            })
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -102,8 +102,11 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         @JvmStatic
         fun newInstance(email: String, password: String) =
             LoginFragment().apply {
-                arguments = creteBundle(email, password)
+                arguments = createBundle(email, password)
             }
+
+        val callbackManager: CallbackManager = CallbackManager.Factory.create()
+        val RC_SIGN_IN_GOOGLE = 120
     }
 
     private fun login() {
@@ -126,8 +129,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                         putExtra("email", emailFire)
                     })
                     activity?.finish()
-                }
-                else {
+                } else {
                     // TODO: mostrar dialog?
 //                    showLongMessage(task.exception.toString())
                 }
@@ -155,8 +157,6 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                 Log.w("=====LOGIN=====", "Google sign in failed", e)
             }
         }
-
-        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -199,10 +199,11 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
     }
 
     private fun startLoginButtonFacebook(view: View) {
-        view.findViewById<LoginButton>(R.id.btnLoginFacebook).setReadPermissions("email", "public_profile")
+        view.findViewById<LoginButton>(R.id.btnLoginFacebook)
+            .setReadPermissions("email", "public_profile", "user_friends")
     }
 
-    private fun firebaseCallback() {
+    /*private fun firebaseCallback() {
         callbackManager = CallbackManager.Factory.create()
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ package com.example.astrodream.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
@@ -65,5 +66,18 @@ class LoginActivity : AppCompatActivity() {
 
         btnUnselected.background = ContextCompat.getDrawable(this, R.color.transparent)
         btnUnselected.setTextColor(ContextCompat.getColor(this, R.color.light_purple))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode != LoginFragment.RC_SIGN_IN_GOOGLE){
+            LoginFragment.callbackManager.onActivityResult(
+                requestCode,
+                resultCode,
+                data
+            )
+        }
+        //Toast.makeText(this, "Passou aqui", Toast.LENGTH_SHORT).show()
     }
 }

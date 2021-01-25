@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.user_email_password.view.*
 private const val ARG_EMAIL = "email"
 private const val ARG_PASSWORD = "password"
 
-fun creteBundle(email: String, password: String) =
+fun createBundle(email: String, password: String) =
     Bundle().apply {
         putString(ARG_EMAIL, email)
         putString(ARG_PASSWORD, password)

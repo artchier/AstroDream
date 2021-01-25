@@ -143,4 +143,7 @@
     <string name="usar_como_wallpaper">Usar como wallpaper</string>
     <string name="logout">Logout</string>
     <string name="logo_do_app">Logo do App</string>
+
+    <string name="facebook_app_id">137940331401686</string>
+    <string name="fb_login_protocol_scheme">fb137940331401686</string>
 </resources>

@@ -30,10 +30,7 @@ import kotlinx.android.synthetic.main.user_email_password.*
 class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 
     private lateinit var googleSignInClient: GoogleSignInClient
-    /*private val RC_SIGN_IN_GOOGLE = 120*/
     private lateinit var auth: FirebaseAuth
-
-    //private lateinit var callbackManager: CallbackManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +42,6 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         auth = Firebase.auth
 
         startLoginButtonFacebook(view)
-        //firebaseCallback()
 
         view.findViewById<Button>(R.id.btnLogin).setOnClickListener {
             login()
@@ -54,10 +50,6 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         view.findViewById<ImageButton>(R.id.btnLoginGoogle).setOnClickListener {
             loginWithGoogle()
         }
-
-        /*view.findViewById<LoginButton>(R.id.btnLoginFacebook).setOnClickListener {
-
-        }*/
 
         view.findViewById<LoginButton>(R.id.btnLoginFacebook).registerCallback(
             callbackManager,
@@ -200,10 +192,6 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 
     private fun startLoginButtonFacebook(view: View) {
         view.findViewById<LoginButton>(R.id.btnLoginFacebook)
-            .setReadPermissions("email", "public_profile", "user_friends")
+            .setReadPermissions("email", "public_profile")
     }
-
-    /*private fun firebaseCallback() {
-        callbackManager = CallbackManager.Factory.create()
-    }*/
 }

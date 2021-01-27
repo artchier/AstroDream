@@ -18,10 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -56,21 +53,17 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
                     firebaseAuthWithFacebook(result.accessToken)
-                    Toast.makeText(requireContext(), "Caí aqui!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onCancel() {
-                    Toast.makeText(
-                        requireContext(),
-                        "Cancelado o login com Facebook!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
                 }
 
                 override fun onError(error: FacebookException?) {
                     Toast.makeText(
                         requireContext(),
-                        "Erro no login com Facebook!",
+                        "Erro no login com Facebook, tente novamente!",
                         Toast.LENGTH_SHORT
                     ).show()
                     Log.e("TAG", error.toString())
@@ -106,6 +99,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         val password = tiPassword.text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(requireContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -122,8 +116,12 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                     })
                     activity?.finish()
                 } else {
-                    // TODO: mostrar dialog?
-//                    showLongMessage(task.exception.toString())
+                    Log.i("Login", task.exception.toString())
+                    if (task.exception is FirebaseAuthInvalidUserException || task.exception is FirebaseAuthInvalidCredentialsException) {
+                        Toast.makeText(requireContext(), "Usuário ou senha incorretos!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
     }
@@ -162,15 +160,15 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 //                        putExtra("id", id)
 //                        putExtra("email", emailFire)
                     })
+                    Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
                     activity?.finish()
                 } else {
-                    // If sign in fails, display a message to the user.
-                    // TODO: mostrar dialog?
-//                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-//                    Snackbar.make(view, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-//                    updateUI(null)
+                    if (task.exception is FirebaseAuthUserCollisionException) {
+                        Toast.makeText(requireContext(), "Já existe uma conta associada a este email.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
+                    }
                 }
-
             }
     }
 
@@ -185,7 +183,12 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                     })
                     activity?.finish()
                 } else {
-                    // TODO: mostrar dialog?
+                    Log.i("LoginFacebook", task.exception.toString())
+                    if (task.exception is FirebaseAuthUserCollisionException) {
+                        Toast.makeText(requireContext(), "Já existe uma conta associada a este email.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
     }

@@ -122,6 +122,7 @@ abstract class ActivityWithTopBar(
         btnLogout.setOnClickListener {
             Firebase.auth.signOut()
             goToActivityIfNotAlreadyThere(LoginActivity::class.java)
+            finish()
         }
     }
 

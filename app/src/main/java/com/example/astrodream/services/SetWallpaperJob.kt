@@ -37,16 +37,20 @@ class SetWallpaperJob : JobService() {
                     // Handle successful response
                     is NetworkResponse.Success -> {
                         if ((response.body.url).contains("youtube")) {
-                            Log.d(TAG, "Imagem do youtube")
+                            Log.w(TAG, "Imagem do youtube")
                             calendar.add(Calendar.DATE, -1)
                         } else {
-                            imageUrl = response.body.hdurl
+                            imageUrl = if (response.body.hdurl.isNotEmpty()) {
+                                response.body.hdurl
+                            } else {
+                                response.body.url
+                            }
                             Log.d(TAG, "Imagem encontrada: $imageUrl")
                         }
                     }
                     // Handle server error (unavailable date falls into ServerError)
                     is NetworkResponse.ServerError -> {
-                        Log.d(TAG, "Server error")
+                        Log.w(TAG, "Server error")
                         if (failCount++ >= 5) {
                             break
                         }
@@ -54,7 +58,7 @@ class SetWallpaperJob : JobService() {
                     }
                     // Qualquer outro tipo de resposta consideramos erro
                     else -> {
-                        Log.d(TAG, "Generic error")
+                        Log.e(TAG, "Generic error")
                         break
                     }
                 }
@@ -62,7 +66,7 @@ class SetWallpaperJob : JobService() {
 
             // Falhamos em buscar uma imagem, remarcamos o job
             if (imageUrl == "") {
-                Log.d(TAG, "Remarcando job")
+                Log.w(TAG, "Remarcando job")
                 jobFinished(params, true)
                 return@launch
             }
@@ -94,7 +98,7 @@ class SetWallpaperJob : JobService() {
 
     override fun onStopJob(params: JobParameters?): Boolean {
         // A internet caiu enquanto baixávamos a imagem. True quer dizer que queremos remarcar o Job
-        Log.d(TAG, "Job interrompido")
+        Log.w(TAG, "Job interrompido")
         return true
     }
 

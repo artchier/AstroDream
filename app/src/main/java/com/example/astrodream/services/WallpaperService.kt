@@ -63,7 +63,7 @@ fun scheduleWallpaperChange(context: Context) {
 
     builder.setPersisted(true)
         .setPeriodic(86400000) // Milisegundos em um dia
-        .setBackoffCriteria(1800000, JobInfo.BACKOFF_POLICY_LINEAR) // Milisegndos em uma hora
+        .setBackoffCriteria(900000, JobInfo.BACKOFF_POLICY_LINEAR) // Milisegndos em 15 min
         .setRequiresCharging(false)
         .setRequiresDeviceIdle(false)
         .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)

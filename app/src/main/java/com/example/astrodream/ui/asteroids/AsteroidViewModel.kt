@@ -24,13 +24,15 @@ class AsteroidViewModel(
     private val context: Context
 ) : ViewModel() {
 
-    val listResults = MutableLiveData<AsteroidRes>()
-    val listAsteroid = ArrayList<Asteroid>()
+    val listAllResultsAPI = MutableLiveData<AsteroidAllRes>()
+    val listAllAsteroidsAPI = ArrayList<Asteroid>()
+    val listResultsDateAPI = MutableLiveData<AsteroidRes>()
+    val listAsteroidsDateAPI = ArrayList<Asteroid>()
     var listAllAsteroidsDB = ArrayList<AsteroidRoom>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun execute(v: View) = viewModelScope.launch {
-        if (listAsteroid.isEmpty()) onPreExecute(v)
+        if (listAsteroidsDateAPI.isEmpty()) onPreExecute(v)
         doInBackground()
         onPostExecute(v)
     }
@@ -38,18 +40,33 @@ class AsteroidViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun doInBackground() {
         viewModelScope.launch {
-            val listAsteroids =
+            val listAsteroidsDate =
                 serviceAPI.getAsteroidsDate(LocalDate.now().toString())
+            val listAllAsteroids = serviceAPI.getAllAsteroids()
 
-            listAsteroids.near_earth_objects.keySet().toList().forEach {
-                val list = Gson().fromJson(
-                    listAsteroids.near_earth_objects.get(it),
-                    object : TypeToken<List<AsteroidData>>() {}.type
-                ) as List<AsteroidData>
-                listAsteroid.addAll(list.map { a -> a.getAsteroid() })
+            listAllAsteroids.near_earth_objects.forEach {
+                val asteroid = Gson().fromJson<AsteroidData>(it,
+                    object : TypeToken<AsteroidData>() {}.type)
+                listAllAsteroidsAPI.add(asteroid.getAsteroid())
             }
 
-            listResults.postValue(listAsteroids)
+//            listAllAsteroids.near_earth_objects.keySet().toList().forEach {
+//                val list = Gson().fromJson(
+//                    listAsteroidsDate.near_earth_objects.get(it),
+//                    object : TypeToken<List<AsteroidData>>() {}.type
+//                ) as List<AsteroidData>
+//                listAllAsteroidsAPI.addAll(list.map { a -> a.getAsteroid() })
+//            }
+            listAllResultsAPI.postValue(listAllAsteroids)
+
+            listAsteroidsDate.near_earth_objects.keySet().toList().forEach {
+                val list = Gson().fromJson(
+                    listAsteroidsDate.near_earth_objects.get(it),
+                    object : TypeToken<List<AsteroidData>>() {}.type
+                ) as List<AsteroidData>
+                listAsteroidsDateAPI.addAll(list.map { a -> a.getAsteroid() })
+            }
+            listResultsDateAPI.postValue(listAsteroidsDate)
         }
     }
 

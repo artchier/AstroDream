@@ -9,6 +9,8 @@ import java.io.Serializable
 
 data class AsteroidRes(val element_count: Int, val near_earth_objects: JsonObject)
 
+data class AsteroidAllRes(val page: JsonObject, val near_earth_objects: JsonArray)
+
 data class AsteroidData(
     val id: String,
     val name: String,
@@ -54,10 +56,10 @@ data class AsteroidData(
         when (orbita){
             "Earth" -> return "Terra"
             "Sun" -> return "Sol"
-            "Mercury"-> return "Mercúrio"
+            "Merc"-> return "Mercúrio"
             "Venus" -> return "Vênus"
             "Mars" -> return "Marte"
-            "Jupiter" -> return "Júpiter"
+            "Juptr" -> return "Júpiter"
             "Saturn" -> return "Saturno"
             "Uranus" -> return "Urano"
             "Neptune" -> return "Netuno"

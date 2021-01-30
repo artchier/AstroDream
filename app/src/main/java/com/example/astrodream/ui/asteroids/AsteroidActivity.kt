@@ -97,9 +97,9 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
         // ##### Opções da viewModel #####
         viewModel.viewModelScope.launch { viewModel.doInBackground() }
-        viewModel.listResults.observe(this) {
-            listAllAsteroids.addAll(viewModel.listAsteroid)
-            listFourAsteroids.addAll(viewModel.listAsteroid.subList(0, 4)) }
+        viewModel.listAllResultsAPI.observe(this) {
+            listAllAsteroids.addAll(viewModel.listAllAsteroidsAPI)
+            listFourAsteroids.addAll(viewModel.listAsteroidsDateAPI.subList(0, 4)) }
         viewModel.getAllAsteroidsDB()
 
         // ##### Outras opções #####
@@ -231,21 +231,21 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         else listView.expandGroup(groupPosition)
 
         viewModel.execute(v)
-        viewModel.listResults.observe(this) {
+        viewModel.listAllResultsAPI.observe(this) {
 
             when (groupPosition) {
                 0 -> { expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
-                    .listButtons[0] to viewModel.listAsteroid)) }
+                    .listButtons[0] to viewModel.listAsteroidsDateAPI)) }
                 1 -> { searchAsteroid(v)
                     expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
-                        .listButtons[1] to viewModel.listAsteroid))
+                        .listButtons[1] to viewModel.listAllAsteroidsAPI))
                 }
                 2 -> {
                     val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
                     v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener { showAsteroidCalendar(editText) }
                     v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener { searchAsteroidDate(editText) }
                     expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
-                        .listButtons[2] to viewModel.listAsteroid))
+                        .listButtons[2] to viewModel.listAllAsteroidsAPI))
                 }
                 3 -> { val listPerigosos = ArrayList<Asteroid>()
                     listAllAsteroids.forEach { if (it.is_potentially_hazardous_asteroid) listPerigosos.add(it) }

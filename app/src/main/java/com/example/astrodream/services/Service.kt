@@ -56,7 +56,7 @@ interface Service {
     @GET("neo/rest/v1/neo/browse")
     suspend fun getAllAsteroids(
         @Query("api_key")p0: String = apikeyApp
-    ): AsteroidRes
+    ): AsteroidAllRes
 
     @GET("neo/rest/v1/feed")
     suspend fun getAsteroidId(

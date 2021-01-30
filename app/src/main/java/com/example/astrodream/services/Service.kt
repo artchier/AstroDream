@@ -62,7 +62,7 @@ interface Service {
     suspend fun getAsteroidId(
         @Query("start_date")p0: String,
         @Query("end_date")p2: String,
-        @Query("api_key")p1: String = apikeyApp,
+        @Query("api_key")p1: String = apikeyApp
     ): AsteroidRes
 
     /* ------------------------------------------- Tech ----------------------------------------- */
@@ -117,3 +117,4 @@ val retrofit: Retrofit = Retrofit.Builder()
 
 // Passar instancia do retrofit para o service
 val service: Service = retrofit.create(Service::class.java)
+const val apikeyApp = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"

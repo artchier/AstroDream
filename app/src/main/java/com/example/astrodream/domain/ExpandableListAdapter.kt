@@ -3,6 +3,7 @@ package com.example.astrodream.domain
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,17 +43,21 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         val searchView: SearchView? = view?.findViewById(R.id.search_view_asteroid_button)
         val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
 
+
         when (groupPosition) {
             1 -> {
                 btn?.setOnClickListener { if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(groupPosition) }
                 if (isExpanded) searchView?.setTransitionVisibility(SearchView.VISIBLE) else searchView?.setTransitionVisibility(SearchView.GONE)
                 calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
+               // Log.i("------btn----", btn?.hasFocus().toString())
+                Log.i("-----searchview-----", searchView?.hasFocus().toString())
             }
 
             2 -> {
                 btn?.setOnClickListener { if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(groupPosition) }
                 if (isExpanded) calendarAsteroid?.setTransitionVisibility(LinearLayout.VISIBLE) else calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
                 searchView?.visibility = SearchView.GONE
+                Log.i("-----calendar-----", calendarAsteroid?.hasFocus().toString())
             }
 
             else -> {

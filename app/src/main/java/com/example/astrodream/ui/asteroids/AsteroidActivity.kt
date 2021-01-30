@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -216,27 +215,52 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun collapsedGroupView(id: Int){ listView.collapseGroup(id) }
+    fun collapsedGroupView(id: Int){
+        listView.collapseGroup(id)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun expandadGroupView(id: Int){ listView.expandGroup(id) }
+    fun expandadGroupView(id: Int){ listView.expandGroup(id)
+        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
+            .listButtons[id] to viewModel.listAsteroid))
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun onGroupClickEvent(){
         listView.setOnGroupClickListener { _, v, groupPosition, _ ->
+            Log.i("clicado", groupPosition.toString())
             viewModel.execute(v)
+            val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
+            v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener {
+                Log.i("Clicando", "clicando no calendário")
+                searchAsteroidDate(editText) }
             viewModel.listResults.observe(this) {
+
                 when (groupPosition) {
                     0 -> { expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
                         .listButtons[0] to viewModel.listAsteroid)) }
                     1 -> { searchAsteroid(v)
-                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
-                            .listButtons[1] to viewModel.listAsteroid)) }
-                    2 -> { val editText = v.findViewById<EditText>(R.id.et_search_asteroid_date)
-                        v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener { showAsteroidCalendar(editText) }
-                        v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener { searchAsteroidDate(editText) }
-                        expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
-                            .listButtons[2] to viewModel.listAsteroid)) }
+//                        v.findViewById<LinearLayout>(R.id.btn_superior_asteroids).setOnClickListener {
+//                            if (listView.isGroupExpanded(1)) listView.collapseGroup(1)
+//                            else listView.expandGroup(1)
+//                            expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
+//                                .listButtons[1] to viewModel.listAsteroid))
+//                        }
+                        Log.i("-----view1-----", v.hasFocus().toString())
+                         }
+                    2 -> {
+//                        v.findViewById<LinearLayout>(R.id.btn_superior_asteroids).setOnClickListener {
+//                            if (listView.isGroupExpanded(2)) listView.collapseGroup(2)
+//                            else listView.expandGroup(2)
+//
+//                            v.findViewById<ImageView>(R.id.iv_calendar_asteroids).setOnClickListener {
+//                                Log.i("Clicando", "clicando no calendario")
+//                                showAsteroidCalendar(editText) }
+//                            v.findViewById<ImageView>(R.id.iv_searh_date_asteroids).setOnClickListener { searchAsteroidDate(editText) }
+//                            expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
+//                                .listButtons[2] to viewModel.listAsteroid))
+//                        }
+                         }
                     3 -> { val listPerigosos = ArrayList<Asteroid>()
                         listAllAsteroids.forEach { if (it.is_potentially_hazardous_asteroid) listPerigosos.add(it) }
                         expandableListAdapter.addListAsteroids(linkedMapOf(expandableListAdapter
@@ -260,7 +284,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
     }
 
-    fun getAsteroidRoom(vararg strings: String): AsteroidRoom{
+    private fun getAsteroidRoom(vararg strings: String): AsteroidRoom{
         val list = strings.toList().subList(2, strings.size).toTypedArray()
         return AsteroidRoom(strings[0], strings[1], AstroDreamUtil.returnTextOf(*list))
     }

@@ -2,15 +2,22 @@ package com.example.astrodream.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.view.View
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.user_email_password.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -82,4 +89,21 @@ class LoginActivity : AppCompatActivity() {
         }
         //Toast.makeText(this, "Passou aqui", Toast.LENGTH_SHORT).show()
     }
+//
+//    fun showHidePass(view: View){
+//        if(view.id == R.id.btnShowPswd){
+//            if(tiPassword.transformationMethod == PasswordTransformationMethod.getInstance()){
+//                (view as ImageView).setImageResource(R.drawable.ic_hide_password);
+//                //Show Password
+//                (view.parent.parent).tiPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+//                tiPassword.setSelection(tiPassword.text!!.length)
+//            }
+//            else{
+//                (view as ImageView).setImageResource(R.drawable.ic_show_password);
+//                //Hide Password
+//                tiPassword.transformationMethod = PasswordTransformationMethod.getInstance();
+//                tiPassword.setSelection(tiPassword.text!!.length)
+//            }
+//        }
+//    }
 }

@@ -2,13 +2,14 @@ package com.example.astrodream.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
+import androidx.core.view.get
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
 import com.facebook.*
@@ -212,4 +213,5 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         view.findViewById<LoginButton>(R.id.btnLoginFacebook)
             .setReadPermissions("email", "public_profile")
     }
+
 }

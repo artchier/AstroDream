@@ -10,8 +10,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.user_email_password.*
 
@@ -24,13 +23,13 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        // TODO fazer sign in de verdade
         view.findViewById<Button>(R.id.btnSignIn).setOnClickListener {
-//            startActivity(Intent(activity, InitialActivity::class.java))
-//            activity?.finish()
+            val name = tiName.text.toString()
             val email = tiEmail.text.toString()
             val password = tiPassword.text.toString()
-            createUserFirebase(email, password)
+            val confirmPassword = tiConfirmPassword.text.toString()
+            Log.i("====CREATE====", "cadastrar btn email: $email")
+            createUserFirebase(name, email, password, confirmPassword)
         }
 
         return view
@@ -44,7 +43,15 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
             }
     }
 
-    private fun createUserFirebase(email: String, password: String) {
+    private fun createUserFirebase(name:String, email: String, password: String, confirmPassword: String) {
+        if (name == "" || email == "" || password == "" || confirmPassword == "") {
+            Toast.makeText(requireContext(), "Por favor preencha todos os campos!", Toast.LENGTH_LONG).show()
+            return
+        }
+        if (password != confirmPassword) {
+            Toast.makeText(requireContext(), "As senhas digitadas não coincidem. Por favor tente novamente.", Toast.LENGTH_LONG).show()
+            return
+        }
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -60,13 +67,22 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
                     })
                     activity?.finish()
                 }
-                else {
-//                    showLongMessage(task.exception.toString())
-                }
             }
             .addOnFailureListener {
-                Log.i("===CREATE ACCOUNT===", "ERRO: $it")
+                when (it) {
+                    is FirebaseAuthUserCollisionException -> {
+                        Toast.makeText(requireContext(), "Desculpe-nos, esse e-mail já foi cadastrado!", Toast.LENGTH_LONG).show()
+                    }
+                    is FirebaseAuthWeakPasswordException -> {
+                        Toast.makeText(requireContext(), "Senha inválida (a senha precisa conter pelo menos 6 caracteres).", Toast.LENGTH_LONG).show()
+                    }
+                    is FirebaseAuthInvalidCredentialsException -> {
+                        Toast.makeText(requireContext(), "E-mail inválido!", Toast.LENGTH_LONG).show()
+                    }
+                    else -> {
+                        Toast.makeText(requireContext(), "Algo deu errado!", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
-        Log.i("===CREATE ACCOUNT===", "$email $password")
     }
 }

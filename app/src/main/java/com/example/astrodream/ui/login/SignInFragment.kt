@@ -28,7 +28,6 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
             val email = tiEmail.text.toString()
             val password = tiPassword.text.toString()
             val confirmPassword = tiConfirmPassword.text.toString()
-            Log.i("====CREATE====", "cadastrar btn email: $email")
             createUserFirebase(name, email, password, confirmPassword)
         }
 
@@ -56,13 +55,15 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val firebaseUser: FirebaseUser = task.result?.user!!
-                    val key = firebaseUser.uid
+                    val uid = firebaseUser.uid
+                    val name = firebaseUser.displayName
                     val emailFire = firebaseUser.email.toString()
 
                     Toast.makeText(requireContext(), "Cadastro efetuado com sucesso! Seja muito bem-vindo(a)!", Toast.LENGTH_LONG).show()
 
                     startActivity(Intent(activity, InitialActivity::class.java).apply {
-                        putExtra("key", key)
+                        putExtra("uid", uid)
+                        putExtra("name", name)
                         putExtra("email", emailFire)
                     })
                     activity?.finish()
@@ -71,7 +72,7 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
             .addOnFailureListener {
                 when (it) {
                     is FirebaseAuthUserCollisionException -> {
-                        Toast.makeText(requireContext(), "Desculpe-nos, esse e-mail já foi cadastrado!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "Já existe uma conta associada a este e-mail.", Toast.LENGTH_LONG).show()
                     }
                     is FirebaseAuthWeakPasswordException -> {
                         Toast.makeText(requireContext(), "Senha inválida (a senha precisa conter pelo menos 6 caracteres).", Toast.LENGTH_LONG).show()
@@ -80,7 +81,7 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
                         Toast.makeText(requireContext(), "E-mail inválido!", Toast.LENGTH_LONG).show()
                     }
                     else -> {
-                        Toast.makeText(requireContext(), "Algo deu errado!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_LONG).show()
                     }
                 }
             }

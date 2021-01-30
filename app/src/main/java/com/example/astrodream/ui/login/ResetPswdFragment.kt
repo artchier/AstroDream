@@ -19,7 +19,6 @@ class ResetPswdFragment : FragmentWithEmailAndPassword(R.layout.fragment_reset_p
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         view.findViewById<Button>(R.id.btnResetPswd).setOnClickListener {

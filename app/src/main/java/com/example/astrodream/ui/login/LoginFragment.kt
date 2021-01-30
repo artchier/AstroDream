@@ -2,14 +2,11 @@ package com.example.astrodream.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.get
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
 import com.facebook.*
@@ -23,7 +20,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.user_email_password.*
 
 class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
@@ -62,9 +58,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                     Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onCancel() {
-
-                }
+                override fun onCancel() {}
 
                 override fun onError(error: FacebookException?) {
                     Toast.makeText(
@@ -123,13 +117,15 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val firebaseUser: FirebaseUser = task.result?.user!!
-                    val id = firebaseUser.uid
+                    val uid = firebaseUser.uid
+                    val name = firebaseUser.displayName
                     val emailFire = firebaseUser.email.toString()
-
                     startActivity(Intent(activity, InitialActivity::class.java).apply {
-                        putExtra("id", id)
+                        putExtra("uid", uid)
+                        putExtra("name", name)
                         putExtra("email", emailFire)
                     })
+                    Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
                     activity?.finish()
                 } else {
                     Log.i("Login", task.exception.toString())
@@ -156,11 +152,10 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d("=====LOGIN=====", "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("=====LOGIN=====", "Google sign in failed", e)
+                Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -171,16 +166,20 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
+                    val firebaseUser = auth.currentUser!!
+                    val uid = firebaseUser.uid
+                    val name = firebaseUser.displayName
+                    val emailFire = firebaseUser.email.toString()
                     startActivity(Intent(activity, InitialActivity::class.java).apply {
-//                        putExtra("id", id)
-//                        putExtra("email", emailFire)
+                        putExtra("uid", uid)
+                        putExtra("name", name)
+                        putExtra("email", emailFire)
                     })
                     Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
                     activity?.finish()
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
-                        Toast.makeText(requireContext(), "Já existe uma conta associada a este email.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "Já existe uma conta associada a este e-mail.", Toast.LENGTH_LONG).show()
                     } else {
                         Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
                     }
@@ -193,13 +192,17 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
+                    val firebaseUser = auth.currentUser!!
+                    val uid = firebaseUser.uid
+                    val name = firebaseUser.displayName
+                    val emailFire = firebaseUser.email.toString()
                     startActivity(Intent(activity, InitialActivity::class.java).apply {
-
+                        putExtra("uid", uid)
+                        putExtra("name", name)
+                        putExtra("email", emailFire)
                     })
                     activity?.finish()
                 } else {
-                    Log.i("LoginFacebook", task.exception.toString())
                     if (task.exception is FirebaseAuthUserCollisionException) {
                         Toast.makeText(requireContext(), "Já existe uma conta associada a este email.", Toast.LENGTH_LONG).show()
                     } else {

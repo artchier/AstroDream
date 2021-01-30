@@ -1,5 +1,6 @@
 package com.example.astrodream.ui
 
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
@@ -11,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.astrodream.*
+import com.example.astrodream.R
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 import com.example.astrodream.ui.avatar.AvatarActivity
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
@@ -22,12 +23,16 @@ import com.example.astrodream.ui.login.LoginActivity
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.userconfig.UserConfigActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
+
 
 abstract class ActivityWithTopBar(
     private val toolbarTiteTitleId: Int,
@@ -121,7 +126,14 @@ abstract class ActivityWithTopBar(
 
         btnLogout.setOnClickListener {
             Firebase.auth.signOut()
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("67163504194-hjucfh631cgv65fuegvfqbp51n016lg0.apps.googleusercontent.com")
+                .requestEmail()
+                .build()
+            val googleSignInClient = GoogleSignIn.getClient(this, gso)
+            googleSignInClient.signOut()
             goToActivityIfNotAlreadyThere(LoginActivity::class.java)
+            finish()
         }
     }
 

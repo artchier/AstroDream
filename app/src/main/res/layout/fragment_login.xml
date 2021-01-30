@@ -48,7 +48,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btnLoginGoogle"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:padding="10dp"
@@ -60,6 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/google_logo" />
+
 
         <ImageButton
             android:layout_width="60dp"
@@ -73,6 +74,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/facebook_logo" />
+
+        <com.facebook.login.widget.LoginButton
+            android:alpha="0"
+            android:id="@+id/btnLoginFacebook"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="@string/facebook_sign_in"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

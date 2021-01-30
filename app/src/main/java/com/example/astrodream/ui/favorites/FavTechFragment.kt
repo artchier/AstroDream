@@ -1,6 +1,7 @@
 package com.example.astrodream.ui.favorites
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -71,6 +72,7 @@ class FavTechFragment : Fragment() {
 
         btnFavorTech.setOnClickListener {
             viewModelDetails.deleteTechDB(tech.codReferenceTech)
+            startActivity(Intent(requireActivity(), FavoritesActivity::class.java))
         }
     }
 

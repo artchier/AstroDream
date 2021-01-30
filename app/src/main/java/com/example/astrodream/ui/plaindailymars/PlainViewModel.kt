@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.astrodream.R
 import com.example.astrodream.domain.Camera
 import com.example.astrodream.domain.MarsImage
 import com.example.astrodream.domain.PlainClass
@@ -23,21 +22,28 @@ import com.example.astrodream.domain.util.transformPlainToMarsDBClass
 import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.MarsPicRoom
 import com.example.astrodream.entitiesDatabase.MarsRoom
-import com.example.astrodream.services.*
+import com.example.astrodream.services.Service
+import com.example.astrodream.services.ServiceDB
+import com.example.astrodream.services.ServiceDBDaily
+import com.example.astrodream.services.ServiceDBMars
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.haroldadmin.cnradapter.NetworkResponse
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 
-class PlainViewModel(val service: Service, private val type: PlainActivityType, val repository: ServiceDB): ViewModel() {
+class PlainViewModel(
+    val service: Service,
+    private val type: PlainActivityType,
+    val repository: ServiceDB
+) : ViewModel() {
 
     val listFavsMars = MutableLiveData<List<MarsRoom>>()
 
     val focusResult = MutableLiveData<PlainClass>()
     val hasOngoingRequest = MutableLiveData<Boolean>()
+
     // TODO: implementar o hasInternetConnection para abrir dialog caso nao haja conexao.
     // TODO: ao dar "OK" no dialog, voltar para Initial
     val hasInternetConnection = MutableLiveData(true)
@@ -50,6 +56,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
 
     // List of dates with available temperature
     private var availableTempListLong = listOf<Long>()
+
     // List of available temperature
     private var listTemp: MutableList<TempSol> = mutableListOf()
 
@@ -58,11 +65,13 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
 
     // Initial date
     var date: LocalDate = LocalDate.now().plusDays(2)
+
     // Date formatter
     private val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     // Current detail request
     private lateinit var detail: PlainClass
+
     // First detail request (corresponding to initial date)
     private lateinit var detailRoot: PlainClass
 
@@ -72,7 +81,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
         adapterHistory.addList(emptyDummyList)
 
         viewModelScope.launch {
-            when(type) {
+            when (type) {
                 PlainActivityType.Initial -> {
                     fetchDailyImage(date)
                     focusResult.value = detail
@@ -105,7 +114,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
                     detail = response.body
                     detail.date = date.format(dateFormatter).toString()
 
-                    if((repository as ServiceDBDaily).getDailyAtDateTask(detail.date) != null) {
+                    if ((repository as ServiceDBDaily).getDailyAtDateTask(detail.date) != null) {
                         detail.isFav = true
                     }
                     if (!::detailRoot.isInitialized) {
@@ -127,7 +136,9 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
                     detailRoot = detail
                     focusResult.value = detailRoot
                 }
-                if(hasInternetConnection.value!!) { hasInternetConnection.value = false }
+                if (hasInternetConnection.value!!) {
+                    hasInternetConnection.value = false
+                }
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors
@@ -156,8 +167,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
                 if (marsImageList.isEmpty()) {
                     date = date.minusDays(1)
                     fetchRoverPics()
-                }
-                else {
+                } else {
                     // Get a shorter list of images by taking only one picture from each camera
                     val picsToRemove = mutableListOf<MarsImage>()
                     val listOfTakenCameras = mutableListOf<String>()
@@ -179,7 +189,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
 
                     detail.earth_date = date.format(dateFormatter).toString()
 
-                    if((repository as ServiceDBMars).getMarsAtDateTask(detail.earth_date) != null) {
+                    if ((repository as ServiceDBMars).getMarsAtDateTask(detail.earth_date) != null) {
                         detail.isFav = true
                     }
 
@@ -206,7 +216,9 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
                     detailRoot = detail
                     focusResult.value = detailRoot
                 }
-                if(hasInternetConnection.value!!) { hasInternetConnection.value = false }
+                if (hasInternetConnection.value!!) {
+                    hasInternetConnection.value = false
+                }
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors
@@ -244,7 +256,9 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
             }
             is NetworkResponse.NetworkError -> {
                 // Handle network error
-                if(hasInternetConnection.value!!) { hasInternetConnection.value = false }
+                if (hasInternetConnection.value!!) {
+                    hasInternetConnection.value = false
+                }
             }
             is NetworkResponse.UnknownError -> {
                 // Handle other errors
@@ -253,7 +267,7 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
     }
 
     private fun setTemp(marsPost: PlainClass) {
-        val tempSolCurr = listTemp.filter {it.solMars == marsPost.sol}[0]
+        val tempSolCurr = listTemp.filter { it.solMars == marsPost.sol }[0]
         marsPost.maxTemp = "Max: " + tempSolCurr.maxTempMars + "°C"
         marsPost.minTemp = "Min: " + tempSolCurr.minTempMars + "°C"
     }
@@ -268,7 +282,8 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
 
     fun favPlainDB(detail: PlainClass, favBtn: ToggleButton, context: Context) {
         val dateFmt = detail.date.replace("/", "_")
-        if(type == PlainActivityType.DailyImage) {
+
+        if (type == PlainActivityType.DailyImage) {
             Glide.with(context)
                 .load(detail.url)
                 .into(object : CustomTarget<Drawable?>() {
@@ -280,16 +295,17 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
                             val dailyRoom = AstroDreamUtil.transformPlainToDailyDBClass(detail, "")
                             if ((repository as ServiceDBDaily).getDailyAtDateTask(detail.date) == null) {
                                 val fileUri = AstroDreamUtil.saveImage(resource.toBitmap(), context, "Daily", "daily_${dateFmt}")
+
                                 dailyRoom.url = fileUri
                                 repository.addDailyTask(dailyRoom)
                                 favBtn.isChecked = true
-                                if(adapterHistory.itemCount > 1) {
+                                if (adapterHistory.itemCount > 1) {
                                     adapterHistory.replaceItemAt(detail.apply { this.isFav = true })
                                 }
                             } else {
                                 repository.deleteDailyTask(dailyRoom)
                                 favBtn.isChecked = false
-                                if(adapterHistory.itemCount > 1) {
+                                if (adapterHistory.itemCount > 1) {
                                     adapterHistory.replaceItemAt(detail.apply {
                                         this.isFav = false
                                     })
@@ -298,62 +314,68 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
                             Log.i("===PLAINVIEWMODEL==", repository.getAllDailyFavsTask().toString())
                         }
                     }
+
                     override fun onLoadCleared(placeholder: Drawable?) {}
                 })
+            return
         }
-        if(type == PlainActivityType.Mars) {
-            val marsRoom = AstroDreamUtil.transformPlainToMarsDBClass(detail)
-            viewModelScope.launch {
-                if ((repository as ServiceDBMars).getMarsAtDateTask(marsRoom.earth_date) == null) {
-                    repository.addMarsTask(marsRoom)
-                    favBtn.isChecked = true
-                    if(adapterHistory.itemCount > 1) {
-                        adapterHistory.replaceItemAt(detail.apply { this.isFav = true })
-                    }
-                    detail.img_list.forEachIndexed {index, marsImage ->
-                        Glide.with(context)
-                            .load(marsImage.img_src)
-                            .into(object : CustomTarget<Drawable?>() {
-                                override fun onResourceReady(
-                                    resource: Drawable,
-                                    transition: Transition<in Drawable?>?
-                                ) {
-                                    viewModelScope.launch {
-                                        val fileUri = AstroDreamUtil.saveImage(
-                                            resource.toBitmap(),
-                                            context,
-                                            "Mars",
-                                            "mars_${dateFmt}_${index}"
-                                        )
-                                        repository.addMarsPicTask(
-                                            MarsPicRoom(
-                                                id = 0,
-                                                url = fileUri,
-                                                earth_date = detail.earth_date,
-                                                cameraFullName = marsImage.camera.full_name
-                                            )
-                                        )
-                                    }
-                                }
-                                override fun onLoadCleared(placeholder: Drawable?) {}
-                            })
-                    }
-                } else {
-                    repository.deleteMarsTask(marsRoom)
-                    favBtn.isChecked = false
-                    if(adapterHistory.itemCount > 1) {
-                        adapterHistory.replaceItemAt(detail.apply { this.isFav = false })
-                    }
-                }
-                Log.e("====PLAINVIEWMODEL===", repository.getAllMarsFavsTask().toString())
 
+        val marsRoom = AstroDreamUtil.transformPlainToMarsDBClass(detail)
+
+        viewModelScope.launch {
+            if ((repository as ServiceDBMars).getMarsAtDateTask(marsRoom.earth_date) == null) {
+                repository.addMarsTask(marsRoom)
+                favBtn.isChecked = true
+
+                if (adapterHistory.itemCount > 1) {
+                    adapterHistory.replaceItemAt(detail.apply { this.isFav = true })
+                }
+
+                detail.img_list.forEachIndexed { index, marsImage ->
+                    Glide.with(context)
+                        .load(marsImage.img_src)
+                        .into(object : CustomTarget<Drawable?>() {
+                            override fun onResourceReady(
+                                resource: Drawable,
+                                transition: Transition<in Drawable?>?
+                            ) {
+                                viewModelScope.launch {
+                                    val fileUri = AstroDreamUtil.saveImage(
+                                        resource.toBitmap(),
+                                        context,
+                                        "Mars",
+                                        "mars_${dateFmt}_${index}"
+                                    )
+                                    repository.addMarsPicTask(
+                                        MarsPicRoom(
+                                            id = 0,
+                                            url = fileUri,
+                                            earth_date = detail.earth_date,
+                                            cameraFullName = marsImage.camera.full_name
+                                        )
+                                    )
+                                }
+                            }
+
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+                        })
+                }
+            } else {
+                repository.deleteMarsTask(marsRoom)
+                favBtn.isChecked = false
+                if (adapterHistory.itemCount > 1) {
+                    adapterHistory.replaceItemAt(detail.apply { this.isFav = false })
+                }
             }
+            Log.e("====PLAINVIEWMODEL===", repository.getAllMarsFavsTask().toString())
+
         }
     }
 
     fun favMarsState(mars: MarsRoom, favBtn: ToggleButton) {
         viewModelScope.launch {
-            favBtn.isChecked = (repository as ServiceDBMars).getMarsAtDateTask(mars.earth_date) != null
+            favBtn.isChecked =
+                (repository as ServiceDBMars).getMarsAtDateTask(mars.earth_date) != null
         }
     }
 
@@ -362,10 +384,10 @@ class PlainViewModel(val service: Service, private val type: PlainActivityType, 
             favBtn.isChecked = (repository as ServiceDBDaily).getDailyAtDateTask(daily.date) != null
         }
     }
+
     fun getAllMarsDB() {
         viewModelScope.launch {
             listFavsMars.value = (repository as ServiceDBMars).getAllMarsFavsTask()
         }
     }
-
 }

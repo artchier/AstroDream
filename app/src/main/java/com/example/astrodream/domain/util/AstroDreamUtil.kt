@@ -69,12 +69,14 @@ fun AstroDreamUtil.Companion.formatDate(day: Int, month: Int, year: Int): String
     return "$day/$month/$year"
 }
 
-fun AstroDreamUtil.Companion.saveImage(bitmap: Bitmap, context: Context, folderName: String, fileName: String): String {
-    var fileUri: String = ""
+fun AstroDreamUtil.Companion.saveImage(bitmap: Bitmap, context: Context, folderName: String, fileName: String = ""): String {
+    val fileUri: String
 
     if (android.os.Build.VERSION.SDK_INT >= 29) {
         val values = contentValues()
-        values.put(MediaStore.MediaColumns.DISPLAY_NAME, "$fileName.png");
+        if (fileName != "") {
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "$fileName.png");
+        }
         values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$folderName")
         values.put(MediaStore.Images.Media.IS_PENDING, true)
         // RELATIVE_PATH and IS_PENDING are introduced in API 29.

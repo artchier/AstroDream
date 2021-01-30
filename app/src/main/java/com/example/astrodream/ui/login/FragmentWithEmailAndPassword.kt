@@ -41,7 +41,7 @@ abstract class FragmentWithEmailAndPassword(private val fragmentId: Int) : Fragm
         }
 
         password?.apply {
-            view.tiPassword.setText(this)
+            if (view.tiPassword != null) { view.tiPassword.setText(this) }
         }
 
         return view

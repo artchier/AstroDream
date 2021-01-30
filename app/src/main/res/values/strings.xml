@@ -146,4 +146,6 @@
 
     <string name="facebook_app_id">137940331401686</string>
     <string name="fb_login_protocol_scheme">fb137940331401686</string>
+    <string name="reset_pswd">REDEFINIR SENHA</string>
+    <string name="back_login">VOLTAR PARA O LOGIN</string>
 </resources>

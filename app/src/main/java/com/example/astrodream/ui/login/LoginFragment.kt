@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -42,6 +43,10 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 
         view.findViewById<Button>(R.id.btnLogin).setOnClickListener {
             login()
+        }
+
+        view.findViewById<Button>(R.id.btnForgotPassword).setOnClickListener {
+            callFragResetPswd(view)
         }
 
         view.findViewById<ImageButton>(R.id.btnLoginGoogle).setOnClickListener {
@@ -92,6 +97,16 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 
         val callbackManager: CallbackManager = CallbackManager.Factory.create()
         val RC_SIGN_IN_GOOGLE = 120
+    }
+
+    private fun callFragResetPswd(view: View) {
+        val insertedEmail = view.findViewById<TextInputEditText>(R.id.tiEmail).text.toString()
+
+        val fragSignIn = ResetPswdFragment.newInstance(insertedEmail, "")
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment, fragSignIn)
+            commit()
+        }
     }
 
     private fun login() {
@@ -187,7 +202,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                     if (task.exception is FirebaseAuthUserCollisionException) {
                         Toast.makeText(requireContext(), "Já existe uma conta associada a este email.", Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_LONG).show()
                     }
                 }
             }

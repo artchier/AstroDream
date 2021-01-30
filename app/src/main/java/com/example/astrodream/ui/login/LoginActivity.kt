@@ -51,7 +51,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun callFragSignIn() {
         insertedEmail = findViewById<TextInputEditText>(R.id.tiEmail).text.toString()
-        insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        if (findViewById<TextInputEditText>(R.id.tiPassword) != null) {
+            insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        }
 
         val fragSignIn = SignInFragment.newInstance(insertedEmail, insertedPassword)
         supportFragmentManager.beginTransaction().apply {

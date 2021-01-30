@@ -2,10 +2,12 @@ package com.example.astrodream.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -50,7 +52,7 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
                     val key = firebaseUser.uid
                     val emailFire = firebaseUser.email.toString()
 
-//                    showLongMessage("Registration successful")
+                    Toast.makeText(requireContext(), "Cadastro efetuado com sucesso! Seja muito bem-vindo(a)!", Toast.LENGTH_LONG).show()
 
                     startActivity(Intent(activity, InitialActivity::class.java).apply {
                         putExtra("key", key)
@@ -62,5 +64,9 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
 //                    showLongMessage(task.exception.toString())
                 }
             }
+            .addOnFailureListener {
+                Log.i("===CREATE ACCOUNT===", "ERRO: $it")
+            }
+        Log.i("===CREATE ACCOUNT===", "$email $password")
     }
 }

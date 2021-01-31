@@ -153,3 +153,10 @@ fun AstroDreamUtil.Companion.returnTextOf(vararg string: String): String{
     string.forEach { sb.append("\n$it") }
     return sb.toString()
 }
+
+fun AstroDreamUtil.Companion.isPotentiallyHazardousAsteroid(yesOrNot: String): Boolean{
+    when(yesOrNot){
+        "Y" -> return true
+        else -> return false
+    }
+}

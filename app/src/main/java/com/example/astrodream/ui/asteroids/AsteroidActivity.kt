@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.*
@@ -28,6 +27,7 @@ import com.example.astrodream.domain.util.*
 import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import com.example.astrodream.services.ServiceDBAsteroids
 import com.example.astrodream.services.ServiceDBAsteroidsImpl
+import com.example.astrodream.services.databaseReference
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -54,7 +54,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     private val viewModel by viewModels<AsteroidViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return AsteroidViewModel(service, serviceDB, this@AsteroidActivity) as T
+                return AsteroidViewModel(service, serviceDB, databaseReference) as T
             }
         }
     }
@@ -96,7 +96,8 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         }
 
         // ##### Opções da viewModel #####
-        viewModel.viewModelScope.launch { viewModel.doInBackground() }
+        viewModel.viewModelScope.launch { viewModel.doInBackground()
+        viewModel.getListAsteroidesFromFirebase() }
         viewModel.listAllResultsAPI.observe(this) {
             listAllAsteroids.addAll(viewModel.listAllAsteroidsAPI)
             listFourAsteroids.addAll(viewModel.listAsteroidsDateAPI.subList(0, 4)) }

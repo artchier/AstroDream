@@ -2,6 +2,7 @@ package com.example.astrodream.ui.asteroids
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
@@ -10,9 +11,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astrodream.R
 import com.example.astrodream.domain.*
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.formatDate
+import com.example.astrodream.domain.util.isPotentiallyHazardousAsteroid
 import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import com.example.astrodream.services.Service
 import com.example.astrodream.services.ServiceDBAsteroids
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
@@ -21,10 +29,10 @@ import java.time.LocalDate
 class AsteroidViewModel(
     private val serviceAPI: Service,
     private val serviceDB: ServiceDBAsteroids,
-    private val context: Context
+    private val reference: DatabaseReference
 ) : ViewModel() {
 
-    val listAllResultsAPI = MutableLiveData<AsteroidAllRes>()
+    val listAllResultsAPI = MutableLiveData<Asteroid>()
     val listAllAsteroidsAPI = ArrayList<Asteroid>()
     val listResultsDateAPI = MutableLiveData<AsteroidRes>()
     val listAsteroidsDateAPI = ArrayList<Asteroid>()
@@ -42,13 +50,13 @@ class AsteroidViewModel(
         viewModelScope.launch {
             val listAsteroidsDate =
                 serviceAPI.getAsteroidsDate(LocalDate.now().toString())
-            val listAllAsteroids = serviceAPI.getAllAsteroids()
+         //   val listAllAsteroids = serviceAPI.getAllAsteroids()
 
-            listAllAsteroids.near_earth_objects.forEach {
-                val asteroid = Gson().fromJson<AsteroidData>(it,
-                    object : TypeToken<AsteroidData>() {}.type)
-                listAllAsteroidsAPI.add(asteroid.getAsteroid())
-            }
+//            listAllAsteroids.near_earth_objects.forEach {
+//                val asteroid = Gson().fromJson<AsteroidData>(it,
+//                    object : TypeToken<AsteroidData>() {}.type)
+//                listAllAsteroidsAPI.add(asteroid.getAsteroid())
+//            }
 
 //            listAllAsteroids.near_earth_objects.keySet().toList().forEach {
 //                val list = Gson().fromJson(
@@ -57,7 +65,7 @@ class AsteroidViewModel(
 //                ) as List<AsteroidData>
 //                listAllAsteroidsAPI.addAll(list.map { a -> a.getAsteroid() })
 //            }
-            listAllResultsAPI.postValue(listAllAsteroids)
+//            listAllResultsAPI.postValue(listAllAsteroids)
 
             listAsteroidsDate.near_earth_objects.keySet().toList().forEach {
                 val list = Gson().fromJson(
@@ -78,7 +86,7 @@ class AsteroidViewModel(
         v.findViewById<ProgressBar>(R.id.progressbar_asteroides).visibility = ProgressBar.GONE
     }
 
-    // ####### OPÇÕES DO BANCO DE DADOS #######
+    // ####### OPÇÕES DO BANCO DE DADOS LOCAL #######
 
     private fun addAsteroidDB (asteroid: AsteroidRoom){
         viewModelScope.launch {
@@ -118,5 +126,35 @@ class AsteroidViewModel(
     fun deleteAsteroidInDB(asteroid: AsteroidRoom){
         listAllAsteroidsDB.remove(asteroid)
         deleteAsteroidsDB(asteroid)
+    }
+
+    // ####### OPÇÕES DO BANCO DE DADOS FIREBASE #######
+
+    fun getListAsteroidesFromFirebase(){
+        viewModelScope.launch {
+            reference.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    dataSnapshot.children.forEach {
+                        val result = it.value as HashMap<String, String>
+                        val data = result["first_obs"]!!.split("-")
+                        val asteroid = Asteroid(
+                            it.key!!, result["full_name"]!!,
+                            AstroDreamUtil.isPotentiallyHazardousAsteroid(result["pha"]!!),
+                            null, null,
+                            AstroDreamUtil.formatDate(data[2].toInt(), data[1].toInt(), data[0].toInt()),
+                            null, null,
+                            null, null
+                        )
+                        Log.i("-----asteroide-------", asteroid.toString())
+                        listAllAsteroidsAPI.add(asteroid)
+                        listAllResultsAPI.postValue(asteroid)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("Erro", error.toString())
+                }
+            })
+        }
     }
 }

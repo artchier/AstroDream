@@ -16,7 +16,7 @@ import com.example.astrodream.entitiesDatabase.*
         MarsRoom::class,
         MarsPicRoom::class,
         DailyRoom::class,
-        Avatar::class,
+        AvatarRoom::class,
         AsteroidRoom::class],
     version = 1
 )

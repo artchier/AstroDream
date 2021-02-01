@@ -10,13 +10,14 @@
 
     <ImageView
         android:id="@+id/ivAstronauta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/circle"
+        android:scaleType="fitCenter"
         android:contentDescription="@string/avatar" />
 
     <LinearLayout
@@ -29,6 +30,7 @@
         app:layout_constraintTop_toTopOf="@id/ivAstronauta">
 
         <TextView
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_light"

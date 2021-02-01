@@ -64,7 +64,9 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         }
 
         setUpMenuBehavior()
+
     }
+
 
     private fun dailyImage() {
         piInitial.show()

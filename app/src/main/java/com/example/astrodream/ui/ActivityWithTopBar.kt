@@ -1,10 +1,11 @@
 package com.example.astrodream.ui
 
-import android.app.PendingIntent.getActivity
 import android.content.Intent
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -23,8 +24,8 @@ import com.example.astrodream.ui.login.LoginActivity
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.userconfig.UserConfigActivity
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -32,6 +33,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
+import kotlinx.android.synthetic.main.header_layout.*
 
 
 abstract class ActivityWithTopBar(
@@ -41,6 +43,22 @@ abstract class ActivityWithTopBar(
 
     private var toolBar: MaterialToolbar? = null
     private lateinit var drawerLayout: DrawerLayout
+
+    val realtimeViewModel: RealtimeViewModel by viewModels()
+
+    private fun userListener(uid: String, name: String, email: String) {
+        if(uid == "") { return }
+        realtimeViewModel.retrieveUserData(uid, name, email)
+        realtimeViewModel.activeUser.observe(this) {
+            ivAstronauta.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    it.avatar
+                )
+            )
+            tvUserName.text = "Olá, ${it.name}"
+        }
+    }
 
     private fun <T> goToActivityIfNotAlreadyThere(destination: Class<T>) {
         if (this::class.java == destination) {
@@ -125,16 +143,14 @@ abstract class ActivityWithTopBar(
         }
 
         btnLogout.setOnClickListener {
-            Firebase.auth.signOut()
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("67163504194-hjucfh631cgv65fuegvfqbp51n016lg0.apps.googleusercontent.com")
-                .requestEmail()
-                .build()
-            val googleSignInClient = GoogleSignIn.getClient(this, gso)
-            googleSignInClient.signOut()
-            goToActivityIfNotAlreadyThere(LoginActivity::class.java)
-            finish()
+            logout()
         }
+
+        userListener(
+            Firebase.auth.currentUser?.uid ?: "",
+            Firebase.auth.currentUser?.displayName ?: "",
+            Firebase.auth.currentUser?.email ?: ""
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -155,5 +171,23 @@ abstract class ActivityWithTopBar(
             return
         }
         super.onBackPressed()
+    }
+
+    private fun logout() {
+        // Logout email/senha
+        Firebase.auth.signOut()
+        // Logout Google
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("67163504194-hjucfh631cgv65fuegvfqbp51n016lg0.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient.signOut()
+        // Logout Facebook
+        // TODO: parece que não está funcionando direito....
+        LoginManager.getInstance().logOut()
+        // Volta para a activity de login
+        goToActivityIfNotAlreadyThere(LoginActivity::class.java)
+        finish()
     }
 }

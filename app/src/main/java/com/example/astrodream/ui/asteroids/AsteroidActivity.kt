@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.*
@@ -110,41 +111,73 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     @SuppressLint("InflateParams")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickAsteroids(childPos: Int, groupPos: Int) {
-        val asteroid = expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(childPos)
-        val isAsteroidInDB = viewModel.listAllAsteroidsDB.map { it.codeAsteroid }.contains(asteroid?.name)
+        var asteroid = expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(childPos)
+        Log.i("aqui 1", "aquiiiiiii")
+        viewModel.getOneAsteroById(asteroid?.id!!.toInt())
 
         val view: View = this.layoutInflater.inflate(R.layout.asteroid_dialog, null)
         val starFavorites = view.findViewById<View>(R.id.android_favs)
+        Log.i("aqui  2", "aquiiiiiii")
+        viewModel.oneAsteroidFromAPI.observe(this) {
 
-        starFavorites.setBackgroundResource(if (isAsteroidInDB) R.drawable.ic_star_filled else R.drawable.ic_star_border)
+            if (asteroid!!.absolute_magnitude == null && it != null) {
+                asteroid = it
+                Log.i("aqui 3", "aquiiiiiii")
+                view.findViewById<TextView>(R.id.close_approach_data).text =
+                    "Informações indisponíneis para esse asteroide"
+            } else if (asteroid!!.absolute_magnitude == null && it == null){
+                view.findViewById<TextView>(R.id.nome_asteroid_dialog).text = asteroid?.name
+                view.findViewById<TextView>(R.id.close_approach_data).text =
+                    "Informações indisponíneis para esse asteroide"
+            }
 
-        if (asteroid?.is_potentially_hazardous_asteroid!!)
-            view.findViewById<TextView>(R.id.is_potentially_hazardous_asteroid).visibility = TextView.VISIBLE
+            if (asteroid!!.absolute_magnitude != null) {
+                val isAsteroidInDB =
+                    viewModel.listAllAsteroidsDB.map { it.codeAsteroid }.contains(asteroid?.name)
 
-        val listStrings = arrayOf(asteroid.name, asteroid.linkExterno.toString(),
-            getString(R.string.dialog_absolute_magnitude, asteroid.absolute_magnitude),
-            getString(R.string.dialog_relative_velocity, asteroid.relative_velocity),
-            getString(R.string.dialog_close_approach_data, asteroid.close_approach_data),
-            getString(R.string.dialog_miss_distance, asteroid.miss_distance),
-            getString(R.string.dialog_orbiting_body, asteroid.orbiting_body),
-            getString(R.string.dialog_estimated_diameter, asteroid.estimated_diameter))
 
-        view.findViewById<TextView>(R.id.nome_asteroid_dialog).text = listStrings[0]
-        view.findViewById<TextView>(R.id.absolute_magnitude).text = listStrings[2]
-        view.findViewById<TextView>(R.id.relative_velocity).text = listStrings[3]
-        view.findViewById<TextView>(R.id.close_approach_data).text = listStrings[4]
-        view.findViewById<TextView>(R.id.miss_distance).text = listStrings[5]
-        view.findViewById<TextView>(R.id.orbiting_body).text = listStrings[6]
-        view.findViewById<TextView>(R.id.estimated_diameter).text = listStrings[7]
+                starFavorites.setBackgroundResource(if (isAsteroidInDB) R.drawable.ic_star_filled else R.drawable.ic_star_border)
 
-        view.findViewById<TextView>(R.id.btn_ver_orbita).setOnClickListener {
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(listStrings[1])
-            startActivity(i)
+                if (asteroid?.is_potentially_hazardous_asteroid!!)
+                    view.findViewById<TextView>(R.id.is_potentially_hazardous_asteroid).visibility =
+                        TextView.VISIBLE
+
+                val listStrings = arrayOf(
+                    asteroid!!.name, asteroid!!.linkExterno.toString(),
+                    getString(R.string.dialog_absolute_magnitude, asteroid!!.absolute_magnitude),
+                    getString(R.string.dialog_relative_velocity, asteroid!!.relative_velocity),
+                    getString(R.string.dialog_close_approach_data, asteroid!!.close_approach_data),
+                    getString(R.string.dialog_miss_distance, asteroid!!.miss_distance),
+                    getString(R.string.dialog_orbiting_body, asteroid!!.orbiting_body),
+                    getString(R.string.dialog_estimated_diameter, asteroid!!.estimated_diameter)
+                )
+
+                view.findViewById<TextView>(R.id.nome_asteroid_dialog).text = listStrings[0]
+                view.findViewById<TextView>(R.id.absolute_magnitude).text = listStrings[2]
+                view.findViewById<TextView>(R.id.relative_velocity).text = listStrings[3]
+                view.findViewById<TextView>(R.id.close_approach_data).text = listStrings[4]
+                view.findViewById<TextView>(R.id.miss_distance).text = listStrings[5]
+                view.findViewById<TextView>(R.id.orbiting_body).text = listStrings[6]
+                view.findViewById<TextView>(R.id.estimated_diameter).text = listStrings[7]
+
+                view.findViewById<TextView>(R.id.btn_ver_orbita).setOnClickListener {
+                    val i = Intent(Intent.ACTION_VIEW)
+                    i.data = Uri.parse(listStrings[1])
+                    startActivity(i)
+                }
+
+
+                starFavorites.setOnClickListener {
+                    onAsteroidFavsClickEvent(
+                        it,
+                        isAsteroidInDB,
+                        *listStrings
+                    )
+                }
+
+            }
+
         }
-
-        starFavorites.setOnClickListener { onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings) }
-
         AstroDreamUtil.showDialogMessage(this, view)
     }
 

@@ -49,8 +49,8 @@ interface Service {
 
     @GET("neo/rest/v1/feed")
     suspend fun getAsteroidsDate(
-        @Query("start_date")p0: String,
-        @Query("api_key")p1: String = apikeyApp
+        @Query("start_date") startDate: String,
+        @Query("api_key") apikey: String = apikeyApp
     ): AsteroidRes
 
     @GET("neo/rest/v1/neo/browse")
@@ -58,12 +58,11 @@ interface Service {
         @Query("api_key")p0: String = apikeyApp
     ): AsteroidAllRes
 
-    @GET("neo/rest/v1/feed")
+    @GET("neo/rest/v1/neo/{id}")
     suspend fun getAsteroidId(
-        @Query("start_date")p0: String,
-        @Query("end_date")p2: String,
-        @Query("api_key")p1: String = apikeyApp
-    ): AsteroidRes
+        @Path("id") id: Int,
+        @Query("api_key") apikey: String = apikeyApp
+    ): AsteroidData
 
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")

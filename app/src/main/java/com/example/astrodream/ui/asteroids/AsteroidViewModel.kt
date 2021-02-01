@@ -1,7 +1,7 @@
 package com.example.astrodream.ui.asteroids
 
-import android.content.Context
 import android.os.Build
+import android.util.AndroidRuntimeException
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.time.LocalDate
 
 class AsteroidViewModel(
@@ -37,6 +38,7 @@ class AsteroidViewModel(
     val listResultsDateAPI = MutableLiveData<AsteroidRes>()
     val listAsteroidsDateAPI = ArrayList<Asteroid>()
     var listAllAsteroidsDB = ArrayList<AsteroidRoom>()
+    var oneAsteroidFromAPI = MutableLiveData<Asteroid>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun execute(v: View) = viewModelScope.launch {
@@ -156,5 +158,21 @@ class AsteroidViewModel(
                 }
             })
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getOneAsteroById(id: Int){
+            viewModelScope.launch {
+                Log.i("aqui 6", "aquiiiiiii")
+                try {
+                val asteroid = serviceAPI.getAsteroidId(id)
+                oneAsteroidFromAPI.value = asteroid.getAsteroid()
+                Log.i("aqui 4", "aquiiiiiii")
+                } catch (e: HttpException){
+                    Log.i("ERROR", e.stackTrace.toString())
+                    oneAsteroidFromAPI.value = null
+                    Log.i("aqui 5", "aquiiiiiii")
+                }
+            }
     }
 }

@@ -101,7 +101,6 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
 
         view!!.setBackgroundResource(if (isLastChild) R.drawable.button_style_click_itens else R.color.gigas)
 
-
             txtListChild.text = childAsteroid?.name
             txtDataListChild.text = childAsteroid?.close_approach_data
             Log.i("----asteroideres-----", childAsteroid.toString())

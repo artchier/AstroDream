@@ -1,27 +1,20 @@
 package com.example.astrodream.ui
 
 import android.graphics.Matrix
-import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.GestureDetector
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.doOnLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
-import com.example.astrodream.domain.util.AstroDreamUtil
-import com.example.astrodream.domain.util.saveImage
-import com.example.astrodream.services.setImageAsWallpaper
+import com.example.astrodream.services.buildDownloadSetWallpaperMenu
 import kotlinx.android.synthetic.main.activity_full_screen_img.*
 
 class FullScreenImgActivity : AppCompatActivity() {
@@ -87,6 +80,12 @@ class FullScreenImgActivity : AppCompatActivity() {
         gestureDetector = GestureDetector(this, GestureListener())
 
         ivCloseFullscreen.setOnClickListener { finish() }
+
+        ivDownloadWallpaper.setOnClickListener {
+            val url = if (hdimgURL != "") hdimgURL else imgURL
+
+            buildDownloadSetWallpaperMenu(this, ivDownloadWallpaper, url)
+        }
     }
 
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
@@ -128,40 +127,9 @@ class FullScreenImgActivity : AppCompatActivity() {
         ): Boolean { return false }
 
         override fun onLongPress(e: MotionEvent?) {
-            PopupMenu(this@FullScreenImgActivity, ivCloseFullscreen, Gravity.TOP).apply {
-                inflate(R.menu.menu_fullscreen_images)
-                setOnMenuItemClickListener {
-                    Toast.makeText(baseContext, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
+            val url = if (hdimgURL != "") hdimgURL else imgURL
 
-                    val url = if (hdimgURL != "") hdimgURL else imgURL
-
-                    Glide.with(this@FullScreenImgActivity)
-                        .load(url)
-                        .into(object : CustomTarget<Drawable?>() {
-                            override fun onResourceReady(
-                                resource: Drawable,
-                                transition: Transition<in Drawable?>?
-                            ) {
-                                when (it.itemId) {
-                                    R.id.downloadImageItem -> {
-                                        AstroDreamUtil.saveImage(resource.toBitmap(), baseContext, getString(R.string.app_name))
-                                        Toast.makeText(baseContext, "Imagem salva!", Toast.LENGTH_LONG).show()
-                                    }
-                                    R.id.useAsWallpaperItem -> {
-                                        val screenSize = Point()
-                                        baseContext.display!!.getRealSize(screenSize)
-
-                                        setImageAsWallpaper(screenSize, baseContext, resource)
-                                        Toast.makeText(baseContext, "Wallpaper atualizado!", Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                            }
-                            override fun onLoadCleared(placeholder: Drawable?) {}
-                        })
-
-                    true
-                }
-            }.show()
+            buildDownloadSetWallpaperMenu(this@FullScreenImgActivity, ivDownloadWallpaper, url)
         }
 
         override fun onFling(

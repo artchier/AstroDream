@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -82,7 +83,7 @@ abstract class ActivityWithTopBar(
         setSupportActionBar(toolBar)
 
         val lateralMenuHost = findViewById<NavigationView>(R.id.nvLateralMenu)
-        val lateralMenu = findViewById<ConstraintLayout>(R.id.clLateralMenu)
+        val lateralMenu = findViewById<ScrollView>(R.id.clLateralMenu)
 
         val btnAvatar = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnAvatar)
 

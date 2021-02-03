@@ -148,4 +148,6 @@
     <string name="fb_login_protocol_scheme">fb137940331401686</string>
     <string name="reset_pswd">REDEFINIR SENHA</string>
     <string name="back_login">VOLTAR PARA O LOGIN</string>
+    <string name="current_password">Por favor confirme sua senha atual</string>
+    <string name="confirm">Confirmar</string>
 </resources>

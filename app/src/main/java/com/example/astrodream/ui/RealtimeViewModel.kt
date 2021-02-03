@@ -13,9 +13,11 @@ import kotlinx.coroutines.launch
 
 class RealtimeViewModel: ViewModel() {
 
-    val activeUser = MutableLiveData<User>()
+    companion object {
+        const val TAG = "===REALTIME_VIEW_MODEL"
+    }
 
-    val TAG = "===REALTIME_VIEW_MODEL"
+    val activeUser = MutableLiveData<User>()
 
     val realtimeUserRepository = RealtimeUserRepository()
 

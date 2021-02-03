@@ -93,7 +93,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             }
 
         val callbackManager: CallbackManager = CallbackManager.Factory.create()
-        val RC_SIGN_IN_GOOGLE = 120
+        const val RC_SIGN_IN_GOOGLE = 120
     }
 
     private fun callFragResetPswd(view: View) {

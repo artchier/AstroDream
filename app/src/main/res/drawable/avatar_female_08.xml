@@ -1,0 +1,214 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="202dp"
+    android:height="474dp"
+    android:viewportWidth="202"
+    android:viewportHeight="474">
+    <path
+        android:fillColor="#fff600"
+        android:name="Retângulo 18"
+        android:pathData="m60 444v28h30v-28z" />
+    <path
+        android:fillColor="#fff600"
+        android:name="Retângulo 18"
+        android:pathData="m95 444v28h30v-28z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 26"
+        android:pathData="m28 54h22v64h-22v-64z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 23 copiar"
+        android:pathData="m128 3h45v50h-45v-50z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 25 copiar"
+        android:pathData="m98 11h70v64h-70v-64z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 26 copiar"
+        android:pathData="m135 54h22v64h-22v-64z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 27"
+        android:pathData="m48 28h89v47h-89v-47z" />
+    <path
+        android:fillColor="#e2bea0"
+        android:name="She_Face2"
+        android:pathData="m50 75h85v107h-85v-107z" />
+    <path
+        android:fillColor="#e2bea0"
+        android:name="She_Face1"
+        android:pathData="m34.01 118h117v22h-117v-22z" />
+    <path
+        android:fillColor="#e2bea0"
+        android:name="Top"
+        android:pathData="m62 209h61v100h-61v-100z" />
+    <path
+        android:fillColor="#e2bea0"
+        android:name="She_Neck"
+        android:pathData="m71 181.99h43v27h-43v-27z" />
+    <path
+        android:fillColor="#e2bea0"
+        android:name="She_Arm2"
+        android:pathData="m39 209h17v150h-17v-150z" />
+    <path
+        android:fillColor="#e2bea0"
+        android:name="She_Arm1"
+        android:pathData="m129 209h17v150h-17v-150z" />
+    <path
+        android:fillColor="#e2bea0"
+        android:name="She_Leg"
+        android:pathData="m100 357.01v108h20v-108z" />
+    <path
+        android:fillColor="#e2bea0"
+        android:name="She_Feet"
+        android:pathData="m65 357.01v108h20v-108z" />
+    <path
+        android:fillColor="#000"
+        android:name="She_Eye2"
+        android:pathData="m71 112h10v27h-10v-27z" />
+    <path
+        android:fillColor="#000"
+        android:name="She_Eye1"
+        android:pathData="m104 112h10v27h-10v-27z" />
+    <path
+        android:fillColor="#000"
+        android:strokeColor="#000"
+        android:strokeWidth="2"
+        android:strokeMiterLimit="100"
+        android:name="Linha 660"
+        android:pathData="m66 451 9 16 -9 -16z" />
+    <path
+        android:fillColor="#000"
+        android:strokeColor="#000"
+        android:strokeWidth="2"
+        android:strokeMiterLimit="100"
+        android:name="Linha 660 mirror"
+        android:pathData="m75 467 9 -16 -9 16z" />
+    <path
+        android:fillColor="#000"
+        android:strokeColor="#000"
+        android:strokeWidth="2"
+        android:strokeMiterLimit="100"
+        android:name="Linha 660 copiar"
+        android:pathData="m101 451 9 16 -9 -16z" />
+    <path
+        android:fillColor="#000"
+        android:strokeColor="#000"
+        android:strokeWidth="2"
+        android:strokeMiterLimit="100"
+        android:name="Linha 660 mirror"
+        android:pathData="m110 467 9 -16 -9 16z" />
+    <path
+        android:fillColor="#fff600"
+        android:name="Top"
+        android:pathData="m39 209h45v50h-45v-50z" />
+    <path
+        android:fillColor="#fff600"
+        android:name="Top"
+        android:pathData="m56 234h73v70h-73v-70z" />
+    <path
+        android:fillColor="#fff600"
+        android:name="Top"
+        android:pathData="m101 209h45v50h-45v-50z" />
+    <path
+        android:fillColor="#fff600"
+        android:name="Bottom"
+        android:pathData="m59 309h32v48h-32v-48z" />
+    <path
+        android:fillColor="#fff600"
+        android:name="Bottom"
+        android:pathData="m94 309h32v48h-32v-48z" />
+    <path
+        android:fillColor="#fff600"
+        android:name="Bottom"
+        android:pathData="m59 309h67v40h-67v-40z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m39 218h17v6h-17v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m56 215h28v6h-28v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m56 228h28v6h-28v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m101 215h28v6h-28v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m101 228h28v6h-28v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m56 241h73v6h-73v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m56 254h73v6h-73v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m56 267h73v6h-73v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m56 280h73v6h-73v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m56 293h73v6h-73v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m39 231h17v6h-17v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m39 244h17v6h-17v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m129 218h17v6h-17v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m129 231h17v6h-17v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 45"
+        android:pathData="m129 244h17v6h-17v-6z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 46"
+        android:pathData="m63 309v48h5v-48z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 46"
+        android:pathData="m99 309v48h5v-48z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 46"
+        android:pathData="m108 309v48h5v-48z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 46"
+        android:pathData="m81 309v48h5v-48z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 46"
+        android:pathData="m72 309v48h5v-48z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 46"
+        android:pathData="m117 309v48h5v-48z" />
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 46"
+        android:pathData="m90 309v40h5v-40z" />
+</vector>

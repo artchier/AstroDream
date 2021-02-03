@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.Toast
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
 import com.facebook.*
@@ -91,7 +93,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             }
 
         val callbackManager: CallbackManager = CallbackManager.Factory.create()
-        val RC_SIGN_IN_GOOGLE = 120
+        const val RC_SIGN_IN_GOOGLE = 120
     }
 
     private fun callFragResetPswd(view: View) {
@@ -116,23 +118,21 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val firebaseUser: FirebaseUser = task.result?.user!!
-                    val uid = firebaseUser.uid
-                    val name = firebaseUser.displayName
-                    val emailFire = firebaseUser.email.toString()
-                    startActivity(Intent(activity, InitialActivity::class.java).apply {
-                        putExtra("uid", uid)
-                        putExtra("name", name)
-                        putExtra("email", emailFire)
-                    })
-                    Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
-                    activity?.finish()
+                    callInitialActivity()
                 } else {
                     Log.i("Login", task.exception.toString())
                     if (task.exception is FirebaseAuthInvalidUserException || task.exception is FirebaseAuthInvalidCredentialsException) {
-                        Toast.makeText(requireContext(), "Usuário ou senha incorretos!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Usuário ou senha incorretos!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
-                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Erro inesperado, tente novamente mais tarde!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -155,7 +155,11 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Erro inesperado, tente novamente mais tarde!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -166,22 +170,20 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val firebaseUser = auth.currentUser!!
-                    val uid = firebaseUser.uid
-                    val name = firebaseUser.displayName
-                    val emailFire = firebaseUser.email.toString()
-                    startActivity(Intent(activity, InitialActivity::class.java).apply {
-                        putExtra("uid", uid)
-                        putExtra("name", name)
-                        putExtra("email", emailFire)
-                    })
-                    Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
-                    activity?.finish()
+                    callInitialActivity()
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
-                        Toast.makeText(requireContext(), "Já existe uma conta associada a este e-mail.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Já existe uma conta associada a este e-mail.",
+                            Toast.LENGTH_LONG
+                        ).show()
                     } else {
-                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Erro inesperado, tente novamente mais tarde!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -192,21 +194,20 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    val firebaseUser = auth.currentUser!!
-                    val uid = firebaseUser.uid
-                    val name = firebaseUser.displayName
-                    val emailFire = firebaseUser.email.toString()
-                    startActivity(Intent(activity, InitialActivity::class.java).apply {
-                        putExtra("uid", uid)
-                        putExtra("name", name)
-                        putExtra("email", emailFire)
-                    })
-                    activity?.finish()
+                    callInitialActivity()
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
-                        Toast.makeText(requireContext(), "Já existe uma conta associada a este email.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Já existe uma conta associada a este email.",
+                            Toast.LENGTH_LONG
+                        ).show()
                     } else {
-                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Erro inesperado, tente novamente mais tarde!",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
@@ -215,6 +216,12 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
     private fun startLoginButtonFacebook(view: View) {
         view.findViewById<LoginButton>(R.id.btnLoginFacebook)
             .setReadPermissions("email", "public_profile")
+    }
+
+    private fun callInitialActivity() {
+        startActivity(Intent(requireActivity(), InitialActivity::class.java))
+        activity?.finish()
+        Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
     }
 
 }

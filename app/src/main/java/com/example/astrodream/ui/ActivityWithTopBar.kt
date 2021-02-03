@@ -49,15 +49,14 @@ abstract class ActivityWithTopBar(
 
     private fun userListener(uid: String, name: String, email: String) {
         if(uid == "") { return }
+
         realtimeViewModel.retrieveUserData(uid, name, email)
+
         realtimeViewModel.activeUser.observe(this) {
             ivAstronauta.setImageDrawable(
-                ContextCompat.getDrawable(
-                    this,
-                    it.avatar
-                )
+                ContextCompat.getDrawable(this, it.avatar)
             )
-            tvUserName.text = "Olá, ${it.name}"
+            tvUserName.text = getString(R.string.greetins).format(it.name)
         }
     }
 

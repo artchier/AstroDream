@@ -4,20 +4,23 @@ import android.app.WallpaperManager
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.ComponentName
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.os.Environment
 import android.os.PersistableBundle
-import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.example.astrodream.R
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.saveImage
 
 const val WALLPAPER_JOB_ID = 10001
 const val TAG = "WallpaperService"
@@ -80,4 +83,41 @@ fun cancelWallpaperChange(context: Context) {
     jobScheduler.cancel(WALLPAPER_JOB_ID)
 
     Log.d(TAG, "Job para mudar papel de parede cancelado")
+}
+
+fun buildDownloadSetWallpaperMenu(context: Context, anchor: View, imageUrl: String) {
+    PopupMenu(context, anchor, Gravity.TOP).apply {
+        inflate(R.menu.menu_fullscreen_images)
+        setOnMenuItemClickListener {
+            Toast.makeText(context, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
+
+            Glide.with(context)
+                .load(imageUrl)
+                .into(object : CustomTarget<Drawable?>() {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable?>?
+                    ) {
+                        when (it.itemId) {
+                            R.id.downloadImageItem -> {
+                                AstroDreamUtil.saveImage(resource.toBitmap(), context,
+                                    context.getString(R.string.app_name))
+
+                                Toast.makeText(context, "Imagem salva!", Toast.LENGTH_SHORT).show()
+                            }
+                            R.id.useAsWallpaperItem -> {
+                                val screenSize = Point()
+                                context.display!!.getRealSize(screenSize)
+
+                                setImageAsWallpaper(screenSize, context, resource)
+                                Toast.makeText(context, "Wallpaper atualizado!", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+                })
+
+            true
+        }
+    }.show()
 }

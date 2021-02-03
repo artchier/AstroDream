@@ -1,9 +1,11 @@
 package com.example.astrodream.ui.plaindailymars
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
@@ -11,13 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.services.buildDownloadSetWallpaperMenu
 import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.android.synthetic.main.item_detail.view.*
 
-class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
+class PlainAdapter: RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
 
     lateinit var listener: OnClickDetailListener
     lateinit var favListener: OnClickFavListener
+    lateinit var context: Context
     var listHistory = mutableListOf<PlainClass>()
     var emptyItemsCount = 0
 
@@ -29,8 +33,9 @@ class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
     }
 
     inner class DetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        var ivDetail: ImageView = itemView.ivDetail
-        var tvDetail: TextView = itemView.tvDetail
+        val ivDetail: ImageView = itemView.ivDetail
+        val tvDetail: TextView = itemView.tvDetail
+        val btnDownloadWallpaper: ImageButton = itemView.btnDownloadWallpaper
 
         init {
             itemView.setOnClickListener(this)
@@ -41,10 +46,6 @@ class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
             if (position != RecyclerView.NO_POSITION) {
                 listener.onClickDetail(position)
             }
-        }
-
-        fun onClickFavorite(detail:PlainClass, btnFav: ToggleButton) {
-            favListener.onClickFav(detail, btnFav)
         }
     }
 
@@ -63,6 +64,7 @@ class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
 
         val dateRef = if (daily) { detail.date } else { detail.earth_date }
         val imgRef = if (daily) { detail.url } else { detail.img_list[0].img_src }
+        val hdImgRef = if (daily) { detail.hdurl } else { imgRef }
 
         if (daily || mars) {
             Glide.with(holder.itemView).asBitmap()
@@ -75,7 +77,11 @@ class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
             shimmerContainer.visibility = View.GONE
 
             holder.itemView.btnFavPlain.setOnClickListener {
-                holder.onClickFavorite(detail, it as ToggleButton)
+                favListener.onClickFav(detail, it as ToggleButton)
+            }
+
+            holder.btnDownloadWallpaper.setOnClickListener {
+                buildDownloadSetWallpaperMenu(context, holder.btnDownloadWallpaper, hdImgRef)
             }
         }
         else {
@@ -97,12 +103,12 @@ class PlainAdapter(): RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
     }
 
     fun replaceItemAt(item: PlainClass) {
-        val pos: Int
-        if(item.date != "" && item.earth_date == "") {
-            pos = listHistory.indexOfFirst { it.date == item.date }
+        val pos: Int = if(item.date != "" && item.earth_date == "") {
+            listHistory.indexOfFirst { it.date == item.date }
         } else {
-            pos = listHistory.indexOfFirst { it.earth_date == item.earth_date }
+            listHistory.indexOfFirst { it.earth_date == item.earth_date }
         }
+
         listHistory[pos] = item
         notifyItemChanged(pos)
         Log.i("====ADAPTER===", "$pos ${listHistory[pos]}")

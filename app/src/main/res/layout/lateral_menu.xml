@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/clLateralMenu"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clLateralMenu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gigas"
@@ -241,7 +240,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableStart="@drawable/ic_logout"
         android:drawablePadding="10dp"
@@ -250,9 +249,9 @@
         android:paddingStart="80dp"
         android:paddingEnd="0dp"
         android:text="@string/logout"
+        android:textAllCaps="false"
         android:textColor="@color/teal_700"
         android:textSize="18sp"
-        android:textAllCaps="false"
         android:textStyle="bold"
         android:theme="@style/NavigationView2"
         app:layout_constraintEnd_toEndOf="parent"

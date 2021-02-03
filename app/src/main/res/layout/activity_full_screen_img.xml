@@ -29,4 +29,14 @@
         android:layout_margin="15dp"
         android:contentDescription="@string/skip_full_screen"/>
 
+    <ImageView
+        android:id="@+id/ivDownloadWallpaper"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_baseline_file_download_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/salvar_ou_usar_como_wallpaper"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@ package com.example.astrodream.services
 
 import com.example.astrodream.domain.AsteroidRes
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
+import android.util.Log
 import com.example.astrodream.domain.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -49,20 +49,20 @@ interface Service {
 
     @GET("neo/rest/v1/feed")
     suspend fun getAsteroidsDate(
-        @Query("start_date")p0: String,
-        @Query("api_key")p1: String = apikeyApp
+        @Query("start_date") p0: String,
+        @Query("api_key") p1: String = apikeyApp
     ): AsteroidRes
 
     @GET("neo/rest/v1/neo/browse")
     suspend fun getAllAsteroids(
-        @Query("api_key")p0: String = apikeyApp
+        @Query("api_key") p0: String = apikeyApp
     ): AsteroidRes
 
     @GET("neo/rest/v1/feed")
     suspend fun getAsteroidId(
-        @Query("start_date")p0: String,
-        @Query("end_date")p2: String,
-        @Query("api_key")p1: String = apikeyApp,
+        @Query("start_date") p0: String,
+        @Query("end_date") p2: String,
+        @Query("api_key") p1: String = apikeyApp,
     ): AsteroidRes
 
     /* ------------------------------------------- Tech ----------------------------------------- */
@@ -83,12 +83,10 @@ interface Service {
 
     /* ------------------------------------------ Globe ----------------------------------------- */
 
-    @GET("EPIC/archive/natural/2020/11/17/{extension}/{name}")
-    suspend fun getEPIC(
-        @Path("extension") extension: String,
-        @Path("name") name: String,
+    @GET("EPIC/api/natural/available")
+    suspend fun getAllAvailableEPIC(
         @Query("api_key") apikey: String = apikeyApp
-    ): Bitmap
+    ): JsonArray
 
     @GET("EPIC/api/natural/date/{chosenDate}")
     suspend fun getAllEPIC(
@@ -101,7 +99,6 @@ interface Service {
 @SuppressLint("SimpleDateFormat")
 fun buildGlobeImageUrl(date: Date, name: String, apikey: String = apikeyApp): String {
     val dataFormatada = SimpleDateFormat("yyyy/MM/dd").format(date)
-
     return "${urlNasa}EPIC/archive/natural/$dataFormatada/png/$name.png?api_key=$apikey"
 }
 

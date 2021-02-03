@@ -241,7 +241,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="20dp"
         android:background="@android:color/transparent"
         android:drawableStart="@drawable/ic_logout"
         android:drawablePadding="10dp"

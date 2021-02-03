@@ -78,6 +78,5 @@ class LoginActivity : AppCompatActivity() {
                 data
             )
         }
-        //Toast.makeText(this, "Passou aqui", Toast.LENGTH_SHORT).show()
     }
 }

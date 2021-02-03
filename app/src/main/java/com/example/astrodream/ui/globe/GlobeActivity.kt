@@ -1,14 +1,9 @@
 package com.example.astrodream.ui.globe
 
 import android.animation.Animator
-import android.graphics.Bitmap
-import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
-import android.view.View
 import android.view.View.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -19,21 +14,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.Request
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
-import com.example.astrodream.services.buildGlobeImageUrl
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_globe.*
 import kotlinx.android.synthetic.main.activity_globe.view.*
 import kotlinx.android.synthetic.main.astrodialog.view.*
@@ -43,11 +27,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator
-import org.threeten.bp.LocalDate
-import org.threeten.bp.temporal.ChronoField
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
@@ -68,6 +50,8 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_globe)
 
+        //inicializa o DatePicker
+        val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
         //animação do pisque do botão de escolher data
         animation = AlphaAnimation(0.5f, 1f)
         animation.repeatMode = Animation.REVERSE
@@ -100,7 +84,6 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
         //clique do botão "Escolher Data"
         fabData.setOnClickListener {
-            val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
 
             datePicker.updateDate(year, month, day)
             MaterialAlertDialogBuilder(this)
@@ -119,8 +102,8 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     if (day >= maxDay || day == maxDay - 1) {
                         Toast.makeText(this, "Escolha uma data anterior", Toast.LENGTH_LONG)
                             .show()
-                    } else if (date != SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).parse(
-                            tvData.text.toString()
+                    } else if (date != SimpleDateFormat("dd  MMM  yyyy", Locale.getDefault()).parse(
+                            tvData.text.toString().replace("de", "")
                         )
                     ) {
                         tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
@@ -135,8 +118,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                 .show()
         }
 
-        viewModel.imageArray.observe(this)
-        {
+        viewModel.imageArray.observe(this) {
             globeAdapter = GlobeAdapter(it, this, date)
             vpGlobe.adapter = globeAdapter
             indicator.setViewPager(vpGlobe)

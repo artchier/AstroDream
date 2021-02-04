@@ -18,6 +18,15 @@ import java.io.IOException
 import java.util.*
 
 
+fun shareText(title: String, description: String, context: Context) {
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_SUBJECT, title)
+        putExtra(Intent.EXTRA_TEXT, buildDescription(title, description))
+    }
+    context.startActivity(Intent.createChooser(shareIntent, "Compartilhar texto"))
+}
+
 fun shareImageFromUrl(url: String, title: String, description: String, context: Context) {
     Toast.makeText(context, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
 
@@ -32,7 +41,7 @@ fun shareImageFromUrl(url: String, title: String, description: String, context: 
                     type = "image/*"
                     putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(resource.toBitmap(), context))
                     putExtra(Intent.EXTRA_SUBJECT, title)
-                    putExtra(Intent.EXTRA_TEXT, "$description\nCompartilhado pelo app AstroDream")
+                    putExtra(Intent.EXTRA_TEXT, buildDescription(title, description))
                     addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                 }
                 context.startActivity(Intent.createChooser(shareIntent, "Compartilhar imagem"))
@@ -41,6 +50,9 @@ fun shareImageFromUrl(url: String, title: String, description: String, context: 
             override fun onLoadCleared(placeholder: Drawable?) {}
         })
 }
+
+private fun buildDescription(title: String, description: String): String =
+    "$title\n${description.replace(Regex(" {2,}"), " ")}\nCompartilhado pelo app AstroDream"
 
 private fun getLocalBitmapUri(bmp: Bitmap, context: Context): Uri? {
     var bmpUri: Uri? = null

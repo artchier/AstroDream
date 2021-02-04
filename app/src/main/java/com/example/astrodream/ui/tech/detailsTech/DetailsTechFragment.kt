@@ -16,6 +16,7 @@ import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
+import com.example.astrodream.services.shareText
 import com.example.astrodream.ui.tech.TechActivity
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
@@ -71,8 +72,8 @@ class DetailsTechFragment : Fragment() {
         serviceDatabaseTech = ServiceDatabaseImplementationTech(db.techDAO())
 
         viewModel.getTechByCodeDB(techPiece[1])
-        viewModel.tech.observe(contextTechActivity) {
-            if (it != null) {
+        viewModel.isFav.observe(contextTechActivity) {
+            if (it) {
                 btnFavorTech.setImageResource(R.drawable.ic_star_filled)
             } else {
                 btnFavorTech.setImageResource(R.drawable.ic_star_border)
@@ -83,13 +84,11 @@ class DetailsTechFragment : Fragment() {
             val typeTech = arguments?.getString("type")
 
             viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3], typeTech!!))
-            viewModel.isFav.observe(contextTechActivity) {
-                if (it) {
-                    btnFavorTech.setImageResource(R.drawable.ic_star_filled)
-                } else {
-                    btnFavorTech.setImageResource(R.drawable.ic_star_border)
-                }
-            }
+
+        }
+
+        btnShareTech.setOnClickListener {
+            shareText(techPiece[2], techPiece[3], requireContext())
         }
     }
 

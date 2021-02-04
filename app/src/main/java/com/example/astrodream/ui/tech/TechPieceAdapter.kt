@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
+import com.example.astrodream.utils.TranslationEnglishToPortuguese
 
 class TechPieceAdapter(
     var onTechPieceClicked: (position: Int) -> Unit,
@@ -16,6 +17,8 @@ class TechPieceAdapter(
 ) : RecyclerView.Adapter<TechPieceAdapter.TechPieceViewHolder>() {
 
     private val techPieces = arrayListOf<List<String>>()
+
+    private val translator = TranslationEnglishToPortuguese()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TechPieceViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_tech_piece, parent, false)
@@ -32,8 +35,11 @@ class TechPieceAdapter(
         } else {
             holder.ivTechPiece.setImageResource(R.drawable.ic_tecnologia)
         }
+
+        translator.modelDownload()
+
         holder.tvCodReferenceTechPiece.text = techPiece[1]
-        holder.tvTitleTechPiece.text = techPiece[2]
+        translator.translateEnglishToPortuguese(techPiece[2], holder.tvTitleTechPiece)
 
         holder.itemView.setOnClickListener {
             onTechPieceClicked(position)

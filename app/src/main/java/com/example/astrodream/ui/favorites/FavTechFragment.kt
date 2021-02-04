@@ -21,6 +21,7 @@ import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.tech.detailsTech.DetailsTechViewModel
+import com.example.astrodream.utils.TranslationEnglishToPortuguese
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
 import kotlinx.android.synthetic.main.fragment_fav_tech.view.*
@@ -32,6 +33,8 @@ class FavTechFragment : Fragment() {
 
     private lateinit var db: AppDatabase
     private lateinit var serviceDatabaseTech: ServiceDatabaseTech
+
+    private lateinit var translator: TranslationEnglishToPortuguese
 
     private val viewModelDetails by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
@@ -55,9 +58,12 @@ class FavTechFragment : Fragment() {
 
         view.ivTech.setImageResource(R.drawable.ic_tecnologia)
 
+        translator = TranslationEnglishToPortuguese()
+        translator.modelDownload()
+
         view.tvCodReferenceTech.text = tech.codReferenceTech
-        view.tvTitleTech.text = tech.titleTech
-        view.tvDescTech.text = tech.descTech
+        translator.translateEnglishToPortuguese(tech.titleTech, view.tvTitleTech)
+        translator.translateEnglishToPortuguese(tech.descTech, view.tvDescTech)
 
         return view
     }

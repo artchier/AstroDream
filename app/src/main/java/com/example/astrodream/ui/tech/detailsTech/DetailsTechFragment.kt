@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -17,9 +16,9 @@ import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import com.example.astrodream.ui.tech.TechActivity
+import com.example.astrodream.utils.TranslationEnglishToPortuguese
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
-
 
 class DetailsTechFragment : Fragment() {
     private lateinit var contextTechActivity: TechActivity
@@ -28,6 +27,8 @@ class DetailsTechFragment : Fragment() {
     private lateinit var serviceDatabaseTech: ServiceDatabaseTech
 
     private lateinit var techPiece: ArrayList<String>
+
+    private lateinit var translator: TranslationEnglishToPortuguese
 
     private val viewModel by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
@@ -57,9 +58,12 @@ class DetailsTechFragment : Fragment() {
             view.ivTech.setImageResource(R.drawable.ic_tecnologia)
         }
 
+        translator = TranslationEnglishToPortuguese()
+        translator.modelDownload()
+
         view.tvCodReferenceTech.text = techPiece[1]
-        view.tvTitleTech.text = techPiece[2]
-        view.tvDescTech.text = techPiece[3]
+        translator.translateEnglishToPortuguese(techPiece[2], view.tvTitleTech)
+        translator.translateEnglishToPortuguese(techPiece[3], view.tvDescTech)
 
         return view
     }

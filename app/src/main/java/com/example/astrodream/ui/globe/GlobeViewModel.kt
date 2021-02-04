@@ -1,12 +1,15 @@
 package com.example.astrodream.ui.globe
 
 import android.util.Log
-import androidx.lifecycle.LiveData
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astrodream.services.Service
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GlobeViewModel(private val service: Service) : ViewModel() {
 
@@ -36,7 +39,6 @@ class GlobeViewModel(private val service: Service) : ViewModel() {
 
     fun getAllAvailableEPIC() {
         epicAvailableDates.value?.clear()
-
         val epicAvailableList = ArrayList<String>()
 
         viewModelScope.launch {
@@ -47,6 +49,7 @@ class GlobeViewModel(private val service: Service) : ViewModel() {
                     val datesAvailable = it.toString().replace("\"", "")
                     epicAvailableList.add(datesAvailable)
                 }
+                Log.v("Teste", epicAvailableList.last())
                 epicAvailableDates.value = epicAvailableList
 
             } catch (e: Exception) {

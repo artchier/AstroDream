@@ -2,7 +2,6 @@ package com.example.astrodream.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
@@ -17,14 +16,20 @@ class LoginActivity : AppCompatActivity() {
     private var insertedEmail = ""
     private var insertedPassword= ""
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            startActivity(Intent(this, InitialActivity::class.java))
+            val uid = currentUser.uid
+            val name = currentUser.displayName
+            val emailFire = currentUser.email.toString()
+            startActivity(Intent(this, InitialActivity::class.java).apply {
+                putExtra("uid", uid)
+                putExtra("name", name)
+                putExtra("email", emailFire)
+            })
             finish()
         }
 
@@ -51,7 +56,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun callFragSignIn() {
         insertedEmail = findViewById<TextInputEditText>(R.id.tiEmail).text.toString()
-        insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        if (findViewById<TextInputEditText>(R.id.tiPassword) != null) {
+            insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        }
 
         val fragSignIn = SignInFragment.newInstance(insertedEmail, insertedPassword)
         supportFragmentManager.beginTransaction().apply {

@@ -86,9 +86,6 @@
     <string name="magnitute_template">"Magnitude Absoluta: %s"</string>
     <string name="velocidade_template">"Velocidade: %s km/s"</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- Url Imagens AsteroidActivity -->
     <string name="url_imagem_globo">https://i.ibb.co/gzJBqz8/planeta.gif</string>
     <string name="url_esquerda_cima">https://i.ibb.co/CbVJ2hD/20210102–001705.gif</string>
@@ -146,4 +143,8 @@
 
     <string name="facebook_app_id">137940331401686</string>
     <string name="fb_login_protocol_scheme">fb137940331401686</string>
+    <string name="reset_pswd">REDEFINIR SENHA</string>
+    <string name="back_login">VOLTAR PARA O LOGIN</string>
+    <string name="greetins">Olá, %s</string>
+    <string name="salvar_ou_usar_como_wallpaper">Salvar ou usar como wallpaper</string>
 </resources>

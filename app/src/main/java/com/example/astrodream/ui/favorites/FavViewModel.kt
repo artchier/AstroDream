@@ -49,8 +49,8 @@ class FavViewModel(
             }
             "tech" -> {
                 viewModelScope.launch {
+                    favList.postValue(techRepository.getAllTechnologiesTask())
                     hasOngoingQuery.value = false
-                    favList.value = techRepository.getAllTechnologiesTask()
                 }
             }
             "mars" -> {

@@ -11,9 +11,10 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import com.example.astrodream.entitiesDatabase.Avatar
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_avatar.*
 
 class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
@@ -28,17 +29,15 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
 
         //verifica se é a primeira vez que a tela de Avatar foi aberta
         if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean("avatar", true)) {
-            avatarViewModel.addAllAvatarsTask()
+            avatarViewModel.initAllAvatarsAtRoom()
             getSharedPreferences("first_time", MODE_PRIVATE).edit().putBoolean("avatar", false)
                 .apply()
         }
 
         //seta o total de NasaCoins que o usuário possui
-        tvTotal.text = getSharedPreferences("nasaCoins", MODE_PRIVATE).getInt("total", 1000).toString()
-
-        avatarViewModel.getAllAvatarsTask()
-
-        avatarViewModel.getLastClickedAvatarTask()
+        realtimeViewModel.activeUser.observe(this) {
+            tvTotal.text = it.nasaCoins.toString()
+        }
 
         //infla a dialog de compra de avatares
         buyAvatarView = View.inflate(this, R.layout.buy_avatar_dialog, null)
@@ -52,24 +51,36 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
             .setBackgroundInsetBottom(100)
             .create()
 
-        //verifica se a lista de avatares foi atualizada
+        // Pega a lista de avatares do Room, que contém os IDs dos drawables e o preço de cada avatar
+        avatarViewModel.getAllAvatarsFromRoom()
+        // Quando a lista de avatares do Room estiver carregada, pega as informações do Realtime
+        // específicas para o usuário (retorna uma lista com os IDs dos drawables dos avatares e
+        // um booleano associado a cada um para indicar se o usuário já comprou ou não aquele avatar
+        avatarViewModel.listAvatarsRoom.observe(this) {
+            avatarViewModel.retrieveUserAvatarData(Firebase.auth.currentUser?.uid!!)
+        }
+        // Quando a lista de avatares do Realtime específica para o usuário for carregada, cria uma
+        // nova lista juntando as informações do Room e do Realtime e retornando um List<Avatar>
+        avatarViewModel.listAvatarsRealtime.observe(this) {
+            avatarViewModel.mergeAvatarDataRoomRealtime()
+        }
+        // Quando a lista final for carregada, faz o setup do adapter do RecyclerView
         avatarViewModel.listAvatars.observe(this) {
             adapter =
                 AvatarAdapter(
                     this,
-                    it as MutableList<Avatar>,
+                    it,
                     tvTotal,
                     buyAvatarView,
                     buyAvatarDialog,
-                    avatarViewModel
+                    avatarViewModel,
+                    realtimeViewModel
                 )
             rvAvatar.adapter = adapter
         }
 
-        //verifica o último avatar clicado
-        avatarViewModel.lastClickedAvatar.observe(this) {
-            try {
-                val circularProgressDrawable = CircularProgressDrawable(this)
+        //configura avatar ativo
+        val circularProgressDrawable = CircularProgressDrawable(this)
                 circularProgressDrawable.strokeWidth =
                     15f / (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
                 circularProgressDrawable.centerRadius =
@@ -79,15 +90,11 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
                     PorterDuff.Mode.SRC_IN
                 )
                 circularProgressDrawable.start()
-
-                // Insere a imagem do banco de dados na ImageView através do Glide
-                Glide.with(this).asBitmap()
-                    .load(avatarViewModel.lastClickedAvatar.value!!.avatarRes)
-                    .placeholder(circularProgressDrawable)
-                    .into(ivAvatar)
-
-            } catch (ignored: Exception) {
-            }
+        realtimeViewModel.activeUser.observe(this) {
+            Glide.with(this).asBitmap()
+                .load(it.avatar)
+                .placeholder(circularProgressDrawable)
+                .into(ivAvatar)
         }
 
         setUpMenuBehavior()

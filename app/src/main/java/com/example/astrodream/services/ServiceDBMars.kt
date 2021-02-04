@@ -10,7 +10,7 @@ interface ServiceDB {}
 interface ServiceDBMars: ServiceDB {
     suspend fun addMarsTask(mars: MarsRoom)
     suspend fun getAllMarsFavsTask(): List<MarsRoom>
-    suspend fun getMarsAtDateTask(date: String): MarsRoom
+    suspend fun getMarsAtDateTask(date: String): MarsRoom?
     suspend fun deleteMarsTask(mars: MarsRoom)
     suspend fun addMarsPicTask(marsPic: MarsPicRoom)
     suspend fun getMarsPicsAtDateTask(date: String): AllPicsFromDate
@@ -25,7 +25,7 @@ class ServiceDBImplementationMars(private val marsDAO: MarsDAO) : ServiceDBMars 
         return marsDAO.getAllMarsFavs()
     }
 
-    override suspend fun getMarsAtDateTask(date: String): MarsRoom {
+    override suspend fun getMarsAtDateTask(date: String): MarsRoom? {
         return marsDAO.getMarsAtDate(date)
     }
 

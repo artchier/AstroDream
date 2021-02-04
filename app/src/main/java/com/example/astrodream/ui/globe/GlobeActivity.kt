@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
+import android.view.View
 import android.view.View.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -29,7 +30,7 @@ import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.properties.Delegates
 
 class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
@@ -50,14 +51,21 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_globe)
 
-        //inicializa o DatePicker
-        val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
         //animação do pisque do botão de escolher data
         animation = AlphaAnimation(0.5f, 1f)
         animation.repeatMode = Animation.REVERSE
         animation.repeatCount = Animation.INFINITE
         animation.duration = 300
 
+        viewModel.getAllAvailableEPIC()
+
+        viewModel.epicAvailableDates.observe(this) {
+            val chosenDate = it.last().toString()
+            Toast.makeText(this, chosenDate, Toast.LENGTH_SHORT).show()
+            //viewModel.getAllEPIC(chosenDate)
+
+            tvData.text = chosenDate
+        }
         //pega a data mais atual com imagens
         var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 2
         var month = Calendar.getInstance().get(Calendar.MONTH)
@@ -67,13 +75,13 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         maxDay = day + 2
 
         try {
-            date = SimpleDateFormat(
-                "dd/MM/yyyy",
-                Locale.getDefault()
-            ).parse("$day/${month + 1}/$year")!!
+            date = SimpleDateFormat.getDateInstance().parse("$day/${month + 1}/$year")!!
             tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
             viewModel.getAllEPIC(
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                SimpleDateFormat(
+                    "dd/MM/yyyy",
+                    Locale.getDefault()
+                ).format(
                     date
                 ).toString()
             )
@@ -85,7 +93,13 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         //clique do botão "Escolher Data"
         fabData.setOnClickListener {
 
-            datePicker.updateDate(year, month, day)
+            //inicializa o DatePicker
+            val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
+            datePicker.minDate =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2015-06-13")!!.time
+
+            // datePicker.updateDate(year, month, day)
+
             MaterialAlertDialogBuilder(this)
                 .setView(datePicker)
                 .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
@@ -106,7 +120,10 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                             tvData.text.toString().replace("de", "")
                         )
                     ) {
-                        tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
+                        tvData.text = SimpleDateFormat(
+                            "dd/MM/yyyy",
+                            Locale.getDefault()
+                        ).format(date).toString()
                         viewModel.getAllEPIC(
                             SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
                                 date

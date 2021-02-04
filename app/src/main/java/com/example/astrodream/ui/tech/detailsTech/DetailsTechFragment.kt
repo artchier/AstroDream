@@ -1,10 +1,12 @@
 package com.example.astrodream.ui.tech.detailsTech
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -15,6 +17,7 @@ import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
+import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.utils.TranslationEnglishToPortuguese
 import kotlinx.android.synthetic.main.fragment_details_tech.*
@@ -54,6 +57,12 @@ class DetailsTechFragment : Fragment() {
             Glide.with(contextTechActivity).asBitmap()
                 .load(techPiece[10])
                 .into(view.ivTech)
+
+            view.ivTech.setOnClickListener {
+                val intent = Intent(view.context, FullScreenImgActivity::class.java)
+                intent.putExtra("img", techPiece[10])
+                ContextCompat.startActivity(requireContext(), intent, null)
+            }
         } else {
             view.ivTech.setImageResource(R.drawable.ic_tecnologia)
         }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -19,6 +20,7 @@ import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import com.example.astrodream.services.ServiceDatabaseTech
+import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.tech.detailsTech.DetailsTechViewModel
 import com.example.astrodream.utils.TranslationEnglishToPortuguese

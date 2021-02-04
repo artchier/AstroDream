@@ -23,7 +23,6 @@ class AsteroidsFragmentViewModel(val fragment: Fragment) : ViewModel() {
         onPostExecute(v)
     }
 
-    @SuppressLint("LongLogTag")
     private suspend fun doInBackground() = withContext(Dispatchers.IO) {
         this.launch {
                 listRequestBuilder.addAll(

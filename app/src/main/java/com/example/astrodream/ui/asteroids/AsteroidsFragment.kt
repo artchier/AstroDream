@@ -29,8 +29,12 @@ class AsteroidsFragment : Fragment() {
 
         listAsteroidViews.forEach { it ->
             it.setOnClickListener {
-            val bundle = bundleOf("Asteroid" to asteroidslist[listAsteroidViews.indexOf(it)],
-                "listFourAsteroids" to asteroidslist)
+                val bundle: Bundle? = if (asteroidslist.isNotEmpty()) {
+                    bundleOf(
+                        "Asteroid" to asteroidslist[listAsteroidViews.indexOf(it)],
+                        "listFourAsteroids" to asteroidslist
+                    )
+                } else null
             findNavController().navigate(R.id.action_asteroidsFragment_to_asteroidsDetailsFragment,
                 bundle) } }
 

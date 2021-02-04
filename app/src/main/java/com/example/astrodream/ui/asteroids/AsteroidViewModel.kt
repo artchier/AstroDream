@@ -41,10 +41,8 @@ class AsteroidViewModel(
     var oneAsteroidFromAPI = MutableLiveData<Asteroid>()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun execute(v: View) = viewModelScope.launch {
-        if (listAsteroidsDateAPI.isEmpty()) onPreExecute(v)
+    fun execute() = viewModelScope.launch {
         doInBackground()
-        onPostExecute(v)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

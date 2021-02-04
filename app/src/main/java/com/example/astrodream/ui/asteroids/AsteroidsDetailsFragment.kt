@@ -43,4 +43,8 @@ class AsteroidsDetailsFragment : Fragment() {
                 .into(view.iv_background_terra)
             return view
     }
+
+    fun loadProgressBar(){
+
+    }
 }

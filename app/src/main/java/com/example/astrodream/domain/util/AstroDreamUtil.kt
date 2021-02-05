@@ -1,29 +1,44 @@
 package com.example.astrodream.domain.util
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import com.bumptech.glide.request.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.view.inputmethod.InputMethodManager
 import android.widget.ExpandableListView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
+import com.example.astrodream.R
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.MarsRoom
+import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -48,6 +63,32 @@ fun AstroDreamUtil.Companion.showDialogMessage(context: Context, id_layout: Int)
             )
             .setView(view)
             .show()
+    }
+}
+
+fun AstroDreamUtil.Companion.showDialogError(context: Context, id_layout: Int) {
+    val view: View = LayoutInflater.from(context).inflate(id_layout, null)
+
+    run {
+        val dialog = MaterialAlertDialogBuilder(context)
+            .setBackgroundInsetStart(70)
+            .setBackgroundInsetEnd(70)
+            .setBackgroundInsetTop(10)
+            .setBackgroundInsetBottom(100)
+            .setCancelable(false)
+            .setBackground(
+                ContextCompat.getColor(context, android.R.color.transparent).toDrawable()
+            )
+            .setView(view)
+            .create()
+
+        view.findViewById<Button>(R.id.button_error_message).setOnClickListener {
+            context.startActivity(
+                Intent(context, InitialActivity::class.java))
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
 
@@ -158,6 +199,48 @@ fun AstroDreamUtil.Companion.returnTextOf(vararg string: String): String{
     val sb = StringBuilder()
     string.forEach { sb.append("\n$it") }
     return sb.toString()
+}
+
+fun AstroDreamUtil.Companion.isPotentiallyHazardousAsteroid(yesOrNot: String): Boolean {
+    when (yesOrNot) {
+        "Y" -> return true
+        else -> return false
+    }
+}
+
+@SuppressLint("ServiceCast")
+fun AstroDreamUtil.Companion.isInternetAvailable(context: Context): Boolean {
+        var result = false
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val actNw =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            result = when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.run {
+                connectivityManager.activeNetworkInfo?.run {
+                    result = when (type) {
+                        ConnectivityManager.TYPE_WIFI -> true
+                        ConnectivityManager.TYPE_MOBILE -> true
+                        ConnectivityManager.TYPE_ETHERNET -> true
+                        else -> false
+                    }
+
+                }
+            }
+        }
+        return result
+}
+
+fun AstroDreamUtil.Companion.showErrorInternetConnection(context: Context){
+        AstroDreamUtil.showDialogError(context, R.layout.internet_connection_error)
 }
 
 fun Fragment.hideKeyboard() {

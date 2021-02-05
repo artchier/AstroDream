@@ -1,7 +1,9 @@
 package com.example.astrodream.ui
 
+import android.content.Context
 import android.content.Intent
-import android.util.Log
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
@@ -38,7 +40,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
 import kotlinx.android.synthetic.main.header_layout.*
-
 
 abstract class ActivityWithTopBar(
     private val toolbarTiteTitleId: Int,

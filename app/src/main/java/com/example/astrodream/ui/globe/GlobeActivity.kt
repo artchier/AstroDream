@@ -19,6 +19,7 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_avatar.*
 import kotlinx.android.synthetic.main.activity_globe.*
 import kotlinx.android.synthetic.main.activity_globe.view.*
 import kotlinx.android.synthetic.main.astrodialog.view.*
@@ -37,6 +38,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
     private lateinit var date: Date
     private var lastDate: Long = 0
     private var hasSettedMax = false
+    private var hasClickedOnNewDate = false
     private var day = 0
     private var month = 0
     private var year = 0
@@ -107,14 +109,33 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
                     date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("$year-${month + 1}-$day")!!
 
-                    if (date != SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).parse(tvData.text.toString())) {
-                        val textViewLabel2 = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(date).toString()
-                        tvData.text = "${textViewLabel2[0].toUpperCase()}${textViewLabel2.substring(1)}"
-                        viewModel.getAllEPIC(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date).toString())
+                    if (date != SimpleDateFormat(
+                            "MMM dd, yyyy",
+                            Locale.getDefault()
+                        ).parse(
+                            tvData.text.toString()
+                        )
+                    ) {
+                        val textViewLabel2 = SimpleDateFormat(
+                            "MMM dd, yyyy",
+                            Locale.getDefault()
+                        ).format(date).toString()
+                        tvData.text =
+                            "${textViewLabel2[0].toUpperCase()}${textViewLabel2.substring(1)}"
+                        viewModel.getAllEPIC(
+                            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                                date
+                            ).toString()
+                        )
+                        hasClickedOnNewDate = true
                     }
                 }
                 .setNegativeButton(resources.getString(R.string.cancelar), null)
                 .show()
+        }
+
+        realtimeViewModel.activeUser.observe(this) {
+            tvTotalGlobe.text = it.nasaCoins.toString()
         }
 
         viewModel.imageArray.observe(this) {
@@ -124,6 +145,16 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                 globeAdapter = GlobeAdapter(it, this, chosenDate)
                 vpGlobe.adapter = globeAdapter
                 indicator.setViewPager(vpGlobe)
+
+                //se clicar em uma nova data, inicia as animações dos NasaCoins
+                if (hasClickedOnNewDate) {
+                    realtimeViewModel.animateNasaCoins(
+                        llNasaCoinsGlobe,
+                        tvTotalGlobe,
+                        R.string.globo
+                    )
+                    hasClickedOnNewDate = false
+                }
             } else {
                 //senão, pede ao usuário que escolha uma data diferente
                 vpGlobe.adapter = null
@@ -201,5 +232,14 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
             fabData.startAnimation(animation)
         }
         super.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        realtimeViewModel.updateUserNasaCoins(
+            realtimeViewModel.activeUser.value?.email!!,
+            tvTotalGlobe.text.toString().toLong()
+        )
     }
 }

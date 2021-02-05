@@ -15,6 +15,10 @@ open class TranslationEnglishToPortuguese {
 
     val englishPortugueseTranslator = Translation.getClient(options)
 
+    init {
+        modelDownload()
+    }
+
     fun modelDownload() {
         val conditions = DownloadConditions.Builder()
             .requireWifi()

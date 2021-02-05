@@ -1,5 +1,6 @@
 package com.example.astrodream.ui.tech
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
@@ -13,17 +14,22 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.TranslatorEngToPort
+import com.example.astrodream.ui.RealtimeViewModel
 import com.example.astrodream.utils.TranslationEnglishToPortuguese
+import kotlinx.android.synthetic.main.activity_tech.*
 
 class TechPieceAdapter(
     var onTechPieceClicked: (position: Int) -> Unit,
-    val context: Context
+    val context: Context,
+    val realtimeViewModel: RealtimeViewModel,
+    val activity: Activity
 ) : RecyclerView.Adapter<TechPieceAdapter.TechPieceViewHolder>() {
 
     private val techPieces = arrayListOf<List<String>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TechPieceViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_tech_piece, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_tech_piece, parent, false)
         return TechPieceViewHolder(itemView)
     }
 
@@ -53,6 +59,11 @@ class TechPieceAdapter(
 
         holder.itemView.setOnClickListener {
             onTechPieceClicked(position)
+            realtimeViewModel.animateNasaCoins(
+                activity.findViewById(R.id.llNasaCoinsTech),
+                activity.findViewById(R.id.tvTotalTech),
+                R.string.tecnologias
+            )
         }
     }
 
@@ -67,7 +78,7 @@ class TechPieceAdapter(
         return techPieces
     }
 
-    inner class TechPieceViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class TechPieceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivTechPiece: ImageView = itemView.findViewById(R.id.ivTechPiece)
         val tvCodReferenceTechPiece: TextView = itemView.findViewById(R.id.tvCodReferenceTechPiece)
         val tvTitleTechPiece: TextView = itemView.findViewById(R.id.tvTitleTechPiece)

@@ -2,26 +2,33 @@ package com.example.astrodream.ui.plaindailymars
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.ui.RealtimeViewModel
+import kotlinx.android.synthetic.main.activity_plain.*
 import kotlinx.android.synthetic.main.fragment_plain_history.*
 import kotlinx.android.synthetic.main.fragment_plain_history.view.*
 
-abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailListener, PlainAdapter.OnClickFavListener {
+abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailListener,
+    PlainAdapter.OnClickFavListener {
 
     private lateinit var actionListener: ActionListener
 
     val maxItems = 96
 
-    val viewModel : PlainViewModel by activityViewModels()
+    val viewModel: PlainViewModel by activityViewModels()
+
+    val realtimeViewModel: RealtimeViewModel by viewModels()
 
     interface ActionListener {
         fun showDetailView()
@@ -37,7 +44,7 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         viewModel.adapterHistory.listener = this
         viewModel.adapterHistory.favListener = this
         viewModel.adapterHistory.context = requireContext()
@@ -52,7 +59,9 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
                     viewModel.populateList()
                 }
                 // Else, hide progress indicator (spinner)
-                else { piRecycler.visibility = View.INVISIBLE }
+                else {
+                    piRecycler.visibility = View.INVISIBLE
+                }
             }
         }
     }
@@ -70,6 +79,11 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
         if (viewModel.adapterHistory.listHistory[position].earth_date != "" || viewModel.adapterHistory.listHistory[position].date != "") {
             viewModel.selectDetail(viewModel.adapterHistory.listHistory[position])
             actionListener.showDetailView()
+            realtimeViewModel.animateNasaCoins(
+                requireActivity().findViewById(R.id.llNasaCoinsMars),
+                requireActivity().findViewById(R.id.tvTotalMars),
+                R.string.marte
+            )
         }
     }
 

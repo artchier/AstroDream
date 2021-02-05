@@ -1,11 +1,16 @@
 package com.example.astrodream.ui
 
 import android.content.Context
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.Toast
@@ -38,21 +43,27 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_globe.view.*
 import kotlinx.android.synthetic.main.app_tool_bar.*
 import kotlinx.android.synthetic.main.header_layout.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 abstract class ActivityWithTopBar(
-    private val toolbarTiteTitleId: Int,
+    private val toolbarTitleId: Int,
     private val drawerLayoutId: Int
 ) : AppCompatActivity() {
-
     private var toolBar: MaterialToolbar? = null
     private lateinit var drawerLayout: DrawerLayout
 
     val realtimeViewModel: RealtimeViewModel by viewModels()
 
     private fun userListener(name: String, email: String) {
-        if(email == "") { return }
+        if (email == "") {
+            return
+        }
 
         realtimeViewModel.retrieveUserData(email, name)
 
@@ -81,7 +92,7 @@ abstract class ActivityWithTopBar(
 
         toolBar?.apply {
             title = ""
-            tvToolBarTitle.text = resources.getString(toolbarTiteTitleId)
+            tvToolBarTitle.text = resources.getString(toolbarTitleId)
         }
         setSupportActionBar(toolBar)
 

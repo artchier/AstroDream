@@ -13,6 +13,7 @@ import com.example.astrodream.domain.util.transformMarsDBClassToPlain
 import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.MarsRoom
 import com.example.astrodream.ui.favorites.FavViewModel
+import com.example.astrodream.utils.TranslationEnglishToPortuguese
 
 abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
 

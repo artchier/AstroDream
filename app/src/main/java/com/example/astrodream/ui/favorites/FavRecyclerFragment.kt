@@ -49,6 +49,12 @@ class FavRecyclerFragment : Fragment() {
                     // Cria o layout do RecyclerView
                     view.rvFav.layoutManager = LinearLayoutManager(container.context)
                     view.rvFav.setHasFixedSize(true)
+
+                    if(adapterFav.itemCount == 0) {
+                        view.tvEmptyFav.text = resources.getString(R.string.no_favorites)
+                    } else {
+                        view.tvEmptyFav.text = ""
+                    }
                 }
             }
         }

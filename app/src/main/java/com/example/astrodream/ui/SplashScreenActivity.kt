@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.astrodream.R
+import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.ui.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,8 @@ class SplashScreenActivity : AppCompatActivity() {
         }
         // Desabilita o modo noturno
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        TranslatorEngToPort
     }
 
     private fun callInitialActivity() {

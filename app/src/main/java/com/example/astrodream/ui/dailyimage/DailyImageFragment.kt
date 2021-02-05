@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
+import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.services.*
 import com.example.astrodream.ui.plaindailymars.PlainActivity
 import com.example.astrodream.ui.plaindailymars.PlainActivityType
@@ -59,7 +60,7 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
     override fun popView(view: View) {
         val img = if (plainDetail.url != "") { plainDetail.url } else { R.drawable.no_internet }
 
-        view.tvTitle.text = plainDetail.title
+        TranslatorEngToPort.translateEnglishToPortuguese(plainDetail.title, view.tvTitle)
 
         Glide.with(view).asBitmap()
             .load(img)
@@ -81,7 +82,7 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
 
         val dialogView = View.inflate(this.requireContext(), R.layout.dialog_info_daily, null)
 
-        dialogView.tvInfoDaily.text = plainDetail.explanation
+        TranslatorEngToPort.translateEnglishToPortuguese(plainDetail.explanation, dialogView.tvInfoDaily)
 
         val dialog = MaterialAlertDialogBuilder(this.requireContext())
             .setView(dialogView)

@@ -10,6 +10,16 @@
     android:paddingTop="30dp"
     android:paddingBottom="20dp">
 
+    <TextView
+        android:id="@+id/tvEmptyFav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="30dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:fontFamily="@font/roboto_light"
+        android:gravity="center" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFav"
         android:layout_width="match_parent"

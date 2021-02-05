@@ -1,8 +1,11 @@
 package com.example.astrodream.ui
 
+import android.content.Context
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Intent
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -47,7 +50,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 
 abstract class ActivityWithTopBar(
     private val toolbarTitleId: Int,

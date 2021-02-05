@@ -69,9 +69,12 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
 
         view.cvDaily.setOnClickListener {
             if (plainDetail.url != "") { // plainDetail.url is not empty String when API request is successful
-                val intent = Intent(view.context, FullScreenImgActivity::class.java)
-                intent.putExtra("img", plainDetail.url)
-                intent.putExtra("hdimg", plainDetail.hdurl)
+                val intent = Intent(view.context, FullScreenImgActivity::class.java).apply {
+                    putExtra("img", plainDetail.url)
+                    putExtra("hdimg", plainDetail.hdurl)
+                    putExtra("title", plainDetail.title)
+                    putExtra("desciption", plainDetail.explanation)
+                }
                 startActivity(intent)
             }
         }

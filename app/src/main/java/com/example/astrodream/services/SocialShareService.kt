@@ -37,22 +37,32 @@ fun shareImageFromUrl(url: String, title: String, description: String, context: 
                 resource: Drawable,
                 transition: Transition<in Drawable?>?
             ) {
-                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "image/*"
-                    putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(resource.toBitmap(), context))
-                    putExtra(Intent.EXTRA_SUBJECT, title)
-                    putExtra(Intent.EXTRA_TEXT, buildDescription(title, description))
-                    addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-                }
-                context.startActivity(Intent.createChooser(shareIntent, "Compartilhar imagem"))
+                shareImageFromBitmap(resource.toBitmap(), title, description, context)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {}
         })
 }
 
-private fun buildDescription(title: String, description: String): String =
-    "$title\n${description.replace(Regex(" {2,}"), " ")}\nCompartilhado pelo app AstroDream"
+fun shareImageFromBitmap(image: Bitmap, title: String, description: String, context: Context) {
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "image/*"
+        putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(image, context))
+        putExtra(Intent.EXTRA_SUBJECT, title)
+        putExtra(Intent.EXTRA_TEXT, buildDescription(title, description))
+        addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+    }
+    context.startActivity(Intent.createChooser(shareIntent, "Compartilhar imagem"))
+}
+
+private fun buildDescription(title: String, description: String): String {
+    var body = title
+    if (description != "") {
+        body += "\n\n${description.replace(Regex(" {2,}"), " ")}"
+    }
+
+    return "$body\n\nCompartilhado pelo app AstroDream"
+}
 
 private fun getLocalBitmapUri(bmp: Bitmap, context: Context): Uri? {
     var bmpUri: Uri? = null

@@ -15,13 +15,4 @@ class MarsActivity : PlainActivity(R.string.marte, PlainActivityType.Mars) {
     override fun newHistoryFrag(): Fragment {
         return HistoryMarsFragment.newInstance()
     }
-
-    override fun onStop() {
-        super.onStop()
-
-        realtimeViewModel.updateUserNasaCoins(
-            realtimeViewModel.activeUser.value?.email!!,
-            RecentMarsFragment.newNasaCoinsValue
-        )
-    }
 }

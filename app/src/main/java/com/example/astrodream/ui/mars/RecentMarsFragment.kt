@@ -24,12 +24,8 @@ import kotlinx.android.synthetic.main.card_mars_post.view.*
 import kotlinx.android.synthetic.main.fragment_recent_mars.*
 
 class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
-    private val realtimeViewModel: RealtimeViewModel by viewModels()
-
     companion object {
         fun newInstance() = RecentMarsFragment()
-        var hasClicked = false
-        var newNasaCoinsValue: Long = 0
     }
 
     lateinit var adapterMars: MarsAdapter
@@ -39,8 +35,8 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
         super.onViewCreated(view, savedInstanceState)
 
         val contextActivity = this.requireActivity()
-        view.btnFavMars.setOnClickListener{
-            if(contextActivity is PlainActivity) {
+        view.btnFavMars.setOnClickListener {
+            if (contextActivity is PlainActivity) {
                 val viewModel: PlainViewModel by activityViewModels()
                 viewModel.favPlainDB(plainDetail, it as ToggleButton, requireActivity())
             } else {
@@ -49,18 +45,17 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
                 val viewModel by viewModels<PlainViewModel> {
                     object : ViewModelProvider.Factory {
                         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                            return PlainViewModel(service, PlainActivityType.Mars, repositoryDaily) as T
+                            return PlainViewModel(
+                                service,
+                                PlainActivityType.Mars,
+                                repositoryDaily
+                            ) as T
                         }
                     }
                 }
                 viewModel.favPlainDB(plainDetail, it as ToggleButton, requireActivity())
             }
         }
-
-        /*if (hasClicked) {
-            realtimeViewModel.animateNasaCoins(view, R.string.marte)
-            hasClicked = false
-        }*/
     }
 
     override fun popView(view: View) {

@@ -1,28 +1,28 @@
 package com.example.astrodream.ui.globe
 
-import android.graphics.Bitmap
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astrodream.services.Service
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GlobeViewModel(private val service: Service) : ViewModel() {
 
     var imageArray = MutableLiveData<MutableList<String>>()
-    private var epicImageArrayList = mutableListOf<Bitmap>()
-    var epicImage = MutableLiveData<MutableList<Bitmap>>()
+    var epicAvailableDates = MutableLiveData<MutableList<String>>()
 
     fun getAllEPIC(chosenDate: String) {
         imageArray.value?.clear()
-        epicImageArrayList.clear()
 
         val imageArrayList = ArrayList<String>()
 
         viewModelScope.launch {
             try {
-                Log.v("GloboActivity", chosenDate)
                 val imageJsonArray = service.getAllEPIC(chosenDate)
                 imageJsonArray.forEach {
                     val imageName = it.asJsonObject.get("image").toString().replace("\"", "")
@@ -37,10 +37,23 @@ class GlobeViewModel(private val service: Service) : ViewModel() {
         }
     }
 
-    fun saveEPIC(resource: Bitmap) {
+    fun getAllAvailableEPIC() {
+        epicAvailableDates.value?.clear()
+        val epicAvailableList = ArrayList<String>()
+
         viewModelScope.launch {
-            epicImageArrayList.add(resource)
-            epicImage.value = epicImageArrayList
+            val epicImageJsonArray = service.getAllAvailableEPIC()
+
+            try {
+                epicImageJsonArray.forEach {
+                    val datesAvailable = it.toString().replace("\"", "")
+                    epicAvailableList.add(datesAvailable)
+                }
+                epicAvailableDates.value = epicAvailableList
+
+            } catch (e: Exception) {
+                Log.e("GlobeViewModel", "Erro ao obter lista: ${e.message}")
+            }
         }
     }
 }

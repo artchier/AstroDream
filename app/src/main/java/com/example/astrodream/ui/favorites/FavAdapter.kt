@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.entitiesDatabase.MarsRoom
@@ -26,8 +27,6 @@ class FavAdapter(
     val onClickFav: (Int) -> Unit,
     val type: String
 ): RecyclerView.Adapter<FavAdapter.FavViewHolder>() {
-
-    private lateinit var translator: TranslationEnglishToPortuguese
 
     inner class FavViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var ivFav : ImageView = itemView.ivFav
@@ -91,13 +90,11 @@ class FavAdapter(
         else {
             holder.ivFav.setImageResource(iconId)
         }
-        translator = TranslationEnglishToPortuguese()
-        translator.modelDownload()
 
         // Preenche o primeiro TextView
-        holder.tv1Fav.text = text1
+        TranslatorEngToPort.translateEnglishToPortuguese(text1, holder.tv1Fav)
         // Preenche o segundo TextView
-        translator.translateEnglishToPortuguese(text2, holder.tv2Fav)
+        TranslatorEngToPort.translateEnglishToPortuguese(text2, holder.tv2Fav)
 
         Log.i("===FAVADAPTER==", "${File(img)}")
     }

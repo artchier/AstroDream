@@ -159,4 +159,5 @@
     <string name="current_password">Senha atual</string>
     <string name="type_new_password">Digite sua nova senha</string>
     <string name="new_password">Nova senha</string>
+    <string name="no_favorites">Você ainda não possui nenhum favorito nessa categoria :(</string>
 </resources>

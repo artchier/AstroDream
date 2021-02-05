@@ -18,7 +18,6 @@ import com.example.astrodream.utils.TranslationEnglishToPortuguese
 abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
 
     lateinit var plainDetail: PlainClass
-    lateinit var translator: TranslationEnglishToPortuguese
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,9 +48,6 @@ abstract class PlainDetailFragment(private val layoutId: Int) : Fragment() {
             }
             popView(view)
         }
-
-        translator = TranslationEnglishToPortuguese()
-        translator.modelDownload()
 
         return view
     }

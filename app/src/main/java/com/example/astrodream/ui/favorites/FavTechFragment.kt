@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.domain.Asteroid
+import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import com.example.astrodream.services.ServiceDatabaseTech
@@ -35,8 +36,6 @@ class FavTechFragment : Fragment() {
 
     private lateinit var db: AppDatabase
     private lateinit var serviceDatabaseTech: ServiceDatabaseTech
-
-    private lateinit var translator: TranslationEnglishToPortuguese
 
     private val viewModelDetails by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
@@ -60,12 +59,9 @@ class FavTechFragment : Fragment() {
 
         view.ivTech.setImageResource(R.drawable.ic_tecnologia)
 
-        translator = TranslationEnglishToPortuguese()
-        translator.modelDownload()
-
         view.tvCodReferenceTech.text = tech.codReferenceTech
-        translator.translateEnglishToPortuguese(tech.titleTech, view.tvTitleTech)
-        translator.translateEnglishToPortuguese(tech.descTech, view.tvDescTech)
+        TranslatorEngToPort.translateEnglishToPortuguese(tech.titleTech, view.tvTitleTech)
+        TranslatorEngToPort.translateEnglishToPortuguese(tech.descTech, view.tvDescTech)
 
         return view
     }

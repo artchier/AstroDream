@@ -120,6 +120,7 @@
             android:text="@string/alterar"
             android:textSize="25sp"
             android:background="@drawable/pill_shape"
+            android:backgroundTint="@color/lucky_point"
             app:layout_constraintTop_toBottomOf="@id/llInputsText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

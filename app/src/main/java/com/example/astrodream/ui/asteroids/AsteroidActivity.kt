@@ -29,6 +29,7 @@ import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import com.example.astrodream.services.ServiceDBAsteroidsImpl
 import com.example.astrodream.services.databaseReference
 import com.example.astrodream.services.service
+import com.example.astrodream.services.shareText
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
@@ -144,6 +145,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 view.findViewById<TextView>(R.id.close_approach_data).text =
                     getString(R.string.asteroid_not_found_message)
             }
+        val shareAsteroidButton = view.findViewById<View>(R.id.ivShareAsteroid)
 
             if (asteroid!!.absolute_magnitude != null) {
                 val isAsteroidInDB =
@@ -181,6 +183,18 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 }
 
 
+        starFavorites.setOnClickListener {
+            onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings)
+        }
+
+        shareAsteroidButton.setOnClickListener {
+            if (asteroid.linkExterno == null) {
+                Toast.makeText(this, "O asteróide não tem um link externo para compartilhar!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            shareText("Veja informações do asteróide ${asteroid.name}", asteroid.linkExterno, this)
+        }
+              
                 starFavorites.setOnClickListener {
                     onAsteroidFavsClickEvent(
                         it,

@@ -1,12 +1,14 @@
 package com.example.astrodream.ui.favorites
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -18,8 +20,10 @@ import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import com.example.astrodream.services.ServiceDatabaseTech
+import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.tech.detailsTech.DetailsTechViewModel
+import com.example.astrodream.utils.TranslationEnglishToPortuguese
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
 import kotlinx.android.synthetic.main.fragment_fav_tech.view.*
@@ -31,6 +35,8 @@ class FavTechFragment : Fragment() {
 
     private lateinit var db: AppDatabase
     private lateinit var serviceDatabaseTech: ServiceDatabaseTech
+
+    private lateinit var translator: TranslationEnglishToPortuguese
 
     private val viewModelDetails by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
@@ -54,9 +60,12 @@ class FavTechFragment : Fragment() {
 
         view.ivTech.setImageResource(R.drawable.ic_tecnologia)
 
+        translator = TranslationEnglishToPortuguese()
+        translator.modelDownload()
+
         view.tvCodReferenceTech.text = tech.codReferenceTech
-        view.tvTitleTech.text = tech.titleTech
-        view.tvDescTech.text = tech.descTech
+        translator.translateEnglishToPortuguese(tech.titleTech, view.tvTitleTech)
+        translator.translateEnglishToPortuguese(tech.descTech, view.tvDescTech)
 
         return view
     }
@@ -71,6 +80,7 @@ class FavTechFragment : Fragment() {
 
         btnFavorTech.setOnClickListener {
             viewModelDetails.deleteTechDB(tech.codReferenceTech)
+            startActivity(Intent(requireActivity(), FavoritesActivity::class.java))
         }
     }
 

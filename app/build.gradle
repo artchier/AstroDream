@@ -35,6 +35,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
@@ -134,4 +138,12 @@ dependencies {
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+    // SDK do Facebook
+    implementation 'com.facebook.android:facebook-login:4.42.0'
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'androidx.browser:browser:1.3.0'
+
+    // ML Kit Android
+    implementation 'com.google.mlkit:language-id:16.1.1'
+    implementation 'com.google.mlkit:translate:16.1.1'
 }

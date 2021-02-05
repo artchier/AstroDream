@@ -1,11 +1,12 @@
 package com.example.astrodream.ui.tech.detailsTech
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -16,10 +17,12 @@ import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
+import com.example.astrodream.services.shareText
+import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.ui.tech.TechActivity
+import com.example.astrodream.utils.TranslationEnglishToPortuguese
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
-
 
 class DetailsTechFragment : Fragment() {
     private lateinit var contextTechActivity: TechActivity
@@ -28,6 +31,8 @@ class DetailsTechFragment : Fragment() {
     private lateinit var serviceDatabaseTech: ServiceDatabaseTech
 
     private lateinit var techPiece: ArrayList<String>
+
+    private lateinit var translator: TranslationEnglishToPortuguese
 
     private val viewModel by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
@@ -53,13 +58,22 @@ class DetailsTechFragment : Fragment() {
             Glide.with(contextTechActivity).asBitmap()
                 .load(techPiece[10])
                 .into(view.ivTech)
+
+            view.ivTech.setOnClickListener {
+                val intent = Intent(view.context, FullScreenImgActivity::class.java)
+                intent.putExtra("img", techPiece[10])
+                ContextCompat.startActivity(requireContext(), intent, null)
+            }
         } else {
             view.ivTech.setImageResource(R.drawable.ic_tecnologia)
         }
 
+        translator = TranslationEnglishToPortuguese()
+        translator.modelDownload()
+
         view.tvCodReferenceTech.text = techPiece[1]
-        view.tvTitleTech.text = techPiece[2]
-        view.tvDescTech.text = techPiece[3]
+        translator.translateEnglishToPortuguese(techPiece[2], view.tvTitleTech)
+        translator.translateEnglishToPortuguese(techPiece[3], view.tvDescTech)
 
         return view
     }
@@ -71,8 +85,8 @@ class DetailsTechFragment : Fragment() {
         serviceDatabaseTech = ServiceDatabaseImplementationTech(db.techDAO())
 
         viewModel.getTechByCodeDB(techPiece[1])
-        viewModel.tech.observe(contextTechActivity) {
-            if (it != null) {
+        viewModel.isFav.observe(contextTechActivity) {
+            if (it) {
                 btnFavorTech.setImageResource(R.drawable.ic_star_filled)
             } else {
                 btnFavorTech.setImageResource(R.drawable.ic_star_border)
@@ -83,13 +97,11 @@ class DetailsTechFragment : Fragment() {
             val typeTech = arguments?.getString("type")
 
             viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3], typeTech!!))
-            viewModel.isFav.observe(contextTechActivity) {
-                if (it) {
-                    btnFavorTech.setImageResource(R.drawable.ic_star_filled)
-                } else {
-                    btnFavorTech.setImageResource(R.drawable.ic_star_border)
-                }
-            }
+
+        }
+
+        btnShareTech.setOnClickListener {
+            shareText(techPiece[2], techPiece[3], requireContext())
         }
     }
 

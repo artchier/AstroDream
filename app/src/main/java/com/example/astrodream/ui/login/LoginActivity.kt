@@ -16,14 +16,20 @@ class LoginActivity : AppCompatActivity() {
     private var insertedEmail = ""
     private var insertedPassword= ""
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            startActivity(Intent(this, InitialActivity::class.java))
+            val uid = currentUser.uid
+            val name = currentUser.displayName
+            val emailFire = currentUser.email.toString()
+            startActivity(Intent(this, InitialActivity::class.java).apply {
+                putExtra("uid", uid)
+                putExtra("name", name)
+                putExtra("email", emailFire)
+            })
             finish()
         }
 
@@ -50,7 +56,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun callFragSignIn() {
         insertedEmail = findViewById<TextInputEditText>(R.id.tiEmail).text.toString()
-        insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        if (findViewById<TextInputEditText>(R.id.tiPassword) != null) {
+            insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        }
 
         val fragSignIn = SignInFragment.newInstance(insertedEmail, insertedPassword)
         supportFragmentManager.beginTransaction().apply {
@@ -65,5 +73,17 @@ class LoginActivity : AppCompatActivity() {
 
         btnUnselected.background = ContextCompat.getDrawable(this, R.color.transparent)
         btnUnselected.setTextColor(ContextCompat.getColor(this, R.color.light_purple))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode != LoginFragment.RC_SIGN_IN_GOOGLE){
+            LoginFragment.callbackManager.onActivityResult(
+                requestCode,
+                resultCode,
+                data
+            )
+        }
     }
 }

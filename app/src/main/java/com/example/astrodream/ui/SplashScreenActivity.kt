@@ -3,6 +3,7 @@ package com.example.astrodream.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.astrodream.R
 import com.example.astrodream.ui.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +21,8 @@ class SplashScreenActivity : AppCompatActivity() {
             callInitialActivity()
             finish()
         }
+        // Desabilita o modo noturno
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
     private fun callInitialActivity() {

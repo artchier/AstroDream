@@ -4,20 +4,23 @@ import android.app.WallpaperManager
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.ComponentName
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.os.Environment
 import android.os.PersistableBundle
-import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.example.astrodream.R
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.saveImage
 
 const val WALLPAPER_JOB_ID = 10001
 const val TAG = "WallpaperService"
@@ -49,36 +52,6 @@ fun setImageAsWallpaper(screenSize: Point, context: Context, image: Drawable) {
     )
 }
 
-fun saveImage(bitmap: Bitmap, context: Context, folderName: String) {
-    if (android.os.Build.VERSION.SDK_INT >= 29) {
-        val values = contentValues()
-        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$folderName")
-        values.put(MediaStore.Images.Media.IS_PENDING, true)
-        // RELATIVE_PATH and IS_PENDING are introduced in API 29.
-
-        val uri: Uri? = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        if (uri != null) {
-            saveImageToStream(bitmap, context.contentResolver.openOutputStream(uri))
-            values.put(MediaStore.Images.Media.IS_PENDING, false)
-            context.contentResolver.update(uri, values, null, null)
-        }
-    } else {
-        val directory = File(Environment.getExternalStorageDirectory().toString() + File.separator + folderName)
-        // getExternalStorageDirectory is deprecated in API 29
-
-        if (!directory.exists()) {
-            directory.mkdirs()
-        }
-        val fileName = System.currentTimeMillis().toString() + ".png"
-        val file = File(directory, fileName)
-        saveImageToStream(bitmap, FileOutputStream(file))
-        val values = contentValues()
-        values.put(MediaStore.Images.Media.DATA, file.absolutePath)
-        // .DATA is deprecated in API 29
-        context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-    }
-}
-
 fun scheduleWallpaperChange(context: Context) {
     val componentName = ComponentName(context, SetWallpaperJob::class.java)
     val builder = JobInfo.Builder(WALLPAPER_JOB_ID, componentName)
@@ -93,6 +66,7 @@ fun scheduleWallpaperChange(context: Context) {
 
     builder.setPersisted(true)
         .setPeriodic(86400000) // Milisegundos em um dia
+        .setBackoffCriteria(900000, JobInfo.BACKOFF_POLICY_LINEAR) // Milisegndos em 15 min
         .setRequiresCharging(false)
         .setRequiresDeviceIdle(false)
         .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
@@ -111,20 +85,39 @@ fun cancelWallpaperChange(context: Context) {
     Log.d(TAG, "Job para mudar papel de parede cancelado")
 }
 
-private fun contentValues() : ContentValues {
-    val values = ContentValues()
-    values.put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-    values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
-    return values
-}
+fun buildDownloadSetWallpaperMenu(context: Context, anchor: View, imageUrl: String) {
+    PopupMenu(context, anchor, Gravity.TOP).apply {
+        inflate(R.menu.menu_fullscreen_images)
+        setOnMenuItemClickListener {
+            Toast.makeText(context, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
 
-private fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
-    if (outputStream != null) {
-        try {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-            outputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
+            Glide.with(context)
+                .load(imageUrl)
+                .into(object : CustomTarget<Drawable?>() {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable?>?
+                    ) {
+                        when (it.itemId) {
+                            R.id.downloadImageItem -> {
+                                AstroDreamUtil.saveImage(resource.toBitmap(), context,
+                                    context.getString(R.string.app_name))
+
+                                Toast.makeText(context, "Imagem salva!", Toast.LENGTH_SHORT).show()
+                            }
+                            R.id.useAsWallpaperItem -> {
+                                val screenSize = Point()
+                                context.display!!.getRealSize(screenSize)
+
+                                setImageAsWallpaper(screenSize, context, resource)
+                                Toast.makeText(context, "Wallpaper atualizado!", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+                })
+
+            true
         }
-    }
+    }.show()
 }

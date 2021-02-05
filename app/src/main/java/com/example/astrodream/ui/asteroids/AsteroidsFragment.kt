@@ -41,7 +41,6 @@ class AsteroidsFragment : Fragment() {
 
         listAsteroidViews.forEach { it ->
             it.setOnClickListener {
-                //progressbar.visibility = LinearLayout.GONE
                 val bundle: Bundle? = bundleOf(
                     "Asteroid" to (asteroidslist?.get(listAsteroidViews.indexOf(it))),
                     "listFourAsteroids" to asteroidslist

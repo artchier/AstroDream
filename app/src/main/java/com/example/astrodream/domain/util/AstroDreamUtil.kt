@@ -3,6 +3,7 @@ package com.example.astrodream.domain.util
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -16,6 +17,7 @@ import android.util.Log
 import com.bumptech.glide.request.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ExpandableListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -56,6 +58,32 @@ fun AstroDreamUtil.Companion.showDialogMessage(context: Context, id_layout: Int)
             )
             .setView(view)
             .show()
+    }
+}
+
+fun AstroDreamUtil.Companion.showDialogError(context: Context, id_layout: Int) {
+    val view: View = LayoutInflater.from(context).inflate(id_layout, null)
+
+    run {
+        val dialog = MaterialAlertDialogBuilder(context)
+            .setBackgroundInsetStart(70)
+            .setBackgroundInsetEnd(70)
+            .setBackgroundInsetTop(10)
+            .setBackgroundInsetBottom(100)
+            .setCancelable(false)
+            .setBackground(
+                ContextCompat.getColor(context, android.R.color.transparent).toDrawable()
+            )
+            .setView(view)
+            .create()
+
+        view.findViewById<Button>(R.id.button_error_message).setOnClickListener {
+            context.startActivity(
+                Intent(context, InitialActivity::class.java))
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
 
@@ -205,10 +233,5 @@ fun AstroDreamUtil.Companion.isInternetAvailable(context: Context): Boolean {
 }
 
 fun AstroDreamUtil.Companion.showErrorInternetConnection(context: Context){
-        AstroDreamUtil.showDialogMessage(context, R.layout.internet_connection_error)
-//        CoroutineScope(Dispatchers.Main).launch{
-//            delay(5000)
-//            context.startActivity(Intent(context, InitialActivity::class.java))
-//            appCompatActivity.finish()
-//        }
+        AstroDreamUtil.showDialogError(context, R.layout.internet_connection_error)
 }

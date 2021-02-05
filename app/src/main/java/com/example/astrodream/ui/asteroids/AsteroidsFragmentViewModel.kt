@@ -1,8 +1,6 @@
 package com.example.astrodream.ui.asteroids
 
-import android.annotation.SuppressLint
 import android.view.View
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +16,6 @@ class AsteroidsFragmentViewModel(val fragment: Fragment) : ViewModel() {
     private val listRequestBuilder = ArrayList<RequestBuilder<GifDrawable>>()
 
     fun execute(v: View) = viewModelScope.launch {
-       // onPreExecute(v)
         doInBackground()
         onPostExecute(v)
     }
@@ -35,11 +32,6 @@ class AsteroidsFragmentViewModel(val fragment: Fragment) : ViewModel() {
                     )
                 )
         }
-    }
-
-    private fun onPreExecute(v: View) {
-        v.findViewById<ProgressBar>(R.id.progressbar_fragment_asteroides).visibility =
-            ProgressBar.VISIBLE
     }
 
     private fun onPostExecute(v: View) {

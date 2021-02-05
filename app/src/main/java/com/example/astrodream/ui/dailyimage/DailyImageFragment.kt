@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ToggleButton
-import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -14,21 +13,14 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
-import com.example.astrodream.entitiesDatabase.DailyRoom
-import com.example.astrodream.entitiesDatabase.MarsRoom
-import com.example.astrodream.services.ServiceDBDaily
-import com.example.astrodream.services.ServiceDBImplementationDaily
-import com.example.astrodream.services.service
+import com.example.astrodream.services.*
 import com.example.astrodream.ui.plaindailymars.PlainActivity
 import com.example.astrodream.ui.plaindailymars.PlainActivityType
-import com.example.astrodream.services.cancelWallpaperChange
-import com.example.astrodream.services.scheduleWallpaperChange
 import com.example.astrodream.ui.plaindailymars.PlainDetailFragment
 import com.example.astrodream.ui.plaindailymars.PlainViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_info_daily.view.*
 import kotlinx.android.synthetic.main.fragment_daily.view.*
-import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 
 class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
 
@@ -58,6 +50,10 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
                 viewModel.favPlainDB(plainDetail, it as ToggleButton, requireActivity())
             }
         }
+
+        view.btnShareDaily.setOnClickListener {
+            shareImageFromUrl(plainDetail.hdurl, plainDetail.title, plainDetail.explanation, requireContext())
+        }
     }
 
     override fun popView(view: View) {
@@ -73,9 +69,12 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
 
         view.cvDaily.setOnClickListener {
             if (plainDetail.url != "") { // plainDetail.url is not empty String when API request is successful
-                val intent = Intent(view.context, FullScreenImgActivity::class.java)
-                intent.putExtra("img", plainDetail.url)
-                intent.putExtra("hdimg", plainDetail.hdurl)
+                val intent = Intent(view.context, FullScreenImgActivity::class.java).apply {
+                    putExtra("img", plainDetail.url)
+                    putExtra("hdimg", plainDetail.hdurl)
+                    putExtra("title", plainDetail.title)
+                    putExtra("desciption", plainDetail.explanation)
+                }
                 startActivity(intent)
             }
         }

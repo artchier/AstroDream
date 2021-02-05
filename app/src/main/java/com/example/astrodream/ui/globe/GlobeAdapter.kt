@@ -1,6 +1,7 @@
 package com.example.astrodream.ui.globe
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -12,7 +13,9 @@ import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.services.buildGlobeImageUrl
+import com.example.astrodream.ui.FullScreenImgActivity
 import kotlinx.android.synthetic.main.card_globe.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -40,13 +43,24 @@ class GlobeAdapter(
         )
         circularProgressDrawable.start()
 
+        val globeImgUrl = buildGlobeImageUrl(date, epicImageList[position])
+
         // Insere a imagem da URL na ImageView através do Glide
         Glide.with(view).asBitmap()
-            .load(buildGlobeImageUrl(date, epicImageList[position]))
+            .load(globeImgUrl)
             .placeholder(circularProgressDrawable)
             .into(view.ivGlobe)
 
         container.addView(view)
+
+        view.setOnClickListener {
+            val intent = Intent(view.context, FullScreenImgActivity::class.java).apply {
+                putExtra("img", globeImgUrl)
+                putExtra("title", "Imagem da Terra do dia ${
+                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)}")
+            }
+            ContextCompat.startActivity(container.context, intent, null)
+        }
 
         return view
     }

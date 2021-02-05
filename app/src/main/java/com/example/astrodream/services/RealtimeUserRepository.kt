@@ -1,10 +1,7 @@
 package com.example.astrodream.services
 
-import android.util.Log
 import com.example.astrodream.domain.User
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseUser
+import com.example.astrodream.domain.util.toMD5
 import com.google.firebase.database.*
 
 class RealtimeUserRepository {
@@ -19,35 +16,42 @@ class RealtimeUserRepository {
 
     fun addUserRealtime(user: User) {
         reference
-            .child(user.uid)
+            .child(user.email.toMD5())
             .setValue(user)
     }
 
-    fun updateUserName(uid: String, newName: String) {
+    fun updateUserName(email: String, newName: String) {
         reference
-            .child(uid)
+            .child(email.toMD5())
             .child("name")
             .setValue(newName)
     }
 
-    fun updateUserNasaCoins(uid: String, nasaCoins: Long) {
+    fun updateUserNotification(email: String, notifStatus: Boolean) {
         reference
-            .child(uid)
+            .child(email.toMD5())
+            .child("notification")
+            .setValue(notifStatus)
+    }
+
+    fun updateUserNasaCoins(email: String, nasaCoins: Long) {
+        reference
+            .child(email.toMD5())
             .child("nasaCoins")
             .setValue(nasaCoins)
     }
 
-    fun updateUserAvatar(uid: String, newAvatar: Long) {
+    fun updateUserAvatar(email: String, newAvatar: Long) {
         reference
-            .child(uid)
+            .child(email.toMD5())
             .child("avatar")
             .setValue(newAvatar)
     }
 
-    fun updateUserListOfAvatar(uid: String, avatarList: Map<String, Boolean>) {
+    fun updateUserListOfAvatar(email: String, avatarList: Map<String, Boolean>) {
         avatarList.forEach { (avatarRes, isBoughtByUser) ->
             reference
-                .child(uid)
+                .child(email.toMD5())
                 .child("avatarList")
                 .child(avatarRes)
                 .setValue(isBoughtByUser)
@@ -55,8 +59,8 @@ class RealtimeUserRepository {
 
     }
 
-    fun retrieveUserRealtime(uid: String, userListener: ValueEventListener) {
-        reference.child(uid).addValueEventListener(userListener)
+    fun retrieveUserRealtime(email: String, userListener: ValueEventListener) {
+        reference.child(email.toMD5()).addValueEventListener(userListener)
     }
 
 }

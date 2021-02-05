@@ -57,7 +57,7 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
         // específicas para o usuário (retorna uma lista com os IDs dos drawables dos avatares e
         // um booleano associado a cada um para indicar se o usuário já comprou ou não aquele avatar
         avatarViewModel.listAvatarsRoom.observe(this) {
-            avatarViewModel.retrieveUserAvatarData(Firebase.auth.currentUser?.uid!!)
+            avatarViewModel.retrieveUserAvatarData(Firebase.auth.currentUser?.email ?: "")
         }
         // Quando a lista de avatares do Realtime específica para o usuário for carregada, cria uma
         // nova lista juntando as informações do Room e do Realtime e retornando um List<Avatar>

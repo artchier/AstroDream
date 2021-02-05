@@ -1,6 +1,7 @@
 package com.example.astrodream.ui
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,31 +23,37 @@ class RealtimeViewModel: ViewModel() {
 
     val realtimeUserRepository = RealtimeUserRepository()
 
-    fun updateUserName(uid: String, newName: String) {
+    fun updateUserName(email: String, newName: String) {
         viewModelScope.launch{
-            realtimeUserRepository.updateUserName(uid, newName)
+            realtimeUserRepository.updateUserName(email, newName)
         }
     }
 
-    fun updateUserNasaCoins(uid: String, nasaCoins: Long) {
+    fun updateUserNotification(email: String, notifStatus: Boolean) {
         viewModelScope.launch{
-            realtimeUserRepository.updateUserNasaCoins(uid, nasaCoins)
+            realtimeUserRepository.updateUserNotification(email, notifStatus)
         }
     }
 
-    fun updateUserAvatar(uid: String, newAvatar: Long) {
+    fun updateUserNasaCoins(email: String, nasaCoins: Long) {
         viewModelScope.launch{
-            realtimeUserRepository.updateUserAvatar(uid, newAvatar)
+            realtimeUserRepository.updateUserNasaCoins(email, nasaCoins)
         }
     }
 
-    fun updateUserListOfAvatar(uid: String, avatarList: Map<String, Boolean>) {
+    fun updateUserAvatar(email: String, newAvatar: Long) {
         viewModelScope.launch{
-            realtimeUserRepository.updateUserListOfAvatar(uid, avatarList)
+            realtimeUserRepository.updateUserAvatar(email, newAvatar)
         }
     }
 
-    fun retrieveUserData(uid: String, name: String, email: String) {
+    fun updateUserListOfAvatar(email: String, avatarList: Map<String, Boolean>) {
+        viewModelScope.launch{
+            realtimeUserRepository.updateUserListOfAvatar(email, avatarList)
+        }
+    }
+
+    fun retrieveUserData(email: String, name: String) {
         viewModelScope.launch {
             val userListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -54,7 +61,7 @@ class RealtimeViewModel: ViewModel() {
                     val userRealtime = dataSnapshot.getValue(User::class.java)
                     // Se usuário inexistente, cria novo usuario
                     if (userRealtime == null) {
-                        realtimeUserRepository.addUserRealtime(User(uid, name, email, 650))
+                        realtimeUserRepository.addUserRealtime(User(email, name,650))
                     }
                     if (userRealtime != null) {
                         activeUser.value = userRealtime
@@ -65,7 +72,7 @@ class RealtimeViewModel: ViewModel() {
                     Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
                 }
             }
-            realtimeUserRepository.retrieveUserRealtime(uid, userListener)
+            realtimeUserRepository.retrieveUserRealtime(email, userListener)
         }
     }
 

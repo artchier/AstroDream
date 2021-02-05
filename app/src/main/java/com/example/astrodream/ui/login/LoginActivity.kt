@@ -9,7 +9,9 @@ import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserInfo
 import kotlinx.android.synthetic.main.activity_login.*
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,13 +24,10 @@ class LoginActivity : AppCompatActivity() {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            val uid = currentUser.uid
-            val name = currentUser.displayName
-            val emailFire = currentUser.email.toString()
+            val providerData: List<UserInfo?> = currentUser.providerData
+            val email = providerData[1]!!.email
             startActivity(Intent(this, InitialActivity::class.java).apply {
-                putExtra("uid", uid)
-                putExtra("name", name)
-                putExtra("email", emailFire)
+                putExtra("email", email)
             })
             finish()
         }

@@ -147,9 +147,10 @@
     <string name="back_login">VOLTAR PARA O LOGIN</string>
     <string name="greetins">Olá, %s</string>
     <string name="salvar_ou_usar_como_wallpaper">Salvar ou usar como wallpaper</string>
+    <string name="compartilhar">compartilhar</string>
+    <string name="asteroide_potencialmente_perigoso">ASTEROIDE POTENCIALMENTE PERIGOSO</string>
+    <string name="ver_rbita">ver órbita</string>
     <string name="confirm">Confirmar</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="notifications">Notificações</string>
     <string name="alterar_senha">Alterar senha</string>
     <string name="cd_btnChangeName">Botão para alterar nome de usuário</string>

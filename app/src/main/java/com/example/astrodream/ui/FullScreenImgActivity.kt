@@ -7,14 +7,18 @@ import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.doOnLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
 import com.example.astrodream.services.buildDownloadSetWallpaperMenu
+import com.example.astrodream.services.shareImageFromBitmap
+import com.example.astrodream.services.shareImageFromUrl
 import kotlinx.android.synthetic.main.activity_full_screen_img.*
 
 class FullScreenImgActivity : AppCompatActivity() {
@@ -48,8 +52,10 @@ class FullScreenImgActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_img)
 
-        imgURL = intent.extras?.getString("img") ?: ""
-        hdimgURL = intent.extras?.getString("hdimg") ?: ""
+        val imageTitle: String = intent.getStringExtra("title") ?: ""
+        val imageDescription: String = intent.getStringExtra("description") ?: ""
+        imgURL = intent.getStringExtra("img") ?: ""
+        hdimgURL = intent.getStringExtra("hdimg") ?: ""
 
         ivFull.doOnLayout {
             viewWidth = ivFull.width
@@ -82,9 +88,15 @@ class FullScreenImgActivity : AppCompatActivity() {
         ivCloseFullscreen.setOnClickListener { finish() }
 
         ivDownloadWallpaper.setOnClickListener {
-            val url = if (hdimgURL != "") hdimgURL else imgURL
+            buildDownloadSetWallpaperMenu(this, ivDownloadWallpaper, getBestUrl())
+        }
 
-            buildDownloadSetWallpaperMenu(this, ivDownloadWallpaper, url)
+        ivShare.setOnClickListener {
+            if (hdimgURL != "") {
+                shareImageFromUrl(hdimgURL, imageTitle, imageDescription, this)
+            } else {
+                shareImageFromBitmap(ivFull.drawable.toBitmap(), imageTitle, imageDescription, this)
+            }
         }
     }
 
@@ -115,6 +127,8 @@ class FullScreenImgActivity : AppCompatActivity() {
         return false
     }
 
+    private fun getBestUrl() = if (hdimgURL != "") hdimgURL else imgURL
+
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onDown(e: MotionEvent?): Boolean { return false }
         override fun onShowPress(e: MotionEvent?) {}
@@ -127,9 +141,7 @@ class FullScreenImgActivity : AppCompatActivity() {
         ): Boolean { return false }
 
         override fun onLongPress(e: MotionEvent?) {
-            val url = if (hdimgURL != "") hdimgURL else imgURL
-
-            buildDownloadSetWallpaperMenu(this@FullScreenImgActivity, ivDownloadWallpaper, url)
+            buildDownloadSetWallpaperMenu(this@FullScreenImgActivity, ivDownloadWallpaper, getBestUrl())
         }
 
         override fun onFling(
@@ -138,7 +150,20 @@ class FullScreenImgActivity : AppCompatActivity() {
             velocityX: Float,
             velocityY: Float
         ): Boolean { return false }
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean { return false }
+
+        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+            val newVisibility = if (ivCloseFullscreen.visibility == View.VISIBLE) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+
+            ivCloseFullscreen.visibility = newVisibility
+            ivDownloadWallpaper.visibility = newVisibility
+            ivShare.visibility = newVisibility
+
+            return false
+        }
 
         override fun onDoubleTap(e: MotionEvent?): Boolean {
             fitToScreen()

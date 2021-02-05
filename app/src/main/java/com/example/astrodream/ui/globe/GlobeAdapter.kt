@@ -59,10 +59,11 @@ class GlobeAdapter(
         container.addView(view)
 
         view.setOnClickListener {
+            val newFormatDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).parse(date)
             val intent = Intent(view.context, FullScreenImgActivity::class.java).apply {
                 putExtra("img", globeImgUrl)
                 putExtra("title", "Imagem da Terra do dia ${
-                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)}")
+                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(newFormatDate)}")
             }
             ContextCompat.startActivity(container.context, intent, null)
         }

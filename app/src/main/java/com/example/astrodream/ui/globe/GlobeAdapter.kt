@@ -22,7 +22,7 @@ import java.util.*
 class GlobeAdapter(
     private val epicImageList: List<String>,
     private val context: Context,
-    private val date: Date
+    private val date: String
 ) : PagerAdapter() {
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return `object` == view
@@ -35,8 +35,10 @@ class GlobeAdapter(
         val view = LayoutInflater.from(context).inflate(R.layout.card_globe, container, false)
 
         val circularProgressDrawable = CircularProgressDrawable(container.context)
-        circularProgressDrawable.strokeWidth = 15f/(context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-        circularProgressDrawable.centerRadius = 70f/(context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        circularProgressDrawable.strokeWidth =
+            15f / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        circularProgressDrawable.centerRadius =
+            70f / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
         circularProgressDrawable.setColorFilter(
             ContextCompat.getColor(this.context, R.color.teal_200),
             PorterDuff.Mode.SRC_IN
@@ -46,18 +48,22 @@ class GlobeAdapter(
         val globeImgUrl = buildGlobeImageUrl(date, epicImageList[position])
 
         // Insere a imagem da URL na ImageView através do Glide
-        Glide.with(view).asBitmap()
-            .load(globeImgUrl)
-            .placeholder(circularProgressDrawable)
-            .into(view.ivGlobe)
+        try {
+            Glide.with(view).asBitmap()
+                .load(buildGlobeImageUrl(date, epicImageList[position]))
+                .placeholder(circularProgressDrawable)
+                .into(view.ivGlobe)
+        } catch (exception: Exception) {
 
+        }
         container.addView(view)
 
         view.setOnClickListener {
+            val newFormatDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).parse(date)
             val intent = Intent(view.context, FullScreenImgActivity::class.java).apply {
                 putExtra("img", globeImgUrl)
                 putExtra("title", "Imagem da Terra do dia ${
-                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)}")
+                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(newFormatDate)}")
             }
             ContextCompat.startActivity(container.context, intent, null)
         }

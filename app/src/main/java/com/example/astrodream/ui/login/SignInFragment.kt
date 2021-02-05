@@ -55,18 +55,20 @@ class SignInFragment : FragmentWithEmailAndPassword(R.layout.fragment_sign_in) {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val firebaseUser: FirebaseUser = task.result?.user!!
-                    val uid = firebaseUser.uid
-                    val name = firebaseUser.displayName
-                    val emailFire = firebaseUser.email.toString()
 
-                    Toast.makeText(requireContext(), "Cadastro efetuado com sucesso! Seja muito bem-vindo(a)!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Cadastro efetuado com sucesso! Seja muito bem-vindo(a), $name!", Toast.LENGTH_LONG).show()
 
-                    startActivity(Intent(activity, InitialActivity::class.java).apply {
-                        putExtra("uid", uid)
-                        putExtra("name", name)
-                        putExtra("email", emailFire)
-                    })
-                    activity?.finish()
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build()
+                    firebaseUser.updateProfile(profileUpdates)
+                        .addOnSuccessListener {
+                            startActivity(Intent(activity, InitialActivity::class.java))
+                            activity?.finish()
+                        }
+                        .addOnFailureListener {
+                            Log.e("=======", "UPDATE PROFILE ERROR $it")
+                        }
                 }
             }
             .addOnFailureListener {

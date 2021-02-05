@@ -1,0 +1,90 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="202dp"
+    android:height="474dp"
+    android:viewportWidth="202"
+    android:viewportHeight="474">
+    <path
+        android:fillColor="#000"
+        android:name="Retângulo 18"
+        android:pathData="m78.34 429.56h43v21h-43v-21z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 23"
+        android:pathData="m36 122h22v100h-22v-100z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 24"
+        android:pathData="m58 163.99h21v27h-21v-27z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 25"
+        android:pathData="m36 79h8v64h-8v-64z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 26"
+        android:pathData="m36 36h22v64h-22v-64z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 23 copiar"
+        android:pathData="m143 122h22v100h-22v-100z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 24 copiar"
+        android:pathData="m121.99 163.99h21v27h-21v-27z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 25 copiar"
+        android:pathData="m157 79h8v64h-8v-64z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 26 copiar"
+        android:pathData="m143 36h22v64h-22v-64z" />
+    <path
+        android:fillColor="#443222"
+        android:name="Retângulo 27"
+        android:pathData="m56 22h89v35h-89v-35z" />
+    <path
+        android:fillColor="#d3a075"
+        android:name="She_Face2"
+        android:pathData="m58 57h85v107h-85v-107z" />
+    <path
+        android:fillColor="#d3a075"
+        android:name="She_Face1"
+        android:pathData="m44.01 100h113v22h-113v-22z" />
+    <path
+        android:fillColor="#d3a075"
+        android:name="She_Neck"
+        android:pathData="m79 163.99h43v27h-43v-27z" />
+    <path
+        android:fillColor="#d3a075"
+        android:name="She_Arm2"
+        android:pathData="m40.59 191.22h17v150h-17v-150z" />
+    <path
+        android:fillColor="#d3a075"
+        android:name="She_Arm1"
+        android:pathData="m142.94 191.22h17v150h-17v-150z" />
+    <path
+        android:fillColor="#d3a075"
+        android:name="She_Legs"
+        android:pathData="m78.34 362.87h43v67h-43v-67z" />
+    <path
+        android:fillColor="#000"
+        android:name="She_Eye2"
+        android:pathData="m79 94h10v27h-10v-27z" />
+    <path
+        android:fillColor="#000"
+        android:name="She_Eye1"
+        android:pathData="m112 94h10v27h-10v-27z" />
+    <path
+        android:fillColor="#261463"
+        android:name="Retângulo 11"
+        android:pathData="m57.81 191.22h85v172h-85v-172z" />
+    <path
+        android:fillColor="#ff8a00"
+        android:name="Retângulo 11"
+        android:pathData="m46 119v10h8v-10z" />
+    <path
+        android:fillColor="#ff8a00"
+        android:name="Retângulo 11"
+        android:pathData="m147 119v10h8v-10z" />
+</vector>

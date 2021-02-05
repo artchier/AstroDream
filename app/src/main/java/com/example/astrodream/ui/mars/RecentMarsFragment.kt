@@ -13,8 +13,6 @@ import com.example.astrodream.ui.plaindailymars.PlainDetailFragment
 import com.example.astrodream.ui.plaindailymars.PlainViewModel
 import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import me.relex.circleindicator.CircleIndicator
-import com.example.astrodream.entitiesDatabase.MarsRoom
-import com.example.astrodream.services.ServiceDBImplementationDaily
 import com.example.astrodream.services.ServiceDBImplementationMars
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.plaindailymars.PlainActivity
@@ -53,9 +51,6 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
     }
 
     override fun popView(view: View) {
-
-        val contextActivity = this.requireActivity()
-
         adapterMars = MarsAdapter(
             view.context,
             plainDetail.img_list,
@@ -76,9 +71,6 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
         view.postDescr.text = plainDetail.earth_date
 
         view.btnFavMars.isChecked = plainDetail.isFav
-//        viewModel.favMarsState(MarsRoom(plainDetail.earth_date, plainDetail.sol, plainDetail.maxTemp, plainDetail.minTemp), view.btnFavMars)
-
     }
-
 
 }

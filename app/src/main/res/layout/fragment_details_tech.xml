@@ -34,6 +34,7 @@
                         android:id="@+id/ivTech"
                         android:layout_width="120dp"
                         android:layout_height="78dp"
+                        android:contentDescription="@string/imagem_tecnologia"
                         android:src="@drawable/ic_tecnologia"/>
 
                     <LinearLayout
@@ -47,17 +48,19 @@
                             android:id="@+id/tvCodReferenceTech"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
+                            android:text="Código de Referência"
                             android:textColor="@color/white"
-                            android:text="Código de Referência"/>
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/tvTitleTech"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
+                            android:text="Título"
                             android:textColor="@color/white"
-                            android:text="Título"/>
+                            tools:ignore="HardcodedText" />
 
                     </LinearLayout>
 
@@ -69,14 +72,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:text="Descrição"
                     android:textColor="@color/white"
-                    android:text="Descrição"/>
+                    tools:ignore="HardcodedText" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/btnFavorTech"
@@ -84,18 +88,21 @@
                         android:layout_height="30dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
-                        android:src="@drawable/ic_star_border"
+                        android:background="@null"
+                        android:contentDescription="@string/favoritar"
                         android:scaleType="fitCenter"
-                        android:background="@null"/>
+                        android:src="@drawable/ic_star_border" />
 
                     <ImageButton
+                        android:id="@+id/btnShareTech"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
-                        android:src="@drawable/ic_share"
+                        android:background="@null"
+                        android:contentDescription="@string/compartilhar"
                         android:scaleType="fitCenter"
-                        android:background="@null"/>
+                        android:src="@drawable/ic_share" />
                 </LinearLayout>
 
             </LinearLayout>

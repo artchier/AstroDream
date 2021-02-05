@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="150dp"
@@ -10,8 +9,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="10dp"
-        android:backgroundTint="@color/white">
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="10dp">
+
         <ImageView
             android:id="@+id/ivDetail"
             android:layout_width="match_parent"
@@ -19,37 +19,48 @@
             android:layout_gravity="center"
             android:scaleType="centerCrop" />
     </androidx.cardview.widget.CardView>
+
     <LinearLayout
-        android:layout_width="110dp"
+        android:layout_width="140dp"
         android:layout_height="40dp"
         android:alpha="0.6"
         android:background="@drawable/info_box_mars"
+        android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:elevation="4dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
-        android:layout_width="110dp"
+        android:layout_width="140dp"
         android:layout_height="40dp"
+        android:elevation="5dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:elevation="5dp">
+        app:layout_constraintStart_toStartOf="parent">
 
         <ToggleButton
             android:id="@+id/btnFavPlain"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/selector_favorite"
-            android:scaleType="fitCenter"
             android:checked="false"
+            android:enabled="false"
+            android:scaleType="fitCenter"
             android:text=""
             android:textOff=""
-            android:textOn=""
-            android:enabled="false"/>
+            android:textOn="" />
+
+        <ImageButton
+            android:id="@+id/btnDownloadWallpaper"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/google_sign_in"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_file_download_24" />
 
         <TextView
             android:id="@+id/tvDetail"
@@ -64,9 +75,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="10dp"
         android:backgroundTint="@color/transparent"
-        android:elevation="6dp">
+        android:elevation="6dp"
+        app:cardCornerRadius="10dp">
+
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_container"
             android:layout_width="match_parent"
@@ -74,11 +86,13 @@
             app:shimmer_auto_start="true"
             app:shimmer_base_alpha="0.8"
             app:shimmer_dropoff="10.0">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/gigas"/>
+                android:background="@color/gigas" />
         </com.facebook.shimmer.ShimmerFrameLayout>
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

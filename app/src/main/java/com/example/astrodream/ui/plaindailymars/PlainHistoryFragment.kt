@@ -40,6 +40,7 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
         
         viewModel.adapterHistory.listener = this
         viewModel.adapterHistory.favListener = this
+        viewModel.adapterHistory.context = requireContext()
         view.rvHistory.adapter = viewModel.adapterHistory
 
         setUpScroller(view.rvHistory, view.rvHistory.layoutManager as GridLayoutManager)

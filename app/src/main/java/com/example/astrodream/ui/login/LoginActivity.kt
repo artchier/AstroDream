@@ -16,14 +16,20 @@ class LoginActivity : AppCompatActivity() {
     private var insertedEmail = ""
     private var insertedPassword= ""
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            startActivity(Intent(this, InitialActivity::class.java))
+            val uid = currentUser.uid
+            val name = currentUser.displayName
+            val emailFire = currentUser.email.toString()
+            startActivity(Intent(this, InitialActivity::class.java).apply {
+                putExtra("uid", uid)
+                putExtra("name", name)
+                putExtra("email", emailFire)
+            })
             finish()
         }
 

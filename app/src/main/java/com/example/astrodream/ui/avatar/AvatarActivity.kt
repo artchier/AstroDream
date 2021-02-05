@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_avatar.*
@@ -57,7 +59,12 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
         // específicas para o usuário (retorna uma lista com os IDs dos drawables dos avatares e
         // um booleano associado a cada um para indicar se o usuário já comprou ou não aquele avatar
         avatarViewModel.listAvatarsRoom.observe(this) {
-            avatarViewModel.retrieveUserAvatarData(Firebase.auth.currentUser?.email ?: "")
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                val providerData: List<UserInfo?> = currentUser.providerData
+                val email = providerData[1]!!.email
+                avatarViewModel.retrieveUserAvatarData(email ?: "")
+            }
         }
         // Quando a lista de avatares do Realtime específica para o usuário for carregada, cria uma
         // nova lista juntando as informações do Room e do Realtime e retornando um List<Avatar>

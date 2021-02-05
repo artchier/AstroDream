@@ -34,7 +34,7 @@ class TechPieceAdapter(
         circularProgressDrawable.strokeWidth = 10f
         circularProgressDrawable.centerRadius = 45f
         circularProgressDrawable.setColorFilter(
-            ContextCompat.getColor(this.context, R.color.teal_200),
+            ContextCompat.getColor(this.context, R.color.white),
             PorterDuff.Mode.SRC_IN
         )
         circularProgressDrawable.start()

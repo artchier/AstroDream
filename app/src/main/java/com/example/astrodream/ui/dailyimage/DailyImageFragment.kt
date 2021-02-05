@@ -59,7 +59,7 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
     override fun popView(view: View) {
         val img = if (plainDetail.url != "") { plainDetail.url } else { R.drawable.no_internet }
 
-        view.tvTitle.text = plainDetail.title
+        translator.translateEnglishToPortuguese(plainDetail.title, view.tvTitle)
 
         Glide.with(view).asBitmap()
             .load(img)
@@ -81,7 +81,7 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
 
         val dialogView = View.inflate(this.requireContext(), R.layout.dialog_info_daily, null)
 
-        dialogView.tvInfoDaily.text = plainDetail.explanation
+        translator.translateEnglishToPortuguese(plainDetail.explanation, dialogView.tvInfoDaily)
 
         val dialog = MaterialAlertDialogBuilder(this.requireContext())
             .setView(dialogView)

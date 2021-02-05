@@ -3,12 +3,12 @@ package com.example.astrodream.domain
 import com.example.astrodream.R
 
 data class User(
-    val uid: String = "",
-    val name: String = "",
     var email: String = "",
+    var name: String = "",
     var nasaCoins: Long = 0,
     var avatar: Int = R.drawable.avatar_male_01,
-    var avatarList: Map<String, Boolean> = mutableMapOf()
+    var avatarList: Map<String, Boolean> = mutableMapOf(),
+    var notification: Boolean = true
 ) {
     
     init {

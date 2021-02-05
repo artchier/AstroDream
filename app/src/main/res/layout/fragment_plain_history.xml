@@ -32,7 +32,7 @@
         android:layout_height="50dp"
         app:indicatorType="circular"
         android:background="@android:color/transparent"
-        app:indicatorColor="@color/teal_200"
+        app:indicatorColor="@color/white"
         style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
         android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"

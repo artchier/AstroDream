@@ -11,7 +11,10 @@ import android.widget.ImageButton
 import android.widget.Toast
 import com.example.astrodream.R
 import com.example.astrodream.ui.initial.InitialActivity
-import com.facebook.*
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -170,7 +173,11 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    callInitialActivity()
+                    val profile: Map<*, *>? = task.result!!.additionalUserInfo!!
+                        .profile
+                    val email =
+                        profile!!["email"] as String
+                    callInitialActivity(email)
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
                         Toast.makeText(
@@ -194,7 +201,11 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    callInitialActivity()
+                    val profile: Map<*, *>? = task.result!!.additionalUserInfo!!
+                        .profile
+                    val email =
+                        profile!!["email"] as String
+                    callInitialActivity(email)
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
                         Toast.makeText(
@@ -220,6 +231,14 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 
     private fun callInitialActivity() {
         startActivity(Intent(requireActivity(), InitialActivity::class.java))
+        activity?.finish()
+        Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun callInitialActivity(email: String) {
+        val intent = Intent(requireActivity(), InitialActivity::class.java)
+        intent.putExtra("email", email)
+        startActivity(intent)
         activity?.finish()
         Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
     }

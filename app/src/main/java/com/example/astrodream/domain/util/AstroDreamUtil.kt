@@ -1,12 +1,11 @@
 package com.example.astrodream.domain.util
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -14,31 +13,25 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import com.bumptech.glide.request.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.view.inputmethod.InputMethodManager
 import android.widget.ExpandableListView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
+import androidx.fragment.app.Fragment
 import com.example.astrodream.R
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.MarsRoom
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.lang.StringBuilder
+import java.security.MessageDigest
 
 class AstroDreamUtil {
     companion object
@@ -236,4 +229,26 @@ fun AstroDreamUtil.Companion.isInternetAvailable(context: Context): Boolean {
 
 fun AstroDreamUtil.Companion.showErrorInternetConnection(context: Context){
         AstroDreamUtil.showDialogError(context, R.layout.internet_connection_error)
+}
+
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+fun Activity.hideKeyboard() {
+    hideKeyboard(currentFocus ?: View(this))
+}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun String.toMD5(): String {
+    val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
+    return bytes.toHex()
+}
+
+fun ByteArray.toHex(): String {
+    return joinToString("") { "%02x".format(it) }
 }

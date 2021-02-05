@@ -7,6 +7,8 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -32,6 +34,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
@@ -47,10 +51,10 @@ abstract class ActivityWithTopBar(
 
     val realtimeViewModel: RealtimeViewModel by viewModels()
 
-    private fun userListener(uid: String, name: String, email: String) {
-        if(uid == "") { return }
+    private fun userListener(name: String, email: String) {
+        if(email == "") { return }
 
-        realtimeViewModel.retrieveUserData(uid, name, email)
+        realtimeViewModel.retrieveUserData(email, name)
 
         realtimeViewModel.activeUser.observe(this) {
             ivAstronauta.setImageDrawable(
@@ -82,7 +86,7 @@ abstract class ActivityWithTopBar(
         setSupportActionBar(toolBar)
 
         val lateralMenuHost = findViewById<NavigationView>(R.id.nvLateralMenu)
-        val lateralMenu = findViewById<ConstraintLayout>(R.id.clLateralMenu)
+        val lateralMenu = findViewById<ScrollView>(R.id.clLateralMenu)
 
         val btnAvatar = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnAvatar)
 
@@ -146,11 +150,15 @@ abstract class ActivityWithTopBar(
             logout()
         }
 
-        userListener(
-            Firebase.auth.currentUser?.uid ?: "",
-            Firebase.auth.currentUser?.displayName ?: "",
-            Firebase.auth.currentUser?.email ?: ""
-        )
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val providerData: List<UserInfo?> = currentUser.providerData
+            val email = providerData[1]!!.email
+            userListener(
+                Firebase.auth.currentUser?.displayName ?: "",
+                email ?: ""
+            )
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

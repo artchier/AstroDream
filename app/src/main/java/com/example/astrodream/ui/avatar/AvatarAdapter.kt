@@ -95,14 +95,14 @@ class AvatarAdapter(
                     tvTotal.text = total.toString()
 
                     //atualiza o total de NasaCoins do usuário
-                    realtimeUserViewModel.updateUserNasaCoins(realtimeUserViewModel.activeUser.value?.uid!!, total.toLong())
+                    realtimeUserViewModel.updateUserNasaCoins(realtimeUserViewModel.activeUser.value?.email!!, total.toLong())
 
                     //atualiza no realtime e na lista do adapter o último avatar clicado
                     val newAvatar = avatar.avatarRes
                     // Atualiza na lista de avatares do usuário para indicar que esse avatar foi comprado
-                    realtimeUserViewModel.updateUserListOfAvatar(realtimeUserViewModel.activeUser.value!!.uid, mapOf(newAvatar.toString() to true))
+                    realtimeUserViewModel.updateUserListOfAvatar(realtimeUserViewModel.activeUser.value!!.email, mapOf(newAvatar.toString() to true))
                     // Atualiza o avatar atual
-                    realtimeUserViewModel.updateUserAvatar(realtimeUserViewModel.activeUser.value!!.uid, newAvatar.toLong())
+                    realtimeUserViewModel.updateUserAvatar(realtimeUserViewModel.activeUser.value!!.email, newAvatar.toLong())
                     // Atualiza a lista no ViewModel e no Recycler
                     avatarViewModel.mergeAvatarDataRoomRealtime()
                     listAvatars = avatarViewModel.listAvatars.value!!
@@ -118,7 +118,7 @@ class AvatarAdapter(
             //mostra o avatar já comprado
             else {
                 val newAvatar = avatar.avatarRes.toLong()
-                realtimeUserViewModel.updateUserAvatar(realtimeUserViewModel.activeUser.value!!.uid, newAvatar)
+                realtimeUserViewModel.updateUserAvatar(realtimeUserViewModel.activeUser.value!!.email, newAvatar)
             }
         }
     }

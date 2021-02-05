@@ -43,7 +43,7 @@ class MarsAdapter(
         circularProgressDrawable.strokeWidth = 15f
         circularProgressDrawable.centerRadius = 80f
         circularProgressDrawable.setColorFilter(
-            getColor(this.context, R.color.teal_200),
+            getColor(this.context, R.color.white),
             PorterDuff.Mode.SRC_IN
         )
         circularProgressDrawable.start()

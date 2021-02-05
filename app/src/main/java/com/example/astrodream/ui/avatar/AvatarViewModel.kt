@@ -67,7 +67,7 @@ class AvatarViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun retrieveUserAvatarData(uid: String) {
+    fun retrieveUserAvatarData(email: String) {
         viewModelScope.launch {
             val userListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -81,7 +81,7 @@ class AvatarViewModel(application: Application) : AndroidViewModel(application) 
                     Log.w("===================", "loadPost:onCancelled", databaseError.toException())
                 }
             }
-            realtimeUserRepository.retrieveUserRealtime(uid, userListener)
+            realtimeUserRepository.retrieveUserRealtime(email, userListener)
         }
     }
 

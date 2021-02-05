@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rounded_rectangle2"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:padding="20dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/current_password"
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        android:hint="@string/password"
+        app:hintTextColor="@color/black"
+        android:textColorHint="@color/black"
+        app:startIconDrawable="@drawable/ic_lock"
+        app:endIconMode="password_toggle"
+        app:startIconTint="@color/black"
+        app:endIconTint="@color/black"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        android:background="@drawable/pill_shape"
+        android:backgroundTint="@color/light_purple">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiConfirmPassword"
+            android:backgroundTint="@color/transparent"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:inputType="textPassword"
+            android:fontFamily="@font/roboto"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnCurrentPswd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/gigas"
+        android:layout_marginTop="20sp"
+        android:textSize="18sp"
+        android:text="@string/confirm"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.MarsImage
 import com.example.astrodream.ui.FullScreenImgActivity
+import com.example.astrodream.utils.TranslationEnglishToPortuguese
 import kotlinx.android.synthetic.main.card_mars_post.view.*
 
 // Esse adapter é responsável por inflar os layouts das paginas do
@@ -27,6 +28,8 @@ class MarsAdapter(
     private val minTemp: String
 ) : PagerAdapter() {
 
+    lateinit var translator: TranslationEnglishToPortuguese
+
     override fun getCount() = marsPicsList.size
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -35,6 +38,9 @@ class MarsAdapter(
 
     // Essa função infla o layout e já repete os itens
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        translator = TranslationEnglishToPortuguese()
+        translator.modelDownload()
+
         val view = LayoutInflater.from(context).inflate(R.layout.card_mars_post, container, false)
         val marsPic = if (marsPicsList[position].img_src != "") { marsPicsList[position].img_src } else { R.drawable.no_internet }
         val marsCamera = marsPicsList[position].camera.full_name
@@ -58,7 +64,7 @@ class MarsAdapter(
         view.tvMarsRecentDateSol.text = postSol
         view.tvMarsRecentMaxTemp.text = maxTemp
         view.tvMarsRecentMinTemp.text = minTemp
-        view.tvMarsRecentCamera.text = marsCamera
+        translator.translateEnglishToPortuguese(marsCamera, view.tvMarsRecentCamera)
 
         view.ivRecentMars.setOnClickListener {
             if (marsPic != "") { // marcPic is not empty String when API request is successful

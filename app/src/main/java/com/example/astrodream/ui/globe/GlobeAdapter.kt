@@ -40,7 +40,7 @@ class GlobeAdapter(
         circularProgressDrawable.centerRadius =
             70f / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
         circularProgressDrawable.setColorFilter(
-            ContextCompat.getColor(this.context, R.color.teal_200),
+            ContextCompat.getColor(this.context, R.color.white),
             PorterDuff.Mode.SRC_IN
         )
         circularProgressDrawable.start()

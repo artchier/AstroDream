@@ -53,23 +53,6 @@ abstract class ActivityWithTopBar(
     private val toolbarTitleId: Int,
     private val drawerLayoutId: Int
 ) : AppCompatActivity() {
-
-    init {
-        animationFadeIn.duration = 500
-        animationFadeOut.duration = 500
-    }
-
-    companion object {
-        private val animationFadeIn = AlphaAnimation(0f, 1f)
-        private val animationFadeOut = AlphaAnimation(1f, 0f)
-        const val loginNasaCoins = 50
-        const val dailyNasaCoins = 100
-        const val asteroidsNasaCoins = 50
-        const val globeNasaCoins = 80
-        const val techNasaCoins = 50
-        const val marsNasaCoins = 50
-    }
-
     private var toolBar: MaterialToolbar? = null
     private lateinit var drawerLayout: DrawerLayout
 
@@ -185,68 +168,6 @@ abstract class ActivityWithTopBar(
                 email ?: ""
             )
         }
-    }
-
-    fun animateNasaCoins(view: View, toolbarTiteTitleId: Int) {
-        view.llNasaCoins.visibility = View.VISIBLE
-        animationFadeIn.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(p0: Animation?) {
-            }
-
-            override fun onAnimationEnd(p0: Animation?) {
-                lateinit var animationValue: ValueAnimator
-                when (toolbarTiteTitleId) {
-                    R.string.asteroides -> animationValue = ValueAnimator.ofInt(
-                        view.tvTotal.text.toString().toInt(),
-                        view.tvTotal.text.toString().toInt() + asteroidsNasaCoins
-                    )
-                    R.string.globo -> animationValue = ValueAnimator.ofInt(
-                        view.tvTotal.text.toString().toInt(),
-                        view.tvTotal.text.toString().toInt() + globeNasaCoins
-                    )
-                    R.string.marte -> animationValue = ValueAnimator.ofInt(
-                        view.tvTotal.text.toString().toInt(),
-                        view.tvTotal.text.toString().toInt() + marsNasaCoins
-                    )
-                    R.string.tecnologias -> animationValue = ValueAnimator.ofInt(
-                        view.tvTotal.text.toString().toInt(),
-                        view.tvTotal.text.toString().toInt() + techNasaCoins
-                    )
-                }
-                animationValue.duration = 500
-                animationValue.addUpdateListener { animation ->
-                    view.tvTotal.text = animation.animatedValue.toString()
-                }
-                animationValue.start()
-                animationValue.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(p0: Animator?) {
-                    }
-
-                    override fun onAnimationEnd(p0: Animator?) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            delay(500)
-                            val fadeOutAnimation = AlphaAnimation(1f, 0f)
-                            fadeOutAnimation.duration = 500
-                            view.llNasaCoins.startAnimation(fadeOutAnimation)
-                            view.llNasaCoins.visibility = View.INVISIBLE
-                        }
-                    }
-
-                    override fun onAnimationCancel(p0: Animator?) {
-                    }
-
-                    override fun onAnimationRepeat(p0: Animator?) {
-                    }
-
-                })
-            }
-
-            override fun onAnimationRepeat(p0: Animation?) {
-            }
-
-        })
-        view.llNasaCoins.startAnimation(animationFadeIn)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

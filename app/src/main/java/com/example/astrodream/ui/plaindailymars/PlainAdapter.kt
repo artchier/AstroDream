@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.services.buildDownloadSetWallpaperMenu
+import com.example.astrodream.ui.mars.RecentMarsFragment
 import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.android.synthetic.main.item_detail.view.*
 
@@ -45,6 +46,7 @@ class PlainAdapter: RecyclerView.Adapter<PlainAdapter.DetailViewHolder>() {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 listener.onClickDetail(position)
+                RecentMarsFragment.hasClicked = true
             }
         }
     }

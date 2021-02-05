@@ -2,7 +2,6 @@ package com.example.astrodream.ui.globe
 
 import android.animation.Animator
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View.*
 import android.view.animation.AlphaAnimation
@@ -22,8 +21,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_avatar.*
 import kotlinx.android.synthetic.main.activity_globe.*
-import kotlinx.android.synthetic.main.activity_globe.llNasaCoins
-import kotlinx.android.synthetic.main.activity_globe.tvTotal
 import kotlinx.android.synthetic.main.activity_globe.view.*
 import kotlinx.android.synthetic.main.astrodialog.view.*
 import kotlinx.android.synthetic.main.card_globe.*
@@ -146,8 +143,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         }
 
         realtimeViewModel.activeUser.observe(this) {
-            Log.e("Teste Globo", "passou aqui")
-            tvTotal.text = it.nasaCoins.toString()
+            tvTotalGlobe.text = it.nasaCoins.toString()
         }
 
         viewModel.imageArray.observe(this) {
@@ -160,7 +156,11 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
                 //se clicar em uma nova data, inicia as animações dos NasaCoins
                 if (hasClickedOnNewDate) {
-                    animateNasaCoins(llNasaCoins, R.string.globo)
+                    realtimeViewModel.animateNasaCoins(
+                        llNasaCoinsGlobe,
+                        tvTotalGlobe,
+                        R.string.globo
+                    )
                     hasClickedOnNewDate = false
                 }
             } else {
@@ -246,8 +246,8 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         super.onStop()
 
         realtimeViewModel.updateUserNasaCoins(
-            realtimeViewModel.activeUser.value?.uid!!,
-            tvTotal.text.toString().toLong()
+            realtimeViewModel.activeUser.value?.email!!,
+            tvTotalGlobe.text.toString().toLong()
         )
     }
 }

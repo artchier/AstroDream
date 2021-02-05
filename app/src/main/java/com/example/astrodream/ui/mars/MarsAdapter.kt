@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.MarsImage
 import com.example.astrodream.ui.FullScreenImgActivity
+import com.example.astrodream.ui.RealtimeViewModel
 import kotlinx.android.synthetic.main.card_mars_post.view.*
 
 // Esse adapter é responsável por inflar os layouts das paginas do
@@ -36,7 +38,11 @@ class MarsAdapter(
     // Essa função infla o layout e já repete os itens
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(context).inflate(R.layout.card_mars_post, container, false)
-        val marsPic = if (marsPicsList[position].img_src != "") { marsPicsList[position].img_src } else { R.drawable.no_internet }
+        val marsPic = if (marsPicsList[position].img_src != "") {
+            marsPicsList[position].img_src
+        } else {
+            R.drawable.no_internet
+        }
         val marsCamera = marsPicsList[position].camera.full_name
 
         val circularProgressDrawable = CircularProgressDrawable(container.context)

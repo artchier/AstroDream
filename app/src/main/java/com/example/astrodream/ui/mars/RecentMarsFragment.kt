@@ -1,6 +1,7 @@
 package com.example.astrodream.ui.mars
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
@@ -15,13 +16,20 @@ import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import me.relex.circleindicator.CircleIndicator
 import com.example.astrodream.services.ServiceDBImplementationMars
 import com.example.astrodream.services.service
+import com.example.astrodream.ui.RealtimeViewModel
 import com.example.astrodream.ui.plaindailymars.PlainActivity
 import com.example.astrodream.ui.plaindailymars.PlainActivityType
+import kotlinx.android.synthetic.main.card_mars_post.*
+import kotlinx.android.synthetic.main.card_mars_post.view.*
+import kotlinx.android.synthetic.main.fragment_recent_mars.*
 
 class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
+    private val realtimeViewModel: RealtimeViewModel by viewModels()
 
     companion object {
         fun newInstance() = RecentMarsFragment()
+        var hasClicked = false
+        var newNasaCoinsValue: Long = 0
     }
 
     lateinit var adapterMars: MarsAdapter
@@ -48,6 +56,11 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
                 viewModel.favPlainDB(plainDetail, it as ToggleButton, requireActivity())
             }
         }
+
+        /*if (hasClicked) {
+            realtimeViewModel.animateNasaCoins(view, R.string.marte)
+            hasClicked = false
+        }*/
     }
 
     override fun popView(view: View) {

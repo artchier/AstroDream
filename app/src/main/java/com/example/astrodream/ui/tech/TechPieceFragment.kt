@@ -5,23 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.domain.TechPiece
+import com.example.astrodream.ui.RealtimeViewModel
 
 abstract class TechPieceFragment<T : TechPiece>(
     private val techType: String,
     private val fragmentXmlId: Int,
     private val recyclerViewId: Int,
     private val navigationToDetailsFragmentId: Int
-    ) : Fragment() {
+) : Fragment() {
 
-    private lateinit var contextTechActivity : TechActivity
-    private lateinit var adapterTech : TechPieceAdapter
+    private lateinit var contextTechActivity: TechActivity
+    private lateinit var adapterTech: TechPieceAdapter
+    private val realtimeViewModel: RealtimeViewModel by viewModels()
 
     abstract val viewModel: TechViewModel<T>
 
@@ -31,7 +33,12 @@ abstract class TechPieceFragment<T : TechPiece>(
     ): View? {
         val view = inflater.inflate(fragmentXmlId, container, false)
 
-        adapterTech = TechPieceAdapter(this::onClickTechPiece, contextTechActivity)
+        adapterTech = TechPieceAdapter(
+            this::onClickTechPiece,
+            contextTechActivity,
+            realtimeViewModel,
+            requireActivity()
+        )
 
         view.findViewById<RecyclerView>(recyclerViewId).apply {
             adapter = adapterTech

@@ -1,9 +1,13 @@
 package com.example.astrodream.ui
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.content.Intent
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -32,14 +36,35 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_globe.view.*
 import kotlinx.android.synthetic.main.app_tool_bar.*
 import kotlinx.android.synthetic.main.header_layout.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 abstract class ActivityWithTopBar(
-    private val toolbarTiteTitleId: Int,
+    private val toolbarTitleId: Int,
     private val drawerLayoutId: Int
 ) : AppCompatActivity() {
+
+    init {
+        animationFadeIn.duration = 500
+        animationFadeOut.duration = 500
+    }
+
+    companion object {
+        private val animationFadeIn = AlphaAnimation(0f, 1f)
+        private val animationFadeOut = AlphaAnimation(1f, 0f)
+        const val loginNasaCoins = 50
+        const val dailyNasaCoins = 100
+        const val asteroidsNasaCoins = 50
+        const val globeNasaCoins = 80
+        const val techNasaCoins = 50
+        const val marsNasaCoins = 50
+    }
 
     private var toolBar: MaterialToolbar? = null
     private lateinit var drawerLayout: DrawerLayout
@@ -47,7 +72,9 @@ abstract class ActivityWithTopBar(
     val realtimeViewModel: RealtimeViewModel by viewModels()
 
     private fun userListener(uid: String, name: String, email: String) {
-        if(uid == "") { return }
+        if (uid == "") {
+            return
+        }
 
         realtimeViewModel.retrieveUserData(uid, name, email)
 
@@ -76,7 +103,7 @@ abstract class ActivityWithTopBar(
 
         toolBar?.apply {
             title = ""
-            tvToolBarTitle.text = resources.getString(toolbarTiteTitleId)
+            tvToolBarTitle.text = resources.getString(toolbarTitleId)
         }
         setSupportActionBar(toolBar)
 
@@ -150,6 +177,68 @@ abstract class ActivityWithTopBar(
             Firebase.auth.currentUser?.displayName ?: "",
             Firebase.auth.currentUser?.email ?: ""
         )
+    }
+
+    fun animateNasaCoins(view: View, toolbarTiteTitleId: Int) {
+        view.llNasaCoins.visibility = View.VISIBLE
+        animationFadeIn.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(p0: Animation?) {
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                lateinit var animationValue: ValueAnimator
+                when (toolbarTiteTitleId) {
+                    R.string.asteroides -> animationValue = ValueAnimator.ofInt(
+                        view.tvTotal.text.toString().toInt(),
+                        view.tvTotal.text.toString().toInt() + asteroidsNasaCoins
+                    )
+                    R.string.globo -> animationValue = ValueAnimator.ofInt(
+                        view.tvTotal.text.toString().toInt(),
+                        view.tvTotal.text.toString().toInt() + globeNasaCoins
+                    )
+                    R.string.marte -> animationValue = ValueAnimator.ofInt(
+                        view.tvTotal.text.toString().toInt(),
+                        view.tvTotal.text.toString().toInt() + marsNasaCoins
+                    )
+                    R.string.tecnologias -> animationValue = ValueAnimator.ofInt(
+                        view.tvTotal.text.toString().toInt(),
+                        view.tvTotal.text.toString().toInt() + techNasaCoins
+                    )
+                }
+                animationValue.duration = 500
+                animationValue.addUpdateListener { animation ->
+                    view.tvTotal.text = animation.animatedValue.toString()
+                }
+                animationValue.start()
+                animationValue.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(p0: Animator?) {
+                    }
+
+                    override fun onAnimationEnd(p0: Animator?) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            delay(500)
+                            val fadeOutAnimation = AlphaAnimation(1f, 0f)
+                            fadeOutAnimation.duration = 500
+                            view.llNasaCoins.startAnimation(fadeOutAnimation)
+                            view.llNasaCoins.visibility = View.INVISIBLE
+                        }
+                    }
+
+                    override fun onAnimationCancel(p0: Animator?) {
+                    }
+
+                    override fun onAnimationRepeat(p0: Animator?) {
+                    }
+
+                })
+            }
+
+            override fun onAnimationRepeat(p0: Animation?) {
+            }
+
+        })
+        view.llNasaCoins.startAnimation(animationFadeIn)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

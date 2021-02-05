@@ -4,12 +4,10 @@ import android.animation.Animator
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
-import android.view.View
 import android.view.View.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.DatePicker
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
@@ -22,7 +20,10 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_avatar.*
 import kotlinx.android.synthetic.main.activity_globe.*
+import kotlinx.android.synthetic.main.activity_globe.llNasaCoins
+import kotlinx.android.synthetic.main.activity_globe.tvTotal
 import kotlinx.android.synthetic.main.activity_globe.view.*
 import kotlinx.android.synthetic.main.astrodialog.view.*
 import kotlinx.android.synthetic.main.card_globe.*
@@ -40,6 +41,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
     private lateinit var date: Date
     private var lastDate: Long = 0
     private var hasSettedMax = false
+    private var hasClickedOnNewDate = false
     private var day = 0
     private var month = 0
     private var year = 0
@@ -136,10 +138,16 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                                 date
                             ).toString()
                         )
+                        hasClickedOnNewDate = true
                     }
                 }
                 .setNegativeButton(resources.getString(R.string.cancelar), null)
                 .show()
+        }
+
+        realtimeViewModel.activeUser.observe(this) {
+            Log.e("Teste Globo", "passou aqui")
+            tvTotal.text = it.nasaCoins.toString()
         }
 
         viewModel.imageArray.observe(this) {
@@ -149,6 +157,12 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                 globeAdapter = GlobeAdapter(it, this, chosenDate)
                 vpGlobe.adapter = globeAdapter
                 indicator.setViewPager(vpGlobe)
+
+                //se clicar em uma nova data, inicia as animações dos NasaCoins
+                if (hasClickedOnNewDate) {
+                    animateNasaCoins(llNasaCoins, R.string.globo)
+                    hasClickedOnNewDate = false
+                }
             } else {
                 //senão, pede ao usuário que escolha uma data diferente
                 vpGlobe.adapter = null
@@ -226,5 +240,14 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
             }
         }
         super.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        realtimeViewModel.updateUserNasaCoins(
+            realtimeViewModel.activeUser.value?.uid!!,
+            tvTotal.text.toString().toLong()
+        )
     }
 }

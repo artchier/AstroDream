@@ -13,15 +13,19 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
+import androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+import androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.astrodream.R
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_globe.*
 import kotlinx.android.synthetic.main.activity_globe.view.*
 import kotlinx.android.synthetic.main.astrodialog.view.*
+import kotlinx.android.synthetic.main.card_globe.*
 import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,12 +34,15 @@ import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.properties.Delegates
 
 class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
-    private var maxDay = 0
     private lateinit var date: Date
+    private var lastDate: Long = 0
+    private var hasSettedMax = false
+    private var day = 0
+    private var month = 0
+    private var year = 0
     private lateinit var animation: AlphaAnimation
     private lateinit var globeAdapter: GlobeAdapter
 
@@ -59,33 +66,15 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
         viewModel.getAllAvailableEPIC()
 
+        //pega todas as datas disponíveis e faz a requisição da última data
         viewModel.epicAvailableDates.observe(this) {
-            val chosenDate = it.last().toString()
-            Toast.makeText(this, chosenDate, Toast.LENGTH_SHORT).show()
-            //viewModel.getAllEPIC(chosenDate)
+            val chosenDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.last())!!
 
-            tvData.text = chosenDate
-        }
-        //pega a data mais atual com imagens
-        var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 2
-        var month = Calendar.getInstance().get(Calendar.MONTH)
-        var year = Calendar.getInstance().get(Calendar.YEAR)
+            viewModel.getAllEPIC(it.last())
 
-        //pega a data atual e seta como limite
-        maxDay = day + 2
-
-        try {
-            date = SimpleDateFormat.getDateInstance().parse("$day/${month + 1}/$year")!!
-            tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
-            viewModel.getAllEPIC(
-                SimpleDateFormat(
-                    "dd/MM/yyyy",
-                    Locale.getDefault()
-                ).format(
-                    date
-                ).toString()
-            )
-        } catch (ignored: Exception) {
+            val textViewLabel =
+                SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(chosenDate)
+            tvData.text = "${textViewLabel[0].toUpperCase()}${textViewLabel.substring(1)}"
         }
 
         val indicator = ciGlobe as CircleIndicator
@@ -93,12 +82,28 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         //clique do botão "Escolher Data"
         fabData.setOnClickListener {
 
+            //pega a data mais recente com imagens disponíveis
+            if (!hasSettedMax) {
+                lastDate = SimpleDateFormat(
+                    "MMM dd, yyyy",
+                    Locale.getDefault()
+                ).parse(tvData.text.toString())!!.time
+                hasSettedMax = true
+            }
+
             //inicializa o DatePicker
             val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
+
+            //seta a posição do "marcador de data" do date picker
+            if (year != 0 && day != 0)
+                datePicker.updateDate(year, month, day)
+
+            //seta a data mínima disponível do date picker
             datePicker.minDate =
                 SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2015-06-13")!!.time
 
-            // datePicker.updateDate(year, month, day)
+            //seta a data máxima disponível do date picker
+            datePicker.maxDate = lastDate
 
             MaterialAlertDialogBuilder(this)
                 .setView(datePicker)
@@ -109,21 +114,23 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     year = datePicker.year
 
                     date = SimpleDateFormat(
-                        "dd/MM/yyyy",
+                        "yyyy-MM-dd",
                         Locale.getDefault()
-                    ).parse("$day/${month + 1}/$year")!!
+                    ).parse("$year-${month + 1}-$day")!!
 
-                    if (day >= maxDay || day == maxDay - 1) {
-                        Toast.makeText(this, "Escolha uma data anterior", Toast.LENGTH_LONG)
-                            .show()
-                    } else if (date != SimpleDateFormat("dd  MMM  yyyy", Locale.getDefault()).parse(
-                            tvData.text.toString().replace("de", "")
+                    if (date != SimpleDateFormat(
+                            "MMM dd, yyyy",
+                            Locale.getDefault()
+                        ).parse(
+                            tvData.text.toString()
                         )
                     ) {
-                        tvData.text = SimpleDateFormat(
-                            "dd/MM/yyyy",
+                        val textViewLabel2 = SimpleDateFormat(
+                            "MMM dd, yyyy",
                             Locale.getDefault()
                         ).format(date).toString()
+                        tvData.text =
+                            "${textViewLabel2[0].toUpperCase()}${textViewLabel2.substring(1)}"
                         viewModel.getAllEPIC(
                             SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
                                 date
@@ -136,9 +143,30 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
         }
 
         viewModel.imageArray.observe(this) {
-            globeAdapter = GlobeAdapter(it, this, date)
-            vpGlobe.adapter = globeAdapter
-            indicator.setViewPager(vpGlobe)
+            //se a lista não estiver vazia, faz as requisições
+            if (it.isNotEmpty()) {
+                val chosenDate = it.first().substring(8, 16)
+                globeAdapter = GlobeAdapter(it, this, chosenDate)
+                vpGlobe.adapter = globeAdapter
+                indicator.setViewPager(vpGlobe)
+            } else {
+                //senão, pede ao usuário que escolha uma data diferente
+                vpGlobe.adapter = null
+                indicator.setViewPager(null)
+                Snackbar.make(
+                    clSnackbar,
+                    "Imagens indisponíveis. Escolha uma data diferente por favor.",
+                    Snackbar.LENGTH_LONG
+                )
+                    .setBackgroundTint(resources.getColor(R.color.gigas, null))
+                    .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                    .setTextColor(resources.getColor(R.color.white, null))
+                    .setAction("Ok") {
+                        fabData.performClick()
+                    }
+                    .setActionTextColor(resources.getColor(R.color.lucky_point, null))
+                    .show()
+            }
         }
         setUpMenuBehavior()
     }
@@ -146,6 +174,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
     override fun onResume() {
         if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean("globe", true)) {
             fabData.isClickable = false
+            dlGlobe.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED)
             CoroutineScope(Dispatchers.Main).launch {
                 delay(1000)
                 clTutorialGlobe.animate()
@@ -177,6 +206,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                                     it.cancel()
                                     fabData.clearAnimation()
                                     fabData.isClickable = true
+                                    dlGlobe.setDrawerLockMode(LOCK_MODE_UNLOCKED)
                                     getSharedPreferences("first_time", MODE_PRIVATE).edit()
                                         .putBoolean("globe", false)
                                         .apply()

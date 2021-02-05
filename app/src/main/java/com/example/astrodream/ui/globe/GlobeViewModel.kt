@@ -49,7 +49,6 @@ class GlobeViewModel(private val service: Service) : ViewModel() {
                     val datesAvailable = it.toString().replace("\"", "")
                     epicAvailableList.add(datesAvailable)
                 }
-                Log.v("Teste", epicAvailableList.last())
                 epicAvailableDates.value = epicAvailableList
 
             } catch (e: Exception) {

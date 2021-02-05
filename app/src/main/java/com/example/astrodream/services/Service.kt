@@ -97,8 +97,9 @@ interface Service {
 }
 
 @SuppressLint("SimpleDateFormat")
-fun buildGlobeImageUrl(date: Date, name: String, apikey: String = apikeyApp): String {
-    val dataFormatada = SimpleDateFormat("yyyy/MM/dd").format(date)
+fun buildGlobeImageUrl(date: String, name: String, apikey: String = apikeyApp): String {
+    val parseData = SimpleDateFormat("yyyyMMdd").parse(date)!!
+    val dataFormatada = SimpleDateFormat("yyyy/MM/dd").format(parseData)
     return "${urlNasa}EPIC/archive/natural/$dataFormatada/png/$name.png?api_key=$apikey"
 }
 

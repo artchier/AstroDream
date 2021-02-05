@@ -42,6 +42,21 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/navigation_asteroids"/>
 
+            <LinearLayout
+                android:id="@+id/progressbar_fragment_asteroides"
+                android:layout_width="match_parent"
+                android:background="#77000000"
+                android:visibility="gone"
+                android:layout_height="match_parent">
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:theme="@style/ProgressBarAsteroids"/>
+
+            </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <LinearLayout

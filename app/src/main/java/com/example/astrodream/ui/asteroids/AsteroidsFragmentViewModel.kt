@@ -18,7 +18,7 @@ class AsteroidsFragmentViewModel(val fragment: Fragment) : ViewModel() {
     private val listRequestBuilder = ArrayList<RequestBuilder<GifDrawable>>()
 
     fun execute(v: View) = viewModelScope.launch {
-        onPreExecute(v)
+       // onPreExecute(v)
         doInBackground()
         onPostExecute(v)
     }
@@ -48,8 +48,6 @@ class AsteroidsFragmentViewModel(val fragment: Fragment) : ViewModel() {
         listRequestBuilder[2].into(v.findViewById(R.id.iv_asteroids1))
         listRequestBuilder[3].into(v.findViewById(R.id.iv_asteroids3))
         listRequestBuilder[4].into(v.findViewById(R.id.iv_asteroids4))
-        v.findViewById<ProgressBar>(R.id.progressbar_fragment_asteroides).visibility =
-            ProgressBar.GONE
     }
 
     private fun loadImage(url: String?) =

@@ -34,7 +34,6 @@
             android:id="@+id/name_asteroid_fltransparente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Asteroide"
             android:textColor="@color/white"
             android:fontFamily="@font/homespun_regular"
             android:textSize="30dp"
@@ -60,8 +59,7 @@
             android:textColor="@color/white"
             android:textSize="20dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="10dp"
-            android:text="Example: example"/>
+            android:layout_marginVertical="10dp" />
 
         <TextView
             android:id="@+id/tv_velocidade_asteroid_fltransparent"
@@ -71,8 +69,7 @@
             android:textColor="@color/white"
             android:textSize="20dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="10dp"
-            android:text="Example: example"/>
+            android:layout_marginVertical="10dp" />
 
         <TextView
             android:id="@+id/tv_tamanho_asteroid_fltransparent"
@@ -82,9 +79,16 @@
             android:textColor="@color/white"
             android:textSize="20dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="10dp"
-            android:text="Example: example"/>
+            android:layout_marginVertical="10dp" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressbar_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:theme="@style/ProgressBarAsteroids"
+        android:visibility="gone"/>
 
 </FrameLayout>

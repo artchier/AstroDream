@@ -7,12 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
+import kotlinx.android.synthetic.main.fragment_asteroids_details.*
 import kotlinx.android.synthetic.main.fragment_asteroids_details.view.*
 
 class AsteroidsDetailsFragment : Fragment() {
@@ -25,17 +27,7 @@ class AsteroidsDetailsFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_asteroids_details, container, false)
 
-        val asteroidList = arguments?.get("listFourAsteroids") as ArrayList<*>
-        val bundle = bundleOf("listFourAsteroids" to asteroidList)
-        val asteroid = arguments?.get("Asteroid") as Asteroid
-
-        view.name_asteroid_fltransparente.text = asteroid.name
-
-        view.tv_data_asteroid_fltransparent.text = context?.getString(R.string.data_asteroide, asteroid.close_approach_data)
-        view.tv_tamanho_asteroid_fltransparent.text = context?.getString(R.string.tamanho_estimado_asteroide, asteroid.estimated_diameter)
-        view.tv_velocidade_asteroid_fltransparent.text = context?.getString(R.string.velocidade_estimada_asteroide, asteroid.relative_velocity)
-
-        view.arrowup.setOnClickListener { findNavController().navigate(R.id.action_asteroidsFragment_to_asteroidsDetailsFragment, bundle) }
+        loadProgressBar(view)
 
             Glide.with(this)
                 .asGif()
@@ -44,7 +36,28 @@ class AsteroidsDetailsFragment : Fragment() {
             return view
     }
 
-    fun loadProgressBar(){
+    fun loadProgressBar(view: View){
+        var toDo = true
+        while (toDo){
+            view.findViewById<ProgressBar>(R.id.progressbar_details).visibility = ProgressBar.VISIBLE
 
+            if (arguments?.get("listFourAsteroids") == null) continue
+
+            val asteroidList = arguments?.get("listFourAsteroids") as ArrayList<*>
+
+            val bundle = bundleOf("listFourAsteroids" to asteroidList)
+            val asteroid = arguments?.get("Asteroid") as Asteroid
+
+            view.findViewById<ProgressBar>(R.id.progressbar_details).visibility = ProgressBar.GONE
+
+            view.name_asteroid_fltransparente.text = asteroid.name
+
+            view.tv_data_asteroid_fltransparent.text = context?.getString(R.string.data_asteroide, asteroid.close_approach_data)
+            view.tv_tamanho_asteroid_fltransparent.text = context?.getString(R.string.tamanho_estimado_asteroide, asteroid.estimated_diameter)
+            view.tv_velocidade_asteroid_fltransparent.text = context?.getString(R.string.velocidade_estimada_asteroide, asteroid.relative_velocity)
+
+            view.arrowup.setOnClickListener { findNavController().navigate(R.id.action_asteroidsFragment_to_asteroidsDetailsFragment, bundle) }
+            break
+        }
     }
 }

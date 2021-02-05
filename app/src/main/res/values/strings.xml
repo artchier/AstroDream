@@ -123,6 +123,7 @@
     <string name="dialog_miss_distance">Distância aproximada: %s</string>
     <string name="dialog_orbiting_body">Órbita: %s</string>
     <string name="dialog_estimated_diameter">Tamanho estimado: %s</string>
+    <string name="asteroid_not_found_message">Informações indisponíneis para esse asteroide.</string>
 
     <string name="logo">logo</string>
     <string name="imagem_anterior">Imagem Anterior</string>
@@ -143,4 +144,6 @@
     <string name="usar_como_wallpaper">Usar como wallpaper</string>
     <string name="logout">Logout</string>
     <string name="logo_do_app">Logo do App</string>
+    <string name="error_internet">Que pena, astronauta! Para acessar esse lugar no espaço você precisa estar conectado à internet. Por favor, verifique sua conexão e tente novamente.</string>
+    <string name="error_title">Sem internet</string>
 </resources>

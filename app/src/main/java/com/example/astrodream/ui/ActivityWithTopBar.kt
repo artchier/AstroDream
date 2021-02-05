@@ -1,6 +1,9 @@
 package com.example.astrodream.ui
 
+import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
@@ -11,7 +14,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.astrodream.*
+import com.example.astrodream.R
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.showDialogMessage
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 import com.example.astrodream.ui.avatar.AvatarActivity
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
@@ -28,6 +33,11 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 abstract class ActivityWithTopBar(
     private val toolbarTiteTitleId: Int,
@@ -36,6 +46,27 @@ abstract class ActivityWithTopBar(
 
     private var toolBar: MaterialToolbar? = null
     private lateinit var drawerLayout: DrawerLayout
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+
+        if (!isOnline() && this is InitialActivity && this !is FavoritesActivity){
+            AstroDreamUtil.showDialogMessage(this, R.layout.internet_connection_error)
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(2000)
+                callInitialActivity()
+            }
+        }
+    }
+
+    fun callInitialActivity(){
+        startActivity(Intent(this, InitialActivity::class.java))
+    }
+
+    fun isOnline(): Boolean {
+        val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE)
+        return cm == null
+        }
 
     private fun <T> goToActivityIfNotAlreadyThere(destination: Class<T>) {
         if (this::class.java == destination) {

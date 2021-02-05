@@ -69,8 +69,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
             viewModel.getAllEPIC(it.last())
 
-            val textViewLabel =
-                SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(chosenDate)
+            val textViewLabel = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(chosenDate)
             tvData.text = "${textViewLabel[0].toUpperCase()}${textViewLabel.substring(1)}"
         }
 

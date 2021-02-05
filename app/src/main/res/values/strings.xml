@@ -147,4 +147,7 @@
     <string name="back_login">VOLTAR PARA O LOGIN</string>
     <string name="greetins">Olá, %s</string>
     <string name="salvar_ou_usar_como_wallpaper">Salvar ou usar como wallpaper</string>
+    <string name="compartilhar">compartilhar</string>
+    <string name="asteroide_potencialmente_perigoso">ASTEROIDE POTENCIALMENTE PERIGOSO</string>
+    <string name="ver_rbita">ver órbita</string>
 </resources>

@@ -16,6 +16,8 @@ import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.entitiesDatabase.MarsRoom
 import com.example.astrodream.entitiesDatabase.AsteroidRoom
+import com.example.astrodream.utils.TranslationEnglishToPortuguese
+import kotlinx.android.synthetic.main.fragment_details_tech.view.*
 import kotlinx.android.synthetic.main.item_fav.view.*
 import java.io.File
 
@@ -24,6 +26,8 @@ class FavAdapter(
     val onClickFav: (Int) -> Unit,
     val type: String
 ): RecyclerView.Adapter<FavAdapter.FavViewHolder>() {
+
+    private lateinit var translator: TranslationEnglishToPortuguese
 
     inner class FavViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var ivFav : ImageView = itemView.ivFav
@@ -87,10 +91,13 @@ class FavAdapter(
         else {
             holder.ivFav.setImageResource(iconId)
         }
+        translator = TranslationEnglishToPortuguese()
+        translator.modelDownload()
+
         // Preenche o primeiro TextView
         holder.tv1Fav.text = text1
         // Preenche o segundo TextView
-        holder.tv2Fav.text = text2
+        translator.translateEnglishToPortuguese(text2, holder.tv2Fav)
 
         Log.i("===FAVADAPTER==", "${File(img)}")
     }

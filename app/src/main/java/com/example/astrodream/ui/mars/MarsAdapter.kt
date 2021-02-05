@@ -62,8 +62,10 @@ class MarsAdapter(
 
         view.ivRecentMars.setOnClickListener {
             if (marsPic != "") { // marcPic is not empty String when API request is successful
-                val intent = Intent(view.context, FullScreenImgActivity::class.java)
-                intent.putExtra("img", marsPic)
+                val intent = Intent(view.context, FullScreenImgActivity::class.java).apply {
+                    putExtra("img", marsPic)
+                    putExtra("title", "Imagem de Marte do dia $postDate")
+                }
                 startActivity(container.context, intent, null)
             }
         }

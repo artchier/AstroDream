@@ -30,6 +30,7 @@ import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import com.example.astrodream.services.ServiceDBAsteroids
 import com.example.astrodream.services.ServiceDBAsteroidsImpl
 import com.example.astrodream.services.service
+import com.example.astrodream.services.shareText
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
@@ -116,6 +117,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
         val view: View = this.layoutInflater.inflate(R.layout.asteroid_dialog, null)
         val starFavorites = view.findViewById<View>(R.id.android_favs)
+        val shareAsteroidButton = view.findViewById<View>(R.id.ivShareAsteroid)
 
         starFavorites.setBackgroundResource(if (isAsteroidInDB) R.drawable.ic_star_filled else R.drawable.ic_star_border)
 
@@ -146,10 +148,15 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
 
         starFavorites.setOnClickListener {
             onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings)
-//            (view.parent as ViewGroup).removeView(view)
-//            onClickAsteroids(childPos, groupPos)
             Log.i("TAG", "clicando")
-//            AstroDreamUtil.showDialogMessage(this, view)
+        }
+
+        shareAsteroidButton.setOnClickListener {
+            if (asteroid.linkExterno == null) {
+                Toast.makeText(this, "O asteróide não tem um link externo para compartilhar!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            shareText("Veja informações do asteróide ${asteroid.name}", asteroid.linkExterno, this)
         }
 
         AstroDreamUtil.showDialogMessage(this, view)

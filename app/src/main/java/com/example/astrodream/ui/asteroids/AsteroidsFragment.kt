@@ -11,6 +11,8 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.astrodream.R
 import com.example.astrodream.domain.Asteroid
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.isInternetAvailable
 import kotlinx.android.synthetic.main.fragment_asteroids.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,9 +30,6 @@ class AsteroidsFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_asteroids, container, false)
         viewModel.execute(view)
 
-//        val progressbar = view.findViewById<LinearLayout>(R.id.progressbar_fragment_asteroides)
-//        progressbar.visibility = LinearLayout.VISIBLE
-
         listAsteroidViews.addAll(
             arrayListOf(
                 view.iv_asteroids1, view.iv_asteroids2,
@@ -39,12 +38,6 @@ class AsteroidsFragment : Fragment() {
         )
 
         val asteroidslist = arguments?.get("listFourAsteroids") as ArrayList<*>
-
-//        CoroutineScope(Dispatchers.Main).launch {
-//            delay(5000)
-//            asteroidslist = arguments?.get("listFourAsteroids") as ArrayList<*>
-//            progressbar.visibility = LinearLayout.GONE
-//        }
 
         listAsteroidViews.forEach { it ->
             it.setOnClickListener {
@@ -61,5 +54,4 @@ class AsteroidsFragment : Fragment() {
         }
         return view
     }
-
 }

@@ -29,6 +29,9 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.isInternetAvailable
+import com.example.astrodream.domain.util.showErrorInternetConnection
 import com.example.astrodream.services.buildGlobeImageUrl
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
@@ -67,79 +70,85 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_globe)
+        if(AstroDreamUtil.isInternetAvailable(this)) {
+            //animação do pisque do botão de escolher data
+            animation = AlphaAnimation(0.5f, 1f)
+            animation.repeatMode = Animation.REVERSE
+            animation.repeatCount = Animation.INFINITE
+            animation.duration = 300
 
-        //animação do pisque do botão de escolher data
-        animation = AlphaAnimation(0.5f, 1f)
-        animation.repeatMode = Animation.REVERSE
-        animation.repeatCount = Animation.INFINITE
-        animation.duration = 300
+            //pega a data mais atual com imagens
+            var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 2
+            var month = Calendar.getInstance().get(Calendar.MONTH)
+            var year = Calendar.getInstance().get(Calendar.YEAR)
 
-        //pega a data mais atual com imagens
-        var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - 2
-        var month = Calendar.getInstance().get(Calendar.MONTH)
-        var year = Calendar.getInstance().get(Calendar.YEAR)
+            //pega a data atual e seta como limite
+            maxDay = day + 2
 
-        //pega a data atual e seta como limite
-        maxDay = day + 2
+            try {
+                date = SimpleDateFormat(
+                    "dd/MM/yyyy",
+                    Locale.getDefault()
+                ).parse("$day/${month + 1}/$year")!!
+                tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
+                viewModel.getAllEPIC(
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                        date
+                    ).toString()
+                )
+            } catch (ignored: Exception) {
+            }
 
-        try {
-            date = SimpleDateFormat(
-                "dd/MM/yyyy",
-                Locale.getDefault()
-            ).parse("$day/${month + 1}/$year")!!
-            tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
-            viewModel.getAllEPIC(
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                    date
-                ).toString()
-            )
-        } catch (ignored: Exception) {
-        }
+            val indicator = ciGlobe as CircleIndicator
 
-        val indicator = ciGlobe as CircleIndicator
+            //clique do botão "Escolher Data"
+            fabData.setOnClickListener {
+                val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
 
-        //clique do botão "Escolher Data"
-        fabData.setOnClickListener {
-            val datePicker = DatePicker((ContextThemeWrapper(this, R.style.DatePicker)), null)
+                datePicker.updateDate(year, month, day)
+                MaterialAlertDialogBuilder(this)
+                    .setView(datePicker)
+                    .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
 
-            datePicker.updateDate(year, month, day)
-            MaterialAlertDialogBuilder(this)
-                .setView(datePicker)
-                .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+                        day = datePicker.dayOfMonth
+                        month = datePicker.month
+                        year = datePicker.year
 
-                    day = datePicker.dayOfMonth
-                    month = datePicker.month
-                    year = datePicker.year
+                        date = SimpleDateFormat(
+                            "dd/MM/yyyy",
+                            Locale.getDefault()
+                        ).parse("$day/${month + 1}/$year")!!
 
-                    date = SimpleDateFormat(
-                        "dd/MM/yyyy",
-                        Locale.getDefault()
-                    ).parse("$day/${month + 1}/$year")!!
-
-                    if (day >= maxDay || day == maxDay - 1) {
-                        Toast.makeText(this, "Escolha uma data anterior", Toast.LENGTH_LONG)
-                            .show()
-                    } else if (date != SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).parse(
-                            tvData.text.toString()
-                        )
-                    ) {
-                        tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
-                        viewModel.getAllEPIC(
-                            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                                date
-                            ).toString()
-                        )
+                        if (day >= maxDay || day == maxDay - 1) {
+                            Toast.makeText(this, "Escolha uma data anterior", Toast.LENGTH_LONG)
+                                .show()
+                        } else if (date != SimpleDateFormat(
+                                "MMM dd, yyyy",
+                                Locale.getDefault()
+                            ).parse(
+                                tvData.text.toString()
+                            )
+                        ) {
+                            tvData.text = SimpleDateFormat.getDateInstance().format(date).toString()
+                            viewModel.getAllEPIC(
+                                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                                    date
+                                ).toString()
+                            )
+                        }
                     }
-                }
-                .setNegativeButton(resources.getString(R.string.cancelar), null)
-                .show()
-        }
+                    .setNegativeButton(resources.getString(R.string.cancelar), null)
+                    .show()
+            }
 
-        viewModel.imageArray.observe(this)
-        {
-            globeAdapter = GlobeAdapter(it, this, date)
-            vpGlobe.adapter = globeAdapter
-            indicator.setViewPager(vpGlobe)
+            viewModel.imageArray.observe(this)
+            {
+                globeAdapter = GlobeAdapter(it, this, date)
+                vpGlobe.adapter = globeAdapter
+                indicator.setViewPager(vpGlobe)
+            }
+        } else {
+                AstroDreamUtil.showErrorInternetConnection(this)
         }
         setUpMenuBehavior()
     }

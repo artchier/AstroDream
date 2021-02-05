@@ -1,10 +1,15 @@
 package com.example.astrodream.domain.util
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
@@ -12,15 +17,22 @@ import com.bumptech.glide.request.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ExpandableListView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
+import com.example.astrodream.R
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.MarsRoom
+import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -154,9 +166,49 @@ fun AstroDreamUtil.Companion.returnTextOf(vararg string: String): String{
     return sb.toString()
 }
 
-fun AstroDreamUtil.Companion.isPotentiallyHazardousAsteroid(yesOrNot: String): Boolean{
-    when(yesOrNot){
+fun AstroDreamUtil.Companion.isPotentiallyHazardousAsteroid(yesOrNot: String): Boolean {
+    when (yesOrNot) {
         "Y" -> return true
         else -> return false
     }
+}
+
+@SuppressLint("ServiceCast")
+fun AstroDreamUtil.Companion.isInternetAvailable(context: Context): Boolean {
+        var result = false
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val actNw =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            result = when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.run {
+                connectivityManager.activeNetworkInfo?.run {
+                    result = when (type) {
+                        ConnectivityManager.TYPE_WIFI -> true
+                        ConnectivityManager.TYPE_MOBILE -> true
+                        ConnectivityManager.TYPE_ETHERNET -> true
+                        else -> false
+                    }
+
+                }
+            }
+        }
+        return result
+}
+
+fun AstroDreamUtil.Companion.showErrorInternetConnection(context: Context){
+        AstroDreamUtil.showDialogMessage(context, R.layout.internet_connection_error)
+//        CoroutineScope(Dispatchers.Main).launch{
+//            delay(5000)
+//            context.startActivity(Intent(context, InitialActivity::class.java))
+//            appCompatActivity.finish()
+//        }
 }

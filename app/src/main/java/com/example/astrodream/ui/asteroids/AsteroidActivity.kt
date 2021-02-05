@@ -32,6 +32,9 @@ import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.*
@@ -70,50 +73,54 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             getString(R.string.button_3), getString(R.string.button_4)
         )
 
-        // ##### Opções da viewModel #####
-        viewModel.viewModelScope.launch {
-            viewModel.doInBackground()
-            viewModel.getListAsteroidesFromFirebase()
+        if (AstroDreamUtil.isInternetAvailable(this)) {
+
+            // ##### Opções da viewModel #####
+            viewModel.viewModelScope.launch {
+                viewModel.doInBackground()
+                viewModel.getListAsteroidesFromFirebase()
+            }
+
+            val progressBar = progressbar_fragment_asteroides
+            progressBar.visibility = LinearLayout.VISIBLE
+            viewModel.listAllResultsAPI.observe(this) {
+                listAllAsteroids.addAll(viewModel.listAllAsteroidsAPI)
+                listFourAsteroids.addAll(
+                    if (viewModel.listAsteroidsDateAPI.size > 4)
+                        viewModel.listAsteroidsDateAPI.subList(0, 4) else emptyList()
+                )
+                if (viewModel.listAsteroidsDateAPI.size > 3)
+                    progressBar.visibility = LinearLayout.GONE
+            }
+
+            viewModel.getAllAsteroidsDB()
+
+            // ##### Opções de navigation da imagem de asteroides #####
+            navController = findNavController(R.id.fl_imagem_asteroids)
+            val graph = navController.navInflater.inflate(R.navigation.navigation_asteroids)
+            val navArgument = NavArgument.Builder().setDefaultValue(listFourAsteroids).build()
+            graph.addArgument("listFourAsteroids", navArgument)
+            navController.graph = graph
+
+            // ##### Opções do ExpandableListAdapter #####
+            expandableListAdapter.addListButtons(listButtonsName)
+            expandableListAdapter.addListAsteroids(listAsteroidsButtons)
+
+            // ##### Opções da listView (botões listar asteroides) #####
+            listView = exp_list_view_asteroids
+            listView.setAdapter(expandableListAdapter)
+            listView.setOnGroupExpandListener { cardview_img_asteroids.visibility = CardView.GONE }
+            listView.setOnGroupCollapseListener {
+                if (!listView.isSomeGroupExpandad()) cardview_img_asteroids.visibility =
+                    CardView.VISIBLE
+            }
+            listView.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
+                onClickAsteroids(childPosition, groupPosition)
+                false
+            }
+        } else {
+            AstroDreamUtil.showErrorInternetConnection(this)
         }
-
-        val progressBar = progressbar_fragment_asteroides
-        progressBar.visibility = LinearLayout.VISIBLE
-        viewModel.listAllResultsAPI.observe(this) {
-            listAllAsteroids.addAll(viewModel.listAllAsteroidsAPI)
-            listFourAsteroids.addAll(
-                if (viewModel.listAsteroidsDateAPI.size > 4)
-                    viewModel.listAsteroidsDateAPI.subList(0, 4) else emptyList()
-            )
-            if (viewModel.listAsteroidsDateAPI.size > 3)
-                progressBar.visibility = LinearLayout.GONE
-        }
-
-        viewModel.getAllAsteroidsDB()
-
-        // ##### Opções de navigation da imagem de asteroides #####
-        navController = findNavController(R.id.fl_imagem_asteroids)
-        val graph = navController.navInflater.inflate(R.navigation.navigation_asteroids)
-        val navArgument = NavArgument.Builder().setDefaultValue(listFourAsteroids).build()
-        graph.addArgument("listFourAsteroids", navArgument)
-        navController.graph = graph
-
-        // ##### Opções do ExpandableListAdapter #####
-        expandableListAdapter.addListButtons(listButtonsName)
-        expandableListAdapter.addListAsteroids(listAsteroidsButtons)
-
-        // ##### Opções da listView (botões listar asteroides) #####
-        listView = exp_list_view_asteroids
-        listView.setAdapter(expandableListAdapter)
-        listView.setOnGroupExpandListener { cardview_img_asteroids.visibility = CardView.GONE }
-        listView.setOnGroupCollapseListener {
-            if (!listView.isSomeGroupExpandad()) cardview_img_asteroids.visibility =
-                CardView.VISIBLE
-        }
-        listView.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
-            onClickAsteroids(childPosition, groupPosition)
-            false
-        }
-
         // ##### Outras opções #####
         setUpMenuBehavior()
     }

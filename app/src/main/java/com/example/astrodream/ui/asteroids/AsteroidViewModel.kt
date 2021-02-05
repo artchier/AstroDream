@@ -129,7 +129,7 @@ class AsteroidViewModel(
                             null, null,
                             null, null
                         )
-                        Log.i("-----asteroide-------", asteroid.toString())
+                        //Log.i("-----asteroide-------", asteroid.toString()
                         listAllAsteroidsAPI.add(asteroid)
                         listAllResultsAPI.postValue(asteroid)
                     }

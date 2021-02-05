@@ -6,18 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.astrodream.R
-import com.example.astrodream.domain.Asteroid
-import com.example.astrodream.domain.util.AstroDreamUtil
-import com.example.astrodream.domain.util.isInternetAvailable
 import kotlinx.android.synthetic.main.fragment_asteroids.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class AsteroidsFragment : Fragment() {
     private val viewModel = AsteroidsFragmentViewModel(this)
@@ -26,7 +18,7 @@ class AsteroidsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_asteroids, container, false)
         viewModel.execute(view)
 
@@ -41,8 +33,12 @@ class AsteroidsFragment : Fragment() {
 
         listAsteroidViews.forEach { it ->
             it.setOnClickListener {
-                val bundle: Bundle? = bundleOf(
-                    "Asteroid" to (asteroidslist?.get(listAsteroidViews.indexOf(it))),
+                if (asteroidslist.size < listAsteroidViews.size) {
+                    return@setOnClickListener
+                }
+
+                val bundle: Bundle = bundleOf(
+                    "Asteroid" to (asteroidslist[listAsteroidViews.indexOf(it)]),
                     "listFourAsteroids" to asteroidslist
                 )
                 findNavController().navigate(

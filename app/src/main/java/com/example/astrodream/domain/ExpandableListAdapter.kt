@@ -3,7 +3,6 @@ package com.example.astrodream.domain
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,12 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import com.example.astrodream.R
-import com.example.astrodream.domain.util.AstroDreamUtil
-import com.example.astrodream.domain.util.formatDate
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 
 
 class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListAdapter() {
     var listButtons = ArrayList<String>()
     var listAsteroids = LinkedHashMap<String, ArrayList<Asteroid>>()
-    var listAsteroidsFromDB = LinkedHashMap<String, ArrayList<AsteroidAllRes>>()
 
     override fun getGroup(groupPosition: Int): Any { return listButtons[groupPosition] }
 
@@ -91,7 +87,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        var childAsteroid = getChild(groupPosition, childPosition) as Asteroid?
+        val childAsteroid = getChild(groupPosition, childPosition) as Asteroid?
         var view: View? = convertView
         view ?: (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).apply {
             view  = inflate(R.layout.item_btn_asteroids, null)
@@ -101,9 +97,9 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
 
         view!!.setBackgroundResource(if (isLastChild) R.drawable.button_style_click_itens else R.color.gigas)
 
-            txtListChild.text = childAsteroid?.name
-            txtDataListChild.text = childAsteroid?.close_approach_data
-            Log.i("----asteroideres-----", childAsteroid.toString())
+        txtListChild.text = childAsteroid?.name
+        txtDataListChild.text = childAsteroid?.close_approach_data
+        //Log.i("----asteroideres-----", childAsteroid.toString())
         return view as View
     }
 

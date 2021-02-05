@@ -42,6 +42,7 @@ import kotlin.collections.set
 
 @Suppress("UNCHECKED_CAST")
 class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroids) {
+
     private val listAsteroidsButtons = LinkedHashMap<String, ArrayList<Asteroid>>()
     private val listAllAsteroids = mutableSetOf<Asteroid>()
     private val listFourAsteroids = ArrayList<Asteroid>()
@@ -126,40 +127,33 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     @SuppressLint("InflateParams")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickAsteroids(childPos: Int, groupPos: Int) {
-        var asteroid =
-            expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(
-                childPos
-            )
-        viewModel.getOneAsteroById(asteroid?.id!!.toInt())
+        var asteroid: Asteroid = expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(childPos) ?: return
+        viewModel.getOneAsteroById(asteroid.id.toInt())
 
         val view: View = this.layoutInflater.inflate(R.layout.asteroid_dialog, null)
         val starFavorites = view.findViewById<View>(R.id.android_favs)
         viewModel.oneAsteroidFromAPI.observe(this) {
+            if (it == null) return@observe
 
-            if (asteroid!!.absolute_magnitude == null && it != null) {
+            if (asteroid.absolute_magnitude == null) {
                 asteroid = it
-                view.findViewById<TextView>(R.id.close_approach_data).text =
-                    getString(R.string.asteroid_not_found_message)
-            } else if (asteroid!!.absolute_magnitude == null && it == null) {
-                view.findViewById<TextView>(R.id.nome_asteroid_dialog).text = asteroid?.name
-                view.findViewById<TextView>(R.id.close_approach_data).text =
-                    getString(R.string.asteroid_not_found_message)
+                view.findViewById<TextView>(R.id.close_approach_data).text = getString(R.string.asteroid_not_found_message)
+            } else if (asteroid.absolute_magnitude == null) {
+                view.findViewById<TextView>(R.id.nome_asteroid_dialog).text = asteroid.name
+                view.findViewById<TextView>(R.id.close_approach_data).text = getString(R.string.asteroid_not_found_message)
             }
-        val shareAsteroidButton = view.findViewById<View>(R.id.ivShareAsteroid)
+            val shareAsteroidButton = view.findViewById<View>(R.id.ivShareAsteroid)
 
-            if (asteroid!!.absolute_magnitude != null) {
-                val isAsteroidInDB =
-                    viewModel.listAllAsteroidsDB.map { it.codeAsteroid }.contains(asteroid?.name)
-
+            if (asteroid.absolute_magnitude != null) {
+                val isAsteroidInDB = viewModel.listAllAsteroidsDB.map { it.codeAsteroid }.contains(asteroid.name)
 
                 starFavorites.setBackgroundResource(if (isAsteroidInDB) R.drawable.ic_star_filled else R.drawable.ic_star_border)
 
-                if (asteroid?.is_potentially_hazardous_asteroid!!)
-                    view.findViewById<TextView>(R.id.is_potentially_hazardous_asteroid).visibility =
-                        TextView.VISIBLE
+                if (asteroid.is_potentially_hazardous_asteroid)
+                    view.findViewById<TextView>(R.id.is_potentially_hazardous_asteroid).visibility = TextView.VISIBLE
 
                 val listStrings = arrayOf(
-                    asteroid!!.name, asteroid!!.linkExterno.toString(),
+                    asteroid.name, asteroid.linkExterno.toString(),
                     getString(R.string.dialog_absolute_magnitude, asteroid!!.absolute_magnitude),
                     getString(R.string.dialog_relative_velocity, asteroid!!.relative_velocity),
                     getString(R.string.dialog_close_approach_data, asteroid!!.close_approach_data),
@@ -183,24 +177,20 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 }
 
 
-        starFavorites.setOnClickListener {
-            onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings)
-        }
-
-        shareAsteroidButton.setOnClickListener {
-            if (asteroid.linkExterno == null) {
-                Toast.makeText(this, "O asteróide não tem um link externo para compartilhar!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            shareText("Veja informações do asteróide ${asteroid.name}", asteroid.linkExterno, this)
-        }
-              
                 starFavorites.setOnClickListener {
-                    onAsteroidFavsClickEvent(
-                        it,
-                        isAsteroidInDB,
-                        *listStrings
-                    )
+                    onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings)
+                }
+
+                shareAsteroidButton.setOnClickListener {
+                    if (asteroid.linkExterno == null) {
+                        Toast.makeText(this, "O asteróide não tem um link externo para compartilhar!", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                    shareText("Veja informações do asteróide ${asteroid.name}", asteroid.linkExterno!!, this)
+                }
+
+                starFavorites.setOnClickListener {
+                    onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings)
                 }
 
             }

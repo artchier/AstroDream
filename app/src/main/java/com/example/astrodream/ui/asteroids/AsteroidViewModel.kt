@@ -50,22 +50,6 @@ class AsteroidViewModel(
         viewModelScope.launch {
             val listAsteroidsDate =
                 serviceAPI.getAsteroidsDate(LocalDate.now().toString())
-         //   val listAllAsteroids = serviceAPI.getAllAsteroids()
-
-//            listAllAsteroids.near_earth_objects.forEach {
-//                val asteroid = Gson().fromJson<AsteroidData>(it,
-//                    object : TypeToken<AsteroidData>() {}.type)
-//                listAllAsteroidsAPI.add(asteroid.getAsteroid())
-//            }
-
-//            listAllAsteroids.near_earth_objects.keySet().toList().forEach {
-//                val list = Gson().fromJson(
-//                    listAsteroidsDate.near_earth_objects.get(it),
-//                    object : TypeToken<List<AsteroidData>>() {}.type
-//                ) as List<AsteroidData>
-//                listAllAsteroidsAPI.addAll(list.map { a -> a.getAsteroid() })
-//            }
-//            listAllResultsAPI.postValue(listAllAsteroids)
 
             listAsteroidsDate.near_earth_objects.keySet().toList().forEach {
                 val list = Gson().fromJson(

@@ -26,5 +26,4 @@ class ServiceDBAsteroidsImpl(val asteroidDAO: AsteroidDAO): ServiceDBAsteroids{
     override suspend fun getOneAsteroidTask(name: String): AsteroidRoom? {
         return asteroidDAO.getAsteroid(name)
     }
-
 }

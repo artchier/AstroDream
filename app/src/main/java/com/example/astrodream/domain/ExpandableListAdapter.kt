@@ -42,16 +42,18 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         val searchView: SearchView? = view?.findViewById(R.id.search_view_asteroid_button)
         val btn: LinearLayout? = view?.findViewById(R.id.btn_superior_asteroids)
 
+        btn?.setOnClickListener {
+            context.onGroupClickEvent(view!!, groupPosition)
+        }
+
         when (groupPosition) {
             1 -> {
-                btn?.setOnClickListener { if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(groupPosition) }
                 if (isExpanded) searchView?.setTransitionVisibility(SearchView.VISIBLE) else searchView?.setTransitionVisibility(SearchView.GONE)
                 calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
             }
 
             2 -> {
-                btn?.setOnClickListener { if (isExpanded) context.collapsedGroupView(groupPosition) else context.expandadGroupView(groupPosition) }
-                if (isExpanded) calendarAsteroid?.setTransitionVisibility(LinearLayout.VISIBLE) else calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
+               if (isExpanded) calendarAsteroid?.setTransitionVisibility(LinearLayout.VISIBLE) else calendarAsteroid?.setTransitionVisibility(LinearLayout.GONE)
                 searchView?.visibility = SearchView.GONE
             }
 
@@ -97,6 +99,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
 
         txtListChild.text = childAsteroid?.name
         txtDataListChild.text = childAsteroid?.close_approach_data
+        //Log.i("----asteroideres-----", childAsteroid.toString())
         return view as View
     }
 
@@ -109,7 +112,7 @@ class ExpandableListAdapter (val context: AsteroidActivity): BaseExpandableListA
         notifyDataSetChanged()
     }
 
-    fun addListAsteroids(map: HashMap<String, ArrayList<Asteroid>>){
+    fun addListAsteroids(map: HashMap<String, ArrayList<Asteroid>>) {
         listAsteroids.putAll(map)
         notifyDataSetChanged()
     }

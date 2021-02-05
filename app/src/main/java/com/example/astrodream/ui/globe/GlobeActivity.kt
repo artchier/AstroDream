@@ -2,14 +2,11 @@ package com.example.astrodream.ui.globe
 
 import android.animation.Animator
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
-import android.view.View
 import android.view.View.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.DatePicker
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
@@ -84,10 +81,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
             //pega a data mais recente com imagens disponíveis
             if (!hasSettedMax) {
-                lastDate = SimpleDateFormat(
-                    "MMM dd, yyyy",
-                    Locale.getDefault()
-                ).parse(tvData.text.toString())!!.time
+                lastDate = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).parse(tvData.text.toString())!!.time
                 hasSettedMax = true
             }
 
@@ -99,8 +93,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                 datePicker.updateDate(year, month, day)
 
             //seta a data mínima disponível do date picker
-            datePicker.minDate =
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2015-06-13")!!.time
+            datePicker.minDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2015-06-13")!!.time
 
             //seta a data máxima disponível do date picker
             datePicker.maxDate = lastDate
@@ -113,29 +106,12 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     month = datePicker.month
                     year = datePicker.year
 
-                    date = SimpleDateFormat(
-                        "yyyy-MM-dd",
-                        Locale.getDefault()
-                    ).parse("$year-${month + 1}-$day")!!
+                    date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("$year-${month + 1}-$day")!!
 
-                    if (date != SimpleDateFormat(
-                            "MMM dd, yyyy",
-                            Locale.getDefault()
-                        ).parse(
-                            tvData.text.toString()
-                        )
-                    ) {
-                        val textViewLabel2 = SimpleDateFormat(
-                            "MMM dd, yyyy",
-                            Locale.getDefault()
-                        ).format(date).toString()
-                        tvData.text =
-                            "${textViewLabel2[0].toUpperCase()}${textViewLabel2.substring(1)}"
-                        viewModel.getAllEPIC(
-                            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                                date
-                            ).toString()
-                        )
+                    if (date != SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).parse(tvData.text.toString())) {
+                        val textViewLabel2 = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(date).toString()
+                        tvData.text = "${textViewLabel2[0].toUpperCase()}${textViewLabel2.substring(1)}"
+                        viewModel.getAllEPIC(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date).toString())
                     }
                 }
                 .setNegativeButton(resources.getString(R.string.cancelar), null)
@@ -153,11 +129,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                 //senão, pede ao usuário que escolha uma data diferente
                 vpGlobe.adapter = null
                 indicator.setViewPager(null)
-                Snackbar.make(
-                    clSnackbar,
-                    "Imagens indisponíveis. Escolha uma data diferente por favor.",
-                    Snackbar.LENGTH_LONG
-                )
+                Snackbar.make(clSnackbar, "Imagens indisponíveis. Escolha uma data diferente por favor.", Snackbar.LENGTH_LONG)
                     .setBackgroundTint(resources.getColor(R.color.gigas, null))
                     .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
                     .setTextColor(resources.getColor(R.color.white, null))
@@ -172,58 +144,62 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
     }
 
     override fun onResume() {
-        if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean("globe", true)) {
-            fabData.isClickable = false
-            dlGlobe.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED)
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(1000)
-                clTutorialGlobe.animate()
-                    .alpha(1.0f)
-                    .setListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(p0: Animator?) {
-                        }
+        val firstTimePreference = getSharedPreferences("first_time", MODE_PRIVATE)
+        if (!firstTimePreference.getBoolean("globe", true)) {
+            super.onResume()
+            return
+        }
 
-                        override fun onAnimationEnd(p0: Animator?) {
-                            val view = inflate(this@GlobeActivity, R.layout.astrodialog, null)
-                            view.ivDialog.visibility = GONE
-                            view.tvAppName.visibility = GONE
-                            view.tvDialog1.text = getString(R.string.date_picker_instruction)
-                            view.tvDialog2.visibility = GONE
-                            view.tvDialog3.visibility = GONE
-                            val dialog = MaterialAlertDialogBuilder(this@GlobeActivity)
-                                .setBackground(
-                                    ContextCompat.getColor(
-                                        this@GlobeActivity,
-                                        android.R.color.transparent
-                                    ).toDrawable()
-                                )
-                                .setView(view)
-                                .setOnDismissListener {
-                                    this@GlobeActivity.clTutorialGlobe.animate()
-                                        .alpha(0f)
-                                        .setListener(null)
-                                        .duration = 500
-                                    it.cancel()
-                                    fabData.clearAnimation()
-                                    fabData.isClickable = true
-                                    dlGlobe.setDrawerLockMode(LOCK_MODE_UNLOCKED)
-                                    getSharedPreferences("first_time", MODE_PRIVATE).edit()
-                                        .putBoolean("globe", false)
-                                        .apply()
-                                }.create()
+        fabData.isClickable = false
+        dlGlobe.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED)
 
-                            dialog.window?.setDimAmount(0f)
-                            dialog.show()
-                        }
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1000)
+            clTutorialGlobe.animate()
+                .alpha(1.0f)
+                .setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(p0: Animator?) {}
 
-                        override fun onAnimationCancel(p0: Animator?) {}
+                    override fun onAnimationEnd(p0: Animator?) {
+                        val view = inflate(this@GlobeActivity, R.layout.astrodialog, null)
 
-                        override fun onAnimationRepeat(p0: Animator?) {}
-                    }).duration = 500
+                        view.ivDialog.visibility = GONE
+                        view.tvAppName.visibility = GONE
+                        view.tvDialog1.text = getString(R.string.date_picker_instruction)
+                        view.tvDialog2.visibility = GONE
+                        view.tvDialog3.visibility = GONE
 
-                delay(500)
-                fabData.startAnimation(animation)
-            }
+                        val dialog = MaterialAlertDialogBuilder(this@GlobeActivity)
+                            .setBackground(
+                                ContextCompat.getColor(
+                                    this@GlobeActivity,
+                                    android.R.color.transparent
+                                ).toDrawable()
+                            )
+                            .setView(view)
+                            .setOnDismissListener {
+                                this@GlobeActivity.clTutorialGlobe.animate()
+                                    .alpha(0f)
+                                    .setListener(null)
+                                    .duration = 500
+
+                                it.cancel()
+                                fabData.clearAnimation()
+                                fabData.isClickable = true
+                                dlGlobe.setDrawerLockMode(LOCK_MODE_UNLOCKED)
+                                firstTimePreference.edit().putBoolean("globe", false).apply()
+
+                            }.create()
+                        dialog.window?.setDimAmount(0f)
+                        dialog.show()
+                    }
+
+                    override fun onAnimationCancel(p0: Animator?) {}
+
+                    override fun onAnimationRepeat(p0: Animator?) {}
+                }).duration = 500
+            delay(500)
+            fabData.startAnimation(animation)
         }
         super.onResume()
     }

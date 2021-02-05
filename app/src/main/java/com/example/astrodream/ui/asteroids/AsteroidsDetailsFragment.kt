@@ -24,8 +24,8 @@ class AsteroidsDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_asteroids_details, container, false)
-
         val asteroidList = arguments?.get("listFourAsteroids") as ArrayList<*>
+
         val bundle = bundleOf("listFourAsteroids" to asteroidList)
         val asteroid = arguments?.get("Asteroid") as Asteroid
 

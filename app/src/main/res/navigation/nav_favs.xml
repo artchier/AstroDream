@@ -40,7 +40,7 @@
         android:id="@+id/favTechFragment"
         android:name="com.example.astrodream.ui.favorites.FavTechFragment"
         android:label="fragment_fav_tech"
-        tools:layout="@layout/fragment_fav_tech" />
+        tools:layout="@layout/fragment_details_tech" />
     <fragment
         android:id="@+id/asteroidOrbitFragment"
         android:name="com.example.astrodream.ui.favorites.FavAsteroidFragment"

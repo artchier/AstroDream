@@ -25,6 +25,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.lang.Exception
 import java.time.LocalDate
 
 class AsteroidViewModel(
@@ -119,19 +120,23 @@ class AsteroidViewModel(
             reference.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     dataSnapshot.children.forEach {
-                        val result = it.value as HashMap<String, String>
-                        val data = result["first_obs"]!!.split("-")
-                        val asteroid = Asteroid(
-                            it.key!!, result["full_name"]!!,
-                            AstroDreamUtil.isPotentiallyHazardousAsteroid(result["pha"]!!),
-                            null, null,
-                            AstroDreamUtil.formatDate(data[2].toInt(), data[1].toInt(), data[0].toInt()),
-                            null, null,
-                            null, null
-                        )
-                        //Log.i("-----asteroide-------", asteroid.toString()
-                        listAllAsteroidsAPI.add(asteroid)
-                        listAllResultsAPI.postValue(asteroid)
+                        val result = it.value as HashMap<*, *>
+                        val data = result["first_obs"]!!.toString().split("-")
+                        try {
+                            val asteroid = Asteroid(
+                                it.key!!, result["full_name"]!!.toString(),
+                                AstroDreamUtil.isPotentiallyHazardousAsteroid(result["pha"]!!.toString()),
+                                null, null,
+                                AstroDreamUtil.formatDate(data[2].toInt(), data[1].toInt(), data[0].toInt()),
+                                null, null,
+                                null, null
+                            )
+                            //Log.i("-----asteroide-------", asteroid.toString()
+                            listAllAsteroidsAPI.add(asteroid)
+                            listAllResultsAPI.postValue(asteroid)
+                        } catch (ignored: Exception) {
+                            Log.w("AsteroidViewModel", "Erro ao dar parse na data: $data")
+                        }
                     }
                 }
 
@@ -145,15 +150,12 @@ class AsteroidViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     fun getOneAsteroById(id: Int){
             viewModelScope.launch {
-                Log.i("aqui 6", "aquiiiiiii")
                 try {
-                val asteroid = serviceAPI.getAsteroidId(id)
-                oneAsteroidFromAPI.value = asteroid.getAsteroid()
-                Log.i("aqui 4", "aquiiiiiii")
+                    val asteroid = serviceAPI.getAsteroidId(id)
+                    oneAsteroidFromAPI.value = asteroid.getAsteroid()
                 } catch (e: HttpException){
-                    Log.i("ERROR", e.stackTrace.toString())
+                    Log.w("AsteroidViewModel", "Erro ao obter asteroide\n${e.stackTrace}")
                     oneAsteroidFromAPI.value = null
-                    Log.i("aqui 5", "aquiiiiiii")
                 }
             }
     }

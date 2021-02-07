@@ -109,24 +109,10 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
                     date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("$year-${month + 1}-$day")!!
 
-                    if (date != SimpleDateFormat(
-                            "MMM dd, yyyy",
-                            Locale.getDefault()
-                        ).parse(
-                            tvData.text.toString()
-                        )
-                    ) {
-                        val textViewLabel2 = SimpleDateFormat(
-                            "MMM dd, yyyy",
-                            Locale.getDefault()
-                        ).format(date).toString()
-                        tvData.text =
-                            "${textViewLabel2[0].toUpperCase()}${textViewLabel2.substring(1)}"
-                        viewModel.getAllEPIC(
-                            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                                date
-                            ).toString()
-                        )
+                    if (date != SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).parse(tvData.text.toString())) {
+                        val textViewLabel2 = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(date).toString()
+                        tvData.text = "${textViewLabel2[0].toUpperCase()}${textViewLabel2.substring(1)}"
+                        viewModel.getAllEPIC(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date).toString())
                         hasClickedOnNewDate = true
                     }
                 }
@@ -148,11 +134,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
 
                 //se clicar em uma nova data, inicia as animações dos NasaCoins
                 if (hasClickedOnNewDate) {
-                    realtimeViewModel.animateNasaCoins(
-                        llNasaCoinsGlobe,
-                        tvTotalGlobe,
-                        R.string.globo
-                    )
+                    realtimeViewModel.animateNasaCoins(llNasaCoinsGlobe, tvTotalGlobe, R.string.globo)
                     hasClickedOnNewDate = false
                 }
             } else {
@@ -200,11 +182,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                         view.tvDialog3.visibility = GONE
 
                         val dialog = MaterialAlertDialogBuilder(this@GlobeActivity)
-                            .setBackground(
-                                ContextCompat.getColor(
-                                    this@GlobeActivity,
-                                    android.R.color.transparent
-                                ).toDrawable()
+                            .setBackground(ContextCompat.getColor(this@GlobeActivity, android.R.color.transparent).toDrawable()
                             )
                             .setView(view)
                             .setOnDismissListener {

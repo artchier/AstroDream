@@ -8,12 +8,12 @@ import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
 
 open class TranslationEnglishToPortuguese {
-    val options = TranslatorOptions.Builder()
+    private val options = TranslatorOptions.Builder()
         .setSourceLanguage(TranslateLanguage.ENGLISH)
         .setTargetLanguage(TranslateLanguage.PORTUGUESE)
         .build()
 
-    val englishPortugueseTranslator = Translation.getClient(options)
+    private val englishPortugueseTranslator = Translation.getClient(options)
 
     init {
         modelDownload()

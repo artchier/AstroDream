@@ -1,7 +1,6 @@
 package com.example.astrodream.ui.avatar
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.graphics.PorterDuff
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -18,7 +17,6 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.Avatar
-import com.example.astrodream.entitiesDatabase.AvatarRoom
 import com.example.astrodream.ui.RealtimeViewModel
 import kotlinx.android.synthetic.main.buy_avatar_dialog.view.*
 

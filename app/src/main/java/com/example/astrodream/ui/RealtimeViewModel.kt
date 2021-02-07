@@ -126,6 +126,10 @@ class RealtimeViewModel : ViewModel() {
                             view2.text.toString().toInt(),
                             view2.text.toString().toInt() + techNasaCoins
                         )
+                        R.string.daily_image -> animationValue = ValueAnimator.ofInt(
+                            view2.text.toString().toInt(),
+                            view2.text.toString().toInt() + dailyNasaCoins
+                        )
                     }
                     animationValue.duration = 500
                     animationValue.addUpdateListener { animation ->

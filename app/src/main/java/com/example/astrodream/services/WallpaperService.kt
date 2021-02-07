@@ -15,12 +15,10 @@ import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
 import com.example.astrodream.domain.util.AstroDreamUtil
-import com.example.astrodream.domain.util.saveImage
+import com.example.astrodream.domain.util.saveImageGallery
+import com.example.astrodream.domain.util.useGlide
 
 const val WALLPAPER_JOB_ID = 10001
 const val TAG = "WallpaperService"
@@ -91,31 +89,22 @@ fun buildDownloadSetWallpaperMenu(context: Context, anchor: View, imageUrl: Stri
         setOnMenuItemClickListener {
             Toast.makeText(context, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
 
-            Glide.with(context)
-                .load(imageUrl)
-                .into(object : CustomTarget<Drawable?>() {
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable?>?
-                    ) {
-                        when (it.itemId) {
-                            R.id.downloadImageItem -> {
-                                AstroDreamUtil.saveImage(resource.toBitmap(), context,
-                                    context.getString(R.string.app_name))
+            AstroDreamUtil.useGlide(context, imageUrl) { resource ->
+                when (it.itemId) {
+                    R.id.downloadImageItem -> {
+                        AstroDreamUtil.saveImageGallery(resource.toBitmap(), context, context.getString(R.string.app_name))
 
-                                Toast.makeText(context, "Imagem salva!", Toast.LENGTH_SHORT).show()
-                            }
-                            R.id.useAsWallpaperItem -> {
-                                val screenSize = Point()
-                                context.display!!.getRealSize(screenSize)
-
-                                setImageAsWallpaper(screenSize, context, resource)
-                                Toast.makeText(context, "Wallpaper atualizado!", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                        Toast.makeText(context, "Imagem salva!", Toast.LENGTH_SHORT).show()
                     }
-                    override fun onLoadCleared(placeholder: Drawable?) {}
-                })
+                    R.id.useAsWallpaperItem -> {
+                        val screenSize = Point()
+                        context.display!!.getRealSize(screenSize)
+
+                        setImageAsWallpaper(screenSize, context, resource)
+                        Toast.makeText(context, "Wallpaper atualizado!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
 
             true
         }

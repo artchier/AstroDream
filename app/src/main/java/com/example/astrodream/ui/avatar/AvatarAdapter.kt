@@ -1,7 +1,8 @@
 package com.example.astrodream.ui.avatar
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.graphics.PorterDuff
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -13,13 +14,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.Avatar
-import com.example.astrodream.entitiesDatabase.AvatarRoom
 import com.example.astrodream.ui.RealtimeViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.buy_avatar_dialog.view.*
 
 class AvatarAdapter(
@@ -28,6 +30,8 @@ class AvatarAdapter(
     private val tvTotal: TextView,
     private val buyAvatarView: View,
     private val buyAvatarDialog: AlertDialog,
+    private val notEnoughCashView: View,
+    private val notEnoughCashDialog: AlertDialog,
     private val avatarViewModel: AvatarViewModel,
     private val realtimeUserViewModel: RealtimeViewModel
 ) : RecyclerView.Adapter<AvatarAdapter.AvatarViewHolder>() {
@@ -59,7 +63,7 @@ class AvatarAdapter(
         circularProgressDrawable.centerRadius =
             70f / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
         circularProgressDrawable.setColorFilter(
-            ContextCompat.getColor(this.context, R.color.teal_200),
+            ContextCompat.getColor(this.context, R.color.white),
             PorterDuff.Mode.SRC_IN
         )
         circularProgressDrawable.start()
@@ -88,27 +92,59 @@ class AvatarAdapter(
 
                 buyAvatarView.btnComprar.setOnClickListener {
                     tvTotal.text = realtimeUserViewModel.activeUser.value?.nasaCoins.toString()
-                    val total =
-                        tvTotal.text.toString()
-                            .toInt() - buyAvatarView.tvPriceAvatar.text.toString()
-                            .toInt()
-                    tvTotal.text = total.toString()
+                    var total = tvTotal.text.toString().toInt()
+                    if (tvTotal.text.toString().toInt() >= buyAvatarView.tvPriceAvatar.text.toString().toInt()) {
+                        val animation = ValueAnimator.ofInt(total,
+                            total - buyAvatarView.tvPriceAvatar.text.toString().toInt())
+                        animation.duration = 500
+                        animation.addUpdateListener {
+                            tvTotal.text = it.animatedValue.toString()
+                        }
+                        animation.addListener(object: Animator.AnimatorListener{
+                            override fun onAnimationStart(p0: Animator?) {
+                            }
 
-                    //atualiza o total de NasaCoins do usuário
-                    realtimeUserViewModel.updateUserNasaCoins(realtimeUserViewModel.activeUser.value?.email!!, total.toLong())
+                            override fun onAnimationEnd(p0: Animator?) {
+                                total -= buyAvatarView.tvPriceAvatar.text.toString().toInt()
 
-                    //atualiza no realtime e na lista do adapter o último avatar clicado
-                    val newAvatar = avatar.avatarRes
-                    // Atualiza na lista de avatares do usuário para indicar que esse avatar foi comprado
-                    realtimeUserViewModel.updateUserListOfAvatar(realtimeUserViewModel.activeUser.value!!.email, mapOf(newAvatar.toString() to true))
-                    // Atualiza o avatar atual
-                    realtimeUserViewModel.updateUserAvatar(realtimeUserViewModel.activeUser.value!!.email, newAvatar.toLong())
-                    // Atualiza a lista no ViewModel e no Recycler
-                    avatarViewModel.mergeAvatarDataRoomRealtime()
-                    listAvatars = avatarViewModel.listAvatars.value!!
+                                //atualiza o total de NasaCoins do usuário
+                                realtimeUserViewModel.updateUserNasaCoins(
+                                    realtimeUserViewModel.activeUser.value?.email!!,
+                                    total.toLong()
+                                )
+                            }
 
-                    notifyDataSetChanged()
-                    buyAvatarDialog.dismiss()
+                            override fun onAnimationCancel(p0: Animator?) {}
+
+                            override fun onAnimationRepeat(p0: Animator?) {
+                            }
+
+                        })
+                        animation.start()
+
+                        //atualiza no realtime e na lista do adapter o último avatar clicado
+                        val newAvatar = avatar.avatarRes
+                        // Atualiza na lista de avatares do usuário para indicar que esse avatar foi comprado
+                        realtimeUserViewModel.updateUserListOfAvatar(
+                            realtimeUserViewModel.activeUser.value!!.email,
+                            mapOf(newAvatar.toString() to true)
+                        )
+                        // Atualiza o avatar atual
+                        realtimeUserViewModel.updateUserAvatar(
+                            realtimeUserViewModel.activeUser.value!!.email,
+                            newAvatar.toLong()
+                        )
+                        // Atualiza a lista no ViewModel e no Recycler
+                        avatarViewModel.mergeAvatarDataRoomRealtime()
+                        listAvatars = avatarViewModel.listAvatars.value!!
+
+                        notifyDataSetChanged()
+                        buyAvatarDialog.dismiss()
+                    }
+                    else{
+                        buyAvatarDialog.dismiss()
+                        notEnoughCashDialog.show()
+                    }
                 }
 
                 buyAvatarView.btnCancelar.setOnClickListener {
@@ -118,7 +154,10 @@ class AvatarAdapter(
             //mostra o avatar já comprado
             else {
                 val newAvatar = avatar.avatarRes.toLong()
-                realtimeUserViewModel.updateUserAvatar(realtimeUserViewModel.activeUser.value!!.email, newAvatar)
+                realtimeUserViewModel.updateUserAvatar(
+                    realtimeUserViewModel.activeUser.value!!.email,
+                    newAvatar
+                )
             }
         }
     }

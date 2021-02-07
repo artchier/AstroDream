@@ -2,7 +2,6 @@ package com.example.astrodream.ui
 
 import android.graphics.Matrix
 import android.graphics.PointF
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -12,10 +11,9 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.doOnLayout
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.useGlide
 import com.example.astrodream.services.buildDownloadSetWallpaperMenu
 import com.example.astrodream.services.shareImageFromBitmap
 import com.example.astrodream.services.shareImageFromUrl
@@ -61,25 +59,17 @@ class FullScreenImgActivity : AppCompatActivity() {
             viewWidth = ivFull.width
             viewHeight = ivFull.height
 
-            Glide.with(this)
-                .load(imgURL)
-                .into(object : CustomTarget<Drawable?>() {
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable?>?
-                    ) {
-                        imageWidth = resource.intrinsicWidth
-                        imageHeight = resource.intrinsicHeight
-                        origWidth = imageWidth.toFloat()
-                        origHeight = imageHeight.toFloat()
-                        ivFull.setImageDrawable(resource)
-                        ivFull.requestLayout()
-                        ivFull.imageMatrix = mMatrix
-                        ivFull.scaleType = ImageView.ScaleType.MATRIX
-                        fitToScreen()
-                    }
-                    override fun onLoadCleared(placeholder: Drawable?) {}
-                })
+            AstroDreamUtil.useGlide(this, imgURL) { resource ->
+                imageWidth = resource.intrinsicWidth
+                imageHeight = resource.intrinsicHeight
+                origWidth = imageWidth.toFloat()
+                origHeight = imageHeight.toFloat()
+                ivFull.setImageDrawable(resource)
+                ivFull.requestLayout()
+                ivFull.imageMatrix = mMatrix
+                ivFull.scaleType = ImageView.ScaleType.MATRIX
+                fitToScreen()
+            }
         }
 
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())

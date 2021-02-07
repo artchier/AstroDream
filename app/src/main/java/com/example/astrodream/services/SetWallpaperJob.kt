@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.graphics.Point
-import android.graphics.drawable.Drawable
 import android.util.Log
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.useGlide
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -71,25 +69,16 @@ class SetWallpaperJob : JobService() {
                 return@launch
             }
 
-            Glide.with(baseContext)
-                .load(imageUrl)
-                .into(object : CustomTarget<Drawable?>() {
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable?>?
-                    ) {
-                        Log.d(TAG, "Imagem baixada, usando como wallpaper")
-                        val extras = params!!.extras
-                        val screenSize = Point(extras.getInt("width"), extras.getInt("height"))
+            AstroDreamUtil.useGlide(baseContext, imageUrl) { resource ->
+                Log.d(TAG, "Imagem baixada, usando como wallpaper")
+                val extras = params!!.extras
+                val screenSize = Point(extras.getInt("width"), extras.getInt("height"))
 
-                        setImageAsWallpaper(screenSize, baseContext, resource)
-                        // Terminamos o Job de fato
-                        jobFinished(params, false)
-                        Log.d(TAG, "Job acabado!")
-                    }
-
-                    override fun onLoadCleared(placeholder: Drawable?) {}
-                })
+                setImageAsWallpaper(screenSize, baseContext, resource)
+                // Terminamos o Job de fato
+                jobFinished(params, false)
+                Log.d(TAG, "Job acabado!")
+            }
         }
 
         // Indica que o Job não está feito, já que é feito async

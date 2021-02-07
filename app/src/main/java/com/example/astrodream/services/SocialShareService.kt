@@ -3,15 +3,13 @@ package com.example.astrodream.services
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.useGlide
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -30,18 +28,9 @@ fun shareText(title: String, description: String, context: Context) {
 fun shareImageFromUrl(url: String, title: String, description: String, context: Context) {
     Toast.makeText(context, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
 
-    Glide.with(context)
-        .load(url)
-        .into(object : CustomTarget<Drawable?>() {
-            override fun onResourceReady(
-                resource: Drawable,
-                transition: Transition<in Drawable?>?
-            ) {
-                shareImageFromBitmap(resource.toBitmap(), title, description, context)
-            }
-
-            override fun onLoadCleared(placeholder: Drawable?) {}
-        })
+    AstroDreamUtil.useGlide(context, url) { resource ->
+        shareImageFromBitmap(resource.toBitmap(), title, description, context)
+    }
 }
 
 fun shareImageFromBitmap(image: Bitmap, title: String, description: String, context: Context) {

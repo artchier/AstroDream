@@ -269,7 +269,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:drawableStart="@drawable/ic_logout"
-                    android:drawablePadding="15dp"
+                    android:drawablePadding="10dp"
                     android:gravity="start|center_vertical"
                     android:paddingStart="80dp"
                     android:paddingEnd="0dp"

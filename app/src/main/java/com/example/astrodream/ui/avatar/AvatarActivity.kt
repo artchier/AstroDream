@@ -1,9 +1,11 @@
 package com.example.astrodream.ui.avatar
 
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import android.view.View.GONE
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -12,27 +14,32 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.ui.ActivityWithTopBar
+import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_avatar.*
+import kotlinx.android.synthetic.main.buy_avatar_dialog.view.*
+import kotlinx.android.synthetic.main.not_enough_cash_dialog.view.*
 
 class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
     private val avatarViewModel: AvatarViewModel by viewModels()
     private lateinit var adapter: AvatarAdapter
     private lateinit var buyAvatarView: View
     private lateinit var buyAvatarDialog: AlertDialog
+    private lateinit var notEnoughCashView: View
+    private lateinit var notEnoughCashDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_avatar)
 
         //verifica se é a primeira vez que a tela de Avatar foi aberta
-        if (getSharedPreferences("first_time", MODE_PRIVATE).getBoolean("avatar", true)) {
+        if (getSharedPreferences("com.example.astrodream.first_time", MODE_PRIVATE).getBoolean("avatar", true)) {
             avatarViewModel.initAllAvatarsAtRoom()
-            getSharedPreferences("first_time", MODE_PRIVATE).edit().putBoolean("avatar", false)
+            getSharedPreferences("com.example.astrodream.first_time", MODE_PRIVATE).edit().putBoolean("avatar", false)
                 .apply()
         }
 
@@ -47,6 +54,22 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
         buyAvatarDialog = MaterialAlertDialogBuilder(this)
             .setBackground(ContextCompat.getColor(this, android.R.color.transparent).toDrawable())
             .setView(buyAvatarView)
+            .setBackgroundInsetStart(70)
+            .setBackgroundInsetEnd(70)
+            .setBackgroundInsetTop(10)
+            .setBackgroundInsetBottom(100)
+            .create()
+
+        //infla a dialog de falta de NasaCoins
+        notEnoughCashView = View.inflate(this, R.layout.not_enough_cash_dialog, null)
+        notEnoughCashView.btnExplorar.setOnClickListener {
+            startActivity(Intent(this, InitialActivity::class.java))
+            finish()
+        }
+
+        notEnoughCashDialog = MaterialAlertDialogBuilder(this)
+            .setBackground(ContextCompat.getColor(this, android.R.color.transparent).toDrawable())
+            .setView(notEnoughCashView)
             .setBackgroundInsetStart(70)
             .setBackgroundInsetEnd(70)
             .setBackgroundInsetTop(10)
@@ -80,6 +103,8 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
                     tvTotal,
                     buyAvatarView,
                     buyAvatarDialog,
+                    notEnoughCashView,
+                    notEnoughCashDialog,
                     avatarViewModel,
                     realtimeViewModel
                 )
@@ -93,7 +118,7 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
                 circularProgressDrawable.centerRadius =
                     70f / (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
                 circularProgressDrawable.setColorFilter(
-                    ContextCompat.getColor(this, R.color.teal_200),
+                    ContextCompat.getColor(this, R.color.white),
                     PorterDuff.Mode.SRC_IN
                 )
                 circularProgressDrawable.start()

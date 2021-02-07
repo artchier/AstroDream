@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.Button
 import android.view.inputmethod.InputMethodManager
 import android.widget.ExpandableListView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
@@ -41,7 +42,7 @@ fun AstroDreamUtil.Companion.showDialogMessage(context: Context, id_layout: Int)
     val view: View = LayoutInflater.from(context).inflate(id_layout, null)
 
     run {
-        MaterialAlertDialogBuilder(context)
+       val dialog = MaterialAlertDialogBuilder(context)
             .setBackgroundInsetStart(70)
             .setBackgroundInsetEnd(70)
             .setBackgroundInsetTop(10)
@@ -81,8 +82,9 @@ fun AstroDreamUtil.Companion.showDialogError(context: Context, id_layout: Int) {
 }
 
 fun AstroDreamUtil.Companion.showDialogMessage(context: Context, view: View) {
+
     run {
-        MaterialAlertDialogBuilder(context)
+         MaterialAlertDialogBuilder(context)
             .setBackgroundInsetStart(70)
             .setBackgroundInsetEnd(70)
             .setBackgroundInsetTop(10)

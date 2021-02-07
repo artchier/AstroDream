@@ -77,6 +77,21 @@
 
     </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/progress_bar_activity_asteroides"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/semitransparente">
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:theme="@style/ProgressBarAsteroids"/>
+
+        </LinearLayout>
+
     </FrameLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -95,6 +110,8 @@
             <include layout="@layout/lateral_menu" />
 
         </LinearLayout>
+
     </com.google.android.material.navigation.NavigationView>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

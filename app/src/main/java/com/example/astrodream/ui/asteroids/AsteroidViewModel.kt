@@ -25,7 +25,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import java.time.LocalDate
 
 class AsteroidViewModel(
@@ -85,7 +84,15 @@ class AsteroidViewModel(
 
     fun getOneAsteroById(id: Int) {
          viewModelScope.launch {
-                getOneAsteroByIdAPI(id)
+             try {
+                 getOneAsteroByIdAPI(id)
+             } catch (e: InternetConnectionException) {
+                 e.showImageWithoutInternetConnection(context)
+             } catch (e: ServerErrorException) {
+                 e.showImageServerError(context)
+             } catch (e: UnknownErrorException) {
+                 e.showImageUnknownError(context)
+             }
         }
     }
 
@@ -97,12 +104,15 @@ class AsteroidViewModel(
             }
             is NetworkResponse.ServerError -> {
                 oneAsteroidFromAPI.value = null
+                throw ServerErrorException()
             }
             is NetworkResponse.NetworkError -> {
                 oneAsteroidFromAPI.value = null
+                throw InternetConnectionException()
             }
             is NetworkResponse.UnknownError -> {
                 oneAsteroidFromAPI.value = null
+                throw UnknownErrorException()
             }
         }
     }
@@ -158,7 +168,6 @@ class AsteroidViewModel(
                     dataSnapshot.children.forEach {
                         val result = it.value as HashMap<String, String>
                         val data = result["first_obs"]!!.split("-")
-                       // try {
                             val asteroid = Asteroid(
                                 it.key!!, result["full_name"]!!,
                                 AstroDreamUtil.isPotentiallyHazardousAsteroid(result["pha"]!!),
@@ -171,9 +180,6 @@ class AsteroidViewModel(
                                 null, null,
                                 null, null
                             )
-                       // } catch (e: IndexOutOfBoundsException){
-                       //     Log.i("------------", "$data, ${it.key}")
-                        //}
                         listAllAsteroidsAPI.add(asteroid)
                         listAllResultsAPI.postValue(asteroid)
                     }

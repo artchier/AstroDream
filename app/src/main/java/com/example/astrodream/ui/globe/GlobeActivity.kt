@@ -174,7 +174,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
     }
 
     override fun onResume() {
-        val firstTimePreference = getSharedPreferences("first_time", MODE_PRIVATE)
+        val firstTimePreference = getSharedPreferences("com.example.astrodream.first_time", MODE_PRIVATE)
         if (!firstTimePreference.getBoolean("globe", true)) {
             super.onResume()
             return

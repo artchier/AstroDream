@@ -1,9 +1,12 @@
 package com.example.astrodream.ui.dailyimage
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,6 +18,7 @@ import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.services.*
+import com.example.astrodream.ui.RealtimeViewModel
 import com.example.astrodream.ui.plaindailymars.PlainActivity
 import com.example.astrodream.ui.plaindailymars.PlainActivityType
 import com.example.astrodream.ui.plaindailymars.PlainDetailFragment
@@ -29,13 +33,15 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
         fun newInstance() = DailyImageFragment()
     }
 
+    private val realtimeViewModel: RealtimeViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val contextActivity = this.requireActivity()
 
-        view.btnFavDaily.setOnClickListener{
-            if(contextActivity is PlainActivity) {
+        view.btnFavDaily.setOnClickListener {
+            if (contextActivity is PlainActivity) {
                 val viewModel: PlainViewModel by activityViewModels()
                 viewModel.favPlainDB(plainDetail, it as ToggleButton, requireActivity())
             } else {
@@ -44,7 +50,11 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
                 val viewModel by viewModels<PlainViewModel> {
                     object : ViewModelProvider.Factory {
                         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                            return PlainViewModel(service, PlainActivityType.DailyImage, repositoryDaily) as T
+                            return PlainViewModel(
+                                service,
+                                PlainActivityType.DailyImage,
+                                repositoryDaily
+                            ) as T
                         }
                     }
                 }
@@ -52,13 +62,36 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
             }
         }
 
+        view.checkDaily.setOnClickListener {
+            if (!requireActivity().getSharedPreferences("wallpaperChange", MODE_PRIVATE)
+                    .getBoolean("checkedOnce", false)
+            ) {
+                realtimeViewModel.animateNasaCoins(
+                    requireActivity().findViewById(R.id.llNasaCoinsMars),
+                    requireActivity().findViewById(R.id.tvTotalMars),
+                    R.string.daily_image
+                )
+                requireActivity().getSharedPreferences("wallpaperChange", MODE_PRIVATE)
+                    .edit().putBoolean("checkedOnce", true).apply()
+            }
+        }
+
         view.btnShareDaily.setOnClickListener {
-            shareImageFromUrl(plainDetail.hdurl, plainDetail.title, plainDetail.explanation, requireContext())
+            shareImageFromUrl(
+                plainDetail.hdurl,
+                plainDetail.title,
+                plainDetail.explanation,
+                requireContext()
+            )
         }
     }
 
     override fun popView(view: View) {
-        val img = if (plainDetail.url != "") { plainDetail.url } else { R.drawable.no_internet }
+        val img = if (plainDetail.url != "") {
+            plainDetail.url
+        } else {
+            R.drawable.no_internet
+        }
 
         TranslatorEngToPort.translateEnglishToPortuguese(plainDetail.title, view.tvTitle)
 
@@ -82,7 +115,10 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
 
         val dialogView = View.inflate(this.requireContext(), R.layout.dialog_info_daily, null)
 
-        TranslatorEngToPort.translateEnglishToPortuguese(plainDetail.explanation, dialogView.tvInfoDaily)
+        TranslatorEngToPort.translateEnglishToPortuguese(
+            plainDetail.explanation,
+            dialogView.tvInfoDaily
+        )
 
         val dialog = MaterialAlertDialogBuilder(this.requireContext())
             .setView(dialogView)
@@ -108,8 +144,7 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
         view.checkDaily.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 scheduleWallpaperChange(requireContext())
-            }
-            else {
+            } else {
                 cancelWallpaperChange(requireContext())
             }
 

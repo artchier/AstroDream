@@ -1,10 +1,11 @@
 package com.example.astrodream.ui.globe
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astrodream.services.Service
+import com.haroldadmin.cnradapter.NetworkResponse
+import com.haroldadmin.cnradapter.executeWithRetry
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
@@ -12,6 +13,8 @@ class GlobeViewModel(private val service: Service) : ViewModel() {
 
     var imageArray = MutableLiveData<MutableList<String>>()
     var epicAvailableDates = MutableLiveData<MutableList<String>>()
+    val hasInternetConnection = MutableLiveData(true)
+    val unknownErrorAPI = MutableLiveData(false)
 
     fun getAllEPIC(chosenDate: String) {
         imageArray.value?.clear()
@@ -19,17 +22,26 @@ class GlobeViewModel(private val service: Service) : ViewModel() {
         val imageArrayList = ArrayList<String>()
 
         viewModelScope.launch {
-            try {
-                val imageJsonArray = service.getAllEPIC(chosenDate)
-                imageJsonArray.forEach {
-                    val imageName = it.asJsonObject.get("image").toString().replace("\"", "")
-                    imageArrayList.add(imageName)
+            val imageJsonArray = executeWithRetry(times = 5) {
+                service.getAllEPIC(chosenDate)
+            }
+            when (imageJsonArray) {
+                is NetworkResponse.Success -> {
+                    imageJsonArray.body.forEach {
+                        val imageName = it.asJsonObject.get("image").toString().replace("\"", "")
+                        imageArrayList.add(imageName)
+                    }
+                    imageArray.value = imageArrayList
                 }
-                imageArray.value = imageArrayList
-
-            } catch (e: Exception) {
-                // TODO dar algum feedback na interface para o usuário aqui
-                Log.e("GlobeViewModel", "Erro ao carregar imagens: ${e.message}")
+                is NetworkResponse.ServerError -> {
+                    unknownErrorAPI.value = true
+                }
+                is NetworkResponse.NetworkError -> {
+                    hasInternetConnection.value = false
+                }
+                is NetworkResponse.UnknownError -> {
+                    unknownErrorAPI.value = true
+                }
             }
         }
     }
@@ -39,17 +51,27 @@ class GlobeViewModel(private val service: Service) : ViewModel() {
         val epicAvailableList = ArrayList<String>()
 
         viewModelScope.launch {
-            val epicImageJsonArray = service.getAllAvailableEPIC()
-
-            try {
-                epicImageJsonArray.forEach {
-                    val datesAvailable = it.toString().replace("\"", "")
-                    epicAvailableList.add(datesAvailable)
+            val epicImageJsonArray = executeWithRetry(times = 5) {
+                service.getAllAvailableEPIC()
+            }
+            when (epicImageJsonArray) {
+                is NetworkResponse.Success -> {
+                    hasInternetConnection.value = true
+                    epicImageJsonArray.body.forEach {
+                        val datesAvailable = it.toString().replace("\"", "")
+                        epicAvailableList.add(datesAvailable)
+                    }
+                    epicAvailableDates.value = epicAvailableList
                 }
-                epicAvailableDates.value = epicAvailableList
-
-            } catch (e: Exception) {
-                Log.e("GlobeViewModel", "Erro ao obter lista: ${e.message}")
+                is NetworkResponse.ServerError -> {
+                    unknownErrorAPI.value = true
+                }
+                is NetworkResponse.NetworkError -> {
+                    hasInternetConnection.value = false
+                }
+                is NetworkResponse.UnknownError -> {
+                    unknownErrorAPI.value = true
+                }
             }
         }
     }

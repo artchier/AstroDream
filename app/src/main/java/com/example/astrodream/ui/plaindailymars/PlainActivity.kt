@@ -15,6 +15,7 @@ import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.domain.util.AstroDreamUtil
 import com.example.astrodream.domain.util.showErrorInternetConnection
+import com.example.astrodream.domain.util.showUnknownError
 import com.example.astrodream.services.*
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
@@ -104,6 +105,13 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         viewModel.hasInternetConnection.observe(this) {
             if (!it) {
                 AstroDreamUtil.showErrorInternetConnection(this)
+            }
+        }
+
+        // Dialog em caso de erro desconhecido
+        viewModel.unknownErrorAPI.observe(this) {
+            if (it) {
+                AstroDreamUtil.showUnknownError(this)
             }
         }
 

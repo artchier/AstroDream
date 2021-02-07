@@ -26,6 +26,7 @@ import com.haroldadmin.cnradapter.executeWithRetry
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
+import android.util.Log
 
 class PlainViewModel(
     val service: Service,
@@ -39,6 +40,7 @@ class PlainViewModel(
     val hasOngoingRequest = MutableLiveData<Boolean>()
 
     val hasInternetConnection = MutableLiveData(true)
+    val unknownErrorAPI = MutableLiveData(false)
 
     private var numFetches = 0
     private var timesToFetch = 24
@@ -139,6 +141,7 @@ class PlainViewModel(
                     detailRoot = detail
                     focusResult.value = detailRoot
                 }
+                unknownErrorAPI.value = true
             }
         }
     }
@@ -219,6 +222,7 @@ class PlainViewModel(
                     detailRoot = detail
                     focusResult.value = detailRoot
                 }
+                unknownErrorAPI.value = true
             }
         }
     }

@@ -1,20 +1,20 @@
 package com.example.astrodream.services
 
-import com.example.astrodream.domain.AsteroidRes
 import android.annotation.SuppressLint
-import android.util.Log
 import com.example.astrodream.domain.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 // Endpoints
 interface Service {
@@ -55,7 +55,7 @@ interface Service {
 
     @GET("neo/rest/v1/neo/browse")
     suspend fun getAllAsteroids(
-        @Query("api_key")p0: String = apikeyApp
+        @Query("api_key") p0: String = apikeyApp
     ): AsteroidAllRes
 
     @GET("neo/rest/v1/neo/{id}")
@@ -105,11 +105,18 @@ fun buildGlobeImageUrl(date: String, name: String, apikey: String = apikeyApp): 
 // url
 const val urlNasa = "https://api.nasa.gov/"
 
+// OkHttp
+val okHttpClient: OkHttpClient? = OkHttpClient.Builder()
+    .readTimeout(60, TimeUnit.SECONDS)
+    .connectTimeout(60, TimeUnit.SECONDS)
+    .build()
+
 // Retrofit
 val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(urlNasa)
     .addConverterFactory(GsonConverterFactory.create())
     .addCallAdapterFactory(NetworkResponseAdapterFactory())
+    .client(okHttpClient)
     .build()
 
 // Passar instancia do retrofit para o service

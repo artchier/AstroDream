@@ -29,6 +29,7 @@ import com.example.astrodream.services.ServiceDBMars
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.haroldadmin.cnradapter.NetworkResponse
+import com.haroldadmin.cnradapter.executeWithRetry
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
@@ -44,8 +45,6 @@ class PlainViewModel(
     val focusResult = MutableLiveData<PlainClass>()
     val hasOngoingRequest = MutableLiveData<Boolean>()
 
-    // TODO: implementar o hasInternetConnection para abrir dialog caso nao haja conexao.
-    // TODO: ao dar "OK" no dialog, voltar para Initial
     val hasInternetConnection = MutableLiveData(true)
 
     private var numFetches = 0
@@ -105,7 +104,7 @@ class PlainViewModel(
     }
 
     private suspend fun fetchDailyImage(date: LocalDate) {
-        when (val response = service.getDaily(date.toString())) {
+        when (val response = executeWithRetry(times = 5) {service.getDaily(date.toString())}) {
             is NetworkResponse.Success -> {
                 // Handle successful response
                 if ((response.body.url).contains("youtube")) {
@@ -156,7 +155,7 @@ class PlainViewModel(
             fetchTemperatures()
         }
         // Request API
-        when (val responseRover = service.getMars(date.toString())) {
+        when (val responseRover = executeWithRetry(times = 5) {service.getMars(date.toString())}) {
             is NetworkResponse.Success -> {
                 // Handle successful response
                 // Get JSON element of photos
@@ -232,7 +231,7 @@ class PlainViewModel(
     }
 
     private suspend fun fetchTemperatures() {
-        when (val temperatureJson = service.getMarsTemp("json", "1.0")) {
+        when (val temperatureJson = executeWithRetry(times = 5) {service.getMarsTemp("json", "1.0")}) {
             is NetworkResponse.Success -> {
                 // Handle successful response
                 // Get JSON element of dates with available temperatures

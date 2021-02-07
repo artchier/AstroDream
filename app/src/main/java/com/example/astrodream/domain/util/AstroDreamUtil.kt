@@ -102,6 +102,13 @@ fun AstroDreamUtil.Companion.formatDate(day: Int, month: Int, year: Int): String
     return "$day/$month/$year"
 }
 
+fun AstroDreamUtil.Companion.formatDate(day: String, month: String, year: String): String{
+    if (day.length == 1 && month.length == 1) return "0$day/0$month/$year"
+    if (day.length == 1) return "0$day/$month/$year"
+    if (month.length == 1) return "$day/0$month/$year"
+    return "$day/$month/$year"
+}
+
 fun AstroDreamUtil.Companion.saveImage(bitmap: Bitmap, context: Context, folderName: String, fileName: String = ""): String {
     val fileUri: String
 
@@ -251,4 +258,12 @@ fun String.toMD5(): String {
 
 fun ByteArray.toHex(): String {
     return joinToString("") { "%02x".format(it) }
+}
+
+fun AstroDreamUtil.Companion.getLinkExternoOrbitaAsteroid(id: Int): String{
+    return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
+}
+
+fun AstroDreamUtil.Companion.getLinkMaisInformaçõesAsteroid(id: Int): String{
+    return ""
 }

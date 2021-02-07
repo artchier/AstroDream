@@ -28,20 +28,18 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview_img_asteroids"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:visibility="visible"
-            app:cardBackgroundColor="@color/transparent"
+            app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="20dp">
 
         <fragment
             android:id="@+id/fl_imagem_asteroids"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="wrap_content"
             app:defaultNavHost="true"/>
-<!--            app:navGraph="@navigation/navigation_asteroids"-->
-
 
             <LinearLayout
                 android:id="@+id/progressbar_fragment_asteroides"

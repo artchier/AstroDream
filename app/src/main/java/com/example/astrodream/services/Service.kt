@@ -51,7 +51,7 @@ interface Service {
     suspend fun getAsteroidsDate(
         @Query("start_date") startDate: String,
         @Query("api_key") apikey: String = apikeyApp
-    ): AsteroidRes
+    ): NetworkResponse<AsteroidRes, AsteroidsErrorResponse>
 
     @GET("neo/rest/v1/neo/browse")
     suspend fun getAllAsteroids(
@@ -62,7 +62,7 @@ interface Service {
     suspend fun getAsteroidId(
         @Path("id") id: Int,
         @Query("api_key") apikey: String = apikeyApp
-    ): AsteroidData
+    ): NetworkResponse<AsteroidData, AsteroidsErrorResponse>
 
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")
@@ -113,4 +113,5 @@ val retrofit: Retrofit = Retrofit.Builder()
     .build()
 
 // Passar instancia do retrofit para o service
+const val apikeyApp = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"
 val service: Service = retrofit.create(Service::class.java)

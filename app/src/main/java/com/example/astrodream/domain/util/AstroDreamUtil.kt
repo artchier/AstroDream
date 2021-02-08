@@ -192,6 +192,13 @@ fun ExpandableListView.isSomeGroupExpandad(): Boolean {
     return false
 }
 
+fun ExpandableListView.collapseAllGroups() {
+    this.collapseGroup(0)
+    this.collapseGroup(1)
+    this.collapseGroup(2)
+    this.collapseGroup(3)
+}
+
 fun AstroDreamUtil.Companion.returnTextOf(vararg string: String): String{
     val sb = StringBuilder()
     string.forEach { sb.append("\n$it") }
@@ -264,8 +271,4 @@ fun ByteArray.toHex(): String {
 
 fun AstroDreamUtil.Companion.getLinkExternoOrbitaAsteroid(id: Int): String{
     return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
-}
-
-fun AstroDreamUtil.Companion.getLinkMaisInformaçõesAsteroid(id: Int): String{
-    return ""
 }

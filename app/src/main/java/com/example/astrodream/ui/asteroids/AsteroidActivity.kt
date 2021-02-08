@@ -29,6 +29,7 @@ import com.example.astrodream.services.databaseReference
 import com.example.astrodream.services.service
 import com.example.astrodream.services.shareText
 import com.example.astrodream.ui.ActivityWithTopBar
+import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
 import java.time.LocalDate
@@ -395,5 +396,13 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        if (listView.isSomeGroupExpandad()){
+            listView.collapseAllGroups()
+            return
+        }
+        startActivity(Intent(this, InitialActivity::class.java))
     }
 }

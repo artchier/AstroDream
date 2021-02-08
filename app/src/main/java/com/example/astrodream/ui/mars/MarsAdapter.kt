@@ -44,7 +44,7 @@ class MarsAdapter(
         val marsPic = if (marsPicsList[position].img_src != "") {
             marsPicsList[position].img_src
         } else {
-            R.drawable.no_internet
+            R.drawable.lost_connection
         }
         val marsCamera = marsPicsList[position].camera.full_name
 

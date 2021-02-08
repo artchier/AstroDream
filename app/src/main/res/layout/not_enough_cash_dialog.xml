@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_rectangle2"
-    android:paddingBottom="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="20dp">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -30,15 +31,20 @@
         android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:paddingEnd="15dp"
-        android:text="@string/descricao_erro_desconhecido"
+        android:text="@string/explorar2"
         android:textAlignment="textStart"
         android:textColor="@android:color/white" />
 
     <Button
-        android:id="@+id/button_error_message"
+        android:id="@+id/btnExplorar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_style"
         android:layout_gravity="center"
-        android:text="@string/ok"/>
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/green_haze"
+        android:text="@string/explorar"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:background="@drawable/button_style" />
+
 </LinearLayout>

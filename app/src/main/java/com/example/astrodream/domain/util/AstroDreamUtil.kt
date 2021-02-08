@@ -6,6 +6,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -15,13 +16,16 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.ExpandableListView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.entitiesDatabase.DailyRoom
@@ -31,7 +35,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.lang.StringBuilder
 import java.security.MessageDigest
 
 class AstroDreamUtil {
@@ -72,9 +75,9 @@ fun AstroDreamUtil.Companion.showDialogError(context: Context, id_layout: Int) {
             .create()
 
         view.findViewById<Button>(R.id.button_error_message).setOnClickListener {
-            context.startActivity(
-                Intent(context, InitialActivity::class.java))
+            context.startActivity(Intent(context, InitialActivity::class.java))
             dialog.dismiss()
+            (context as Activity).finish()
         }
 
         dialog.show()
@@ -111,10 +114,39 @@ fun AstroDreamUtil.Companion.formatDate(day: String, month: String, year: String
     return "$day/$month/$year"
 }
 
-fun AstroDreamUtil.Companion.saveImage(bitmap: Bitmap, context: Context, folderName: String, fileName: String = ""): String {
+fun AstroDreamUtil.Companion.saveImage(bitmap: Bitmap, context: Context, fileName: String): String {
+    val parentDirectory = File(context.filesDir, context.getString(R.string.app_name))
+
+    if (!parentDirectory.exists()) {
+        parentDirectory.mkdirs()
+    }
+
+    val file = File(parentDirectory, fileName)
+    if (file.exists()) {
+        return file.absolutePath.toString()
+    }
+    try {
+        val out = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+        out.flush()
+        out.close()
+    } catch (e: Exception) {
+        Log.w("SaveImage", "Erro ao salvar imagem $fileName. Erro:\n${e.message}")
+        return ""
+    }
+
+    return file.absolutePath.toString()
+}
+
+fun AstroDreamUtil.Companion.saveImageGallery(
+    bitmap: Bitmap,
+    context: Context,
+    folderName: String,
+    fileName: String = ""
+): String {
     val fileUri: String
 
-    if (android.os.Build.VERSION.SDK_INT >= 29) {
+    if (Build.VERSION.SDK_INT >= 29) {
         val values = contentValues()
         if (fileName != "") {
             values.put(MediaStore.MediaColumns.DISPLAY_NAME, "$fileName.png");
@@ -247,6 +279,10 @@ fun AstroDreamUtil.Companion.showErrorInternetConnection(context: Context){
         AstroDreamUtil.showDialogError(context, R.layout.internet_connection_error)
 }
 
+fun AstroDreamUtil.Companion.showUnknownError(context: Context){
+    AstroDreamUtil.showDialogError(context, R.layout.unknown_error_dialog)
+}
+
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
 }
@@ -269,6 +305,19 @@ fun ByteArray.toHex(): String {
     return joinToString("") { "%02x".format(it) }
 }
 
-fun AstroDreamUtil.Companion.getLinkExternoOrbitaAsteroid(id: Int): String{
-    return "https://ssd.jpl.nasa.gov/sbdb.cgi?sstr=$id;orb=1;cov=0;log=0;cad=0#orb"
+fun AstroDreamUtil.Companion.useGlide(context: Context,
+                                      image: Any,
+                                      onResourceReady: (resource: Drawable) -> Unit) {
+    Glide.with(context)
+        .load(image)
+        .into(object : CustomTarget<Drawable?>() {
+            override fun onResourceReady(
+                resource: Drawable,
+                transition: Transition<in Drawable?>?
+            ) {
+                onResourceReady(resource)
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {}
+        })
 }

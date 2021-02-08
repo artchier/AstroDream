@@ -12,6 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.domain.TechPiece
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.showErrorInternetConnection
+import com.example.astrodream.domain.util.showUnknownError
 import com.example.astrodream.ui.RealtimeViewModel
 
 abstract class TechPieceFragment<T : TechPiece>(
@@ -49,6 +52,18 @@ abstract class TechPieceFragment<T : TechPiece>(
         viewModel.getTechPieces()
         viewModel.techPieces.observe(contextTechActivity) {
             adapterTech.addTechPiece(it.results)
+        }
+
+        viewModel.hasInternetConnection.observe(contextTechActivity) {
+            if (!it) {
+                AstroDreamUtil.showErrorInternetConnection(contextTechActivity)
+            }
+        }
+
+        viewModel.unknownErrorAPI.observe(contextTechActivity) {
+            if (it) {
+                AstroDreamUtil.showUnknownError(contextTechActivity)
+            }
         }
 
         return view

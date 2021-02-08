@@ -13,6 +13,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.showErrorInternetConnection
+import com.example.astrodream.domain.util.showUnknownError
 import com.example.astrodream.services.*
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
@@ -101,7 +104,14 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         // Dialog em caso de perda de conexão
         viewModel.hasInternetConnection.observe(this) {
             if (!it) {
-                showNoConnectionDialog()
+                AstroDreamUtil.showErrorInternetConnection(this)
+            }
+        }
+
+        // Dialog em caso de erro desconhecido
+        viewModel.unknownErrorAPI.observe(this) {
+            if (it) {
+                AstroDreamUtil.showUnknownError(this)
             }
         }
 
@@ -195,21 +205,6 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
                 DrawableCompat.setTintList(icon, colors)
             }
         }
-    }
-
-    private fun showNoConnectionDialog() {
-        val dialogView = View.inflate(this, R.layout.dialog_info_daily, null)
-        dialogView.tvInfoDaily.text = "Ooops, estamos sem internet!"
-
-        val dialog = MaterialAlertDialogBuilder(this)
-            .setView(dialogView)
-            .create()
-
-        dialogView.btnOk.setOnClickListener {
-            dialog.dismiss()
-            finish()
-        }
-        dialog.show()
     }
 
     override fun onStop() {

@@ -1,8 +1,6 @@
 package com.example.astrodream.services
 
-import com.example.astrodream.domain.AsteroidRes
 import android.annotation.SuppressLint
-import android.util.Log
 import com.example.astrodream.domain.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -57,7 +55,7 @@ interface Service {
 
     @GET("neo/rest/v1/neo/browse")
     suspend fun getAllAsteroids(
-        @Query("api_key")p0: String = apikeyApp
+        @Query("api_key") p0: String = apikeyApp
     ): AsteroidAllRes
 
     @GET("neo/rest/v1/neo/{id}")
@@ -70,30 +68,30 @@ interface Service {
     @GET("techtransfer/patent/")
     suspend fun getPatents(
         @Query("api_key") apikey: String = apikeyApp
-    ): Patent
+    ): NetworkResponse<Patent, JsonObject>
 
     @GET("techtransfer/software/")
     suspend fun getSoftwares(
         @Query("api_key") apikey: String = apikeyApp
-    ): Software
+    ): NetworkResponse<Software, JsonObject>
 
     @GET("techtransfer/spinoff/")
     suspend fun getSpinoffs(
         @Query("api_key") apikey: String = apikeyApp
-    ): Spinoff
+    ): NetworkResponse<Spinoff, JsonObject>
 
     /* ------------------------------------------ Globe ----------------------------------------- */
 
     @GET("EPIC/api/natural/available")
     suspend fun getAllAvailableEPIC(
         @Query("api_key") apikey: String = apikeyApp
-    ): JsonArray
+    ): NetworkResponse<JsonArray, JsonArray>
 
     @GET("EPIC/api/natural/date/{chosenDate}")
     suspend fun getAllEPIC(
         @Path("chosenDate") chosenDate: String,
         @Query("api_key") apikey: String = apikeyApp
-    ): JsonArray
+    ): NetworkResponse<JsonArray, JsonArray>
 
 }
 

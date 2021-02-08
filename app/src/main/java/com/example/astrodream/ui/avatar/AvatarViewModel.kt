@@ -37,24 +37,25 @@ class AvatarViewModel(application: Application) : AndroidViewModel(application) 
         listAvatarsRoom.value = listOf(
             AvatarRoom(R.drawable.avatar_male_01, 0),
             AvatarRoom(R.drawable.avatar_female_01, 0),
-            AvatarRoom(R.drawable.avatar_male_02, 100),
-            AvatarRoom(R.drawable.avatar_female_02, 100),
-            AvatarRoom(R.drawable.avatar_male_03, 100),
-            AvatarRoom(R.drawable.avatar_female_03, 100),
-            AvatarRoom(R.drawable.avatar_male_05, 100),
-            AvatarRoom(R.drawable.avatar_female_04, 100),
-            AvatarRoom(R.drawable.avatar_male_04, 200),
-            AvatarRoom(R.drawable.avatar_female_05, 200),
-            AvatarRoom(R.drawable.avatar_male_06, 200),
-            AvatarRoom(R.drawable.avatar_female_06, 200),
-            AvatarRoom(R.drawable.avatar_male_07, 300),
-            AvatarRoom(R.drawable.avatar_female_07, 300),
-            AvatarRoom(R.drawable.avatar_male_08, 300),
-            AvatarRoom(R.drawable.avatar_female_08, 300),
-            AvatarRoom(R.drawable.avatar_male_09, 350),
-            AvatarRoom(R.drawable.avatar_female_09, 350),
-            AvatarRoom(R.drawable.avatar_male_10, 350),
-            AvatarRoom(R.drawable.avatar_female_10, 350)
+            AvatarRoom(R.drawable.avatar_male_02, 1000),
+            AvatarRoom(R.drawable.avatar_female_02, 1000),
+            AvatarRoom(R.drawable.avatar_male_03, 1000),
+            AvatarRoom(R.drawable.avatar_female_03, 1000),
+            AvatarRoom(R.drawable.avatar_male_05, 1000),
+            AvatarRoom(R.drawable.avatar_female_04, 1000),
+            AvatarRoom(R.drawable.avatar_male_04, 2000),
+            AvatarRoom(R.drawable.avatar_female_05, 2000),
+            AvatarRoom(R.drawable.avatar_male_06, 2000),
+            AvatarRoom(R.drawable.avatar_female_06, 2000),
+            AvatarRoom(R.drawable.avatar_male_07, 3000),
+            AvatarRoom(R.drawable.avatar_female_07, 3000),
+            AvatarRoom(R.drawable.avatar_male_08, 3000),
+            AvatarRoom(R.drawable.avatar_female_08, 3000),
+            AvatarRoom(R.drawable.avatar_male_09, 3500),
+            AvatarRoom(R.drawable.avatar_female_09, 3500),
+            AvatarRoom(R.drawable.avatar_male_10, 3500),
+            AvatarRoom(R.drawable.avatar_female_10, 3500),
+            AvatarRoom(R.drawable.avatar_nasare, 10000)
         )
         viewModelScope.launch {
             avatarService.addAllAvatarsTask(_listAvatarsRoom.value!!)
@@ -100,7 +101,7 @@ class AvatarViewModel(application: Application) : AndroidViewModel(application) 
                         avatarRes = it.avatarRes
                         avatarPrice = it.price
                         avatarBoughtByUser =
-                            listAvatarsRealtime.value?.get(it.avatarRes.toString())!!
+                            listAvatarsRealtime.value?.get(it.avatarRes.toString()) ?: false
                         avatarCurrent = it.avatarRes == currentAvatarRealtime.value
                         listPrelim.add(
                             Avatar(

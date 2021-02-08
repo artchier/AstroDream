@@ -15,7 +15,6 @@ import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
-import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.shareText
 import com.example.astrodream.ui.tech.detailsTech.DetailsTechViewModel
 import kotlinx.android.synthetic.main.fragment_details_tech.*
@@ -23,17 +22,7 @@ import kotlinx.android.synthetic.main.fragment_details_tech.view.*
 
 class FavTechFragment : Fragment() {
 
-    private lateinit var db: AppDatabase
-    private lateinit var serviceDatabaseTech: ServiceDatabaseTech
     private lateinit var favView: View
-
-    private val viewModelDetails by viewModels<DetailsTechViewModel> {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailsTechViewModel(serviceDatabaseTech) as T
-            }
-        }
-    }
 
     private val viewModelFav: FavViewModel by activityViewModels()
 
@@ -61,10 +50,17 @@ class FavTechFragment : Fragment() {
 
         btnFavorTech.setImageResource(R.drawable.ic_star_filled)
 
-        db = AppDatabase.invoke(requireActivity())
-        serviceDatabaseTech = ServiceDatabaseImplementationTech(db.techDAO())
-
         btnFavorTech.setOnClickListener {
+            val db = AppDatabase.invoke(requireActivity())
+            val serviceDatabaseTech = ServiceDatabaseImplementationTech(db.techDAO())
+            val viewModelDetails by viewModels<DetailsTechViewModel> {
+                object : ViewModelProvider.Factory {
+                    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                        return DetailsTechViewModel(serviceDatabaseTech) as T
+                    }
+                }
+            }
+
             viewModelDetails.deleteTechDB(tech.codReferenceTech)
             startActivity(Intent(requireActivity(), FavoritesActivity::class.java))
         }

@@ -20,35 +20,38 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnListarPatentes"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/pill_shape"
         app:backgroundTint="@color/lucky_point"
         android:textColor="@color/white"
         android:text="@string/listar_patentes"
         android:textAllCaps="false"
-        android:textSize="20sp" />
+        android:textSize="18sp"
+        android:fontFamily="@font/roboto"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnListarSoftwares"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/pill_shape"
         app:backgroundTint="@color/lucky_point"
         android:textColor="@color/white"
         android:text="@string/listar_softwares"
         android:textAllCaps="false"
-        android:textSize="20sp" />
+        android:textSize="18sp"
+        android:fontFamily="@font/roboto"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnListarSpinoffs"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:background="@drawable/pill_shape"
         app:backgroundTint="@color/lucky_point"
         android:textColor="@color/white"
         android:text="@string/listar_spinoffs"
         android:textAllCaps="false"
-        android:textSize="20sp" />
+        android:textSize="18sp"
+        android:fontFamily="@font/roboto"/>
 </LinearLayout>

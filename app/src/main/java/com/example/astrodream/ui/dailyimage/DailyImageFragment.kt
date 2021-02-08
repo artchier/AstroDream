@@ -90,7 +90,7 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
         val img = if (plainDetail.url != "") {
             plainDetail.url
         } else {
-            R.drawable.no_internet
+            R.drawable.lost_connection
         }
 
         TranslatorEngToPort.translateEnglishToPortuguese(plainDetail.title, view.tvTitle)

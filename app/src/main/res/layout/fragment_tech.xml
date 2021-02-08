@@ -20,7 +20,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnListarPatentes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/pill_shape"
         app:backgroundTint="@color/lucky_point"
@@ -32,7 +32,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnListarSoftwares"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/pill_shape"
         app:backgroundTint="@color/lucky_point"
@@ -44,7 +44,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnListarSpinoffs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:background="@drawable/pill_shape"
         app:backgroundTint="@color/lucky_point"
         android:textColor="@color/white"

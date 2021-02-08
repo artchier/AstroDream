@@ -25,8 +25,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.lang.Exception
 import java.time.LocalDate
 
 class AsteroidViewModel(

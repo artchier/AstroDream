@@ -46,7 +46,7 @@ class FavAsteroidFragment : Fragment() {
             val viewModel by viewModels<AsteroidViewModel> {
                 object : ViewModelProvider.Factory {
                     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                        return AsteroidViewModel(service, serviceDB, databaseReference) as T
+                        return AsteroidViewModel(service, serviceDB, databaseReference, requireActivity()) as T
                     }
                 }
             }

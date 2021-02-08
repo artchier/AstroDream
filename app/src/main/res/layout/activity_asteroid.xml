@@ -28,20 +28,18 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview_img_asteroids"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:visibility="visible"
-            app:cardBackgroundColor="@color/transparent"
+            app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="20dp">
 
         <fragment
             android:id="@+id/fl_imagem_asteroids"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="wrap_content"
             app:defaultNavHost="true"/>
-<!--            app:navGraph="@navigation/navigation_asteroids"-->
-
 
             <LinearLayout
                 android:id="@+id/progressbar_fragment_asteroides"
@@ -79,6 +77,21 @@
 
     </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/progress_bar_activity_asteroides"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/semitransparente">
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:theme="@style/ProgressBarAsteroids"/>
+
+        </LinearLayout>
+
     </FrameLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -97,6 +110,8 @@
             <include layout="@layout/lateral_menu" />
 
         </LinearLayout>
+
     </com.google.android.material.navigation.NavigationView>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

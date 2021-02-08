@@ -6,6 +6,6 @@ import com.example.astrodream.domain.util.AstroDreamUtil
 import com.example.astrodream.domain.util.showDialogError
 import com.example.astrodream.domain.util.showDialogMessage
 
-class InternetConnectionException: Exception() {
-    fun showImageWithoutInternetConnection(context: Context) { AstroDreamUtil.showDialogError(context, R.layout.internet_connection_error) }
+class ServerErrorException : Exception() {
+    fun showImageServerError(context: Context){ AstroDreamUtil.showDialogError(context, R.layout.server_error_dialog) }
 }

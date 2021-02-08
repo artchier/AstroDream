@@ -30,7 +30,7 @@
         android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:paddingEnd="15dp"
-        android:text="@string/descricao_erro_desconhecido"
+        android:text="@string/descricao_server_error"
         android:textAlignment="textStart"
         android:textColor="@android:color/white" />
 
@@ -41,4 +41,5 @@
         android:background="@drawable/button_style"
         android:layout_gravity="center"
         android:text="@string/ok"/>
+
 </LinearLayout>

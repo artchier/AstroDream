@@ -61,4 +61,17 @@
         android:text="@string/descricao_3"
         android:textAlignment="textStart"
         android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvDialog4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/roboto"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp"
+        android:text="@string/desenvolvedores"
+        android:textAlignment="center"
+        android:textColor="@android:color/white" />
 </LinearLayout>

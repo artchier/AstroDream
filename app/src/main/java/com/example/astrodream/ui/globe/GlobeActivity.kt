@@ -193,6 +193,7 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                         view.tvDialog1.text = getString(R.string.date_picker_instruction)
                         view.tvDialog2.visibility = GONE
                         view.tvDialog3.visibility = GONE
+                        view.tvDialog4.visibility = GONE
 
                         val dialog = MaterialAlertDialogBuilder(this@GlobeActivity)
                             .setBackground(ContextCompat.getColor(this@GlobeActivity, android.R.color.transparent).toDrawable()

@@ -32,12 +32,11 @@ class RealtimeViewModel : ViewModel() {
         const val TAG = "===REALTIME_VIEW_MODEL"
         private val animationFadeIn = AlphaAnimation(0f, 1f)
         private val animationFadeOut = AlphaAnimation(1f, 0f)
-        const val loginNasaCoins = 50
-        const val dailyNasaCoins = 100
-        const val asteroidsNasaCoins = 50
-        const val globeNasaCoins = 80
-        const val techNasaCoins = 50
-        const val marsNasaCoins = 50
+        const val dailyNasaCoins = 40
+        const val asteroidsNasaCoins = 20
+        const val globeNasaCoins = 30
+        const val techNasaCoins = 20
+        const val marsNasaCoins = 20
     }
 
     val activeUser = MutableLiveData<User>()
@@ -82,7 +81,7 @@ class RealtimeViewModel : ViewModel() {
                     val userRealtime = dataSnapshot.getValue(User::class.java)
                     // Se usuário inexistente, cria novo usuario
                     if (userRealtime == null) {
-                        realtimeUserRepository.addUserRealtime(User(email, name, 650))
+                        realtimeUserRepository.addUserRealtime(User(email, name, 100))
                     }
                     if (userRealtime != null) {
                         activeUser.value = userRealtime
@@ -108,29 +107,18 @@ class RealtimeViewModel : ViewModel() {
                 }
 
                 override fun onAnimationEnd(p0: Animation?) {
-                    lateinit var animationValue: ValueAnimator
-                    when (toolbarTitleId) {
-                        R.string.asteroides -> animationValue = ValueAnimator.ofInt(
-                            view2.text.toString().toInt(),
-                            view2.text.toString().toInt() + asteroidsNasaCoins
-                        )
-                        R.string.globo -> animationValue = ValueAnimator.ofInt(
-                            view2.text.toString().toInt(),
-                            view2.text.toString().toInt() + globeNasaCoins
-                        )
-                        R.string.marte -> animationValue = ValueAnimator.ofInt(
-                            view2.text.toString().toInt(),
-                            view2.text.toString().toInt() + marsNasaCoins
-                        )
-                        R.string.tecnologias -> animationValue = ValueAnimator.ofInt(
-                            view2.text.toString().toInt(),
-                            view2.text.toString().toInt() + techNasaCoins
-                        )
-                        R.string.daily_image -> animationValue = ValueAnimator.ofInt(
-                            view2.text.toString().toInt(),
-                            view2.text.toString().toInt() + dailyNasaCoins
-                        )
+                    val coinsEarned = when (toolbarTitleId) {
+                        R.string.asteroides -> asteroidsNasaCoins
+                        R.string.globo -> globeNasaCoins
+                        R.string.marte -> marsNasaCoins
+                        R.string.tecnologias -> techNasaCoins
+                        R.string.daily_image -> dailyNasaCoins
+                        else -> 0
                     }
+                    val animationValue = ValueAnimator.ofInt(
+                        view2.text.toString().toInt(),
+                        view2.text.toString().toInt() + coinsEarned
+                    )
                     animationValue.duration = 500
                     animationValue.addUpdateListener { animation ->
                         view2.text = animation.animatedValue.toString()
@@ -150,12 +138,9 @@ class RealtimeViewModel : ViewModel() {
                             }
                         }
 
-                        override fun onAnimationCancel(p0: Animator?) {
-                        }
+                        override fun onAnimationCancel(p0: Animator?) {}
 
-                        override fun onAnimationRepeat(p0: Animator?) {
-                        }
-
+                        override fun onAnimationRepeat(p0: Animator?) {}
                     })
                 }
 

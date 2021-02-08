@@ -26,7 +26,7 @@ class SetWallpaperJob : JobService() {
 
         GlobalScope.launch {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            val calendar = Calendar.getInstance().apply { time = Date() }
+            val calendar = Calendar.getInstance()
             var failCount = 0
             var imageUrl = ""
 

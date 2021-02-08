@@ -94,9 +94,9 @@ class DetailsTechFragment : Fragment() {
             val typeTech = arguments?.getString("type")
 
             if (techPiece[10] != "") {
-                AstroDreamUtil.useGlide(contextTechActivity, techPiece[10]) { resource ->
+                AstroDreamUtil.useGlide(requireActivity(), techPiece[10]) { resource ->
                     val pathImgTech = AstroDreamUtil
-                        .saveImage(resource.toBitmap(), contextTechActivity, "img_${techPiece[1]}")
+                        .saveImage(resource.toBitmap(), requireActivity(), "img_${techPiece[1]}")
 
                     viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3], pathImgTech, typeTech!!))
                 }

@@ -66,11 +66,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                 override fun onCancel() {}
 
                 override fun onError(error: FacebookException?) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Erro no login com Facebook, tente novamente!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Erro no login com Facebook, tente novamente!", Toast.LENGTH_SHORT).show()
                     Log.e("TAG", error.toString())
                 }
 
@@ -125,17 +121,9 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                 } else {
                     Log.i("Login", task.exception.toString())
                     if (task.exception is FirebaseAuthInvalidUserException || task.exception is FirebaseAuthInvalidCredentialsException) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Usuário ou senha incorretos!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(requireContext(), "Usuário ou senha incorretos!", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Erro inesperado, tente novamente mais tarde!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -158,11 +146,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(
-                    requireContext(),
-                    "Erro inesperado, tente novamente mais tarde!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -173,24 +157,14 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val profile: Map<*, *>? = task.result!!.additionalUserInfo!!
-                        .profile
-                    val email =
-                        profile!!["email"] as String
+                    val profile: Map<*, *>? = task.result!!.additionalUserInfo!!.profile
+                    val email = profile!!["email"] as String
                     callInitialActivity(email)
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Já existe uma conta associada a este e-mail.",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(requireContext(), "Já existe uma conta associada a este e-mail.", Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Erro inesperado, tente novamente mais tarde!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -201,24 +175,14 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    val profile: Map<*, *>? = task.result!!.additionalUserInfo!!
-                        .profile
-                    val email =
-                        profile!!["email"] as String
+                    val profile: Map<*, *>? = task.result!!.additionalUserInfo!!.profile
+                    val email = profile!!["email"] as String
                     callInitialActivity(email)
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Já existe uma conta associada a este email.",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(requireContext(), "Já existe uma conta associada a este email.", Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Erro inesperado, tente novamente mais tarde!",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(requireContext(), "Erro inesperado, tente novamente mais tarde!", Toast.LENGTH_LONG).show()
                     }
                 }
             }

@@ -1,20 +1,24 @@
 package com.example.astrodream.ui.favorites
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import com.example.astrodream.services.shareText
+import com.example.astrodream.ui.FullScreenImgActivity
 import com.example.astrodream.ui.tech.detailsTech.DetailsTechViewModel
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
@@ -37,17 +41,18 @@ class FavTechFragment : Fragment() {
 
         favView.ivTech.setImageResource(R.drawable.ic_tecnologia)
         if (tech.pathImgTech != "") {
-            Glide.with(contextTechActivity).asBitmap()
+            Glide.with(requireActivity())
+                .asBitmap()
                 .load(tech.pathImgTech)
-                .into(view.ivTech)
+                .into(favView.ivTech)
 
-            view.ivTech.setOnClickListener {
-                val intent = Intent(view.context, FullScreenImgActivity::class.java)
+            favView.ivTech.setOnClickListener {
+                val intent = Intent(favView.context, FullScreenImgActivity::class.java)
                 intent.putExtra("img", tech.pathImgTech)
                 ContextCompat.startActivity(requireContext(), intent, null)
             }
         } else {
-            view.ivTech.setImageResource(R.drawable.ic_tecnologia)
+            favView.ivTech.setImageResource(R.drawable.ic_tecnologia)
         }
 
         favView.tvCodReferenceTech.text = tech.codReferenceTech
@@ -72,7 +77,6 @@ class FavTechFragment : Fragment() {
                     }
                 }
             }
-
             viewModelDetails.deleteTechDB(tech.codReferenceTech)
             requireActivity().onBackPressed()
         }

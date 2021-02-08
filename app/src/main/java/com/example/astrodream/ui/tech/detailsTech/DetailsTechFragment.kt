@@ -1,6 +1,5 @@
 package com.example.astrodream.ui.tech.detailsTech
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,23 +23,21 @@ import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
 import com.example.astrodream.services.shareText
 import com.example.astrodream.ui.FullScreenImgActivity
-import com.example.astrodream.ui.tech.TechActivity
-import com.example.astrodream.utils.TranslationEnglishToPortuguese
 import kotlinx.android.synthetic.main.fragment_details_tech.*
 import kotlinx.android.synthetic.main.fragment_details_tech.view.*
 
 class DetailsTechFragment : Fragment() {
-    private lateinit var contextTechActivity: TechActivity
 
     private lateinit var db: AppDatabase
     private lateinit var serviceDatabaseTech: ServiceDatabaseTech
 
     private lateinit var techPiece: ArrayList<String>
+    private lateinit var detailView: View
 
     private val viewModel by viewModels<DetailsTechViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DetailsTechViewModel(serviceDatabaseTech, contextTechActivity) as T
+                return DetailsTechViewModel(serviceDatabaseTech) as T
             }
         }
     }
@@ -48,44 +45,44 @@ class DetailsTechFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_details_tech, container, false)
+    ): View {
+        detailView = inflater.inflate(R.layout.fragment_details_tech, container, false)
 
         val patent = arguments?.getStringArrayList("patent")
         val software = arguments?.getStringArrayList("software")
         val spinoff = arguments?.getStringArrayList("spinoff")
 
-        techPiece = patent ?: software ?: spinoff ?: return view
+        techPiece = patent ?: software ?: spinoff ?: return detailView
 
         if (techPiece[10] != "") {
-            Glide.with(contextTechActivity).asBitmap()
+            Glide.with(requireActivity()).asBitmap()
                 .load(techPiece[10])
-                .into(view.ivTech)
+                .into(detailView.ivTech)
 
-            view.ivTech.setOnClickListener {
-                val intent = Intent(view.context, FullScreenImgActivity::class.java)
+            detailView.ivTech.setOnClickListener {
+                val intent = Intent(detailView.context, FullScreenImgActivity::class.java)
                 intent.putExtra("img", techPiece[10])
                 ContextCompat.startActivity(requireContext(), intent, null)
             }
         } else {
-            view.ivTech.setImageResource(R.drawable.ic_tecnologia)
+            detailView.ivTech.setImageResource(R.drawable.ic_tecnologia)
         }
 
-        view.tvCodReferenceTech.text = techPiece[1]
-        TranslatorEngToPort.translateEnglishToPortuguese(techPiece[2], view.tvTitleTech)
-        TranslatorEngToPort.translateEnglishToPortuguese(techPiece[3], view.tvDescTech)
+        detailView.tvCodReferenceTech.text = techPiece[1]
+        TranslatorEngToPort.translateEnglishToPortuguese(techPiece[2], detailView.tvTitleTech)
+        TranslatorEngToPort.translateEnglishToPortuguese(techPiece[3], detailView.tvDescTech)
 
-        return view
+        return detailView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        db = AppDatabase.invoke(contextTechActivity)
+        db = AppDatabase.invoke(requireActivity())
         serviceDatabaseTech = ServiceDatabaseImplementationTech(db.techDAO())
 
         viewModel.getTechByCodeDB(techPiece[1])
-        viewModel.isFav.observe(contextTechActivity) {
+        viewModel.isFav.observe(requireActivity()) {
             if (it) {
                 btnFavorTech.setImageResource(R.drawable.ic_star_filled)
             } else {
@@ -97,9 +94,9 @@ class DetailsTechFragment : Fragment() {
             val typeTech = arguments?.getString("type")
 
             if (techPiece[10] != "") {
-                AstroDreamUtil.useGlide(contextTechActivity, techPiece[10]) { resource ->
+                AstroDreamUtil.useGlide(requireActivity(), techPiece[10]) { resource ->
                     val pathImgTech = AstroDreamUtil
-                        .saveImage(resource.toBitmap(), contextTechActivity, "img_${techPiece[1]}")
+                        .saveImage(resource.toBitmap(), requireActivity(), "img_${techPiece[1]}")
 
                     viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3], pathImgTech, typeTech!!))
                 }
@@ -109,12 +106,7 @@ class DetailsTechFragment : Fragment() {
         }
 
         btnShareTech.setOnClickListener {
-            shareText(techPiece[2], techPiece[3], requireContext())
+            shareText(detailView.tvTitleTech.text.toString(), detailView.tvDescTech.text.toString(), requireContext())
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is TechActivity) contextTechActivity = context
     }
 }

@@ -5,23 +5,22 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
-import android.view.View.GONE
+import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
+import com.example.astrodream.services.shareImageFromBitmap
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_avatar.*
-import kotlinx.android.synthetic.main.buy_avatar_dialog.view.*
 import kotlinx.android.synthetic.main.not_enough_cash_dialog.view.*
 
 class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
@@ -113,15 +112,16 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
 
         //configura avatar ativo
         val circularProgressDrawable = CircularProgressDrawable(this)
-                circularProgressDrawable.strokeWidth =
-                    15f / (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-                circularProgressDrawable.centerRadius =
-                    70f / (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-                circularProgressDrawable.setColorFilter(
-                    ContextCompat.getColor(this, R.color.white),
-                    PorterDuff.Mode.SRC_IN
-                )
-                circularProgressDrawable.start()
+        circularProgressDrawable.strokeWidth =
+            15f / (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        circularProgressDrawable.centerRadius =
+            70f / (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        circularProgressDrawable.setColorFilter(
+            ContextCompat.getColor(this, R.color.white),
+            PorterDuff.Mode.SRC_IN
+        )
+        circularProgressDrawable.start()
+
         realtimeViewModel.activeUser.observe(this) {
             Glide.with(this).asBitmap()
                 .load(it.avatar)
@@ -129,10 +129,10 @@ class AvatarActivity : ActivityWithTopBar(R.string.avatar, R.id.dlAvatar) {
                 .into(ivAvatar)
         }
 
-        setUpMenuBehavior()
-    }
+        findViewById<LinearLayout>(R.id.llShare).setOnClickListener {
+            shareImageFromBitmap(ivAvatar.drawable.toBitmap(),"Veja meu Nasavatar!", "", this)
+        }
 
-    override fun onBackPressed() {
-        finish()
+        setUpMenuBehavior()
     }
 }

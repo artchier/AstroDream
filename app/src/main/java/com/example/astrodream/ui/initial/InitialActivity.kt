@@ -1,7 +1,7 @@
 package com.example.astrodream.ui.initial
 
-import android.animation.Animator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -14,7 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
-import com.example.astrodream.services.*
+import com.example.astrodream.services.ServiceDBDaily
+import com.example.astrodream.services.ServiceDBImplementationDaily
+import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
@@ -39,12 +41,6 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     private lateinit var db: AppDatabase
     private lateinit var repository: ServiceDBDaily
     private lateinit var animator: ValueAnimator
-    private lateinit var welcome: View
-    private lateinit var dialog: MaterialAlertDialogBuilder
-
-    companion object {
-        private var alreadyUpdated = false
-    }
 
     private val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory {
@@ -54,6 +50,9 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
@@ -62,183 +61,58 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         db = AppDatabase.invoke(this)
         repository = ServiceDBImplementationDaily(db.dailyDAO())
 
-        val lastLogin =
-            getSharedPreferences("com.example.astrodream.first_time", MODE_PRIVATE)
-                .getString(
-                    "lastLogin",
-                    SimpleDateFormat.getDateInstance().format(Calendar.getInstance().time)
-                        .toString()
-                )!!
+        val today = Calendar.getInstance()
+        val todayString = dateFormat.format(today.time)
+        val dailyLoginPreferences = getSharedPreferences("daily_login", MODE_PRIVATE)
 
-        val lastTime =
-            getSharedPreferences(
-                "com.example.astrodream.first_time", MODE_PRIVATE
-            ).getInt("loginTimes", 0)
+        val lastLogin = dailyLoginPreferences.getString("lastLogin", "1980-01-01")!!
+        var consecutiveDays = dailyLoginPreferences.getInt("consecutiveDays", 0)
 
-        welcome = View.inflate(this, R.layout.welcome_dialog, null)
-
-        dialog = MaterialAlertDialogBuilder(this).setView(welcome).setBackground(
-            ContextCompat.getColor(
-                this,
-                android.R.color.transparent
-            ).toDrawable()
-        )
-
-        dialog.setOnDismissListener {
-            when (lastTime) {
-                0, 1, 2 -> {
-                    realtimeViewModel.updateUserNasaCoins(
-                        realtimeViewModel.activeUser.value?.email!!,
-                        realtimeViewModel.activeUser.value?.nasaCoins!!.plus(50)
-                    )
-                }
-                3, 4 -> {
-                    realtimeViewModel.updateUserNasaCoins(
-                        realtimeViewModel.activeUser.value?.email!!,
-                        realtimeViewModel.activeUser.value?.nasaCoins!!.plus(100)
-                    )
-                }
-                else -> {
-                    realtimeViewModel.updateUserNasaCoins(
-                        realtimeViewModel.activeUser.value?.email!!,
-                        realtimeViewModel.activeUser.value?.nasaCoins!!.plus(150)
-                    )
-                }
+        // If it's the first time we're login on today, execute this code
+        if (lastLogin != todayString) {
+            if (isConsecutive(lastLogin, today)) {
+                consecutiveDays += 1
+            } else {
+                consecutiveDays = 0
             }
-            dlInitial.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        }
 
-        val showDialog = dialog.create()
-
-        if (isConsecutive(SimpleDateFormat.getDateInstance().parse(lastLogin)!!)) {
-            when (lastTime) {
-                1, 2 -> {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(1000)
-                        showDialog.show()
-                    }
-                    animator = ValueAnimator.ofInt(0, 50)
-                    animator.addUpdateListener {
-                        welcome.tvTotalNasaCoins.text = it.animatedValue.toString()
-                    }
-                    animator.duration = 500
-                    animator.addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(p0: Animator?) {
-                        }
-
-                        override fun onAnimationEnd(p0: Animator?) {
-                        }
-
-                        override fun onAnimationCancel(p0: Animator?) {
-                        }
-
-                        override fun onAnimationRepeat(p0: Animator?) {
-                        }
-
-                    })
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(1000)
-                        animator.start()
-                    }
-                }
-                3, 4 -> {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(1000)
-                        showDialog.show()
-                    }
-                    animator = ValueAnimator.ofInt(0, 100)
-                    animator.addUpdateListener {
-                        welcome.tvTotalNasaCoins.text = it.animatedValue.toString()
-                    }
-                    animator.duration = 500
-                    animator.addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(p0: Animator?) {
-                        }
-
-                        override fun onAnimationEnd(p0: Animator?) {
-                        }
-
-                        override fun onAnimationCancel(p0: Animator?) {
-                        }
-
-                        override fun onAnimationRepeat(p0: Animator?) {
-                        }
-
-                    })
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(1000)
-                        animator.start()
-                    }
-                }
-                else -> {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(1000)
-                        showDialog.show()
-                    }
-                    animator = ValueAnimator.ofInt(0, 150)
-                    animator.addUpdateListener {
-                        welcome.tvTotalNasaCoins.text = it.animatedValue.toString()
-                    }
-                    animator.duration = 500
-                    animator.addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(p0: Animator?) {
-                        }
-
-                        override fun onAnimationEnd(p0: Animator?) {
-                        }
-
-                        override fun onAnimationCancel(p0: Animator?) {
-                        }
-
-                        override fun onAnimationRepeat(p0: Animator?) {
-                        }
-
-                    })
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(1000)
-                        animator.start()
-                    }
-                }
+            val coinsEarned = when (consecutiveDays) {
+                0, 1, 2 -> 50
+                3, 4 -> 100
+                else -> 150
             }
-            if (!alreadyUpdated) {
-                getSharedPreferences(
-                    "com.example.astrodream.first_time",
-                    MODE_PRIVATE
-                ).edit()
-                    .putInt("loginTimes", lastTime + 1).apply()
 
-                getSharedPreferences(
-                    "com.example.astrodream.first_time",
-                    MODE_PRIVATE
-                ).edit()
-                    .putString(
-                        "lastLogin",
-                        SimpleDateFormat.getDateInstance().format(Calendar.getInstance().time)
-                            .toString()
-                    )
-                    .apply()
-                alreadyUpdated = true
-            }
-        } else {
-            if (!alreadyUpdated) {
-                getSharedPreferences(
-                    "com.example.astrodream.first_time",
-                    MODE_PRIVATE
-                ).edit()
-                    .putInt("loginTimes", 1).apply()
+            val welcome = View.inflate(this, R.layout.welcome_dialog, null)
+            val welcomeDialog = MaterialAlertDialogBuilder(this).setView(welcome).setBackground(
+                ContextCompat.getColor(this, android.R.color.transparent).toDrawable()
+            )
 
-                getSharedPreferences(
-                    "com.example.astrodream.first_time",
-                    MODE_PRIVATE
-                ).edit()
-                    .putString(
-                        "lastLogin",
-                        SimpleDateFormat.getDateInstance().format(Calendar.getInstance().time)
-                            .toString()
-                    )
-                    .apply()
-                alreadyUpdated = true
+            welcomeDialog.setOnDismissListener {
+                realtimeViewModel.updateUserNasaCoins(
+                    realtimeViewModel.activeUser.value?.email!!,
+                    realtimeViewModel.activeUser.value?.nasaCoins!!.plus(coinsEarned)
+                )
+                dlInitial.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
+
+            val showDialog = welcomeDialog.create()
+
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1000)
+                showDialog.show()
+            }
+            animator = ValueAnimator.ofInt(0, coinsEarned)
+            animator.addUpdateListener {
+                welcome.tvTotalNasaCoins.text = it.animatedValue.toString()
+            }
+            animator.duration = 500
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1000)
+                animator.start()
+            }
+
+            dailyLoginPreferences.edit().putInt("consecutiveDays", consecutiveDays).apply()
+            dailyLoginPreferences.edit().putString("lastLogin", todayString).apply()
         }
 
         dailyImage()
@@ -272,28 +146,21 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
             val img = if (it.url != "") {
                 it.url
             } else {
+                tvImagemHoje.text = ""
                 R.drawable.lost_connection
             }
             piInitial.hide()
             Glide.with(this).asBitmap()
                 .load(img)
                 .into(ivDaily)
-            if (it.url == "") {
-                tvImagemHoje.text = ""
-            }
         }
     }
 
-    private fun isConsecutive(date: Date): Boolean {
-        val calendar1 = Calendar.getInstance()
-        val calendar2 = Calendar.getInstance()
+    private fun isConsecutive(lastLogin: String, today: Calendar): Boolean {
+        val yesterday = (today.clone() as Calendar).apply {
+            add(Calendar.DATE, -1)
+        }
 
-        calendar1.time = date
-        val date1 =
-            arrayOf(calendar1.get(Calendar.DAY_OF_MONTH), calendar1.get(Calendar.MONTH + 1))
-        val date2 =
-            arrayOf(calendar2.get(Calendar.DAY_OF_MONTH), calendar2.get(Calendar.MONTH + 1))
-
-        return (date1[0] == date2[0] && date1[1] == date2[1])
+        return dateFormat.format(yesterday.time) == lastLogin
     }
 }

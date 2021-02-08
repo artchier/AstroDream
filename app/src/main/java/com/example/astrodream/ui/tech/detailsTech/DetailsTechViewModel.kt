@@ -1,6 +1,5 @@
 package com.example.astrodream.ui.tech.detailsTech
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,8 +8,7 @@ import com.example.astrodream.services.ServiceDatabaseTech
 import kotlinx.coroutines.launch
 
 class DetailsTechViewModel(
-    var serviceDatabaseTech: ServiceDatabaseTech,
-    val context: Context
+    var serviceDatabaseTech: ServiceDatabaseTech
     ) : ViewModel() {
 
     val tech = MutableLiveData<Tech>()

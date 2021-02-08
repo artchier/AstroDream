@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gigas"
     tools:context=".ui.favorites.FavAsteroidFragment">
 
     <LinearLayout
@@ -14,42 +15,45 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="60dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/icone_asteroide"
                 app:srcCompat="@drawable/ic_asteroide" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_marginLeft="20dp">
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/nome_asteroid_favs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
                     android:text="EXAMPLE"
-                    android:textSize="20dp"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/roboto"/>
+                    android:textSize="20sp"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/btn_ver_orbita_favs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ver órbita"
                     android:gravity="center"
-                    android:textColor="@color/white" />
+                    android:text="ver órbita"
+                    android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
 
@@ -57,16 +61,16 @@
 
         <TextView
             android:id="@+id/descricao_asteroids_favs"
-            android:layout_marginTop="10dp"
-            android:layout_marginHorizontal="30dp"
-            android:paddingTop="10dp"
-            android:layout_marginVertical="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="start"
             android:lineSpacingExtra="5dp"
-            android:textSize="18dp"
-            android:gravity="left"
-            android:textColor="@color/white" />
+            android:paddingTop="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -76,6 +80,18 @@
         android:layout_height="40dp"
         android:layout_gravity="end"
         android:layout_margin="10dp"
-        android:background="@drawable/ic_star_filled"/>
+        android:background="@drawable/ic_star_filled" />
+
+    <ImageButton
+        android:id="@+id/btnShareAsteroid"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="55dp"
+        android:background="@null"
+        android:contentDescription="@string/compartilhar"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ic_share" />
 
 </FrameLayout>

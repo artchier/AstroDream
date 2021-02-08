@@ -32,7 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="EXAMPLE"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 tools:ignore="HardcodedText" />
@@ -77,6 +76,13 @@
         android:layout_marginVertical="5dp"
         android:gravity="center"
         android:textColor="@color/white" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:theme="@style/ProgressBarAsteroids"/>
 
     <TextView
         android:id="@+id/miss_distance"

@@ -15,7 +15,6 @@ import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
-
 // Endpoints
 interface Service {
     /* --------------------------------------- DailyImages -------------------------------------- */
@@ -51,7 +50,7 @@ interface Service {
     suspend fun getAsteroidsDate(
         @Query("start_date") startDate: String,
         @Query("api_key") apikey: String = apikeyApp
-    ): AsteroidRes
+    ): NetworkResponse<AsteroidRes, AsteroidsErrorResponse>
 
     @GET("neo/rest/v1/neo/browse")
     suspend fun getAllAsteroids(
@@ -62,7 +61,7 @@ interface Service {
     suspend fun getAsteroidId(
         @Path("id") id: Int,
         @Query("api_key") apikey: String = apikeyApp
-    ): AsteroidData
+    ): NetworkResponse<AsteroidData, AsteroidsErrorResponse>
 
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")
@@ -106,7 +105,7 @@ fun buildGlobeImageUrl(date: String, name: String, apikey: String = apikeyApp): 
 const val urlNasa = "https://api.nasa.gov/"
 
 // OkHttp
-val okHttpClient: OkHttpClient? = OkHttpClient.Builder()
+val okHttpClient: OkHttpClient = OkHttpClient.Builder()
     .readTimeout(60, TimeUnit.SECONDS)
     .connectTimeout(60, TimeUnit.SECONDS)
     .build()

@@ -164,6 +164,7 @@
     <string name="type_new_password">Digite sua nova senha</string>
     <string name="new_password">Nova senha</string>
     <string name="no_favorites">Você ainda não possui nenhum favorito nessa categoria :(</string>
+    <string name="descricao_server_error">Perdemos a conexão com a Nasa, astronauta! Nossos especialistas em comunicação já foram avisados. Aguarde enquanto tentamos reestabelecer a conexão.</string>
     <string name="explorar">Vamos lá!</string>
     <string name="explorar2">Ops… Parece que faltam NasaCoins, astronauta! Que tal explorar mais um pouquinho?</string>
     <string name="bem_vindo_astronauta">Bem vindo(a) ao AstroDream!</string>

@@ -33,7 +33,7 @@
                     android:fontFamily="@font/roboto_light"
                     android:text="Listar asteroides próximos"
                     android:textColor="@color/white"
-                    android:textSize="23dp" />
+                    android:textSize="18dp" />
 
                 <ImageView
                     android:id="@+id/ic_btn"

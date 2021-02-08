@@ -10,37 +10,37 @@
     <ImageView
         android:id="@+id/iv_terra"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="220dp"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/iv_asteroids1"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:scaleType="fitXY"
         android:layout_gravity="right" />
 
     <ImageView
         android:id="@+id/iv_asteroids2"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:scaleType="fitXY"
         android:layout_gravity="left" />
 
     <ImageView
         android:id="@+id/iv_asteroids3"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:scaleType="fitXY"
         android:layout_gravity="bottom" />
 
     <ImageView
         android:id="@+id/iv_asteroids4"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="end"
         android:scaleType="fitXY"
-        android:layout_marginTop="150dp" />
+        android:layout_marginTop="140dp" />
 
 </FrameLayout>

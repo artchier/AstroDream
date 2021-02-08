@@ -13,7 +13,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 // Endpoints
@@ -106,7 +105,7 @@ fun buildGlobeImageUrl(date: String, name: String, apikey: String = apikeyApp): 
 const val urlNasa = "https://api.nasa.gov/"
 
 // OkHttp
-val okHttpClient: OkHttpClient? = OkHttpClient.Builder()
+val okHttpClient: OkHttpClient = OkHttpClient.Builder()
     .readTimeout(60, TimeUnit.SECONDS)
     .connectTimeout(60, TimeUnit.SECONDS)
     .build()
@@ -120,5 +119,4 @@ val retrofit: Retrofit = Retrofit.Builder()
     .build()
 
 // Passar instancia do retrofit para o service
-const val apikeyApp = "k070HGqyd0nQeVXvDaMsWeW4Q1aWernx6N4UDsDj"
 val service: Service = retrofit.create(Service::class.java)

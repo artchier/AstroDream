@@ -8,6 +8,8 @@ import com.example.astrodream.domain.TechPiece
 abstract class TechViewModel<T : TechPiece>(val service: Service) : ViewModel() {
 
     abstract val techPieces: MutableLiveData<T>
+    val hasInternetConnection = MutableLiveData(true)
+    val unknownErrorAPI = MutableLiveData(false)
 
     abstract fun getTechPieces()
 }

@@ -15,16 +15,15 @@ import androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.astrodream.R
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.showErrorInternetConnection
+import com.example.astrodream.domain.util.showUnknownError
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_avatar.*
 import kotlinx.android.synthetic.main.activity_globe.*
-import kotlinx.android.synthetic.main.activity_globe.view.*
 import kotlinx.android.synthetic.main.astrodialog.view.*
-import kotlinx.android.synthetic.main.card_globe.*
-import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -152,7 +151,21 @@ class GlobeActivity : ActivityWithTopBar(R.string.globo, R.id.dlGlobe) {
                     .show()
             }
         }
+
+        viewModel.hasInternetConnection.observe(this) {
+            if (!it) {
+                AstroDreamUtil.showErrorInternetConnection(this)
+            }
+        }
+
+        viewModel.unknownErrorAPI.observe(this) {
+            if (it) {
+                AstroDreamUtil.showUnknownError(this)
+            }
+        }
+
         setUpMenuBehavior()
+
     }
 
     override fun onResume() {

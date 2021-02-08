@@ -76,6 +76,7 @@ fun AstroDreamUtil.Companion.showDialogError(context: Context, id_layout: Int) {
         view.findViewById<Button>(R.id.button_error_message).setOnClickListener {
             context.startActivity(Intent(context, InitialActivity::class.java))
             dialog.dismiss()
+            (context as Activity).finish()
         }
 
         dialog.show()
@@ -260,6 +261,10 @@ fun AstroDreamUtil.Companion.isInternetAvailable(context: Context): Boolean {
 
 fun AstroDreamUtil.Companion.showErrorInternetConnection(context: Context){
         AstroDreamUtil.showDialogError(context, R.layout.internet_connection_error)
+}
+
+fun AstroDreamUtil.Companion.showUnknownError(context: Context){
+    AstroDreamUtil.showDialogError(context, R.layout.unknown_error_dialog)
 }
 
 fun Fragment.hideKeyboard() {

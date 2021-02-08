@@ -272,12 +272,15 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
             val img = if (it.url != "") {
                 it.url
             } else {
-                R.drawable.no_internet
+                R.drawable.lost_connection
             }
             piInitial.hide()
             Glide.with(this).asBitmap()
                 .load(img)
                 .into(ivDaily)
+            if (it.url == "") {
+                tvImagemHoje.text = ""
+            }
         }
     }
 

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.astrodream.R
-import com.example.astrodream.domain.Patent
 import kotlinx.android.synthetic.main.fragment_tech.view.*
 
 class TechFragment : Fragment() {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,9 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
 import com.example.astrodream.domain.TranslatorEngToPort
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.saveImage
+import com.example.astrodream.domain.util.useGlide
 import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseTech
 import com.example.astrodream.services.ServiceDatabaseImplementationTech
@@ -92,8 +96,16 @@ class DetailsTechFragment : Fragment() {
         btnFavorTech.setOnClickListener {
             val typeTech = arguments?.getString("type")
 
-            viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3], typeTech!!))
+            if (techPiece[10] != "") {
+                AstroDreamUtil.useGlide(contextTechActivity, techPiece[10]) { resource ->
+                    val pathImgTech = AstroDreamUtil
+                        .saveImage(resource.toBitmap(), contextTechActivity, "img_${techPiece[1]}")
 
+                    viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3], pathImgTech, typeTech!!))
+                }
+            } else {
+                viewModel.favTechDB(Tech(techPiece[1], techPiece[2], techPiece[3], "", typeTech!!))
+            }
         }
 
         btnShareTech.setOnClickListener {

@@ -13,6 +13,8 @@ data class Tech(
 
     var descTech: String,
 
+    var pathImgTech: String,
+
     var typeTech: String
 )
 

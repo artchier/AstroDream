@@ -42,10 +42,6 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
     private lateinit var welcome: View
     private lateinit var dialog: MaterialAlertDialogBuilder
 
-    companion object {
-        private var alreadyUpdated = false
-    }
-
     private val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -110,9 +106,14 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
 
         val showDialog = dialog.create()
 
-        if (isConsecutive(SimpleDateFormat.getDateInstance().parse(lastLogin)!!)) {
+        if (isConsecutive(
+                SimpleDateFormat.getDateInstance().parse(lastLogin)!!
+            ) && !getSharedPreferences(
+                "com.example.astrodream.first_time", MODE_PRIVATE
+            ).getBoolean("alreadyUpdated", false)
+        ) {
             when (lastTime) {
-                1, 2 -> {
+                0, 1, 2 -> {
                     CoroutineScope(Dispatchers.Main).launch {
                         delay(1000)
                         showDialog.show()
@@ -200,45 +201,51 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
                     }
                 }
             }
-            if (!alreadyUpdated) {
-                getSharedPreferences(
-                    "com.example.astrodream.first_time",
-                    MODE_PRIVATE
-                ).edit()
-                    .putInt("loginTimes", lastTime + 1).apply()
+            getSharedPreferences(
+                "com.example.astrodream.first_time",
+                MODE_PRIVATE
+            ).edit()
+                .putInt("loginTimes", lastTime + 1).apply()
 
-                getSharedPreferences(
-                    "com.example.astrodream.first_time",
-                    MODE_PRIVATE
-                ).edit()
-                    .putString(
-                        "lastLogin",
-                        SimpleDateFormat.getDateInstance().format(Calendar.getInstance().time)
-                            .toString()
-                    )
-                    .apply()
-                alreadyUpdated = true
-            }
+            getSharedPreferences(
+                "com.example.astrodream.first_time",
+                MODE_PRIVATE
+            ).edit()
+                .putString(
+                    "lastLogin",
+                    SimpleDateFormat.getDateInstance().format(Calendar.getInstance().time)
+                        .toString()
+                )
+                .apply()
+            getSharedPreferences(
+                "com.example.astrodream.first_time",
+                MODE_PRIVATE
+            ).edit()
+                .putBoolean("alreadyUpdated", true).apply()
+
         } else {
-            if (!alreadyUpdated) {
-                getSharedPreferences(
-                    "com.example.astrodream.first_time",
-                    MODE_PRIVATE
-                ).edit()
-                    .putInt("loginTimes", 1).apply()
+            getSharedPreferences(
+                "com.example.astrodream.first_time",
+                MODE_PRIVATE
+            ).edit()
+                .putInt("loginTimes", 1).apply()
 
-                getSharedPreferences(
-                    "com.example.astrodream.first_time",
-                    MODE_PRIVATE
-                ).edit()
-                    .putString(
-                        "lastLogin",
-                        SimpleDateFormat.getDateInstance().format(Calendar.getInstance().time)
-                            .toString()
-                    )
-                    .apply()
-                alreadyUpdated = true
-            }
+            getSharedPreferences(
+                "com.example.astrodream.first_time",
+                MODE_PRIVATE
+            ).edit()
+                .putString(
+                    "lastLogin",
+                    SimpleDateFormat.getDateInstance().format(Calendar.getInstance().time)
+                        .toString()
+                )
+                .apply()
+            getSharedPreferences(
+                "com.example.astrodream.first_time",
+                MODE_PRIVATE
+            ).edit()
+                .putBoolean("alreadyUpdated", true).apply()
+
         }
 
         dailyImage()
@@ -292,5 +299,16 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
             arrayOf(calendar2.get(Calendar.DAY_OF_MONTH), calendar2.get(Calendar.MONTH + 1))
 
         return (date1[0] == date2[0] && date1[1] == date2[1])
+    }
+
+    override fun onBackPressed() {
+        getSharedPreferences(
+            "com.example.astrodream.first_time",
+            MODE_PRIVATE
+        ).edit()
+            .putBoolean("alreadyUpdated", false).apply()
+
+        finish()
+        super.onBackPressed()
     }
 }

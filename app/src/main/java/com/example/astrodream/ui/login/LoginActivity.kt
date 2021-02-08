@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
 
     private var insertedEmail = ""
-    private var insertedPassword= ""
+    private var insertedPassword = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode != LoginFragment.RC_SIGN_IN_GOOGLE){
+        if (requestCode != LoginFragment.RC_SIGN_IN_GOOGLE) {
             LoginFragment.callbackManager.onActivityResult(
                 requestCode,
                 resultCode,

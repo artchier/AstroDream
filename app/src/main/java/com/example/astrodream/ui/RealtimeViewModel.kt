@@ -32,7 +32,6 @@ class RealtimeViewModel : ViewModel() {
         const val TAG = "===REALTIME_VIEW_MODEL"
         private val animationFadeIn = AlphaAnimation(0f, 1f)
         private val animationFadeOut = AlphaAnimation(1f, 0f)
-        const val loginNasaCoins = 50
         const val dailyNasaCoins = 100
         const val asteroidsNasaCoins = 50
         const val globeNasaCoins = 80
@@ -82,7 +81,7 @@ class RealtimeViewModel : ViewModel() {
                     val userRealtime = dataSnapshot.getValue(User::class.java)
                     // Se usuário inexistente, cria novo usuario
                     if (userRealtime == null) {
-                        realtimeUserRepository.addUserRealtime(User(email, name, 650))
+                        realtimeUserRepository.addUserRealtime(User(email, name, 50))
                     }
                     if (userRealtime != null) {
                         activeUser.value = userRealtime

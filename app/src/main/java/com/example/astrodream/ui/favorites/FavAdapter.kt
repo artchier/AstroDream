@@ -65,6 +65,7 @@ class FavAdapter(
             "tech" -> {
                 val favorite = favsList[position] as Tech
                 iconId = R.drawable.ic_tecnologia
+                img = favorite.pathImgTech
                 text1 = favorite.typeTech
                 text2 = favorite.titleTech
             }

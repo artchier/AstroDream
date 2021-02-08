@@ -36,6 +36,19 @@ class FavTechFragment : Fragment() {
         tech = viewModelFav.detail.value as Tech
 
         favView.ivTech.setImageResource(R.drawable.ic_tecnologia)
+        if (tech.pathImgTech != "") {
+            Glide.with(contextTechActivity).asBitmap()
+                .load(tech.pathImgTech)
+                .into(view.ivTech)
+
+            view.ivTech.setOnClickListener {
+                val intent = Intent(view.context, FullScreenImgActivity::class.java)
+                intent.putExtra("img", tech.pathImgTech)
+                ContextCompat.startActivity(requireContext(), intent, null)
+            }
+        } else {
+            view.ivTech.setImageResource(R.drawable.ic_tecnologia)
+        }
 
         favView.tvCodReferenceTech.text = tech.codReferenceTech
         TranslatorEngToPort.translateEnglishToPortuguese(tech.titleTech, favView.tvTitleTech)

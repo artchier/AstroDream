@@ -62,7 +62,7 @@ class FavTechFragment : Fragment() {
             }
 
             viewModelDetails.deleteTechDB(tech.codReferenceTech)
-            startActivity(Intent(requireActivity(), FavoritesActivity::class.java))
+            requireActivity().onBackPressed()
         }
 
         btnShareTech.setOnClickListener {

@@ -130,7 +130,6 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
 
         if (bottomTabs.selectedTabPosition == 0) {
             finish()
-            startActivity(Intent(this, InitialActivity::class.java))
             return
         }
 

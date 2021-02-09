@@ -79,7 +79,6 @@ fun AstroDreamUtil.Companion.showDialogError(context: Context, id_layout: Int) {
             .create()
 
         view.findViewById<Button>(R.id.button_error_message).setOnClickListener {
-            context.startActivity(Intent(context, InitialActivity::class.java))
             dialog.dismiss()
             (context as Activity).finish()
         }

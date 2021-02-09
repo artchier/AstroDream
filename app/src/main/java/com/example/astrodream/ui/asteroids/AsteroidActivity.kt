@@ -32,6 +32,9 @@ import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_asteroid.*
+import kotlinx.android.synthetic.main.activity_globe.*
+import kotlinx.android.synthetic.main.asteroid_dialog.*
+import kotlinx.android.synthetic.main.asteroid_dialog.view.*
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
@@ -69,6 +72,16 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_asteroid)
 
+        //pega o valor dos NasaCoins vindos do Realtime
+        realtimeViewModel.activeUser.observe(this) {
+            tvTotalAsteroid.text = it.nasaCoins.toString()
+        }
+
+        //pega o novo valor dos NasaCoins
+        realtimeViewModel.nasaCoinsDialogValue.observe(this){
+            tvTotalAsteroid.text = it.toString()
+        }
+
         // ##### Set nome dos botões #####
         listButtonsName = arrayListOf(
             getString(R.string.button_1), getString(R.string.button_2),
@@ -90,7 +103,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         listView.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
             when (groupPosition) {
                 0, 3 -> onClickAsteroidsDate(childPosition, groupPosition)
-                1, 2 -> onClikAsteroidsAll(childPosition, groupPosition)
+                1, 2 -> onClickAsteroidsAll(childPosition, groupPosition)
             }
             false
         }
@@ -133,7 +146,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     }
 
     @SuppressLint("InflateParams")
-    private fun onClikAsteroidsAll(childPos: Int, groupPos: Int) {
+    private fun onClickAsteroidsAll(childPos: Int, groupPos: Int) {
         var asteroid: Asteroid =
             expandableListAdapter.listAsteroids[expandableListAdapter.listButtons[groupPos]]?.get(
                 childPos
@@ -169,6 +182,11 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
         progressbar.visibility = ProgressBar.GONE
 
         progressbar.visibility = ProgressBar.GONE
+
+        //pega o valor dos NasaCoins vindos do Realtime
+        realtimeViewModel.activeUser.observe(this){
+            view.tvTotalDetails.text = it.nasaCoins.toString()
+        }
 
         if (asteroid.is_potentially_hazardous_asteroid)
             view.findViewById<TextView>(R.id.is_potentially_hazardous_asteroid).visibility =
@@ -222,7 +240,7 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
             onAsteroidFavsClickEvent(it, isAsteroidInDB, *listStrings)
         }
 
-        AstroDreamUtil.showDialogMessage(this, view)
+        AstroDreamUtil.showDialogMessage(this, view, realtimeViewModel, tvTotalAsteroid.text.toString().toInt())
     }
 
 
@@ -399,10 +417,20 @@ class AsteroidActivity : ActivityWithTopBar(R.string.asteroides, R.id.dlAsteroid
     }
 
     override fun onBackPressed() {
-        if (listView.isSomeGroupExpandad()){
+        if (listView.isSomeGroupExpandad()) {
             listView.collapseAllGroups()
             return
         }
         startActivity(Intent(this, InitialActivity::class.java))
+        finish()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        realtimeViewModel.updateUserNasaCoins(
+            realtimeViewModel.activeUser.value?.email!!,
+            tvTotalAsteroid.text.toString().toLong()
+        )
     }
 }

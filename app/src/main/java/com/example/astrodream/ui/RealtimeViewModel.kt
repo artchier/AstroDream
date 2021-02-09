@@ -41,6 +41,8 @@ class RealtimeViewModel : ViewModel() {
 
     val activeUser = MutableLiveData<User>()
 
+    val nasaCoinsDialogValue = MutableLiveData<Long>()
+
     val realtimeUserRepository = RealtimeUserRepository()
 
     fun updateUserName(email: String, newName: String) {
@@ -97,10 +99,16 @@ class RealtimeViewModel : ViewModel() {
         }
     }
 
-    fun animateNasaCoins(view1: View, view2: TextView, toolbarTitleId: Int) {
+    fun animateNasaCoins(
+        view1: View,
+        view2: TextView,
+        toolbarTitleId: Int, nasaCoins: Int
+    ) {
         CoroutineScope(Dispatchers.Main).launch {
             delay(500)
             view1.visibility = VISIBLE
+            if(nasaCoins != 0)
+                view2.text = nasaCoins.toString()
             animationFadeIn.setAnimationListener(object :
                 Animation.AnimationListener {
                 override fun onAnimationStart(p0: Animation?) {
@@ -135,6 +143,7 @@ class RealtimeViewModel : ViewModel() {
                                 fadeOutAnimation.duration = 500
                                 view1.startAnimation(fadeOutAnimation)
                                 view1.visibility = View.INVISIBLE
+                                nasaCoinsDialogValue.value = view2.text.toString().toLong()
                             }
                         }
 

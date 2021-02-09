@@ -15,8 +15,6 @@ import com.bumptech.glide.Glide
 import com.example.astrodream.R
 import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.ui.RealtimeViewModel
-import com.example.astrodream.utils.TranslationEnglishToPortuguese
-import kotlinx.android.synthetic.main.activity_tech.*
 
 class TechPieceAdapter(
     var onTechPieceClicked: (position: Int) -> Unit,
@@ -62,7 +60,7 @@ class TechPieceAdapter(
             realtimeViewModel.animateNasaCoins(
                 activity.findViewById(R.id.llNasaCoinsTech),
                 activity.findViewById(R.id.tvTotalTech),
-                R.string.tecnologias
+                R.string.tecnologias, 0
             )
         }
     }

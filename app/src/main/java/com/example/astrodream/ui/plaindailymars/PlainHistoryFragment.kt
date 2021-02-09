@@ -2,7 +2,6 @@ package com.example.astrodream.ui.plaindailymars
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.astrodream.R
 import com.example.astrodream.domain.PlainClass
 import com.example.astrodream.ui.RealtimeViewModel
-import kotlinx.android.synthetic.main.activity_plain.*
 import kotlinx.android.synthetic.main.fragment_plain_history.*
 import kotlinx.android.synthetic.main.fragment_plain_history.view.*
 
@@ -82,7 +80,7 @@ abstract class PlainHistoryFragment : Fragment(), PlainAdapter.OnClickDetailList
             realtimeViewModel.animateNasaCoins(
                 requireActivity().findViewById(R.id.llNasaCoinsMars),
                 requireActivity().findViewById(R.id.tvTotalMars),
-                R.string.marte
+                R.string.marte, 0
             )
         }
     }

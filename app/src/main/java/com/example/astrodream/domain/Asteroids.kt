@@ -9,6 +9,9 @@ import java.io.Serializable
 
 data class AsteroidRes(val element_count: Int, val near_earth_objects: JsonObject)
 
+data class AsteroidAllRes(val spkid: String, val full_name: String, val first_obs: String,
+                          val pha: String): Serializable
+
 data class AsteroidData(
     val id: String,
     val name: String,
@@ -54,10 +57,10 @@ data class AsteroidData(
         when (orbita){
             "Earth" -> return "Terra"
             "Sun" -> return "Sol"
-            "Mercury"-> return "Mercúrio"
+            "Merc"-> return "Mercúrio"
             "Venus" -> return "Vênus"
             "Mars" -> return "Marte"
-            "Jupiter" -> return "Júpiter"
+            "Juptr" -> return "Júpiter"
             "Saturn" -> return "Saturno"
             "Uranus" -> return "Urano"
             "Neptune" -> return "Netuno"
@@ -86,9 +89,9 @@ data class Asteroid(
     val is_potentially_hazardous_asteroid: Boolean,
     val absolute_magnitude: String?,
     val relative_velocity: String?,
-    val close_approach_data: String?,
+    val close_approach_data: String,
     val miss_distance: String?,
-    val estimated_diameter: String,
+    val estimated_diameter: String?,
     val orbiting_body: String?,
     val linkExterno: String?
 ) : Serializable, Comparable<Asteroid>{

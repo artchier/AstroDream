@@ -1,26 +1,22 @@
 package com.example.astrodream.ui
 
 import android.graphics.Matrix
-import android.graphics.Point
 import android.graphics.PointF
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.GestureDetector
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.View
 import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.doOnLayout
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.astrodream.R
-import com.example.astrodream.services.saveImage
-import com.example.astrodream.services.setImageAsWallpaper
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.useGlide
+import com.example.astrodream.services.buildDownloadSetWallpaperMenu
+import com.example.astrodream.services.shareImageFromBitmap
+import com.example.astrodream.services.shareImageFromUrl
 import kotlinx.android.synthetic.main.activity_full_screen_img.*
 
 class FullScreenImgActivity : AppCompatActivity() {
@@ -54,38 +50,44 @@ class FullScreenImgActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_img)
 
-        imgURL = intent.extras?.getString("img") ?: ""
-        hdimgURL = intent.extras?.getString("hdimg") ?: ""
+        val imageTitle: String = intent.getStringExtra("title") ?: ""
+        val imageDescription: String = intent.getStringExtra("description") ?: ""
+        imgURL = intent.getStringExtra("img") ?: ""
+        hdimgURL = intent.getStringExtra("hdimg") ?: ""
 
         ivFull.doOnLayout {
             viewWidth = ivFull.width
             viewHeight = ivFull.height
 
-            Glide.with(this)
-                .load(imgURL)
-                .into(object : CustomTarget<Drawable?>() {
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable?>?
-                    ) {
-                        imageWidth = resource.intrinsicWidth
-                        imageHeight = resource.intrinsicHeight
-                        origWidth = imageWidth.toFloat()
-                        origHeight = imageHeight.toFloat()
-                        ivFull.setImageDrawable(resource)
-                        ivFull.requestLayout()
-                        ivFull.imageMatrix = mMatrix
-                        ivFull.scaleType = ImageView.ScaleType.MATRIX
-                        fitToScreen()
-                    }
-                    override fun onLoadCleared(placeholder: Drawable?) {}
-                })
+            AstroDreamUtil.useGlide(this, imgURL) { resource ->
+                imageWidth = resource.intrinsicWidth
+                imageHeight = resource.intrinsicHeight
+                origWidth = imageWidth.toFloat()
+                origHeight = imageHeight.toFloat()
+                ivFull.setImageDrawable(resource)
+                ivFull.requestLayout()
+                ivFull.imageMatrix = mMatrix
+                ivFull.scaleType = ImageView.ScaleType.MATRIX
+                fitToScreen()
+            }
         }
 
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
         gestureDetector = GestureDetector(this, GestureListener())
 
         ivCloseFullscreen.setOnClickListener { finish() }
+
+        ivDownloadWallpaper.setOnClickListener {
+            buildDownloadSetWallpaperMenu(this, ivDownloadWallpaper, getBestUrl())
+        }
+
+        ivShare.setOnClickListener {
+            if (hdimgURL != "") {
+                shareImageFromUrl(hdimgURL, imageTitle, imageDescription, this)
+            } else {
+                shareImageFromBitmap(ivFull.drawable.toBitmap(), imageTitle, imageDescription, this)
+            }
+        }
     }
 
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
@@ -115,6 +117,8 @@ class FullScreenImgActivity : AppCompatActivity() {
         return false
     }
 
+    private fun getBestUrl() = if (hdimgURL != "") hdimgURL else imgURL
+
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onDown(e: MotionEvent?): Boolean { return false }
         override fun onShowPress(e: MotionEvent?) {}
@@ -127,40 +131,7 @@ class FullScreenImgActivity : AppCompatActivity() {
         ): Boolean { return false }
 
         override fun onLongPress(e: MotionEvent?) {
-            PopupMenu(this@FullScreenImgActivity, ivCloseFullscreen, Gravity.TOP).apply {
-                inflate(R.menu.menu_fullscreen_images)
-                setOnMenuItemClickListener {
-                    Toast.makeText(baseContext, "Baixando imagem em alta resolução...", Toast.LENGTH_SHORT).show()
-
-                    val url = if (hdimgURL != "") hdimgURL else imgURL
-
-                    Glide.with(this@FullScreenImgActivity)
-                        .load(url)
-                        .into(object : CustomTarget<Drawable?>() {
-                            override fun onResourceReady(
-                                resource: Drawable,
-                                transition: Transition<in Drawable?>?
-                            ) {
-                                when (it.itemId) {
-                                    R.id.downloadImageItem -> {
-                                        saveImage(resource.toBitmap(), baseContext, getString(R.string.app_name))
-                                        Toast.makeText(baseContext, "Imagem salva!", Toast.LENGTH_LONG).show()
-                                    }
-                                    R.id.useAsWallpaperItem -> {
-                                        val screenSize = Point()
-                                        baseContext.display!!.getRealSize(screenSize)
-
-                                        setImageAsWallpaper(screenSize, baseContext, resource)
-                                        Toast.makeText(baseContext, "Wallpaper atualizado!", Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                            }
-                            override fun onLoadCleared(placeholder: Drawable?) {}
-                        })
-
-                    true
-                }
-            }.show()
+            buildDownloadSetWallpaperMenu(this@FullScreenImgActivity, ivDownloadWallpaper, getBestUrl())
         }
 
         override fun onFling(
@@ -169,7 +140,20 @@ class FullScreenImgActivity : AppCompatActivity() {
             velocityX: Float,
             velocityY: Float
         ): Boolean { return false }
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean { return false }
+
+        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+            val newVisibility = if (ivCloseFullscreen.visibility == View.VISIBLE) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+
+            ivCloseFullscreen.visibility = newVisibility
+            ivDownloadWallpaper.visibility = newVisibility
+            ivShare.visibility = newVisibility
+
+            return false
+        }
 
         override fun onDoubleTap(e: MotionEvent?): Boolean {
             fitToScreen()

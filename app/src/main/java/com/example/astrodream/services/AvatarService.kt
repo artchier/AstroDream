@@ -1,39 +1,21 @@
 package com.example.astrodream.services
 
 import com.example.astrodream.dao.AvatarDAO
-import com.example.astrodream.entitiesDatabase.Avatar
+import com.example.astrodream.entitiesDatabase.AvatarRoom
 
 interface AvatarService {
 
-    suspend fun addAllAvatarsTask(avatars: List<Avatar>)
+    suspend fun addAllAvatarsTask(avatars: List<AvatarRoom>)
 
-    suspend fun buyAvatarTask(avatar: Avatar)
-
-    suspend fun updateLastClickedAvatarTask(newAvatar: Avatar, oldAvatar: Avatar)
-
-    suspend fun getLastClickedAvatarTask(): Avatar
-
-    suspend fun getAllAvatarsTask(): List<Avatar>?
+    suspend fun getAllAvatarsTask(): List<AvatarRoom>?
 }
 
 class AvatarServiceImplementation(private val avatarDAO: AvatarDAO) : AvatarService {
-    override suspend fun addAllAvatarsTask(avatars: List<Avatar>) {
+    override suspend fun addAllAvatarsTask(avatars: List<AvatarRoom>) {
         avatarDAO.addAllAvatars(avatars)
     }
 
-    override suspend fun buyAvatarTask(avatar: Avatar) {
-        avatarDAO.buyAvatar(avatar)
-    }
-
-    override suspend fun updateLastClickedAvatarTask(newAvatar: Avatar, oldAvatar: Avatar) {
-        avatarDAO.updateLastClickedAvatar(newAvatar, oldAvatar)
-    }
-
-    override suspend fun getLastClickedAvatarTask(): Avatar {
-        return avatarDAO.getLastClickedAvatar()
-    }
-
-    override suspend fun getAllAvatarsTask(): List<Avatar>? {
+    override suspend fun getAllAvatarsTask(): List<AvatarRoom>? {
         return avatarDAO.getAllAvatars()
     }
 

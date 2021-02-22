@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.userconfig.UserConfigFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/pill_shape"
+        android:backgroundTint="@color/lucky_point">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_username"
+            app:tint="@color/light_purple"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:id="@+id/tvUserNameConfig"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:fontFamily="@font/homespun_regular"
+            android:textColor="@color/white"
+            android:paddingHorizontal="20dp"
+            android:text="Marinex"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"/>
+        <ImageButton
+            android:id="@+id/btnChangeName"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_edit"
+            android:scaleType="centerCrop"
+            android:tint="@color/light_purple"
+            android:background="@color/transparent"
+            android:contentDescription="@string/cd_btnChangeName" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/pill_shape"
+        android:backgroundTint="@color/lucky_point"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_notifications"
+            app:tint="@color/light_purple"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/white"
+            android:paddingHorizontal="20dp"
+            android:text="@string/notifications"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/SwitchCompatTheme"
+            android:checked="false"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBtnChangePswd"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/pill_shape"
+        android:backgroundTint="@color/lucky_point">
+        <ImageView
+            android:id="@+id/ivBtnChangePswd"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/password_icon"
+            app:tint="@color/light_purple"
+            android:scaleType="centerCrop"/>
+        <Button
+            android:id="@+id/btnChangePswd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/white"
+            android:paddingHorizontal="20dp"
+            android:text="@string/alterar_senha"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:background="@color/transparent"/>
+
+    </LinearLayout>
+
+</LinearLayout>

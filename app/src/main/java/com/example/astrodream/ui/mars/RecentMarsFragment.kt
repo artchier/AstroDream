@@ -1,6 +1,7 @@
 package com.example.astrodream.ui.mars
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
@@ -13,15 +14,16 @@ import com.example.astrodream.ui.plaindailymars.PlainDetailFragment
 import com.example.astrodream.ui.plaindailymars.PlainViewModel
 import kotlinx.android.synthetic.main.fragment_recent_mars.view.*
 import me.relex.circleindicator.CircleIndicator
-import com.example.astrodream.entitiesDatabase.MarsRoom
-import com.example.astrodream.services.ServiceDBImplementationDaily
 import com.example.astrodream.services.ServiceDBImplementationMars
 import com.example.astrodream.services.service
+import com.example.astrodream.ui.RealtimeViewModel
 import com.example.astrodream.ui.plaindailymars.PlainActivity
 import com.example.astrodream.ui.plaindailymars.PlainActivityType
+import kotlinx.android.synthetic.main.card_mars_post.*
+import kotlinx.android.synthetic.main.card_mars_post.view.*
+import kotlinx.android.synthetic.main.fragment_recent_mars.*
 
 class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
-
     companion object {
         fun newInstance() = RecentMarsFragment()
     }
@@ -33,8 +35,8 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
         super.onViewCreated(view, savedInstanceState)
 
         val contextActivity = this.requireActivity()
-        view.btnFavMars.setOnClickListener{
-            if(contextActivity is PlainActivity) {
+        view.btnFavMars.setOnClickListener {
+            if (contextActivity is PlainActivity) {
                 val viewModel: PlainViewModel by activityViewModels()
                 viewModel.favPlainDB(plainDetail, it as ToggleButton, requireActivity())
             } else {
@@ -43,7 +45,11 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
                 val viewModel by viewModels<PlainViewModel> {
                     object : ViewModelProvider.Factory {
                         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                            return PlainViewModel(service, PlainActivityType.Mars, repositoryDaily) as T
+                            return PlainViewModel(
+                                service,
+                                PlainActivityType.Mars,
+                                repositoryDaily
+                            ) as T
                         }
                     }
                 }
@@ -53,9 +59,6 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
     }
 
     override fun popView(view: View) {
-
-        val contextActivity = this.requireActivity()
-
         adapterMars = MarsAdapter(
             view.context,
             plainDetail.img_list,
@@ -76,9 +79,6 @@ class RecentMarsFragment : PlainDetailFragment(R.layout.fragment_recent_mars) {
         view.postDescr.text = plainDetail.earth_date
 
         view.btnFavMars.isChecked = plainDetail.isFav
-//        viewModel.favMarsState(MarsRoom(plainDetail.earth_date, plainDetail.sol, plainDetail.maxTemp, plainDetail.minTemp), view.btnFavMars)
-
     }
-
 
 }

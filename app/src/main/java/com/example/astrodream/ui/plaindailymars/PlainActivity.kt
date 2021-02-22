@@ -13,6 +13,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.astrodream.R
 import com.example.astrodream.database.AppDatabase
+import com.example.astrodream.domain.util.AstroDreamUtil
+import com.example.astrodream.domain.util.showErrorInternetConnection
+import com.example.astrodream.domain.util.showUnknownError
 import com.example.astrodream.services.*
 import com.example.astrodream.ui.ActivityWithTopBar
 import com.example.astrodream.ui.initial.InitialActivity
@@ -21,6 +24,7 @@ import com.google.android.material.tabs.TabLayout
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.activity_mars.bottomTabs
 import kotlinx.android.synthetic.main.activity_plain.*
+import kotlinx.android.synthetic.main.activity_tech.*
 import kotlinx.android.synthetic.main.dialog_info_daily.view.*
 
 abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityType) :
@@ -41,10 +45,9 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
     val viewModel by viewModels<PlainViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                if(type == PlainActivityType.DailyImage) {
+                if (type == PlainActivityType.DailyImage) {
                     return PlainViewModel(service, type, repositoryDaily) as T
-                }
-                else {
+                } else {
                     return PlainViewModel(service, type, repositoryMars) as T
                 }
             }
@@ -57,9 +60,9 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         setUpMenuBehavior()
 
         db = AppDatabase.invoke(this)
-        if(type == PlainActivityType.DailyImage) {
+        if (type == PlainActivityType.DailyImage) {
             repositoryDaily = ServiceDBImplementationDaily(db.dailyDAO())
-        } else if(type == PlainActivityType.Mars) {
+        } else if (type == PlainActivityType.Mars) {
             repositoryMars = ServiceDBImplementationMars(db.marsDAO())
         }
 
@@ -74,22 +77,22 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         bottomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                    when (tab?.position) {
-                        0 -> {
-                            fromHistToRoot()
-                        }
-                        1 -> {
-                            fromRootToHist()
-                        }
+                when (tab?.position) {
+                    0 -> {
+                        fromHistToRoot()
                     }
+                    1 -> {
+                        fromRootToHist()
+                    }
+                }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                    when (tab?.position) {
-                        1 -> {
-                            reselectHist()
-                        }
+                when (tab?.position) {
+                    1 -> {
+                        reselectHist()
                     }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -101,10 +104,20 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         // Dialog em caso de perda de conexão
         viewModel.hasInternetConnection.observe(this) {
             if (!it) {
-                showNoConnectionDialog()
+                AstroDreamUtil.showErrorInternetConnection(this)
             }
         }
 
+        // Dialog em caso de erro desconhecido
+        viewModel.unknownErrorAPI.observe(this) {
+            if (it) {
+                AstroDreamUtil.showUnknownError(this)
+            }
+        }
+
+        realtimeViewModel.activeUser.observe(this) {
+            tvTotalMars.text = it.nasaCoins.toString()
+        }
     }
 
     override fun onBackPressed() {
@@ -117,7 +130,6 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
 
         if (bottomTabs.selectedTabPosition == 0) {
             finish()
-            startActivity(Intent(this, InitialActivity::class.java))
             return
         }
 
@@ -159,8 +171,8 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
 
     fun fromRootToHist() {
         if (supportFragmentManager.findFragmentByTag("HIST_TAG") == null) {
-                                addFragment(newHistoryFrag(), "HIST_TAG")
-                            } else {
+            addFragment(newHistoryFrag(), "HIST_TAG")
+        } else {
             supportFragmentManager.commit {
                 hide(supportFragmentManager.findFragmentByTag("ROOT_TAG")!!)
                 show(supportFragmentManager.findFragmentByTag("HIST_TAG")!!)
@@ -194,18 +206,12 @@ abstract class PlainActivity(toolbarTitleString: Int, val type: PlainActivityTyp
         }
     }
 
-    private fun showNoConnectionDialog() {
-        val dialogView = View.inflate(this, R.layout.dialog_info_daily, null)
-        dialogView.tvInfoDaily.text = "Ooops, estamos sem internet!"
+    override fun onStop() {
+        super.onStop()
 
-        val dialog = MaterialAlertDialogBuilder(this)
-            .setView(dialogView)
-            .create()
-
-        dialogView.btnOk.setOnClickListener {
-            dialog.dismiss()
-            finish()
-        }
-        dialog.show()
+        realtimeViewModel.updateUserNasaCoins(
+            realtimeViewModel.activeUser.value?.email!!,
+            tvTotalMars.text.toString().toLong()
+        )
     }
 }

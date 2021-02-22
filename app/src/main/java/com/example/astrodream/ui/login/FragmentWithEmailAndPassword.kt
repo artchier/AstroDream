@@ -1,16 +1,23 @@
 package com.example.astrodream.ui.login
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import com.example.astrodream.R
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.user_email_password.view.*
 
 private const val ARG_EMAIL = "email"
 private const val ARG_PASSWORD = "password"
 
-fun creteBundle(email: String, password: String) =
+fun createBundle(email: String, password: String) =
     Bundle().apply {
         putString(ARG_EMAIL, email)
         putString(ARG_PASSWORD, password)
@@ -41,9 +48,10 @@ abstract class FragmentWithEmailAndPassword(private val fragmentId: Int) : Fragm
         }
 
         password?.apply {
-            view.tiPassword.setText(this)
+            if (view.tiPassword != null) { view.tiPassword.setText(this) }
         }
 
         return view
     }
 }
+

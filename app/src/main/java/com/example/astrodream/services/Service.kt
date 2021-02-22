@@ -1,20 +1,19 @@
 package com.example.astrodream.services
 
-import com.example.astrodream.domain.AsteroidRes
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import com.example.astrodream.domain.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.concurrent.TimeUnit
 
 // Endpoints
 interface Service {
@@ -49,70 +48,74 @@ interface Service {
 
     @GET("neo/rest/v1/feed")
     suspend fun getAsteroidsDate(
-        @Query("start_date")p0: String,
-        @Query("api_key")p1: String = apikeyApp
-    ): AsteroidRes
+        @Query("start_date") startDate: String,
+        @Query("api_key") apikey: String = apikeyApp
+    ): NetworkResponse<AsteroidRes, AsteroidsErrorResponse>
 
     @GET("neo/rest/v1/neo/browse")
     suspend fun getAllAsteroids(
-        @Query("api_key")p0: String = apikeyApp
-    ): AsteroidRes
+        @Query("api_key") p0: String = apikeyApp
+    ): AsteroidAllRes
 
-    @GET("neo/rest/v1/feed")
+    @GET("neo/rest/v1/neo/{id}")
     suspend fun getAsteroidId(
-        @Query("start_date")p0: String,
-        @Query("end_date")p2: String,
-        @Query("api_key")p1: String = apikeyApp,
-    ): AsteroidRes
+        @Path("id") id: Int,
+        @Query("api_key") apikey: String = apikeyApp
+    ): NetworkResponse<AsteroidData, AsteroidsErrorResponse>
 
     /* ------------------------------------------- Tech ----------------------------------------- */
     @GET("techtransfer/patent/")
     suspend fun getPatents(
         @Query("api_key") apikey: String = apikeyApp
-    ): Patent
+    ): NetworkResponse<Patent, JsonObject>
 
     @GET("techtransfer/software/")
     suspend fun getSoftwares(
         @Query("api_key") apikey: String = apikeyApp
-    ): Software
+    ): NetworkResponse<Software, JsonObject>
 
     @GET("techtransfer/spinoff/")
     suspend fun getSpinoffs(
         @Query("api_key") apikey: String = apikeyApp
-    ): Spinoff
+    ): NetworkResponse<Spinoff, JsonObject>
 
     /* ------------------------------------------ Globe ----------------------------------------- */
 
-    @GET("EPIC/archive/natural/2020/11/17/{extension}/{name}")
-    suspend fun getEPIC(
-        @Path("extension") extension: String,
-        @Path("name") name: String,
+    @GET("EPIC/api/natural/available")
+    suspend fun getAllAvailableEPIC(
         @Query("api_key") apikey: String = apikeyApp
-    ): Bitmap
+    ): NetworkResponse<JsonArray, JsonArray>
 
     @GET("EPIC/api/natural/date/{chosenDate}")
     suspend fun getAllEPIC(
         @Path("chosenDate") chosenDate: String,
         @Query("api_key") apikey: String = apikeyApp
-    ): JsonArray
+    ): NetworkResponse<JsonArray, JsonArray>
 
 }
 
 @SuppressLint("SimpleDateFormat")
-fun buildGlobeImageUrl(date: Date, name: String, apikey: String = apikeyApp): String {
-    val dataFormatada = SimpleDateFormat("yyyy/MM/dd").format(date)
-
+fun buildGlobeImageUrl(date: String, name: String, apikey: String = apikeyApp): String {
+    val parseData = SimpleDateFormat("yyyyMMdd").parse(date)!!
+    val dataFormatada = SimpleDateFormat("yyyy/MM/dd").format(parseData)
     return "${urlNasa}EPIC/archive/natural/$dataFormatada/png/$name.png?api_key=$apikey"
 }
 
 // url
 const val urlNasa = "https://api.nasa.gov/"
 
+// OkHttp
+val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+    .readTimeout(60, TimeUnit.SECONDS)
+    .connectTimeout(60, TimeUnit.SECONDS)
+    .build()
+
 // Retrofit
 val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(urlNasa)
     .addConverterFactory(GsonConverterFactory.create())
     .addCallAdapterFactory(NetworkResponseAdapterFactory())
+    .client(okHttpClient)
     .build()
 
 // Passar instancia do retrofit para o service

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dlAvatar"
@@ -18,16 +19,16 @@
             layout="@layout/app_tool_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivAvatar"
             android:layout_width="105dp"
             android:layout_height="250dp"
+            app:layout_constraintBottom_toTopOf="@id/llRecyclerAvatar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tbAvatar"
-            app:layout_constraintBottom_toTopOf="@id/llRecyclerAvatar"/>
+            app:layout_constraintTop_toBottomOf="@id/tbAvatar" />
 
         <LinearLayout
             android:id="@+id/llNasaCoins"
@@ -57,7 +58,8 @@
                 android:text="1000"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <LinearLayout

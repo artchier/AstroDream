@@ -1,6 +1,5 @@
 package com.example.astrodream.ui.favorites
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.astrodream.R
-import com.example.astrodream.domain.Asteroid
 import com.example.astrodream.domain.PlainClass
+import com.example.astrodream.domain.TranslatorEngToPort
 import com.example.astrodream.entitiesDatabase.DailyRoom
 import com.example.astrodream.entitiesDatabase.Tech
-import com.example.astrodream.entitiesDatabase.MarsRoom
 import com.example.astrodream.entitiesDatabase.AsteroidRoom
 import kotlinx.android.synthetic.main.item_fav.view.*
 import java.io.File
@@ -67,6 +65,7 @@ class FavAdapter(
             "tech" -> {
                 val favorite = favsList[position] as Tech
                 iconId = R.drawable.ic_tecnologia
+                img = favorite.pathImgTech
                 text1 = favorite.typeTech
                 text2 = favorite.titleTech
             }
@@ -87,10 +86,11 @@ class FavAdapter(
         else {
             holder.ivFav.setImageResource(iconId)
         }
+
         // Preenche o primeiro TextView
-        holder.tv1Fav.text = text1
+        TranslatorEngToPort.translateEnglishToPortuguese(text1, holder.tv1Fav)
         // Preenche o segundo TextView
-        holder.tv2Fav.text = text2
+        TranslatorEngToPort.translateEnglishToPortuguese(text2, holder.tv2Fav)
 
         Log.i("===FAVADAPTER==", "${File(img)}")
     }

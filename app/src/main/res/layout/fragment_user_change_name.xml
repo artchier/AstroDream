@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.userconfig.UserChangeNameFragment"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        android:hint="@string/name"
+        app:hintTextColor="@color/black"
+        android:textColorHint="@color/black"
+        app:startIconDrawable="@drawable/ic_username"
+        app:endIconMode="clear_text"
+        app:startIconTint="@color/black"
+        app:endIconTint="@color/black"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        android:background="@drawable/pill_shape"
+        android:backgroundTint="@color/light_purple">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiChangeName"
+            android:backgroundTint="@color/transparent"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:inputType="textCapWords"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnConfirmChangeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/gigas"
+        android:layout_marginTop="20sp"
+        android:textSize="18sp"
+        android:text="@string/save_changes"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

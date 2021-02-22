@@ -4,14 +4,15 @@ import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
+import android.widget.ScrollView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.astrodream.*
+import com.example.astrodream.R
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 import com.example.astrodream.ui.avatar.AvatarActivity
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
@@ -22,20 +23,42 @@ import com.example.astrodream.ui.login.LoginActivity
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.ui.tech.TechActivity
 import com.example.astrodream.ui.userconfig.UserConfigActivity
+import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.app_tool_bar.*
+import kotlinx.android.synthetic.main.header_layout.*
 
 abstract class ActivityWithTopBar(
-    private val toolbarTiteTitleId: Int,
+    private val toolbarTitleId: Int,
     private val drawerLayoutId: Int
 ) : AppCompatActivity() {
-
     private var toolBar: MaterialToolbar? = null
     private lateinit var drawerLayout: DrawerLayout
+
+    val realtimeViewModel: RealtimeViewModel by viewModels()
+
+    private fun userListener(name: String, email: String) {
+        if (email == "") {
+            return
+        }
+
+        realtimeViewModel.retrieveUserData(email, name)
+
+        realtimeViewModel.activeUser.observe(this) {
+            ivAstronauta.setImageDrawable(
+                ContextCompat.getDrawable(this, it.avatar)
+            )
+            tvUserName.text = getString(R.string.greetins).format(it.name)
+        }
+    }
 
     private fun <T> goToActivityIfNotAlreadyThere(destination: Class<T>) {
         if (this::class.java == destination) {
@@ -54,12 +77,12 @@ abstract class ActivityWithTopBar(
 
         toolBar?.apply {
             title = ""
-            tvToolBarTitle.text = resources.getString(toolbarTiteTitleId)
+            tvToolBarTitle.text = resources.getString(toolbarTitleId)
         }
         setSupportActionBar(toolBar)
 
         val lateralMenuHost = findViewById<NavigationView>(R.id.nvLateralMenu)
-        val lateralMenu = findViewById<ConstraintLayout>(R.id.clLateralMenu)
+        val lateralMenu = findViewById<ScrollView>(R.id.clLateralMenu)
 
         val btnAvatar = lateralMenuHost.findViewById<AppCompatButton>(R.id.btnAvatar)
 
@@ -120,8 +143,17 @@ abstract class ActivityWithTopBar(
         }
 
         btnLogout.setOnClickListener {
-            Firebase.auth.signOut()
-            goToActivityIfNotAlreadyThere(LoginActivity::class.java)
+            logout()
+        }
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val providerData: List<UserInfo?> = currentUser.providerData
+            val email = providerData[1]!!.email
+            userListener(
+                Firebase.auth.currentUser?.displayName ?: "",
+                email ?: ""
+            )
         }
     }
 
@@ -143,5 +175,28 @@ abstract class ActivityWithTopBar(
             return
         }
         super.onBackPressed()
+    }
+
+    private fun logout() {
+        // Logout email/senha
+        Firebase.auth.signOut()
+        // Logout Google
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("67163504194-hjucfh631cgv65fuegvfqbp51n016lg0.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient.signOut()
+        // Logout Facebook
+        // TODO: parece que não está funcionando direito....
+        LoginManager.getInstance().logOut()
+
+        //essa linha garante que a tela de login seja exibida se caso o usuário faça logout e saia do app
+        // por meio do botão de voltar e não o encerre
+        SplashScreenActivity.alreadyLogged = true
+
+        // Volta para a activity de login
+        goToActivityIfNotAlreadyThere(LoginActivity::class.java)
+        finish()
     }
 }

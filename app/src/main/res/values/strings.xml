@@ -86,9 +86,6 @@
     <string name="magnitute_template">"Magnitude Absoluta: %s"</string>
     <string name="velocidade_template">"Velocidade: %s km/s"</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- Url Imagens AsteroidActivity -->
     <string name="url_imagem_globo">https://i.ibb.co/gzJBqz8/planeta.gif</string>
     <string name="url_esquerda_cima">https://i.ibb.co/CbVJ2hD/20210102–001705.gif</string>
@@ -123,6 +120,7 @@
     <string name="dialog_miss_distance">Distância aproximada: %s</string>
     <string name="dialog_orbiting_body">Órbita: %s</string>
     <string name="dialog_estimated_diameter">Tamanho estimado: %s</string>
+    <string name="asteroid_not_found_message">Informações indisponíneis para esse asteroide.</string>
 
     <string name="logo">logo</string>
     <string name="imagem_anterior">Imagem Anterior</string>
@@ -143,4 +141,35 @@
     <string name="usar_como_wallpaper">Usar como wallpaper</string>
     <string name="logout">Logout</string>
     <string name="logo_do_app">Logo do App</string>
+
+    <string name="error_internet">Que pena, astronauta! Para acessar esse lugar no espaço você precisa estar conectado à internet. Por favor, verifique sua conexão e tente novamente.</string>
+    <string name="error_title">Sem internet</string>
+
+    <string name="facebook_app_id">137940331401686</string>
+    <string name="fb_login_protocol_scheme">fb137940331401686</string>
+    <string name="reset_pswd">REDEFINIR SENHA</string>
+    <string name="back_login">VOLTAR PARA O LOGIN</string>
+    <string name="greetins">Olá, %s</string>
+    <string name="salvar_ou_usar_como_wallpaper">Salvar ou usar como wallpaper</string>
+    <string name="compartilhar">compartilhar</string>
+    <string name="asteroide_potencialmente_perigoso">ASTEROIDE POTENCIALMENTE PERIGOSO</string>
+    <string name="ver_rbita">ver órbita</string>
+    <string name="confirm">Confirmar</string>
+    <string name="notifications">Notificações</string>
+    <string name="alterar_senha">Alterar senha</string>
+    <string name="cd_btnChangeName">Botão para alterar nome de usuário</string>
+    <string name="save_changes">Salvar alterações</string>
+    <string name="confirm_current_password">Por favor confirme sua senha atual</string>
+    <string name="current_password">Senha atual</string>
+    <string name="type_new_password">Digite sua nova senha</string>
+    <string name="new_password">Nova senha</string>
+    <string name="no_favorites">Você ainda não possui nenhum favorito nessa categoria :(</string>
+    <string name="descricao_server_error">Perdemos a conexão com a Nasa, astronauta! Nossos especialistas em comunicação já foram avisados. Aguarde enquanto tentamos reestabelecer a conexão.</string>
+    <string name="explorar">Vamos lá!</string>
+    <string name="explorar2">Ops… Parece que faltam NasaCoins, astronauta! Que tal explorar mais um pouquinho?</string>
+    <string name="bem_vindo_astronauta">Bem vindo(a) ao AstroDream!</string>
+    <string name="bem_vindo_de_volta">Bem vindo(a) de volta!</string>
+
+    <string name="asteroid_template">Asteroide %s</string>
+    <string name="desenvolvedores">Desenvolvedores:\nAnanda Câmara\nArthur Rodrigues Chaves\nMarina Sayuri Saito\nRafael Nunes Santana\nRaul Andrade</string>
 </resources>

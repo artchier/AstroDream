@@ -60,6 +60,38 @@
                 android:layout_height="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/llNasaCoinsGlobe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_rectangle2"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@id/vpGlobe"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_logo" />
+
+                <TextView
+                    android:id="@+id/tvTotalGlobe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="1000"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -70,9 +102,17 @@
             android:contentDescription="@string/selecionar_data"
             android:src="@drawable/ic_calendar"
             app:backgroundTint="@color/gigas"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/clSnackbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@android:color/white" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/clSnackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clTutorialGlobe"

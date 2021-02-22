@@ -5,35 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/gigas"
-    android:padding="15dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="15dp">
 
-    <ImageView
+    <com.example.astrodream.domain.CustomImgView
         android:id="@+id/ivAstronauta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="70dp"
         android:layout_marginStart="5dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/avatar"
+        android:scaleType="matrix"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/circle"
-        android:contentDescription="@string/avatar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="15dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@id/ivAstronauta"
         app:layout_constraintStart_toEndOf="@+id/ivAstronauta"
         app:layout_constraintTop_toTopOf="@id/ivAstronauta">
 
         <TextView
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_light"
+            android:paddingStart="8dp"
             android:text="Olá, Fulano!"
-            android:paddingStart="14dp"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             tools:ignore="HardcodedText,RtlSymmetry" />
@@ -42,13 +43,15 @@
             android:id="@+id/btnAvatar"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/roboto_light"
-            android:textColor="@android:color/white"
-            android:letterSpacing="0"
             android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/roboto"
+            android:letterSpacing="0"
+            android:paddingEnd="7dp"
             android:text="@string/ver_avatar"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

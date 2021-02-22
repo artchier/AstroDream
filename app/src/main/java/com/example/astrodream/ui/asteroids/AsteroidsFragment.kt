@@ -18,22 +18,35 @@ class AsteroidsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_asteroids, container, false)
         viewModel.execute(view)
 
-        listAsteroidViews.addAll(arrayListOf(view.iv_asteroids1, view.iv_asteroids2,
-            view.iv_asteroids3, view.iv_asteroids4))
+        listAsteroidViews.addAll(
+            arrayListOf(
+                view.iv_asteroids1, view.iv_asteroids2,
+                view.iv_asteroids3, view.iv_asteroids4
+            )
+        )
 
         val asteroidslist = arguments?.get("listFourAsteroids") as ArrayList<*>
 
         listAsteroidViews.forEach { it ->
             it.setOnClickListener {
-            val bundle = bundleOf("Asteroid" to asteroidslist[listAsteroidViews.indexOf(it)],
-                "listFourAsteroids" to asteroidslist)
-            findNavController().navigate(R.id.action_asteroidsFragment_to_asteroidsDetailsFragment,
-                bundle) } }
+                if (asteroidslist.size < listAsteroidViews.size) {
+                    return@setOnClickListener
+                }
 
+                val bundle: Bundle = bundleOf(
+                    "Asteroid" to (asteroidslist[listAsteroidViews.indexOf(it)]),
+                    "listFourAsteroids" to asteroidslist
+                )
+                findNavController().navigate(
+                    R.id.action_asteroidsFragment_to_asteroidsDetailsFragment,
+                    bundle
+                )
+            }
+        }
         return view
     }
 }

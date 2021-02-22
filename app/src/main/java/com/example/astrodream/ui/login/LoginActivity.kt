@@ -6,26 +6,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.example.astrodream.R
+import com.example.astrodream.ui.ActivityWithTopBar
+import com.example.astrodream.ui.SplashScreenActivity
 import com.example.astrodream.ui.initial.InitialActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserInfo
 import kotlinx.android.synthetic.main.activity_login.*
 
+
 class LoginActivity : AppCompatActivity() {
-
     private var insertedEmail = ""
-    private var insertedPassword= ""
-
+    private var insertedPassword = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null) {
-            startActivity(Intent(this, InitialActivity::class.java))
-            finish()
-        }
 
         callFragLogin()
 
@@ -50,7 +46,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun callFragSignIn() {
         insertedEmail = findViewById<TextInputEditText>(R.id.tiEmail).text.toString()
-        insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        if (findViewById<TextInputEditText>(R.id.tiPassword) != null) {
+            insertedPassword = findViewById<TextInputEditText>(R.id.tiPassword).text.toString()
+        }
 
         val fragSignIn = SignInFragment.newInstance(insertedEmail, insertedPassword)
         supportFragmentManager.beginTransaction().apply {
@@ -65,5 +63,25 @@ class LoginActivity : AppCompatActivity() {
 
         btnUnselected.background = ContextCompat.getDrawable(this, R.color.transparent)
         btnUnselected.setTextColor(ContextCompat.getColor(this, R.color.light_purple))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode != LoginFragment.RC_SIGN_IN_GOOGLE) {
+            LoginFragment.callbackManager.onActivityResult(
+                requestCode,
+                resultCode,
+                data
+            )
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        //essa linha garante que a tela de login seja exibida novamente caso o usuário saia do app
+        // por meio do botão de voltar e não o encerre
+        SplashScreenActivity.showingLoginActivity = false
     }
 }

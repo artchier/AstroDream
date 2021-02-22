@@ -1,6 +1,5 @@
 package com.example.astrodream.ui.tech.detailsTech
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,8 +7,10 @@ import com.example.astrodream.entitiesDatabase.Tech
 import com.example.astrodream.services.ServiceDatabaseTech
 import kotlinx.coroutines.launch
 
-class DetailsTechViewModel(var serviceDatabaseTech: ServiceDatabaseTech, val context: Context) : ViewModel(){
-    private val listTech = MutableLiveData<List<Tech>>()
+class DetailsTechViewModel(
+    var serviceDatabaseTech: ServiceDatabaseTech
+    ) : ViewModel() {
+
     val tech = MutableLiveData<Tech>()
     val isFav = MutableLiveData<Boolean>()
 
@@ -25,27 +26,17 @@ class DetailsTechViewModel(var serviceDatabaseTech: ServiceDatabaseTech, val con
         }
     }
 
-    fun deleteAllTechnologiesDB() {
-        viewModelScope.launch {
-            serviceDatabaseTech.deleteAllTechnologiesTask()
-        }
-    }
-
     fun deleteTechDB(codReference: String) {
         viewModelScope.launch {
             serviceDatabaseTech.deleteTechTask(codReference)
-        }
-    }
-
-    fun getAllTechnologiesDB() {
-        viewModelScope.launch {
-            listTech.value = serviceDatabaseTech.getAllTechnologiesTask()
+            isFav.value = false
         }
     }
 
     fun getTechByCodeDB(codReference: String) {
         viewModelScope.launch {
             tech.value = serviceDatabaseTech.getTechByCodeTask(codReference)
+            isFav.value = tech.value != null
         }
     }
 }

@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -69,7 +67,7 @@ class DailyImageFragment : PlainDetailFragment(R.layout.fragment_daily) {
                 realtimeViewModel.animateNasaCoins(
                     requireActivity().findViewById(R.id.llNasaCoinsMars),
                     requireActivity().findViewById(R.id.tvTotalMars),
-                    R.string.daily_image
+                    R.string.daily_image, 0
                 )
                 requireActivity().getSharedPreferences("wallpaperChange", MODE_PRIVATE)
                     .edit().putBoolean("checkedOnce", true).apply()

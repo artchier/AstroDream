@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import com.example.astrodream.R
+import com.example.astrodream.ui.SplashScreenActivity
 import com.example.astrodream.ui.initial.InitialActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -60,7 +61,6 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
                     firebaseAuthWithFacebook(result.accessToken)
-                    Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onCancel() {}
@@ -159,6 +159,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                     // Sign in success, update UI with the signed-in user's information
                     val profile: Map<*, *>? = task.result!!.additionalUserInfo!!.profile
                     val email = profile!!["email"] as String
+                    Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
                     callInitialActivity(email)
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
@@ -177,6 +178,7 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
                 if (task.isSuccessful) {
                     val profile: Map<*, *>? = task.result!!.additionalUserInfo!!.profile
                     val email = profile!!["email"] as String
+                    Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
                     callInitialActivity(email)
                 } else {
                     if (task.exception is FirebaseAuthUserCollisionException) {
@@ -195,6 +197,10 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
 
     private fun callInitialActivity() {
         startActivity(Intent(requireActivity(), InitialActivity::class.java))
+
+        //essa linha garante que não haverá mais nenhuma tentativa de login validada além da primeira
+        SplashScreenActivity.alreadyLogged = false
+
         activity?.finish()
         Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
     }
@@ -203,8 +209,11 @@ class LoginFragment : FragmentWithEmailAndPassword(R.layout.fragment_login) {
         val intent = Intent(requireActivity(), InitialActivity::class.java)
         intent.putExtra("email", email)
         startActivity(intent)
+
+        //essa linha garante que não haverá mais nenhuma tentativa de login validada além da primeira
+        SplashScreenActivity.alreadyLogged = false
+
         activity?.finish()
-        Toast.makeText(requireContext(), "Logando...", Toast.LENGTH_SHORT).show()
     }
 
 }

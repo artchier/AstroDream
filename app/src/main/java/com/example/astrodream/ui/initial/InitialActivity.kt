@@ -18,9 +18,11 @@ import com.example.astrodream.services.ServiceDBDaily
 import com.example.astrodream.services.ServiceDBImplementationDaily
 import com.example.astrodream.services.service
 import com.example.astrodream.ui.ActivityWithTopBar
+import com.example.astrodream.ui.SplashScreenActivity
 import com.example.astrodream.ui.asteroids.AsteroidActivity
 import com.example.astrodream.ui.dailyimage.DailyImageActivity
 import com.example.astrodream.ui.globe.GlobeActivity
+import com.example.astrodream.ui.login.LoginActivity
 import com.example.astrodream.ui.mars.MarsActivity
 import com.example.astrodream.ui.plaindailymars.PlainActivityType
 import com.example.astrodream.ui.plaindailymars.PlainViewModel
@@ -162,5 +164,13 @@ class InitialActivity : ActivityWithTopBar(R.string.app_name, R.id.dlInitial) {
         }
 
         return dateFormat.format(yesterday.time) == lastLogin
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        //essa linha garante que a tela de login seja exibida novamente caso o usuário saia do app
+        // por meio do botão de voltar e não o encerre
+        SplashScreenActivity.alreadyLogged = true
     }
 }
